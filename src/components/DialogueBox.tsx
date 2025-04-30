@@ -3,6 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DialogueLine } from '@/types/game';
 import { Button } from '@/components/ui/button';
+import characters, { maven } from '@/data/characters';
 
 interface DialogueBoxProps {
   line: DialogueLine;
@@ -11,6 +12,21 @@ interface DialogueBoxProps {
 }
 
 const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive }) => {
+  // Get character data to display the correct color
+  const getCharacterData = () => {
+    if (!line.character || line.character === 'narrator') {
+      return null;
+    }
+    
+    if (line.character === 'maven') {
+      return maven;
+    }
+    
+    return characters[line.character];
+  };
+  
+  const characterData = getCharacterData();
+  
   // Determine character name display
   const displayName = () => {
     if (line.character === 'narrator') {
@@ -34,8 +50,11 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
           transition={{ duration: 0.3 }}
           key={line.text.substring(0, 20)}
         >
-          {line.character !== 'narrator' && (
-            <div className="font-medium text-lg text-cyberpunk-primary mb-2">
+          {line.character !== 'narrator' && characterData && (
+            <div 
+              className="font-medium text-lg mb-2"
+              style={{ color: characterData.color }}
+            >
               {displayName()}
             </div>
           )}
