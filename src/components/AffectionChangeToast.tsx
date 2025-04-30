@@ -16,7 +16,7 @@ export const showAffectionChange = ({ characterId, changeAmount }: AffectionChan
   if (!character) return;
 
   const isPositive = changeAmount > 0;
-  const icon = <AffectionChangeIcon character={character} isPositive={isPositive} />;
+  const iconElement = <AffectionChangeIcon character={character} isPositive={isPositive} />;
 
   toast({
     title: (

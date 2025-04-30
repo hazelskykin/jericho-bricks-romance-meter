@@ -49,6 +49,7 @@ export const maven = {
   name: 'Maven',
   role: 'X Factor',
   description: 'Uncertain of her strengths, dealing with imposter syndrome.',
+  affection: 0, // Added missing affection property
   avatar: '/assets/characters/maven-placeholder.jpg',
   color: '#0D98BA', // Updated to teal from #C566FC
   temperament: 'Adaptive, Uncertain, Perceptive',
