@@ -59,7 +59,7 @@ const characterStyles: Record<CharacterId, CharacterStyle> = {
     secondaryColor: '#8A77E2',
     accentColor: '#BAA9FF',
     outfit: 'Sophisticated but understated clothing with hidden complexity',
-    hairstyle: 'Distinctive hairstyle that's both practical and unique',
+    hairstyle: 'Distinctive hairstyle that is both practical and unique',
     accessories: 'Subtle accessories that hint at an intellectual nature',
     specialFeatures: 'Gender-ambiguous styling, depth of character beyond first impressions'
   }

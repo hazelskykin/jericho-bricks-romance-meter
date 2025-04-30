@@ -8,8 +8,8 @@ export const characters: Record<string, Character> = {
     role: 'Support & Enabler',
     description: 'The emotional and technological bedrock of the team.',
     affection: 0,
-    avatar: '/assets/characters/xavier-placeholder.jpg',
-    color: '#87CEEB',
+    avatar: '/assets/characters/xavier-placeholder.jpeg',
+    color: '#4CC2FF',
     temperament: 'Supportive, Tech-savvy, Empathetic',
   },
   navarre: {

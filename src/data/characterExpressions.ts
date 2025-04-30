@@ -1,4 +1,3 @@
-
 import { CharacterId } from '@/types/game';
 
 export type MoodType = 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised';
@@ -47,32 +46,32 @@ const characterExpressions: Record<CharacterId, Record<MoodType, CharacterExpres
     neutral: {
       characterId: 'xavier',
       mood: 'neutral',
-      image: '/assets/characters/xavier-neutral.png',
+      image: '/assets/characters/xavier-placeholder.jpeg',
       description: 'Xavier with a calm, reliable expression'
     },
     happy: {
       characterId: 'xavier',
       mood: 'happy',
-      image: '/assets/characters/xavier-happy.png',
+      image: '/assets/characters/xavier-grinning.jpeg',
       description: 'Xavier with an enthusiastic, friendly smile'
     },
     sad: {
       characterId: 'xavier',
       mood: 'sad',
-      image: '/assets/characters/xavier-sad.png',
+      image: '/assets/characters/xavier-crying.jpeg',
       description: 'Xavier with a concerned, empathetic expression'
     },
     angry: {
       characterId: 'xavier',
       mood: 'angry',
-      image: '/assets/characters/xavier-angry.png',
-      description: 'Xavier with a furrowed brow showing mild frustration'
+      image: '/assets/characters/xavier-angry.jpeg',
+      description: 'Xavier with a furrowed brow showing frustration'
     },
     surprised: {
       characterId: 'xavier',
       mood: 'surprised',
-      image: '/assets/characters/xavier-surprised.png',
-      description: 'Xavier with raised eyebrows and an intrigued expression'
+      image: '/assets/characters/xavier-surprised.jpeg',
+      description: 'Xavier with raised eyebrows and a shocked expression'
     }
   },
   navarre: {

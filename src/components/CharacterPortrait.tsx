@@ -21,9 +21,11 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   if (!character) return null;
   
   // Get the appropriate expression
-  const expression = characterId !== 'maven' && characterExpressions[characterId] ? 
+  const expression = characterExpressions[characterId] ? 
     characterExpressions[characterId][mood] : 
-    characterExpressions.maven[mood];
+    null;
+    
+  if (!expression) return null;
   
   // Apply mood-specific styling
   const getMoodStyles = () => {
