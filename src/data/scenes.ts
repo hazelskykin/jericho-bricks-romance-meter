@@ -16,7 +16,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: 'I can't believe I'm actually here. How did I even pass the assessment? My results were so...',
+        text: "I can't believe I'm actually here. How did I even pass the assessment? My results were so...",
         mood: 'neutral',
       },
       {
@@ -25,11 +25,11 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Welcome to Cybaton's City Administration Program! You represent the brightest minds, chosen to shape our future."',
+        text: 'Dr. Voss: "Welcome to Cybaton\'s City Administration Program! You represent the brightest minds, chosen to shape our future."',
       },
       {
         character: 'narrator',
-        text: 'The room buzzes with excitement. You scan the crowd, wondering who you'll be teamed with.',
+        text: "The room buzzes with excitement. You scan the crowd, wondering who you'll be teamed with.",
       },
       {
         character: 'narrator',
@@ -45,7 +45,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: 'Five? That's unusual. Teams are always four...',
+        text: "Five? That's unusual. Teams are always four...",
         mood: 'surprised',
       },
     ],
@@ -62,7 +62,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: 'Hey everyone! I'm Xavier. Looks like we'll be working together in Stonewich.',
+        text: "Hey everyone! I'm Xavier. Looks like we'll be working together in Stonewich.",
         mood: 'happy',
       },
       {
@@ -87,17 +87,17 @@ const scenes: Record<string, Scene> = {
     ],
     choices: [
       {
-        text: '"Hi, I'm Maven. I'm excited to work with you all."',
+        text: '"Hi, I\'m Maven. I\'m excited to work with you all."',
         affectionChanges: { xavier: 1, navarre: 1, etta: 0, senara: 0 },
         nextSceneId: 'team-meeting-response-friendly',
       },
       {
-        text: '"Maven Gray. I'm not sure why I'm here either, but I'll do my best."',
+        text: '"Maven Gray. I\'m not sure why I\'m here either, but I\'ll do my best."',
         affectionChanges: { xavier: 1, navarre: 0, etta: -1, senara: 1 },
         nextSceneId: 'team-meeting-response-honest',
       },
       {
-        text: '"Maven. My assessment results were... unconventional. That's probably why I'm the fifth wheel."',
+        text: '"Maven. My assessment results were... unconventional. That\'s probably why I\'m the fifth wheel."',
         affectionChanges: { xavier: 0, navarre: -1, etta: -1, senara: 1 },
         nextSceneId: 'team-meeting-response-self-deprecating',
       },
@@ -120,12 +120,12 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: 'Let's stay focused. We should review the Stonewich briefing materials first.',
+        text: "Let's stay focused. We should review the Stonewich briefing materials first.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: 'I've already studied them. The city's systems are stable but outdated.',
+        text: "I've already studied them. The city's systems are stable but outdated.",
         mood: 'neutral',
       },
     ],
@@ -138,22 +138,22 @@ const scenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'xavier',
-        text: 'Hey, we're all figuring things out. I'm sure there's a good reason you're with us.',
+        text: "Hey, we're all figuring things out. I'm sure there's a good reason you're with us.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: 'Hmm, interesting. Five-person teams aren't standard protocol.',
+        text: "Hmm, interesting. Five-person teams aren't standard protocol.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: 'They're testing something new. Your profile must have shown potential that fits with their hypothesis.',
+        text: "They're testing something new. Your profile must have shown potential that fits with their hypothesis.",
         mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: 'Well, whatever the reason, welcome aboard! We'll make it work.',
+        text: "Well, whatever the reason, welcome aboard! We'll make it work.",
         mood: 'neutral',
       },
     ],
@@ -166,12 +166,12 @@ const scenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'etta',
-        text: 'Great. An experimental addition. Let's hope it doesn't compromise our efficiency.',
+        text: "Great. An experimental addition. Let's hope it doesn't compromise our efficiency.",
         mood: 'angry',
       },
       {
         character: 'xavier',
-        text: 'Come on, Etta. Every team has unique dynamics. I'm sure Maven brings valuable perspective.',
+        text: "Come on, Etta. Every team has unique dynamics. I'm sure Maven brings valuable perspective.",
         mood: 'neutral',
       },
       {
@@ -222,7 +222,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: 'So that's why... I'm the wild card.',
+        text: "So that's why... I'm the wild card.",
         mood: 'surprised',
       },
       {
@@ -268,17 +268,17 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: 'Absolutely! Work talk can wait. So, what brought everyone to Cybaton's program?',
+        text: "Absolutely! Work talk can wait. So, what brought everyone to Cybaton's program?",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: 'I'd rather discuss our approach to Stonewich, but I suppose some... team bonding... is necessary.',
+        text: "I'd rather discuss our approach to Stonewich, but I suppose some... team bonding... is necessary.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: 'The technological challenges attracted me. Stonewich's systems are a fascinating blend of old and new.',
+        text: "The technological challenges attracted me. Stonewich's systems are a fascinating blend of old and new.",
         mood: 'neutral',
       },
     ],
@@ -289,7 +289,7 @@ const scenes: Record<string, Scene> = {
         nextSceneId: 'departure-preparation',
       },
       {
-        text: 'Admit you're still figuring out where you fit in',
+        text: "Admit you're still figuring out where you fit in",
         affectionChanges: { xavier: 2, navarre: 1, etta: -1, senara: 0 },
         nextSceneId: 'departure-preparation',
       },
@@ -311,12 +311,12 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: 'Now this is productive. Let's divide the Stonewich files by sector.',
+        text: "Now this is productive. Let's divide the Stonewich files by sector.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: 'I've already analyzed the historical data. The transition points between technology upgrades are particularly interesting.',
+        text: "I've already analyzed the historical data. The transition points between technology upgrades are particularly interesting.",
         mood: 'neutral',
       },
       {
@@ -326,7 +326,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: 'I was hoping we'd do something more... social. But I guess this works too.',
+        text: "I was hoping we'd do something more... social. But I guess this works too.",
         mood: 'sad',
       },
     ],
@@ -364,7 +364,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: 'The quantum computing array they're using for city simulations is particularly impressive.',
+        text: "The quantum computing array they're using for city simulations is particularly impressive.",
         mood: 'happy',
       },
       {
@@ -374,7 +374,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: 'Cool tech, but I'm more interested in how people interact with it. The human element is what makes or breaks these systems.',
+        text: "Cool tech, but I'm more interested in how people interact with it. The human element is what makes or breaks these systems.",
         mood: 'neutral',
       },
     ],
@@ -412,17 +412,17 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: 'As ready as I'll ever be. I hear Stonewich has amazing local cuisine. We should explore that when we arrive.',
+        text: "As ready as I'll ever be. I hear Stonewich has amazing local cuisine. We should explore that when we arrive.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: 'I've prepared a preliminary schedule for our first week. We should stick to it to ensure optimal productivity.',
+        text: "I've prepared a preliminary schedule for our first week. We should stick to it to ensure optimal productivity.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: 'I've downloaded all available data on Stonewich's systems. We can review it during transit.',
+        text: "I've downloaded all available data on Stonewich's systems. We can review it during transit.",
         mood: 'neutral',
       },
       {
@@ -431,22 +431,22 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Your transport is ready. Remember, you're not just maintaining systems in Stonewich—you're representing Cybaton. Make us proud."',
+        text: 'Dr. Voss: "Your transport is ready. Remember, you\'re not just maintaining systems in Stonewich—you\'re representing Cybaton. Make us proud."',
       },
     ],
     choices: [
       {
-        text: '"We won't let you down."',
+        text: '"We won\'t let you down."',
         affectionChanges: { xavier: 0, navarre: 0, etta: 1, senara: 0 },
         nextSceneId: 'arrival-stonewich',
       },
       {
-        text: '"We'll do our best as a team."',
+        text: '"We\'ll do our best as a team."',
         affectionChanges: { xavier: 1, navarre: 1, etta: 0, senara: 0 },
         nextSceneId: 'arrival-stonewich',
       },
       {
-        text: '"I'm looking forward to putting theory into practice."',
+        text: '"I\'m looking forward to putting theory into practice."',
         affectionChanges: { xavier: 0, navarre: 0, etta: 0, senara: 1 },
         nextSceneId: 'arrival-stonewich',
       },
@@ -463,7 +463,7 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: 'It's beautiful... so different from what I expected.',
+        text: "It's beautiful... so different from what I expected.",
         mood: 'happy',
       },
       {
@@ -483,12 +483,12 @@ const scenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: 'I'm curious to see their maintenance protocols in action. The reports indicated some innovative workarounds for the legacy systems.',
+        text: "I'm curious to see their maintenance protocols in action. The reports indicated some innovative workarounds for the legacy systems.",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: 'As the transport lands, you can't help but feel a mix of excitement and nervousness. This is where your journey truly begins.',
+        text: "As the transport lands, you can't help but feel a mix of excitement and nervousness. This is where your journey truly begins.",
       },
       {
         character: 'narrator',
