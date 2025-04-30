@@ -40,7 +40,7 @@ export const showAffectionChange = ({ characterId, changeAmount }: AffectionChan
       borderColor: character.color,
       borderWidth: '1px',
     },
-    icon: <AffectionChangeIcon character={character} isPositive={isPositive} />,
+    action: <AffectionChangeIcon character={character} isPositive={isPositive} />,
   });
 };
 
