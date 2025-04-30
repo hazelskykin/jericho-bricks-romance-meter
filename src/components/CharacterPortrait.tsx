@@ -55,20 +55,20 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className={`character-portrait w-64 h-80 mb-20 flex items-center justify-center ${getMoodStyles()}`}
-            style={{ 
-              backgroundColor: character.color + '30', 
-              borderRadius: '1rem',
-              border: `2px solid ${character.color}`,
-              boxShadow: `0 0 15px ${character.color}50`
-            }}
+            className={`mb-20 ${getMoodStyles()}`}
             initial={{ filter: 'brightness(0.9)' }}
             animate={{ 
               filter: `brightness(${mood === 'happy' ? 1.1 : mood === 'sad' ? 0.8 : 1})`
             }}
             transition={{ duration: 0.5 }}
           >
-            <Avatar className="w-56 h-56 border-4" style={{ borderColor: character.color }}>
+            <Avatar 
+              className="w-56 h-56 border-4" 
+              style={{ 
+                borderColor: character.color,
+                boxShadow: `0 0 15px ${character.color}50`
+              }}
+            >
               <AvatarImage src={expression.image} alt={expression.description} />
               <AvatarFallback style={{ backgroundColor: character.color }}>
                 {character.name.substring(0, 2)}
