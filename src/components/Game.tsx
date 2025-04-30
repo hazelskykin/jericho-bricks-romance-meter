@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MainMenu from './MainMenu';
@@ -6,9 +7,12 @@ import CharacterPortrait from './CharacterPortrait';
 import ChoiceMenu from './ChoiceMenu';
 import BackgroundScene from './BackgroundScene';
 import CharacterStatus from './CharacterStatus';
+import AssetLoading from './AssetLoading';
 import { GameState, Scene, DialogueChoice } from '@/types/game';
 import scenes from '@/data/scenes';
 import characters from '@/data/characters';
+import backgrounds from '@/data/backgrounds';
+import characterExpressions from '@/data/characterExpressions';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
 
 const Game: React.FC = () => {
@@ -19,9 +23,50 @@ const Game: React.FC = () => {
     sceneHistory: [],
     showChoices: false
   });
+  
+  const [assetsReady, setAssetsReady] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Loading game assets...');
 
   const currentScene: Scene = scenes[gameState.currentScene];
   const currentLine = currentScene?.dialogue[gameState.dialogueIndex];
+
+  // Preload all game assets
+  useEffect(() => {
+    const preloadAssets = async () => {
+      setLoadingMessage('Loading background scenes...');
+      // Load all background images
+      const backgroundPromises = Object.values(backgrounds).map((bg) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = bg.image;
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+        });
+      });
+      
+      await Promise.all(backgroundPromises);
+      
+      setLoadingMessage('Loading character portraits...');
+      // Load all character expression images
+      const expressionPromises = Object.values(characterExpressions).flatMap(moodMap => 
+        Object.values(moodMap).map(expression => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.src = expression.image;
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+          });
+        })
+      );
+      
+      await Promise.all(expressionPromises);
+      
+      setLoadingMessage('Finalizing game setup...');
+      setAssetsReady(true);
+    };
+    
+    preloadAssets();
+  }, []);
 
   // Handle dialogue advancement
   const handleContinue = () => {
@@ -59,7 +104,7 @@ const Game: React.FC = () => {
           };
 
           // Show toast for significant affection changes
-          if (Math.abs(change) >= 2) {
+          if (Math.abs(change) >= 1) {
             showAffectionChange({
               characterId: charId as any,
               changeAmount: change
@@ -116,6 +161,10 @@ const Game: React.FC = () => {
 
   // Render different views based on current scene
   const renderGameContent = () => {
+    if (!assetsReady) {
+      return <AssetLoading message={loadingMessage} />;
+    }
+    
     // If we're at the start or about screen, show main menu
     if (gameState.currentScene === 'start' || gameState.currentScene === 'about') {
       return (
@@ -159,7 +208,7 @@ const Game: React.FC = () => {
 
   return (
     <motion.div 
-      className="min-h-screen overflow-hidden"
+      className="min-h-screen overflow-hidden relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}

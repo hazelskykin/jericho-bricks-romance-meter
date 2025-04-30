@@ -1,5 +1,6 @@
 
 export type CharacterId = 'xavier' | 'navarre' | 'etta' | 'senara' | 'maven';
+export type MoodType = 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised';
 
 export interface Character {
   id: CharacterId;
@@ -15,7 +16,7 @@ export interface Character {
 export interface DialogueLine {
   character?: CharacterId | 'narrator';
   text: string;
-  mood?: 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised';
+  mood?: MoodType;
 }
 
 export interface DialogueChoice {
@@ -38,4 +39,19 @@ export interface GameState {
   characters: Record<CharacterId, Character>;
   sceneHistory: string[];
   showChoices: boolean;
+}
+
+export interface BackgroundAsset {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  gradient: string;
+}
+
+export interface CharacterExpression {
+  characterId: CharacterId;
+  mood: MoodType;
+  image: string;
+  description: string;
 }

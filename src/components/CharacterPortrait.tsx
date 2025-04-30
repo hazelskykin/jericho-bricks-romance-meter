@@ -3,10 +3,11 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CharacterId } from '@/types/game';
 import characters, { maven } from '@/data/characters';
+import characterExpressions, { MoodType } from '@/data/characterExpressions';
 
 interface CharacterPortraitProps {
   characterId: CharacterId | 'maven' | 'narrator' | undefined;
-  mood?: 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised';
+  mood?: MoodType;
   isActive: boolean;
 }
 
@@ -18,6 +19,11 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   const character = characterId === 'maven' ? maven : characters[characterId];
   
   if (!character) return null;
+  
+  // Get the appropriate expression
+  const expression = characterId !== 'maven' && characterExpressions[characterId] ? 
+    characterExpressions[characterId][mood] : 
+    characterExpressions.maven[mood];
   
   // Apply mood-specific styling
   const getMoodStyles = () => {
@@ -46,14 +52,14 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className={`character-portrait w-64 h-64 mb-28 ${getMoodStyles()}`}
+            className={`character-portrait w-64 h-80 mb-20 ${getMoodStyles()}`}
             style={{ 
               backgroundColor: character.color + '30', 
-              backgroundImage: `url(${character.avatar})`,
+              backgroundImage: `url(${expression.image})`,
               backgroundSize: 'contain',
               backgroundPosition: 'center bottom',
               backgroundRepeat: 'no-repeat',
-              borderRadius: '50%',
+              borderRadius: '1rem',
               border: `2px solid ${character.color}`,
               boxShadow: `0 0 15px ${character.color}50`
             }}
@@ -66,7 +72,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           
           {/* Character name badge */}
           <motion.div
-            className="absolute bottom-28 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-white font-medium text-glow-sm"
+            className="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-white font-medium text-glow-sm"
             style={{ 
               backgroundColor: character.color + '80',
               backdropFilter: 'blur(4px)',

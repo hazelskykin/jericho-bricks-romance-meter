@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { DialogueLine } from '@/types/game';
+import { DialogueLine, MoodType } from '@/types/game';
 import { Button } from '@/components/ui/button';
 import characters, { maven } from '@/data/characters';
 
@@ -30,12 +30,28 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
   // Determine character name display
   const displayName = () => {
     if (line.character === 'narrator') {
-      return '';
+      return 'Narrator';
     } else if (line.character === 'maven') {
       return 'Maven (You)';
-    } else {
-      // Capitalize first letter of character name
-      return line.character ? line.character.charAt(0).toUpperCase() + line.character.slice(1) : '';
+    } else if (line.character) {
+      return characters[line.character]?.name || '';
+    }
+    return '';
+  };
+
+  // Determine mood indicator
+  const getMoodIndicator = (mood: MoodType = 'neutral') => {
+    switch(mood) {
+      case 'happy':
+        return '😊';
+      case 'sad':
+        return '😔';
+      case 'angry':
+        return '😠';
+      case 'surprised':
+        return '😮';
+      default:
+        return '';
     }
   };
 
@@ -49,15 +65,25 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
           exit={{ y: 20, opacity: 0 }}
           transition={{ duration: 0.3 }}
           key={line.text.substring(0, 20)}
+          style={{
+            borderLeft: characterData ? `4px solid ${characterData.color}` : undefined,
+            borderBottom: characterData ? `1px solid ${characterData.color}30` : undefined,
+            borderRight: characterData ? `1px solid ${characterData.color}30` : undefined,
+          }}
         >
-          {line.character !== 'narrator' && characterData && (
-            <div 
-              className="font-medium text-lg mb-2"
-              style={{ color: characterData.color }}
-            >
-              {displayName()}
-            </div>
-          )}
+          <div className="flex items-center justify-between mb-3">
+            {line.character && (
+              <div 
+                className="font-medium text-lg flex items-center gap-2"
+                style={{ color: characterData?.color || 'white' }}
+              >
+                <span>{displayName()}</span>
+                {line.mood && line.mood !== 'neutral' && (
+                  <span className="text-sm opacity-70">{getMoodIndicator(line.mood)}</span>
+                )}
+              </div>
+            )}
+          </div>
           
           <p className="text-lg text-white/90 leading-relaxed">
             {line.text}
@@ -67,6 +93,9 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
             <Button 
               onClick={onContinue} 
               className="text-sm bg-cyberpunk-dark hover:bg-cyberpunk-secondary border border-cyberpunk-primary/30"
+              style={{
+                borderColor: characterData ? `${characterData.color}50` : undefined,
+              }}
             >
               Continue
             </Button>
