@@ -9,7 +9,7 @@ export const characters: Record<string, Character> = {
     description: 'The emotional and technological bedrock of the team.',
     affection: 0,
     avatar: '/assets/characters/xavier-placeholder.jpg',
-    color: '#4CC2FF',
+    color: '#87CEEB',
     temperament: 'Supportive, Tech-savvy, Empathetic',
   },
   navarre: {
