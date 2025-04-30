@@ -44,9 +44,9 @@ export const characters: Record<string, Character> = {
   },
 };
 
-// Update the maven type to include 'maven' as a valid CharacterId type
-export const maven = {
-  id: 'maven' as 'maven', // Type assertion to match expected type
+// Define Maven as a constant with the correct CharacterId type
+export const maven: Character = {
+  id: 'maven',
   name: 'Maven',
   role: 'X Factor',
   description: 'Uncertain of her strengths, dealing with imposter syndrome.',

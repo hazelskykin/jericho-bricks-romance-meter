@@ -13,7 +13,7 @@ export interface Character {
 }
 
 export interface DialogueLine {
-  character?: CharacterId | 'maven' | 'narrator';
+  character?: CharacterId | 'narrator';
   text: string;
   mood?: 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised';
 }

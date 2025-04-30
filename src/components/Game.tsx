@@ -9,10 +9,9 @@ import CharacterStatus from './CharacterStatus';
 import { GameState, Scene, DialogueChoice } from '@/types/game';
 import scenes from '@/data/scenes';
 import characters from '@/data/characters';
-import { useToast } from '@/components/ui/use-toast';
+import { showAffectionChange } from '@/components/AffectionChangeToast';
 
 const Game: React.FC = () => {
-  const { toast } = useToast();
   const [gameState, setGameState] = useState<GameState>({
     currentScene: 'start',
     dialogueIndex: 0,
@@ -61,11 +60,9 @@ const Game: React.FC = () => {
 
           // Show toast for significant affection changes
           if (Math.abs(change) >= 2) {
-            const direction = change > 0 ? 'increased' : 'decreased';
-            toast({
-              title: `${updatedCharacters[charId].name}'s affection ${direction}`,
-              description: `Your choice has affected your relationship.`,
-              duration: 3000,
+            showAffectionChange({
+              characterId: charId as any,
+              changeAmount: change
             });
           }
         }
