@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CharacterId } from '@/types/game';
 import characters, { maven } from '@/data/characters';
 import characterExpressions, { MoodType } from '@/data/characterExpressions';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface CharacterPortraitProps {
   characterId: CharacterId | 'maven' | 'narrator' | undefined;
@@ -54,13 +55,9 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className={`character-portrait w-64 h-80 mb-20 ${getMoodStyles()}`}
+            className={`character-portrait w-64 h-80 mb-20 flex items-center justify-center ${getMoodStyles()}`}
             style={{ 
               backgroundColor: character.color + '30', 
-              backgroundImage: `url(${expression.image})`,
-              backgroundSize: 'contain',
-              backgroundPosition: 'center bottom',
-              backgroundRepeat: 'no-repeat',
               borderRadius: '1rem',
               border: `2px solid ${character.color}`,
               boxShadow: `0 0 15px ${character.color}50`
@@ -70,7 +67,14 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
               filter: `brightness(${mood === 'happy' ? 1.1 : mood === 'sad' ? 0.8 : 1})`
             }}
             transition={{ duration: 0.5 }}
-          />
+          >
+            <Avatar className="w-56 h-56 border-4" style={{ borderColor: character.color }}>
+              <AvatarImage src={expression.image} alt={expression.description} />
+              <AvatarFallback style={{ backgroundColor: character.color }}>
+                {character.name.substring(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+          </motion.div>
           
           {/* Character name badge */}
           <motion.div

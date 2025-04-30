@@ -46,7 +46,7 @@ const characterExpressions: Record<CharacterId, Record<MoodType, CharacterExpres
     neutral: {
       characterId: 'xavier',
       mood: 'neutral',
-      image: '/assets/characters/xavier-placeholder.jpeg',
+      image: '/assets/characters/xavier-neutral.jpeg',
       description: 'Xavier with a calm, reliable expression'
     },
     happy: {

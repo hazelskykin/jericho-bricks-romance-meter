@@ -25,7 +25,7 @@ const characterStyles: Record<CharacterId, CharacterStyle> = {
   },
   xavier: {
     characterId: 'xavier',
-    primaryColor: '#87CEEB',
+    primaryColor: '#4CC2FF',
     secondaryColor: '#6BB7D4',
     accentColor: '#A7DEF9',
     outfit: 'Practical but comfortable clothing with technological accessories',
