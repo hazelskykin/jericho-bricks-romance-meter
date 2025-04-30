@@ -1,5 +1,5 @@
 
-export type CharacterId = 'xavier' | 'navarre' | 'etta' | 'senara';
+export type CharacterId = 'xavier' | 'navarre' | 'etta' | 'senara' | 'maven';
 
 export interface Character {
   id: CharacterId;

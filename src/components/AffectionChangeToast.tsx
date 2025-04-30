@@ -7,17 +7,17 @@ import { Heart } from 'lucide-react';
 import characters, { maven } from '@/data/characters';
 
 interface AffectionChangeProps {
-  characterId: CharacterId | 'maven';
+  characterId: CharacterId;
   changeAmount: number;
 }
 
 export const showAffectionChange = ({ characterId, changeAmount }: AffectionChangeProps) => {
+  // Get the character based on the ID
   const character = characterId === 'maven' ? maven : characters[characterId];
   if (!character) return;
 
   const isPositive = changeAmount > 0;
-  const iconElement = <AffectionChangeIcon character={character} isPositive={isPositive} />;
-
+  
   toast({
     title: (
       <div className="flex items-center gap-2">
@@ -39,7 +39,8 @@ export const showAffectionChange = ({ characterId, changeAmount }: AffectionChan
       backgroundColor: `${character.color}10`,
       borderColor: character.color,
       borderWidth: '1px',
-    }
+    },
+    icon: <AffectionChangeIcon character={character} isPositive={isPositive} />,
   });
 };
 

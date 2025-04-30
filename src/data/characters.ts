@@ -44,14 +44,15 @@ export const characters: Record<string, Character> = {
   },
 };
 
+// Update the maven type to include 'maven' as a valid CharacterId type
 export const maven = {
-  id: 'maven',
+  id: 'maven' as 'maven', // Type assertion to match expected type
   name: 'Maven',
   role: 'X Factor',
   description: 'Uncertain of her strengths, dealing with imposter syndrome.',
-  affection: 0, // Added missing affection property
+  affection: 0,
   avatar: '/assets/characters/maven-placeholder.jpg',
-  color: '#0D98BA', // Updated to teal from #C566FC
+  color: '#0D98BA',
   temperament: 'Adaptive, Uncertain, Perceptive',
 };
 
