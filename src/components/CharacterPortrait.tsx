@@ -54,14 +54,14 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
     <AnimatePresence>
       {isActive && (
         <motion.div
-          className="fixed bottom-0 left-16 z-20"
+          className="fixed bottom-32 left-16 z-20" // Moved up from bottom-0 to bottom-32
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className={`mb-20 ${getMoodStyles()}`}
+            className={`mb-4 ${getMoodStyles()}`} // Reduced margin-bottom from mb-20 to mb-4
             initial={{ filter: 'brightness(0.9)' }}
             animate={{ 
               filter: `brightness(${
@@ -91,7 +91,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           
           {/* Character name badge */}
           <motion.div
-            className="absolute bottom-20 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-white font-medium text-glow-sm"
+            className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-white font-medium text-glow-sm"
             style={{ 
               backgroundColor: character.color + '80',
               backdropFilter: 'blur(4px)',
