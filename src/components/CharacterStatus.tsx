@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import AffectionMeter from './AffectionMeter';
 import { Character } from '@/types/game';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import characterExpressions from '@/data/characterExpressions';
 
 interface CharacterStatusProps {
   characters: Character[];
@@ -40,37 +42,54 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
         }}
       >
         <div className="space-y-4">
-          {characters.map((char) => (
-            <motion.div 
-              key={char.id} 
-              className="flex items-center justify-between gap-4 p-2 rounded-lg transition-colors"
-              initial={{ x: -10, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              whileHover={{ backgroundColor: char.color + '20' }}
-            >
-              <div 
-                className="flex items-center"
-                style={{ color: char.color }}
+          {characters.map((char) => {
+            // Get neutral expression for character avatar
+            const neutralExpression = characterExpressions[char.id]?.neutral;
+            
+            return (
+              <motion.div 
+                key={char.id} 
+                className="flex items-center justify-between gap-4 p-2 rounded-lg transition-colors"
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ backgroundColor: char.color + '20' }}
               >
                 <div 
-                  className="w-10 h-10 rounded-full mr-3 bg-cover bg-center"
-                  style={{ 
-                    backgroundColor: char.color + '20',
-                    border: `1px solid ${char.color}`,
-                    backgroundImage: `url(${char.avatar})`,
-                    boxShadow: `0 0 8px ${char.color}40`
-                  }}
-                ></div>
-                <div>
-                  <span className="font-medium block">{char.name}</span>
-                  <span className="text-xs opacity-70 block">{char.role}</span>
+                  className="flex items-center"
+                  style={{ color: char.color }}
+                >
+                  <Avatar 
+                    className="w-10 h-10 mr-3 border"
+                    style={{ 
+                      borderColor: char.color,
+                      boxShadow: `0 0 8px ${char.color}40`
+                    }}
+                  >
+                    <AvatarImage 
+                      src={neutralExpression?.image || char.avatar} 
+                      alt={char.name} 
+                    />
+                    <AvatarFallback
+                      style={{ 
+                        backgroundColor: char.color + '20',
+                        color: char.color,
+                        borderColor: char.color
+                      }}
+                    >
+                      {char.name.substring(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <span className="font-medium block">{char.name}</span>
+                    <span className="text-xs opacity-70 block">{char.role}</span>
+                  </div>
                 </div>
-              </div>
-              
-              <AffectionMeter character={char} isOpen={isOpen} />
-            </motion.div>
-          ))}
+                
+                <AffectionMeter character={char} isOpen={isOpen} />
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
     </div>
