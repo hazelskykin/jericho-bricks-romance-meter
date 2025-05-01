@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { DialogueLine, MoodType } from '@/types/game';
+import { DialogueLine } from '@/types/game';
+import { MoodType } from '@/types/expressions';
 import { Button } from '@/components/ui/button';
 import characters, { maven } from '@/data/characters';
 
@@ -42,19 +42,19 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
   // Determine mood indicator
   const getMoodIndicator = (mood: MoodType = 'neutral') => {
     switch(mood) {
-      case 'happy':
+      case "happy":
         return '😊';
-      case 'sad':
+      case "sad":
         return '😔';
-      case 'angry':
+      case "angry":
         return '😠';
-      case 'surprised':
+      case "surprised":
         return '😮';
-      case 'laughing':
+      case "laughing":
         return '😄';
-      case 'shocked':
+      case "shocked":
         return '😲';
-      case 'embarrassed':
+      case "embarrassed":
         return '😳';
       default:
         return '';
