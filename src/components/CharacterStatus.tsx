@@ -5,6 +5,7 @@ import AffectionMeter from './AffectionMeter';
 import { Character } from '@/types/game';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import characterExpressions from '@/data/characterExpressions';
+import characterChibis from '@/data/characterChibis';
 
 interface CharacterStatusProps {
   characters: Character[];
@@ -43,8 +44,14 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
       >
         <div className="space-y-4">
           {characters.map((char) => {
-            // Get neutral expression for character avatar
+            // Try to get chibi image first
+            const chibiImage = characterChibis[char.id]?.image;
+            
+            // Fallback to neutral expression if no chibi available
             const neutralExpression = characterExpressions[char.id]?.neutral;
+            
+            // Determine which image to use (chibi first, neutral second, avatar fallback)
+            const characterImage = chibiImage || (neutralExpression?.image || char.avatar);
             
             return (
               <motion.div 
@@ -60,15 +67,16 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
                   style={{ color: char.color }}
                 >
                   <Avatar 
-                    className="w-10 h-10 mr-3 border"
+                    className={`w-10 h-10 mr-3 border ${chibiImage ? 'rounded-xl' : 'rounded-full'}`}
                     style={{ 
                       borderColor: char.color,
                       boxShadow: `0 0 8px ${char.color}40`
                     }}
                   >
                     <AvatarImage 
-                      src={neutralExpression?.image || char.avatar} 
-                      alt={char.name} 
+                      src={characterImage} 
+                      alt={char.name}
+                      className={chibiImage ? 'rounded-xl' : 'rounded-full'} 
                     />
                     <AvatarFallback
                       style={{ 
@@ -76,6 +84,7 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
                         color: char.color,
                         borderColor: char.color
                       }}
+                      className={chibiImage ? 'rounded-xl' : 'rounded-full'}
                     >
                       {char.name.substring(0, 2)}
                     </AvatarFallback>

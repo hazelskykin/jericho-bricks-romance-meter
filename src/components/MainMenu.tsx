@@ -2,6 +2,9 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import characterChibis from '@/data/characterChibis';
+import characters from '@/data/characters';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface MainMenuProps {
   onNewGame: () => void;
@@ -30,9 +33,51 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
           Jericho Bricks
         </motion.h1>
         
-        <p className="text-xl text-white/80 max-w-md mb-12">
+        <p className="text-xl text-white/80 max-w-md mb-6">
           Navigate relationships and technology in the city of Stonewich as part of Cybaton's elite administrative team.
         </p>
+
+        {/* Character Chibi Preview */}
+        <div className="flex justify-center gap-1 mb-6">
+          {Object.values(characters).map((char) => {
+            const chibiData = characterChibis[char.id];
+            
+            return (
+              <motion.div 
+                key={char.id}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 + Math.random() * 0.5 }}
+                whileHover={{ y: -5, scale: 1.05 }}
+              >
+                {chibiData?.image ? (
+                  <Avatar 
+                    className="w-14 h-14 border-2 rounded-xl"
+                    style={{ 
+                      borderColor: char.color,
+                      boxShadow: `0 0 10px ${char.color}50`
+                    }}
+                  >
+                    <AvatarImage 
+                      src={chibiData.image} 
+                      alt={char.name}
+                      className="rounded-xl"
+                    />
+                    <AvatarFallback
+                      style={{ 
+                        backgroundColor: char.color + '30',
+                        color: char.color,
+                      }}
+                      className="rounded-xl"
+                    >
+                      {char.name.substring(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
+                ) : null}
+              </motion.div>
+            );
+          })}
+        </div>
         
         <div className="space-y-4 w-64 mx-auto">
           <Button 
