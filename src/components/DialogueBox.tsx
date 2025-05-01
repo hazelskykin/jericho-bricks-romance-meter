@@ -50,6 +50,12 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
         return '😠';
       case 'surprised':
         return '😮';
+      case 'laughing':
+        return '😄';
+      case 'shocked':
+        return '😲';
+      case 'embarrassed':
+        return '😳';
       default:
         return '';
     }

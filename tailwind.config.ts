@@ -103,6 +103,43 @@ export default {
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' },
+				},
+				'shake': {
+					'0%, 100%': { transform: 'translateX(0)' },
+					'10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-3px)' },
+					'20%, 40%, 60%, 80%': { transform: 'translateX(3px)' },
+				},
+				'subtle-shift': {
+					'0%, 100%': { transform: 'translateX(0)' },
+					'50%': { transform: 'translateX(-3px)' },
+				},
+				'bounce-light': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' },
+				},
+				'color-pulse': {
+					'0%, 100%': { filter: 'saturate(100%)' },
+					'50%': { filter: 'saturate(150%)' },
+				},
+				'intense-glow': {
+					'0%, 100%': { 
+						boxShadow: '0 0 5px 2px rgba(155, 135, 245, 0.5)',
+						filter: 'brightness(1.1)'
+					},
+					'50%': { 
+						boxShadow: '0 0 15px 5px rgba(155, 135, 245, 0.8)',
+						filter: 'brightness(1.3)'
+					},
+				},
+				'blush-pulse': {
+					'0%, 100%': { filter: 'brightness(1) saturate(1)' },
+					'50%': { filter: 'brightness(1.1) saturate(1.3)' },
+				},
+				'shock-flash': {
+					'0%, 100%': { transform: 'scale(1)', filter: 'contrast(100%)' },
+					'25%': { transform: 'scale(1.05)', filter: 'contrast(120%)' },
+					'50%': { transform: 'scale(1)', filter: 'contrast(100%)' },
+					'75%': { transform: 'scale(1.05)', filter: 'contrast(120%)' },
 				}
 			},
 			animation: {
@@ -110,6 +147,13 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
 				'float': 'float 6s ease-in-out infinite',
+				'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+				'subtle-shift': 'subtle-shift 2s ease-in-out infinite',
+				'bounce-light': 'bounce-light 1.5s ease-in-out infinite',
+				'color-pulse': 'color-pulse 2s ease-in-out infinite',
+				'intense-glow': 'intense-glow 2s ease-in-out infinite',
+				'blush-pulse': 'blush-pulse 3s ease-in-out infinite',
+				'shock-flash': 'shock-flash 0.8s cubic-bezier(.36,.07,.19,.97) both'
 			}
 		}
 	},

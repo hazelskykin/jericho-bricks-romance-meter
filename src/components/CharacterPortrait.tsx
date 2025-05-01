@@ -39,6 +39,12 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
         return 'scale-105';
       case 'surprised':
         return 'animate-float';
+      case 'laughing':
+        return 'animate-bounce-light animate-intense-glow scale-105';
+      case 'shocked':
+        return 'animate-shake animate-shock-flash';
+      case 'embarrassed':
+        return 'animate-subtle-shift animate-blush-pulse';
       default:
         return '';
     }
@@ -58,7 +64,14 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
             className={`mb-20 ${getMoodStyles()}`}
             initial={{ filter: 'brightness(0.9)' }}
             animate={{ 
-              filter: `brightness(${mood === 'happy' ? 1.1 : mood === 'sad' ? 0.8 : 1})`
+              filter: `brightness(${
+                mood === 'happy' ? 1.1 : 
+                mood === 'sad' ? 0.8 : 
+                mood === 'laughing' ? 1.2 :
+                mood === 'shocked' ? 1.15 :
+                mood === 'embarrassed' ? 1.05 : 
+                1
+              })`
             }}
             transition={{ duration: 0.5 }}
           >

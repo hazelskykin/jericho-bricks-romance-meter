@@ -1,6 +1,6 @@
 
 export type CharacterId = 'xavier' | 'navarre' | 'etta' | 'senara' | 'maven';
-export type MoodType = 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised';
+export type MoodType = 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised' | 'laughing' | 'shocked' | 'embarrassed';
 
 export interface Character {
   id: CharacterId;
