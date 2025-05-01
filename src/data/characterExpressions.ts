@@ -1,5 +1,5 @@
 
-import { MoodType, CharacterId } from '@/types/game';
+import { CharacterId } from '@/types/game';
 import { CharacterExpression, AllCharacterExpressions } from '@/types/expressions';
 
 // Import individual character expressions
@@ -9,8 +9,8 @@ import navarreExpressions from './expressions/navarre';
 import ettaExpressions from './expressions/etta';
 import senaraExpressions from './expressions/senara';
 
-// Export MoodType for backward compatibility
-export { MoodType };
+// Export type for backward compatibility
+export type { MoodType } from '@/types/expressions';
 
 // Combine all expressions into one object
 const characterExpressions: AllCharacterExpressions = {

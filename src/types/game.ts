@@ -1,6 +1,4 @@
-
 export type CharacterId = 'xavier' | 'navarre' | 'etta' | 'senara' | 'maven';
-export type MoodType = 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised' | 'laughing' | 'shocked' | 'embarrassed';
 
 export interface Character {
   id: CharacterId;
@@ -16,7 +14,7 @@ export interface Character {
 export interface DialogueLine {
   character?: CharacterId | 'narrator';
   text: string;
-  mood?: MoodType;
+  mood?: import('./expressions').MoodType;
 }
 
 export interface DialogueChoice {
@@ -51,7 +49,7 @@ export interface BackgroundAsset {
 
 export interface CharacterExpression {
   characterId: CharacterId;
-  mood: MoodType;
+  mood: import('./expressions').MoodType;
   image: string;
   description: string;
 }
