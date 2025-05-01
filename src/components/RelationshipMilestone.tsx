@@ -23,7 +23,7 @@ export const showRelationshipMilestone = ({ characterId, milestoneText, level }:
   // Get chibi image if available
   const chibiData = characterChibis[characterId];
   
-  const CustomToast = () => (
+  toast(
     <div className="flex items-center gap-3">
       {chibiData?.image && (
         <Avatar className="w-12 h-12 rounded-xl border-2" style={{ borderColor: character.color }}>
@@ -50,16 +50,15 @@ export const showRelationshipMilestone = ({ characterId, milestoneText, level }:
         </div>
         <p className="text-sm">{milestoneText}</p>
       </div>
-    </div>
+    </div>,
+    {
+      duration: 5000,
+      icon: <Heart color={character.color} fill={character.color} />,
+      style: {
+        borderLeft: `4px solid ${character.color}`,
+      },
+    }
   );
-
-  toast(CustomToast, {
-    duration: 5000,
-    icon: <Heart color={character.color} fill={character.color} />,
-    style: {
-      borderLeft: `4px solid ${character.color}`,
-    },
-  });
 };
 
 export default showRelationshipMilestone;

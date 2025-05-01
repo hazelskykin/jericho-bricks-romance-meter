@@ -14,25 +14,24 @@ const characterChibis: Record<CharacterId, ChibiImageData> = {
     image: '/assets/characters/etta-chibi.jpeg',
     description: 'Cute chibi representation of Etta'
   },
-  // Placeholder entries for other characters - to be updated when assets are available
   maven: {
     id: 'maven',
-    image: '',  // To be added when available
+    image: '/assets/characters/maven-chibi.jpeg',  // Updated with available image
     description: 'Cute chibi representation of Maven'
   },
   xavier: {
     id: 'xavier',
-    image: '',  // To be added when available
+    image: '/assets/characters/xavier-chibi.png',  // Updated with available image
     description: 'Cute chibi representation of Xavier'
   },
   navarre: {
     id: 'navarre',
-    image: '',  // To be added when available
+    image: '/assets/characters/navarre-chibi.png',  // Updated with available image
     description: 'Cute chibi representation of Navarre'
   },
   senara: {
     id: 'senara',
-    image: '',  // To be added when available
+    image: '/assets/characters/senara-chibi.png',  // Updated with available image
     description: 'Cute chibi representation of Senara'
   }
 };
