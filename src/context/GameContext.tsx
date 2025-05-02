@@ -35,7 +35,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     dialogueIndex: 0,
     characters: JSON.parse(JSON.stringify(characters)), // Deep copy
     sceneHistory: [],
-    showChoices: false
+    showChoices: false,
+    hasCompletedGame: false // New property for tracking game completion
   });
   
   const currentScene: Scene | undefined = scenes[gameState.currentScene];
@@ -116,7 +117,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       dialogueIndex: 0,
       characters: JSON.parse(JSON.stringify(characters)), // Reset characters
       sceneHistory: ['start'],
-      showChoices: false
+      showChoices: false,
+      hasCompletedGame: false // Reset game completion status
     });
   };
 

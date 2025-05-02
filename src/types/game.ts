@@ -1,3 +1,4 @@
+
 export type CharacterId = 'xavier' | 'navarre' | 'etta' | 'senara' | 'maven';
 
 export interface Character {
@@ -37,6 +38,7 @@ export interface GameState {
   characters: Record<CharacterId, Character>;
   sceneHistory: string[];
   showChoices: boolean;
+  hasCompletedGame: boolean; // New property for tracking game completion
 }
 
 export interface BackgroundAsset {
