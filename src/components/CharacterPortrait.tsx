@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CharacterId } from '@/types/game';
@@ -58,21 +57,31 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   // Function to handle image error and provide fallback
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     console.error(`Failed to load image: ${expression.image}`);
-    e.currentTarget.src = character.avatar; // Fallback to character avatar
+    
+    // Check if the characterId is 'maven' and we can try with a different extension
+    if (characterId === 'maven' && expression.image.endsWith('.jpeg')) {
+      // Try with .png extension instead
+      const pngImage = expression.image.replace('.jpeg', '.png');
+      console.log(`Trying alternative image format for Maven: ${pngImage}`);
+      e.currentTarget.src = pngImage;
+    } else {
+      // Otherwise fallback to character avatar
+      e.currentTarget.src = character.avatar;
+    }
   };
   
   return (
     <AnimatePresence>
       {isActive && (
         <motion.div
-          className="fixed bottom-32 left-16 z-20" // Moved up from bottom-0 to bottom-32
+          className="fixed bottom-32 left-16 z-20"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className={`mb-4 ${getMoodStyles()}`} // Reduced margin-bottom from mb-20 to mb-4
+            className={`mb-4 ${getMoodStyles()}`}
             initial={{ filter: 'brightness(0.9)' }}
             animate={{ 
               filter: `brightness(${
