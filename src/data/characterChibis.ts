@@ -16,22 +16,22 @@ const characterChibis: Record<CharacterId, ChibiImageData> = {
   },
   maven: {
     id: 'maven',
-    image: '/assets/characters/maven-chibi.jpeg',  // Updated with available image
+    image: '/assets/characters/maven-chibi.png',
     description: 'Cute chibi representation of Maven'
   },
   xavier: {
     id: 'xavier',
-    image: '/assets/characters/xavier-chibi.png',  // Updated with available image
+    image: '/assets/characters/xavier-chibi.png',
     description: 'Cute chibi representation of Xavier'
   },
   navarre: {
     id: 'navarre',
-    image: '/assets/characters/navarre-chibi.png',  // Updated with available image
+    image: '/assets/characters/navarre-chibi.png',
     description: 'Cute chibi representation of Navarre'
   },
   senara: {
     id: 'senara',
-    image: '/assets/characters/senara-chibi.png',  // Updated with available image
+    image: '/assets/characters/senara-chibi.png',
     description: 'Cute chibi representation of Senara'
   }
 };

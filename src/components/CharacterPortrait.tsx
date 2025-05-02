@@ -26,7 +26,12 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
     characterExpressions[characterId][mood] : 
     null;
     
-  if (!expression) return null;
+  if (!expression) {
+    console.log(`No expression found for ${characterId} with mood ${mood}`);
+    return null;
+  }
+  
+  console.log(`Loading character portrait: ${characterId}, mood: ${mood}, image: ${expression.image}`);
   
   // Apply mood-specific styling
   const getMoodStyles = () => {
@@ -48,6 +53,12 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
       default:
         return '';
     }
+  };
+  
+  // Function to handle image error and provide fallback
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error(`Failed to load image: ${expression.image}`);
+    e.currentTarget.src = character.avatar; // Fallback to character avatar
   };
   
   return (
@@ -82,7 +93,11 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
                 boxShadow: `0 0 15px ${character.color}50`
               }}
             >
-              <AvatarImage src={expression.image} alt={expression.description} />
+              <AvatarImage 
+                src={expression.image} 
+                alt={expression.description} 
+                onError={handleImageError}
+              />
               <AvatarFallback style={{ backgroundColor: character.color }}>
                 {character.name.substring(0, 2)}
               </AvatarFallback>

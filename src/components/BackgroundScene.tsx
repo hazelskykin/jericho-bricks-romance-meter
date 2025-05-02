@@ -32,20 +32,20 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({ backgroundId }) => {
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
         style={{ 
-          backgroundImage: `${background.gradient}, url(${background.image})`,
+          backgroundImage: `${background.gradient || 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.3))'}, url(${background.image})`,
         }}
       >
-        {/* Steampunk-Cyberpunk blend overlay pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMSIvPgogIDxjaXJjbGUgY3g9IjI1IiBjeT0iMjUiIHI9IjEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] opacity-30" />
+        {/* Steampunk-Cyberpunk blend overlay pattern - reduced opacity */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMSIvPgogIDxjaXJjbGUgY3g9IjI1IiBjeT0iMjUiIHI9IjEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] opacity-20" />
         
-        {/* Ambient lighting effect */}
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black/20 mix-blend-overlay" />
+        {/* Ambient lighting effect - reduced darkness */}
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black/10 mix-blend-overlay" />
         
-        {/* Subtle vignette */}
+        {/* Subtle vignette - reduced intensity */}
         <div className="absolute inset-0 bg-radial-gradient shadow-inner pointer-events-none" 
              style={{ 
-               background: 'radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.4) 100%)',
-               boxShadow: 'inset 0 0 100px rgba(0, 0, 0, 0.5)'
+               background: 'radial-gradient(circle at center, transparent 70%, rgba(0, 0, 0, 0.3) 100%)',
+               boxShadow: 'inset 0 0 100px rgba(0, 0, 0, 0.3)'
              }} 
         />
         

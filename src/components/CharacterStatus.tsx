@@ -53,6 +53,14 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
             // Determine which image to use (chibi first, neutral second, avatar fallback)
             const characterImage = chibiImage || (neutralExpression?.image || char.avatar);
             
+            console.log(`Character ${char.id} using image: ${characterImage}`);
+            
+            // Function to handle image error and provide fallback
+            const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              console.error(`Failed to load image: ${characterImage}`);
+              e.currentTarget.src = char.avatar; // Fallback to character avatar
+            };
+            
             return (
               <motion.div 
                 key={char.id} 
@@ -77,6 +85,7 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
                       src={characterImage} 
                       alt={char.name}
                       className={chibiImage ? 'rounded-xl' : 'rounded-full'} 
+                      onError={handleImageError}
                     />
                     <AvatarFallback
                       style={{ 
