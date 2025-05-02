@@ -82,7 +82,7 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
                 whileHover={{ backgroundColor: char.color + '20' }}
               >
                 <div 
-                  className="flex items-center"
+                  className="flex items-center flex-1"
                   style={{ color: char.color }}
                 >
                   <Avatar 
@@ -109,7 +109,7 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
                       {char.name.substring(0, 2)}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
+                  <div className="text-left">
                     <span className="font-medium block">{char.name}</span>
                     <span className="text-xs opacity-70 block">{char.role}</span>
                   </div>

@@ -5,7 +5,7 @@ export const characters: Record<string, Character> = {
   xavier: {
     id: 'xavier',
     name: 'Xavier',
-    role: 'Support & Enabler',
+    role: 'Solvitor',
     description: 'The emotional and technological bedrock of the team.',
     affection: 0,
     avatar: '/assets/characters/xavier-placeholder.jpeg',
@@ -15,7 +15,7 @@ export const characters: Record<string, Character> = {
   navarre: {
     id: 'navarre',
     name: 'Navarre',
-    role: 'Influencer',
+    role: 'Bellfox',
     description: 'A natural networker with a flirtatious and persuasive style.',
     affection: 0,
     avatar: '/assets/characters/navarre-placeholder.jpg',
@@ -25,7 +25,7 @@ export const characters: Record<string, Character> = {
   etta: {
     id: 'etta',
     name: 'Etta',
-    role: 'Dominator',
+    role: 'Diva',
     description: 'Confident to the point of arrogance, with a narrow focus on goals.',
     affection: 0,
     avatar: '/assets/characters/etta-placeholder.jpg',
@@ -35,7 +35,7 @@ export const characters: Record<string, Character> = {
   senara: {
     id: 'senara',
     name: 'Senara',
-    role: 'Competence Expert',
+    role: 'Gnarus',
     description: 'The enigmatic intellectual, standoffish but trusted for integrity.',
     affection: 0,
     avatar: '/assets/characters/senara-placeholder.jpg',
