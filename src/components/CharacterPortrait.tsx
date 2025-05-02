@@ -3,7 +3,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CharacterId } from '@/types/game';
 import characters, { maven } from '@/data/characters';
-import characterExpressions, { MoodType } from '@/types/expressions';
+import { MoodType } from '@/types/expressions';
+import characterExpressions from '@/data/characterExpressions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface CharacterPortraitProps {

@@ -11,7 +11,7 @@ export interface ChibiImageData {
 const characterChibis: Record<CharacterId, ChibiImageData> = {
   etta: {
     id: 'etta',
-    image: '/assets/characters/etta-chibi.jpeg',
+    image: '/assets/characters/etta-chibi.png',
     description: 'Cute chibi representation of Etta'
   },
   maven: {
