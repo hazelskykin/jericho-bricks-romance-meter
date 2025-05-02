@@ -1,54 +1,54 @@
 
 import { CharacterId } from '@/types/game';
-import { CharacterExpressionSet, MoodType } from '@/types/expressions';
+import { CharacterExpressionSet, MoodType } from '@/data/characterExpressions';
 
 const xavierExpressions: CharacterExpressionSet = {
   neutral: {
     characterId: 'xavier',
     mood: 'neutral',
-    image: '/assets/characters/xavier-neutral.jpeg',
+    image: '/assets/characters/xavier-neutral.png',
     description: 'Xavier with a calm, reliable expression'
   },
   happy: {
     characterId: 'xavier',
     mood: 'happy',
-    image: '/assets/characters/xavier-happy.jpeg',
+    image: '/assets/characters/xavier-happy.png',
     description: 'Xavier with an enthusiastic, friendly smile'
   },
   sad: {
     characterId: 'xavier',
     mood: 'sad',
-    image: '/assets/characters/xavier-sad.jpeg',
+    image: '/assets/characters/xavier-sad.png',
     description: 'Xavier with a concerned, empathetic expression'
   },
   angry: {
     characterId: 'xavier',
     mood: 'angry',
-    image: '/assets/characters/xavier-angry.jpeg',
+    image: '/assets/characters/xavier-angry.png',
     description: 'Xavier with a furrowed brow showing frustration'
   },
   surprised: {
     characterId: 'xavier',
     mood: 'surprised',
-    image: '/assets/characters/xavier-surprised.jpeg',
+    image: '/assets/characters/xavier-surprised.png',
     description: 'Xavier with raised eyebrows and a shocked expression'
   },
   laughing: {
     characterId: 'xavier',
     mood: 'laughing',
-    image: '/assets/characters/xavier-laughing.jpeg',
+    image: '/assets/characters/xavier-laughing.png',
     description: 'Xavier with a warm, supportive laugh'
   },
   shocked: {
     characterId: 'xavier',
     mood: 'shocked',
-    image: '/assets/characters/xavier-shocked.jpeg',
+    image: '/assets/characters/xavier-shocked.png',
     description: 'Xavier with wide eyes and mouth showing complete surprise'
   },
   embarrassed: {
     characterId: 'xavier',
     mood: 'embarrassed',
-    image: '/assets/characters/xavier-embarrassed.jpeg',
+    image: '/assets/characters/xavier-embarrassed.png',
     description: 'Xavier with a self-conscious expression and slight blush'
   }
 };
