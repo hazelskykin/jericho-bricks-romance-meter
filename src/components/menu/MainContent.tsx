@@ -17,7 +17,7 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, onAbout }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
     >
-      <p className="text-lg text-white/80 mb-6 max-w-md">
+      <p className="text-sm text-white/80 mb-6 max-w-xs">
         Navigate relationships and technology in the city of Stonewich as part of Cybaton's elite administrative team.
       </p>
 

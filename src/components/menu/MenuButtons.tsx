@@ -9,15 +9,15 @@ interface MenuButtonsProps {
 
 const MenuButtons: React.FC<MenuButtonsProps> = ({ onNewGame, onAbout }) => {
   return (
-    <div className="space-y-4 max-w-md">
+    <div className="space-y-4 w-full max-w-xs">
       <Button 
-        className="w-full py-6 text-base bg-cyberpunk-primary hover:bg-cyberpunk-accent transition-all duration-300" 
+        className="w-full py-5 text-sm bg-cyberpunk-primary hover:bg-cyberpunk-accent transition-all duration-300" 
         onClick={onNewGame}
       >
         New Game
       </Button>
       <Button 
-        className="w-full py-6 text-base bg-cyberpunk-dark hover:bg-cyberpunk-secondary transition-all duration-300" 
+        className="w-full py-5 text-sm bg-cyberpunk-dark hover:bg-cyberpunk-secondary transition-all duration-300" 
         onClick={onAbout}
         variant="outline"
       >

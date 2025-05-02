@@ -38,7 +38,27 @@ export interface GameState {
   characters: Record<CharacterId, Character>;
   sceneHistory: string[];
   showChoices: boolean;
-  hasCompletedGame: boolean; // New property for tracking game completion
+  hasCompletedGame: boolean;
+  
+  // Track completed character routes
+  completedRoutes: {
+    xavier: boolean;
+    navarre: boolean;
+    etta: boolean;
+    senara: boolean;
+  };
+  
+  // Track current season and playthrough progression
+  currentSeason: 'prologue' | 'spring' | 'summer' | 'autumn' | 'winter' | 'epilogue';
+  
+  // Track which characters are still viable love interests
+  viableRoutes: CharacterId[];
+  
+  // Track current love interest (if selected)
+  currentLoveInterest?: CharacterId;
+  
+  // Track whether the Versa route is unlocked
+  versaRouteUnlocked: boolean;
 }
 
 export interface BackgroundAsset {
