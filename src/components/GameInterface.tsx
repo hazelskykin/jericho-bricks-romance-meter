@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '@/context/GameContext';
 import DialogueBox from './DialogueBox';
@@ -23,6 +23,15 @@ const GameInterface: React.FC = () => {
   if (gameState.currentScene === 'start' || gameState.currentScene === 'about') {
     return <MainMenu onNewGame={handleNewGame} onAbout={handleAbout} />;
   }
+  
+  // Use memoized callback functions
+  const onContinue = useCallback(() => {
+    handleContinue();
+  }, [handleContinue]);
+  
+  const onChoiceSelected = useCallback((index: number) => {
+    handleChoiceSelected(index);
+  }, [handleChoiceSelected]);
 
   // Otherwise show game interface
   return (
@@ -33,24 +42,25 @@ const GameInterface: React.FC = () => {
         characters={Object.values(gameState.characters)}
       />
       
-      <AnimatePresence mode="wait">
+      {/* Only render CharacterPortrait if we have a character to display */}
+      {currentLine?.character && !gameState.showChoices && (
         <CharacterPortrait 
-          characterId={currentLine?.character} 
-          mood={currentLine?.mood}
+          characterId={currentLine.character} 
+          mood={currentLine.mood}
           isActive={!gameState.showChoices}
         />
-      </AnimatePresence>
+      )}
       
       <DialogueBox 
         line={currentLine || { text: 'Error: No dialogue found' }}
-        onContinue={handleContinue}
+        onContinue={onContinue}
         isActive={!gameState.showChoices}
       />
       
-      {currentScene?.choices && (
+      {currentScene?.choices && gameState.showChoices && (
         <ChoiceMenu 
           choices={currentScene.choices} 
-          onChoiceSelected={handleChoiceSelected}
+          onChoiceSelected={onChoiceSelected}
           isActive={gameState.showChoices}
         />
       )}
@@ -58,4 +68,4 @@ const GameInterface: React.FC = () => {
   );
 };
 
-export default GameInterface;
+export default React.memo(GameInterface);

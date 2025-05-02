@@ -1,11 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import AffectionMeter from './AffectionMeter';
 import { Character } from '@/types/game';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Heart } from 'lucide-react';
-import characterExpressions from '@/data/characterExpressions';
 import characterChibis from '@/data/characterChibis';
 
 interface CharacterStatusProps {
@@ -54,74 +53,77 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
         }}
       >
         <div className="space-y-4">
-          {characters.map((char) => {
-            // Try to get chibi image first
-            const chibiImage = characterChibis[char.id]?.image;
-            
-            // Fallback to neutral expression if no chibi available
-            const neutralExpression = characterExpressions[char.id]?.neutral;
-            
-            // Determine which image to use (chibi first, neutral second, avatar fallback)
-            const characterImage = chibiImage || (neutralExpression?.image || char.avatar);
-            
-            console.log(`Character ${char.id} using image: ${characterImage}`);
-            
-            // Function to handle image error and provide fallback
-            const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              console.error(`Failed to load image: ${characterImage}`);
-              e.currentTarget.src = char.avatar; // Fallback to character avatar
-            };
-            
-            return (
-              <motion.div 
-                key={char.id} 
-                className="flex items-center justify-between gap-4 p-2 rounded-lg transition-colors"
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                whileHover={{ backgroundColor: char.color + '20' }}
-              >
-                <div 
-                  className="flex items-center flex-1"
-                  style={{ color: char.color }}
-                >
-                  <Avatar 
-                    className={`w-10 h-10 mr-3 border ${chibiImage ? 'rounded-xl' : 'rounded-full'}`}
-                    style={{ 
-                      borderColor: char.color,
-                      boxShadow: `0 0 8px ${char.color}40`
-                    }}
-                  >
-                    <AvatarImage 
-                      src={characterImage} 
-                      alt={char.name}
-                      className={chibiImage ? 'rounded-xl' : 'rounded-full'} 
-                      onError={handleImageError}
-                    />
-                    <AvatarFallback
-                      style={{ 
-                        backgroundColor: char.color + '20',
-                        color: char.color,
-                        borderColor: char.color
-                      }}
-                      className={chibiImage ? 'rounded-xl' : 'rounded-full'}
-                    >
-                      {char.name.substring(0, 2)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="text-left">
-                    <span className="font-medium block">{char.name}</span>
-                    <span className="text-xs opacity-70 block">{char.role}</span>
-                  </div>
-                </div>
-                
-                <AffectionMeter character={char} isOpen={isOpen} />
-              </motion.div>
-            );
-          })}
+          {characters.map((char) => (
+            <CharacterStatusItem key={char.id} character={char} />
+          ))}
         </div>
       </motion.div>
     </div>
+  );
+};
+
+// Extract character item into a separate component for better performance
+const CharacterStatusItem: React.FC<{ character: Character }> = ({ character }) => {
+  // Use memoization for better performance and avoid recalculations
+  const characterImage = useMemo(() => {
+    const chibiImage = characterChibis[character.id]?.image;
+    return chibiImage || character.avatar;
+  }, [character.id, character.avatar]);
+  
+  // Handle image error and provide fallback
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error(`Failed to load image: ${characterImage}`);
+    e.currentTarget.src = character.avatar;
+  };
+  
+  // Determine if we're using a chibi image or regular avatar
+  const isChibi = characterImage === characterChibis[character.id]?.image;
+  
+  return (
+    <motion.div 
+      className="flex items-center justify-between gap-4 p-2 rounded-lg transition-colors"
+      initial={{ x: -10, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ backgroundColor: character.color + '20' }}
+    >
+      <div 
+        className="flex items-center flex-1"
+        style={{ color: character.color }}
+      >
+        <Avatar 
+          className={`w-10 h-10 mr-3 border ${isChibi ? 'rounded-xl' : 'rounded-full'}`}
+          style={{ 
+            borderColor: character.color,
+            boxShadow: `0 0 8px ${character.color}40`
+          }}
+        >
+          <AvatarImage 
+            src={characterImage} 
+            alt={character.name}
+            className={isChibi ? 'rounded-xl' : 'rounded-full'} 
+            onError={handleImageError}
+            loading="eager" // High priority loading
+          />
+          <AvatarFallback
+            style={{ 
+              backgroundColor: character.color + '20',
+              color: character.color,
+              borderColor: character.color
+            }}
+            className={isChibi ? 'rounded-xl' : 'rounded-full'}
+          >
+            {character.name.substring(0, 2)}
+          </AvatarFallback>
+        </Avatar>
+        <div className="text-left">
+          <span className="font-medium block">{character.name}</span>
+          <span className="text-xs opacity-70 block">{character.role}</span>
+        </div>
+      </div>
+      
+      <AffectionMeter character={character} isOpen={true} />
+    </motion.div>
   );
 };
 

@@ -8,9 +8,13 @@ import characters from '@/data/characters';
 
 interface AssetLoadingProps {
   message?: string;
+  progress?: number;
 }
 
-const AssetLoading: React.FC<AssetLoadingProps> = ({ message = 'Loading assets...' }) => {
+const AssetLoading: React.FC<AssetLoadingProps> = ({ 
+  message = 'Loading assets...', 
+  progress = 0 
+}) => {
   const [randomCharacterId, setRandomCharacterId] = useState<CharacterId | null>(null);
   
   // Choose a random character on mount
@@ -92,9 +96,20 @@ const AssetLoading: React.FC<AssetLoadingProps> = ({ message = 'Loading assets..
             </div>
           )}
           
-          <div className="text-center">
+          <div className="text-center w-full">
             <h3 className="font-medium text-lg">{message}</h3>
             <p className="text-sm text-muted-foreground mt-1">Please wait while we prepare your experience.</p>
+            
+            {/* Progress bar */}
+            <div className="w-full bg-muted/30 rounded-full h-2.5 mt-3">
+              <motion.div 
+                className="bg-primary h-2.5 rounded-full"
+                initial={{ width: '0%' }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-1 text-right">{progress}%</p>
           </div>
         </div>
       </motion.div>
