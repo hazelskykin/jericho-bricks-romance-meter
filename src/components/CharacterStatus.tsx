@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import AffectionMeter from './AffectionMeter';
 import { Character } from '@/types/game';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Heart } from 'lucide-react';
 import characterExpressions from '@/data/characterExpressions';
 import characterChibis from '@/data/characterChibis';
 
@@ -17,15 +18,24 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
   return (
     <div className="fixed top-4 right-4 z-30">
       <motion.button
-        className="bg-gradient-cyberpunk border border-cyberpunk-primary/30 p-2 rounded-md text-white/70 hover:text-white hover:border-cyberpunk-primary/60 transition-all mb-2 flex items-center gap-2"
+        className="bg-gradient-cyberpunk border border-cyberpunk-primary/30 p-2 rounded-full text-white/70 hover:text-white hover:border-cyberpunk-primary/60 transition-all mb-2 flex items-center justify-center"
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         style={{
           backdropFilter: 'blur(8px)',
-          boxShadow: '0 4px 15px rgba(155, 135, 245, 0.2)'
+          boxShadow: '0 4px 15px rgba(155, 135, 245, 0.2)',
+          width: '40px',
+          height: '40px'
         }}
+        aria-label={isOpen ? "Hide Relationships" : "Show Relationships"}
+        title={isOpen ? "Hide Relationships" : "Show Relationships"}
       >
-        <span className="text-sm font-medium">{isOpen ? "Hide Relationships" : "Show Relationships"}</span>
+        <Heart 
+          size={22} 
+          className={isOpen ? "fill-cyberpunk-primary" : "fill-none"} 
+          stroke={isOpen ? "#9b87f5" : "currentColor"}
+          strokeWidth={1.5}
+        />
       </motion.button>
       
       <motion.div
