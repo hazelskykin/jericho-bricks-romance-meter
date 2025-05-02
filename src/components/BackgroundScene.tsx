@@ -9,16 +9,32 @@ interface BackgroundSceneProps {
 
 const BackgroundScene: React.FC<BackgroundSceneProps> = ({ backgroundId }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const background = backgrounds[backgroundId] || backgrounds['cybaton-office'];
+  
+  // Reset states when background changes
+  useEffect(() => {
+    setIsImageLoaded(false);
+    setImageError(false);
+  }, [backgroundId]);
   
   // Preload the background image
   useEffect(() => {
     const img = new Image();
     img.src = background.image;
-    img.onload = () => setIsImageLoaded(true);
+    img.onload = () => {
+      setIsImageLoaded(true);
+      setImageError(false);
+    };
+    img.onerror = () => {
+      console.error(`Failed to load background image: ${background.image}`);
+      setImageError(true);
+      setIsImageLoaded(true); // Consider it "loaded" even though it errored
+    };
     
     return () => {
       img.onload = null;
+      img.onerror = null;
     };
   }, [background.image]);
   
@@ -32,7 +48,9 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({ backgroundId }) => {
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
         style={{ 
-          backgroundImage: `${background.gradient || 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.3))'}, url(${background.image})`,
+          backgroundImage: imageError 
+            ? 'linear-gradient(to bottom, #1A1F2C, #2A1E4E)' 
+            : `${background.gradient || 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.3))'}, url(${background.image})`,
         }}
       >
         {/* Steampunk-Cyberpunk blend overlay pattern - reduced opacity */}
@@ -49,16 +67,20 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({ backgroundId }) => {
              }} 
         />
         
-        {/* Background name indicator - only show when first loading */}
+        {/* Background name indicator or error message */}
         <AnimatePresence>
-          {!isImageLoaded && (
+          {(!isImageLoaded || imageError) && (
             <motion.div 
-              className="absolute top-4 left-4 px-4 py-2 rounded-md bg-black/50 text-white backdrop-blur-sm"
+              className={`absolute top-4 left-4 px-4 py-2 rounded-md backdrop-blur-sm ${imageError ? 'bg-red-500/50' : 'bg-black/50'} text-white`}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
-              <p className="text-sm font-medium">{background.name}</p>
+              <p className="text-sm font-medium">
+                {imageError 
+                  ? `Error loading: ${background.name} (${background.image})` 
+                  : background.name}
+              </p>
             </motion.div>
           )}
         </AnimatePresence>

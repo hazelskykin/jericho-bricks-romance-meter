@@ -3,9 +3,31 @@ import React, { useState } from 'react';
 import BackgroundScene from './BackgroundScene';
 import backgrounds from '@/data/backgrounds';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
 
 const BackgroundTester = () => {
   const [currentBackground, setCurrentBackground] = useState<string>(Object.keys(backgrounds)[0]);
+  
+  const handleBackgroundChange = (bgId: string) => {
+    setCurrentBackground(bgId);
+    
+    // Check if the image exists
+    const img = new Image();
+    img.src = backgrounds[bgId].image;
+    img.onload = () => {
+      toast({
+        title: "Background loaded",
+        description: `Successfully loaded: ${backgrounds[bgId].name}`,
+      });
+    };
+    img.onerror = () => {
+      toast({
+        title: "Background load error",
+        description: `Failed to load: ${backgrounds[bgId].image}`,
+        variant: "destructive",
+      });
+    };
+  };
   
   return (
     <div className="min-h-screen relative">
@@ -21,7 +43,7 @@ const BackgroundTester = () => {
             {Object.keys(backgrounds).map((bgId) => (
               <Button 
                 key={bgId}
-                onClick={() => setCurrentBackground(bgId)}
+                onClick={() => handleBackgroundChange(bgId)}
                 variant={currentBackground === bgId ? "default" : "outline"}
                 className="text-xs"
               >
@@ -30,7 +52,7 @@ const BackgroundTester = () => {
             ))}
           </div>
           
-          <div className="text-white text-sm">
+          <div className="text-white text-sm space-y-1">
             <p><strong>Current:</strong> {backgrounds[currentBackground].name}</p>
             <p><strong>Image Path:</strong> {backgrounds[currentBackground].image}</p>
             <p><strong>Description:</strong> {backgrounds[currentBackground].description}</p>
