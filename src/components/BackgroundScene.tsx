@@ -50,21 +50,30 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({ backgroundId }) => {
         style={{ 
           backgroundImage: imageError 
             ? 'linear-gradient(to bottom, #1A1F2C, #2A1E4E)' 
-            : `${background.gradient || 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.3))'}, url(${background.image})`,
+            : `url(${background.image})`,
         }}
       >
-        {/* Steampunk-Cyberpunk blend overlay pattern - reduced opacity */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMSIvPgogIDxjaXJjbGUgY3g9IjI1IiBjeT0iMjUiIHI9IjEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] opacity-20" />
+        {/* Subtle pattern overlay - significantly reduced opacity */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+CiAgPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuMSIvPgogIDxjaXJjbGUgY3g9IjI1IiBjeT0iMjUiIHI9IjEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] opacity-10" />
         
-        {/* Ambient lighting effect - reduced darkness */}
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black/10 mix-blend-overlay" />
+        {/* Very subtle color overlay - greatly reduced opacity */}
+        {!imageError && (
+          <div 
+            className="absolute inset-0" 
+            style={{ 
+              background: background.gradient || 'linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.1))',
+              mixBlendMode: 'multiply'
+            }} 
+          />
+        )}
         
-        {/* Subtle vignette - reduced intensity */}
-        <div className="absolute inset-0 bg-radial-gradient shadow-inner pointer-events-none" 
-             style={{ 
-               background: 'radial-gradient(circle at center, transparent 70%, rgba(0, 0, 0, 0.3) 100%)',
-               boxShadow: 'inset 0 0 100px rgba(0, 0, 0, 0.3)'
-             }} 
+        {/* Extremely subtle vignette for depth */}
+        <div 
+          className="absolute inset-0 pointer-events-none" 
+          style={{ 
+            background: 'radial-gradient(circle at center, transparent 80%, rgba(0, 0, 0, 0.15) 100%)',
+            boxShadow: 'inset 0 0 50px rgba(0, 0, 0, 0.1)'
+          }} 
         />
         
         {/* Background name indicator or error message */}
