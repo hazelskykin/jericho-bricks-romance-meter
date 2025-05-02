@@ -20,7 +20,15 @@ interface GlossaryTerm {
 }
 
 const Glossary: React.FC<GlossaryProps> = ({ open, onOpenChange }) => {
-  const { gameState } = useGame();
+  // Try to access GameContext, but don't break if it's not available
+  let isVersaUnlocked = false;
+  try {
+    const { gameState } = useGame();
+    isVersaUnlocked = gameState.hasCompletedGame;
+  } catch (e) {
+    // If we're not within a GameProvider, we'll default to false
+    isVersaUnlocked = false;
+  }
   
   const glossaryTerms: GlossaryTerm[] = [
     {
@@ -56,7 +64,7 @@ const Glossary: React.FC<GlossaryProps> = ({ open, onOpenChange }) => {
       term: "VERSA",
       description: "One who has completed the journey",
       color: "text-blue-300",
-      unlocked: gameState.hasCompletedGame
+      unlocked: isVersaUnlocked
     }
   ];
 
