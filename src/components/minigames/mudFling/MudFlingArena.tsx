@@ -1,69 +1,25 @@
+
 import React from 'react';
-import styled from 'styled-components';
+import { CharacterId } from '@/types/game';
 
-// Define styled components
-const Arena = styled.div`
-  position: relative;
-  width: 600px;
-  height: 400px;
-  background: url('/img/mud-arena-background.png');
-  background-size: cover;
-  border: 2px dashed brown;
-  margin: 20px auto;
-  overflow: hidden;
-`;
-
-const MudBallImage = styled.img`
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-`;
-
-const CharacterImage = styled.img`
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid ${props => props.borderColor || 'white'};
-  cursor: pointer;
-`;
-
-const Fountain = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  background-color: rgba(101, 67, 33, 0.7);
-  border-radius: 50%;
-  border: 2px solid saddlebrown;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px black;
-`;
-
-// Define types
-export interface MudBall {
-  id: string;
+// Define types that align with MudFlingGame.tsx
+export interface Position {
   x: number;
   y: number;
 }
 
-export interface Character {
+export interface MudBall {
   id: string;
-  name: string;
-  x: number;
-  y: number;
+  position: Position;
+  owner?: 'player' | CharacterId;
+  isFlying?: boolean;
+}
+
+export interface Character {
+  id: CharacterId;
+  position: Position;
+  team: 'team1' | 'team2';
+  isHit?: boolean;
 }
 
 // Update the props interface to include the ref property
@@ -72,7 +28,7 @@ export interface MudFlingArenaProps {
   characters: Character[];
   selectedMudBall: string | null;
   fountainIntensity: 'low' | 'medium' | 'high';
-  characterColors: Record<string, string>;
+  characterColors: Record<string, any>; // Changed to accept any type for character colors
   onMudBallClick: (ballId: string) => void;
   onGameAreaClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
@@ -89,31 +45,49 @@ const MudFlingArena = React.forwardRef<HTMLDivElement, MudFlingArenaProps>(
     onGameAreaClick
   }, ref) => {
     return (
-      <Arena ref={ref} onClick={onGameAreaClick}>
-        <Fountain>Fountain</Fountain>
+      <div 
+        ref={ref} 
+        onClick={onGameAreaClick}
+        className="relative w-[600px] h-[400px] bg-cover border-2 border-dashed border-amber-800 mx-auto my-5 overflow-hidden"
+        style={{ backgroundImage: "url('/img/mud-arena-background.png')" }}
+      >
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-[rgba(101,67,33,0.7)] rounded-full border-2 border-[saddlebrown] flex items-center justify-center text-white font-bold text-shadow">
+          Fountain
+        </div>
+        
         {mudBalls.map(ball => (
-          <MudBallImage
+          <img
             key={ball.id}
             src="/img/mudball.png"
             alt="Mud Ball"
-            style={{ left: ball.x, top: ball.y }}
+            style={{ 
+              left: ball.position.x, 
+              top: ball.position.y 
+            }}
+            className={`absolute w-[30px] h-[30px] cursor-pointer transition-transform hover:scale-110 ${
+              selectedMudBall === ball.id ? 'ring-2 ring-yellow-400' : ''
+            }`}
             onClick={(e) => {
-              e.stopPropagation(); // Prevent click from propagating to the arena
+              e.stopPropagation();
               onMudBallClick(ball.id);
             }}
-            className={selectedMudBall === ball.id ? 'selected' : ''}
           />
         ))}
+        
         {characters.map(character => (
-          <CharacterImage
+          <img
             key={character.id}
-            src={`/img/character-neutral.png`} // Replace with actual character image
-            alt={character.name}
-            style={{ left: character.x, top: character.y }}
-            borderColor={characterColors[character.id]}
+            src={`/img/character-neutral.png`}
+            alt={character.id}
+            style={{ 
+              left: character.position.x, 
+              top: character.position.y,
+              borderColor: characterColors[character.id]?.color || 'white'
+            }}
+            className="absolute w-[50px] h-[50px] rounded-full border-2"
           />
         ))}
-      </Arena>
+      </div>
     );
   }
 );
