@@ -32,9 +32,10 @@ const CharacterStatus: React.FC<CharacterStatusProps> = ({ characters }) => {
       >
         <Heart 
           size={22} 
-          className={isOpen ? "fill-cyberpunk-primary" : "fill-none"} 
-          stroke={isOpen ? "#9b87f5" : "currentColor"}
+          className={isOpen ? "fill-current" : "fill-none"} 
+          stroke={isOpen ? "#0D98BA" : "#0D98BA"}
           strokeWidth={1.5}
+          color="#0D98BA"
         />
       </motion.button>
       
