@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CharacterId } from '@/types/game';
 import characters, { maven } from '@/data/characters';
 import { MoodType } from '@/types/expressions';
-import characterExpressions from '@/data/characterExpressions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface CharacterPortraitProps {
@@ -68,6 +67,12 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
     e.currentTarget.src = character.avatar;
   };
   
+  const avatarStyle = {
+    borderColor: character.color,
+    boxShadow: `0 0 15px ${character.color}50`,
+    backgroundColor: `${character.color}30`, // Add semi-transparent background color
+  };
+  
   return (
     <AnimatePresence>
       {isActive && (
@@ -86,11 +91,14 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           >
             <Avatar 
               className="w-56 h-56 border-4" 
-              style={{ 
-                borderColor: character.color,
-                boxShadow: `0 0 15px ${character.color}50`
-              }}
+              style={avatarStyle}
             >
+              <AvatarFallback 
+                style={{ backgroundColor: character.color }}
+                className="flex items-center justify-center text-white font-bold text-2xl"
+              >
+                {character.name.substring(0, 2)}
+              </AvatarFallback>
               <AvatarImage 
                 src={pngImagePath}
                 alt={`${character.name} ${mood} expression`}
@@ -98,9 +106,6 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
                 className="w-full h-full object-cover" // Ensure proper sizing
                 loading="eager" // Tell browser to load this image with high priority
               />
-              <AvatarFallback style={{ backgroundColor: character.color }}>
-                {character.name.substring(0, 2)}
-              </AvatarFallback>
             </Avatar>
           </motion.div>
           
