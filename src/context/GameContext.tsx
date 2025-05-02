@@ -1,9 +1,13 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { GameState, Scene, DialogueChoice, CharacterId } from '@/types/game';
 import characters from '@/data/characters';
 import scenes from '@/data/scenes';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
 import { showRelationshipMilestone } from '@/components/RelationshipMilestone';
+
+// Add minigame types
+export type MinigameType = 'broomsAway' | 'mudFling' | 'bloomWithAView';
 
 interface GameContextType {
   gameState: GameState;
@@ -14,6 +18,12 @@ interface GameContextType {
   handleNewGame: () => void;
   handleAbout: () => void;
   completeCharacterRoute: (characterId: CharacterId) => void;
+  
+  // New minigame-related functions
+  startMinigame: (minigameType: MinigameType) => void;
+  completeMinigame: (success: boolean) => void;
+  exitMinigame: () => void;
+  activeMinigame: MinigameType | null;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -42,7 +52,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     showChoices: false,
     hasCompletedGame: false, // True once the Versa epilogue is completed
     
-    // New properties
     completedRoutes: {
       xavier: false,
       navarre: false,
@@ -53,6 +62,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     viableRoutes: ['xavier', 'navarre', 'etta', 'senara'],
     versaRouteUnlocked: false
   });
+  
+  // New minigame state
+  const [activeMinigame, setActiveMinigame] = useState<MinigameType | null>(null);
+  const [returnSceneAfterMinigame, setReturnSceneAfterMinigame] = useState<string>('');
   
   const currentScene: Scene | undefined = scenes[gameState.currentScene];
   const currentLine = currentScene?.dialogue[gameState.dialogueIndex];
@@ -318,6 +331,72 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     }
   }, [gameState.currentScene]);
 
+  // Minigame functions
+  const startMinigame = (minigameType: MinigameType) => {
+    setActiveMinigame(minigameType);
+    setReturnSceneAfterMinigame(gameState.currentScene);
+  };
+  
+  const completeMinigame = (success: boolean) => {
+    // Apply affection bonuses based on minigame success
+    if (success) {
+      // Different affection changes for each minigame
+      let affectionChanges: Partial<Record<CharacterId, number>> = {};
+      
+      switch(activeMinigame) {
+        case 'broomsAway':
+          affectionChanges = { xavier: 1, senara: 1 };
+          break;
+        case 'mudFling':
+          affectionChanges = { navarre: 1, etta: 1 };
+          break;
+        case 'bloomWithAView':
+          // All characters get a small affection boost
+          affectionChanges = { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 };
+          break;
+      }
+      
+      // Apply affection changes
+      const updatedCharacters = { ...gameState.characters };
+      
+      Object.entries(affectionChanges).forEach(([charId, change]) => {
+        if (updatedCharacters[charId]) {
+          updatedCharacters[charId] = {
+            ...updatedCharacters[charId],
+            affection: updatedCharacters[charId].affection + change
+          };
+
+          // Show toast for affection changes
+          if (change > 0) {
+            showAffectionChange({
+              characterId: charId as CharacterId,
+              changeAmount: change
+            });
+          }
+        }
+      });
+      
+      setGameState(prev => ({
+        ...prev,
+        characters: updatedCharacters
+      }));
+    }
+    
+    // Return to the previous scene
+    exitMinigame();
+  };
+  
+  const exitMinigame = () => {
+    // Return to the previous scene
+    if (returnSceneAfterMinigame) {
+      handleSceneTransition(returnSceneAfterMinigame);
+    }
+    
+    // Clear minigame state
+    setActiveMinigame(null);
+    setReturnSceneAfterMinigame('');
+  };
+
   const value = {
     gameState,
     currentScene,
@@ -326,7 +405,13 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     handleChoiceSelected,
     handleNewGame,
     handleAbout,
-    completeCharacterRoute
+    completeCharacterRoute,
+    
+    // New minigame functions
+    startMinigame,
+    completeMinigame,
+    exitMinigame,
+    activeMinigame
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

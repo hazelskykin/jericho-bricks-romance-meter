@@ -1,3 +1,4 @@
+
 import React, { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '@/context/GameContext';
@@ -8,6 +9,11 @@ import BackgroundScene from './BackgroundScene';
 import CharacterStatus from './CharacterStatus';
 import MainMenu from './MainMenu';
 
+// Import minigames
+import BroomsAwayGame from './minigames/BroomsAwayGame';
+import MudFlingGame from './minigames/MudFlingGame';
+import BloomWithAViewGame from './minigames/BloomWithAViewGame';
+
 const GameInterface: React.FC = () => {
   const { 
     gameState, 
@@ -16,12 +22,27 @@ const GameInterface: React.FC = () => {
     handleContinue, 
     handleChoiceSelected,
     handleNewGame,
-    handleAbout
+    handleAbout,
+    activeMinigame,
+    completeMinigame,
+    exitMinigame
   } = useGame();
 
   // If we're at the start or about screen, show main menu
   if (gameState.currentScene === 'start' || gameState.currentScene === 'about') {
     return <MainMenu onNewGame={handleNewGame} onAbout={handleAbout} />;
+  }
+  
+  // If a minigame is active, show it
+  if (activeMinigame) {
+    switch (activeMinigame) {
+      case 'broomsAway':
+        return <BroomsAwayGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      case 'mudFling':
+        return <MudFlingGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      case 'bloomWithAView':
+        return <BloomWithAViewGame onComplete={completeMinigame} onExit={exitMinigame} />;
+    }
   }
   
   // Use memoized callback functions

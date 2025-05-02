@@ -1,4 +1,3 @@
-
 import { Scene } from '../types/game';
 
 const scenes: Record<string, Scene> = {
@@ -564,6 +563,663 @@ const scenes: Record<string, Scene> = {
       },
     ],
   },
+  
+  // Spring Chapter Scenes
+  'spring-intro': {
+    id: 'spring-intro',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: 'Two months have passed since your arrival in Stonewich. The city has begun to welcome the spring season.',
+      },
+      {
+        character: 'narrator',
+        text: 'The administration team has settled into their roles, though there have been challenges along the way.',
+      },
+      {
+        character: 'maven',
+        text: "I'm still trying to find my place here. Everyone else seems to have their specialty.",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "As you walk into the office this morning, you find Xavier reviewing reports on his tablet.",
+      },
+      {
+        character: 'xavier',
+        text: "Morning, Maven! Have you heard about the Spring festival? It's coming up next week—Blooms & Brooms.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Blooms & Brooms? That sounds interesting.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "It's one of Stonewich's four seasonal festivals. Spring is all about renewal—cleaning up the city and planting new gardens.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "Did I hear someone mention the festival? It's a great PR opportunity for us newcomers. We should all participate.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'spring-planning',
+  },
+  
+  'spring-planning': {
+    id: 'spring-planning',
+    background: 'cybaton-meeting-room',
+    dialogue: [
+      {
+        character: 'etta',
+        text: "If we're going to participate in this festival, we need a strategic approach. It's not just about fun—it's about demonstrating Cybaton's commitment to Stonewich.",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "The festival has three main activities: Brooms Away, Mud-fling, and the Bloom with a View art fair.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "Brooms Away is a city-wide cleanup effort—but they've gamified it. You identify sensitive tech spots while sweeping away the winter dust.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "Mud-fling is hilarious! Teams throw mud at each other while preparing the new garden beds. It gets messy but it's a crowd favorite.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "And the Bloom with a View is an art fair held in the botanical gardens. There's a scavenger hunt component that's quite popular.",
+        mood: 'neutral',
+      }
+    ],
+    choices: [
+      {
+        text: "Let's participate in all the activities as a team.",
+        affectionChanges: { xavier: 1, navarre: 1, etta: -1, senara: 0 },
+        nextSceneId: 'spring-festival-all',
+      },
+      {
+        text: "I'd prefer to focus on one activity and excel at it.",
+        affectionChanges: { xavier: 0, navarre: -1, etta: 1, senara: 1 },
+        nextSceneId: 'spring-festival-choose',
+      },
+      {
+        text: "What if we divide and conquer? Each person takes one activity.",
+        affectionChanges: { xavier: 0, navarre: 0, etta: 1, senara: 1 },
+        nextSceneId: 'spring-festival-divide',
+      }
+    ],
+  },
+  
+  'spring-festival-all': {
+    id: 'spring-festival-all',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "The day of the festival arrives. Stonewich is bustling with activity as citizens prepare for the spring celebration.",
+      },
+      {
+        character: 'xavier',
+        text: "This is exciting! I've read about these traditions but never participated before.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "It's great public relations too. People love seeing their administrators get their hands dirty alongside them.",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "Let's keep focused. Remember, this is a job, not just a social outing.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "What should we try first?",
+        mood: 'neutral',
+      }
+    ],
+    choices: [
+      {
+        text: "Let's start with Brooms Away.",
+        nextSceneId: 'spring-brooms-away-intro',
+      },
+      {
+        text: "Mud-fling looks fun!",
+        nextSceneId: 'spring-mud-fling-intro',
+      },
+      {
+        text: "I'd like to explore the Bloom with a View art fair.",
+        nextSceneId: 'spring-bloom-view-intro',
+      }
+    ],
+  },
+  
+  'spring-festival-choose': {
+    id: 'spring-festival-choose',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "The day of the festival arrives. You've decided to focus your efforts on one activity.",
+      },
+      {
+        character: 'maven',
+        text: "I think I'll be more effective if I concentrate on one thing rather than trying to do everything.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "A sensible approach. Quality over quantity.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Which activity should I focus on?",
+        mood: 'neutral',
+      }
+    ],
+    choices: [
+      {
+        text: "I'll join the Brooms Away cleanup crew.",
+        nextSceneId: 'spring-brooms-away-intro',
+      },
+      {
+        text: "The Mud-fling garden preparation looks interesting.",
+        nextSceneId: 'spring-mud-fling-intro',
+      },
+      {
+        text: "I think I'd be most helpful at the Bloom with a View art fair.",
+        nextSceneId: 'spring-bloom-view-intro',
+      }
+    ],
+  },
+  
+  'spring-festival-divide': {
+    id: 'spring-festival-divide',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "The festival day arrives, and your team has decided to divide and conquer the activities.",
+      },
+      {
+        character: 'etta',
+        text: "An efficient approach. I'll oversee the logistics of the main stage events.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "I can help with the tech side of Brooms Away. Some of those systems need careful handling.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "I'll take Mud-fling! It's right up my alley—messy but fun, and great for networking.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "I'll document the art installations at Bloom with a View. The historical significance is worth cataloging.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "And I should choose...",
+        mood: 'neutral',
+      }
+    ],
+    choices: [
+      {
+        text: "I'll join Xavier with Brooms Away.",
+        affectionChanges: { xavier: 1, navarre: 0, etta: 0, senara: 0 },
+        nextSceneId: 'spring-brooms-away-intro',
+      },
+      {
+        text: "I'll team up with Navarre for Mud-fling.",
+        affectionChanges: { xavier: 0, navarre: 1, etta: 0, senara: 0 },
+        nextSceneId: 'spring-mud-fling-intro',
+      },
+      {
+        text: "I'll help Senara at Bloom with a View.",
+        affectionChanges: { xavier: 0, navarre: 0, etta: 0, senara: 1 },
+        nextSceneId: 'spring-bloom-view-intro',
+      }
+    ],
+  },
+  
+  // Brooms Away minigame intro
+  'spring-brooms-away-intro': {
+    id: 'spring-brooms-away-intro',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "The Brooms Away area is set up in the city's main plaza. Citizens are already sweeping away winter dust and marking sensitive technology spots.",
+      },
+      {
+        character: 'xavier',
+        text: "This is important work. The winter buildup can cause real problems for the city systems if not properly cleaned.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "How exactly does this work?",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "You use the broom to sweep away dust, but you have to be careful. If you hit a sensitive tech spot, it could malfunction.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "That's what the feather dusters are for—marking those spots for more delicate cleaning later.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Sounds like a challenge. I'm ready to try!",
+        mood: 'happy',
+      }
+    ],
+    choices: [
+      {
+        text: "Start Brooms Away",
+        nextSceneId: 'spring-brooms-away-game',
+      },
+      {
+        text: "Actually, let me try something else first.",
+        nextSceneId: 'spring-festival-all',
+      }
+    ],
+  },
+  
+  // Brooms Away minigame
+  'spring-brooms-away-game': {
+    id: 'spring-brooms-away-game',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Time to test your sweeping skills! Use the broom to clear the dust, and the feather duster to mark sensitive tech spots.",
+      }
+    ],
+    choices: [
+      {
+        text: "Begin Sweeping",
+        nextSceneId: 'spring-brooms-away-start',
+      }
+    ],
+  },
+  
+  // Special scene to trigger the minigame
+  'spring-brooms-away-start': {
+    id: 'spring-brooms-away-start',
+    background: 'stonewich-cityscape',
+    dialogue: [], // Empty dialogue to trigger the minigame
+    nextSceneId: 'spring-brooms-away-complete',
+  },
+  
+  // After minigame completion
+  'spring-brooms-away-complete': {
+    id: 'spring-brooms-away-complete',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'xavier',
+        text: "Nice work, Maven! You've got a good eye for the tech spots.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Thanks! It's harder than it looks to tell what's sensitive and what's not.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "That's why we have trained professionals like us. The citizens appreciate the help.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "What else is happening at the festival?",
+        mood: 'neutral',
+      }
+    ],
+    choices: [
+      {
+        text: "Let's check out Mud-fling next.",
+        nextSceneId: 'spring-mud-fling-intro',
+      },
+      {
+        text: "I'd like to see the Bloom with a View art fair.",
+        nextSceneId: 'spring-bloom-view-intro',
+      },
+      {
+        text: "I think I've had enough for today.",
+        nextSceneId: 'spring-festival-end',
+      }
+    ],
+  },
+  
+  // Mud-fling minigame intro
+  'spring-mud-fling-intro': {
+    id: 'spring-mud-fling-intro',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "The Mud-fling area is set up in the community garden. People are laughing and covered in mud as they prepare flower beds.",
+      },
+      {
+        character: 'navarre',
+        text: "Now THIS is my kind of event! Nothing builds relationships like getting a little messy together.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "How does it work exactly?",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "We form teams and try to hit members of the other team with mud balls. But it's not just chaos—we're actually turning over the soil for spring planting.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "The fountain in the middle cycles on and off, creating mud as it sprays. You grab a mud ball and fling it at the other team!",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Sounds messy but fun. Let's do it!",
+        mood: 'happy',
+      }
+    ],
+    choices: [
+      {
+        text: "Start Mud-fling",
+        nextSceneId: 'spring-mud-fling-game',
+      },
+      {
+        text: "Actually, let me try something else first.",
+        nextSceneId: 'spring-festival-all',
+      }
+    ],
+  },
+  
+  // Mud-fling minigame
+  'spring-mud-fling-game': {
+    id: 'spring-mud-fling-game',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Time for Mud-fling! Select a mud ball, then click where you want to throw it. Try to hit members of the opposing team!",
+      }
+    ],
+    choices: [
+      {
+        text: "Begin Mud-fling",
+        nextSceneId: 'spring-mud-fling-start',
+      }
+    ],
+  },
+  
+  // Special scene to trigger the minigame
+  'spring-mud-fling-start': {
+    id: 'spring-mud-fling-start',
+    background: 'stonewich-cityscape',
+    dialogue: [], // Empty dialogue to trigger the minigame
+    nextSceneId: 'spring-mud-fling-complete',
+  },
+  
+  // After minigame completion
+  'spring-mud-fling-complete': {
+    id: 'spring-mud-fling-complete',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'navarre',
+        text: "That was AMAZING! Did you see that shot you made? Right on target!",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "I'm covered in mud, but that was incredibly fun!",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "That's the spirit! And look—all these flower beds are ready for planting now.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "What else is happening at the festival?",
+        mood: 'neutral',
+      }
+    ],
+    choices: [
+      {
+        text: "Let's try Brooms Away next.",
+        nextSceneId: 'spring-brooms-away-intro',
+      },
+      {
+        text: "I'd like to see the Bloom with a View art fair.",
+        nextSceneId: 'spring-bloom-view-intro',
+      },
+      {
+        text: "I think I've had enough for today.",
+        nextSceneId: 'spring-festival-end',
+      }
+    ],
+  },
+  
+  // Bloom with a View minigame intro
+  'spring-bloom-view-intro': {
+    id: 'spring-bloom-view-intro',
+    background: 'city-cafe',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "The Bloom with a View art fair is set up in the botanical gardens. Artwork and floral displays create a vibrant atmosphere.",
+      },
+      {
+        character: 'senara',
+        text: "This event combines art and horticulture—two important cultural aspects of Stonewich.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "It's beautiful. What happens here?",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "Local artists display their work, and there's a popular scavenger hunt where participants search for specific items hidden among the displays.",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "It encourages people to pay attention to details they might otherwise miss. Quite clever, really.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "I'd like to try the scavenger hunt!",
+        mood: 'happy',
+      }
+    ],
+    choices: [
+      {
+        text: "Start Bloom with a View",
+        nextSceneId: 'spring-bloom-view-game',
+      },
+      {
+        text: "Actually, let me try something else first.",
+        nextSceneId: 'spring-festival-all',
+      }
+    ],
+  },
+  
+  // Bloom with a View minigame
+  'spring-bloom-view-game': {
+    id: 'spring-bloom-view-game',
+    background: 'city-cafe',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Can you find all five hidden items in the garden art fair? Click around to discover them!",
+      }
+    ],
+    choices: [
+      {
+        text: "Begin Scavenger Hunt",
+        nextSceneId: 'spring-bloom-view-start',
+      }
+    ],
+  },
+  
+  // Special scene to trigger the minigame
+  'spring-bloom-view-start': {
+    id: 'spring-bloom-view-start',
+    background: 'city-cafe',
+    dialogue: [], // Empty dialogue to trigger the minigame
+    nextSceneId: 'spring-bloom-view-complete',
+  },
+  
+  // After minigame completion
+  'spring-bloom-view-complete': {
+    id: 'spring-bloom-view-complete',
+    background: 'city-cafe',
+    dialogue: [
+      {
+        character: 'senara',
+        text: "Well done. You found all the items. You have a keen eye for detail.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Thanks! I enjoyed looking at all the artwork too.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "The artists integrate Stonewich's history into their work. It's a valuable cultural preservation.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "What else is happening at the festival?",
+        mood: 'neutral',
+      }
+    ],
+    choices: [
+      {
+        text: "Let's try Brooms Away next.",
+        nextSceneId: 'spring-brooms-away-intro',
+      },
+      {
+        text: "I want to check out the Mud-fling activity.",
+        nextSceneId: 'spring-mud-fling-intro',
+      },
+      {
+        text: "I think I've had enough for today.",
+        nextSceneId: 'spring-festival-end',
+      }
+    ],
+  },
+  
+  // Festival conclusion
+  'spring-festival-end': {
+    id: 'spring-festival-end',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "As the sun sets on Stonewich, the Spring festival winds down. Citizens are pleased with the clean streets, prepared garden beds, and beautiful art displays.",
+      },
+      {
+        character: 'xavier',
+        text: "The first few months have been quite an experience, haven't they?",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "And we're just getting started! I've made so many great connections today.",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "The productivity metrics from today are impressive. We should incorporate these community engagement strategies into our regular operations.",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "The seasonal traditions here are deeply rooted. Understanding them helps us better integrate our technological solutions.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I feel like I'm starting to find my place here in Stonewich.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'spring-conclusion',
+  },
+  
+  'spring-conclusion': {
+    id: 'spring-conclusion',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "As spring continues in Stonewich, your team settles into a rhythm. Each member's strengths become more apparent in different situations.",
+      },
+      {
+        character: 'narrator',
+        text: "You've begun to see patterns in how your teammates operate, and found yourself gravitating toward certain approaches.",
+      },
+      {
+        character: 'maven',
+        text: "These past few months have taught me so much about everyone... and about myself.",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "With spring coming to a close, it's time to prepare for summer—and the next seasonal festival.",
+      },
+      {
+        character: 'narrator',
+        text: "But your experiences have already begun to shape your path. Your strongest connections are becoming clear.",
+        mood: 'neutral',
+      }
+    ],
+    nextSceneId: 'spring-transition',
+  },
+  
+  // Special scene to handle transition between seasons
+  'spring-transition': {
+    id: 'spring-transition',
+    background: 'stonewich-cityscape',
+    dialogue: [], // Empty dialogue to trigger season transition
+    nextSceneId: 'main-menu', // Temporarily return to main menu until summer content is implemented
+  },
+  
+  // ... keep existing code (maintain about, start and main-menu scenes)
+
 };
 
 export default scenes;
