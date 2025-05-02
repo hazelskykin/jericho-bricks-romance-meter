@@ -8,6 +8,13 @@ interface BackgroundAsset {
 }
 
 const backgrounds: Record<string, BackgroundAsset> = {
+  'wall-tiles': {
+    id: 'wall-tiles',
+    name: 'Wall Tiles',
+    image: '/assets/backgrounds/wall-tiles.png',
+    description: 'Decorative wall tiles with geometric patterns and a subtle steampunk influence.',
+    gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.2), rgba(42, 30, 78, 0.3))'
+  },
   'cybaton-office': {
     id: 'cybaton-office',
     name: 'Cybaton Office',

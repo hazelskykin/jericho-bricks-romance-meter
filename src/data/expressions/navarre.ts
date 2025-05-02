@@ -12,43 +12,43 @@ const navarreExpressions: CharacterExpressionSet = {
   happy: {
     characterId: 'navarre',
     mood: 'happy',
-    image: '/assets/characters/navarre-happy.jpeg',
+    image: '/assets/characters/navarre-happy.png',
     description: 'Navarre with a charming, winning smile'
   },
   sad: {
     characterId: 'navarre',
     mood: 'sad',
-    image: '/assets/characters/navarre-sad.jpeg',
+    image: '/assets/characters/navarre-sad.png',
     description: 'Navarre with a disappointed, slightly dramatic expression'
   },
   angry: {
     characterId: 'navarre',
     mood: 'angry',
-    image: '/assets/characters/navarre-angry.jpeg',
+    image: '/assets/characters/navarre-angry.png',
     description: 'Navarre with an indignant, passionate expression'
   },
   surprised: {
     characterId: 'navarre',
     mood: 'surprised',
-    image: '/assets/characters/navarre-surprised.jpeg',
+    image: '/assets/characters/navarre-surprised.png',
     description: 'Navarre with wide eyes and an exaggerated shocked expression'
   },
   laughing: {
     characterId: 'navarre',
     mood: 'laughing',
-    image: '/assets/characters/navarre-laughing.jpeg',
+    image: '/assets/characters/navarre-laughing.png',
     description: 'Navarre with a charismatic, infectious laugh'
   },
   shocked: {
     characterId: 'navarre',
     mood: 'shocked',
-    image: '/assets/characters/navarre-shocked.jpeg',
+    image: '/assets/characters/navarre-shocked.png',
     description: 'Navarre with a theatrical expression of complete shock'
   },
   embarrassed: {
     characterId: 'navarre',
     mood: 'embarrassed',
-    image: '/assets/characters/navarre-embarassed.jpeg',
+    image: '/assets/characters/navarre-embarrassed.png',
     description: 'Navarre with rare vulnerability showing through a blush'
   }
 };

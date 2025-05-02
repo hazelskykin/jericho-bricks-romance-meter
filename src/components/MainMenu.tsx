@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import characterChibis from '@/data/characterChibis';
 import characters from '@/data/characters';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import backgrounds from '@/data/backgrounds';
 
 interface MainMenuProps {
   onNewGame: () => void;
@@ -12,11 +13,25 @@ interface MainMenuProps {
 }
 
 const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
+  // Get wall-tiles background data
+  const bgData = backgrounds['wall-tiles'];
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-cyberpunk z-0"></div>
-      <div className="absolute inset-0 z-10 bg-black/40"></div>
+      {/* Background image with pattern */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center z-0"
+        style={{ backgroundImage: `url(${bgData.image})` }}
+      />
+      
+      {/* Gradient overlay to enhance readability */}
+      <div 
+        className="absolute inset-0 z-5" 
+        style={{ background: bgData.gradient || 'linear-gradient(to bottom, rgba(26, 31, 44, 0.3), rgba(42, 30, 78, 0.6))' }}
+      />
+      
+      {/* Additional stylized overlay for depth */}
+      <div className="absolute inset-0 z-10 bg-black/30 backdrop-blur-[1px]"></div>
       
       {/* Content */}
       <motion.div 
@@ -55,23 +70,24 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
                     className="w-14 h-14 border-2 rounded-xl"
                     style={{ 
                       borderColor: char.color,
-                      boxShadow: `0 0 10px ${char.color}50`
+                      boxShadow: `0 0 10px ${char.color}50`,
+                      backgroundColor: `${char.color}30`,
                     }}
                   >
-                    <AvatarImage 
-                      src={chibiData.image} 
-                      alt={char.name}
-                      className="rounded-xl"
-                    />
                     <AvatarFallback
                       style={{ 
-                        backgroundColor: char.color + '30',
-                        color: char.color,
+                        backgroundColor: char.color + '60',
+                        color: 'white',
                       }}
                       className="rounded-xl"
                     >
                       {char.name.substring(0, 2)}
                     </AvatarFallback>
+                    <AvatarImage 
+                      src={chibiData.image} 
+                      alt={char.name}
+                      className="rounded-xl"
+                    />
                   </Avatar>
                 ) : null}
               </motion.div>

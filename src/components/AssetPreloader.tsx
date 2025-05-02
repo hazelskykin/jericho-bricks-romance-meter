@@ -55,15 +55,20 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         
         let loadedAssets = 0;
         
-        // Backgrounds - load first priority
-        setLoadingMessage('Loading background scenes...');
-        for (const bg of Object.values(backgrounds)) {
-          await preloadImage(bg.image);
-          loadedAssets++;
-          setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+        // Priority 1: Immediately load wall-tiles for main menu and any critical backgrounds
+        setLoadingMessage('Loading interface backgrounds...');
+        const criticalBackgrounds = ['wall-tiles'];
+        
+        for (const bgId of criticalBackgrounds) {
+          const bg = backgrounds[bgId];
+          if (bg) {
+            await preloadImage(bg.image);
+            loadedAssets++;
+            setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+          }
         }
         
-        // Chibis - load second priority (small but important for UI)
+        // Priority 2: Load character chibis for main menu
         setLoadingMessage('Loading character chibis...');
         const chibiPromises = Object.values(characterChibis).map(chibi => {
           return preloadImage(chibi.image).then(() => {
@@ -74,27 +79,52 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         
         await Promise.all(chibiPromises);
         
-        // Character expressions - load in parallel batches for better performance
-        setLoadingMessage('Loading character portraits...');
+        // Priority 3: Load remaining backgrounds
+        setLoadingMessage('Loading background scenes...');
+        const remainingBackgrounds = Object.values(backgrounds).filter(
+          bg => !criticalBackgrounds.includes(bg.id)
+        );
         
-        // Process characters in batches of 2 to avoid too many concurrent requests
-        const batchSize = 2;
-        for (let i = 0; i < characterIds.length; i += batchSize) {
-          const batchIds = characterIds.slice(i, i + batchSize);
-          
-          const batchPromises = batchIds.flatMap(id => {
-            const moodMap = characterExpressions[id];
-            if (!moodMap) return [];
-            
-            return Object.values(moodMap).map(expression => {
+        for (const bg of remainingBackgrounds) {
+          await preloadImage(bg.image);
+          loadedAssets++;
+          setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+        }
+        
+        // Priority 4: Neutral character expressions first
+        setLoadingMessage('Loading character portraits...');
+        const neutralExpressionsPromises = characterIds.map(id => {
+          const neutralExpression = characterExpressions[id]?.neutral;
+          if (neutralExpression) {
+            return preloadImage(neutralExpression.image).then(() => {
+              loadedAssets++;
+              setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+            });
+          }
+          return Promise.resolve();
+        });
+        
+        await Promise.all(neutralExpressionsPromises);
+        
+        // Priority 5: Remaining character expressions in batches
+        const moodTypes: (keyof typeof characterExpressions[CharacterId])[] = [
+          'happy', 'sad', 'angry', 'surprised', 'laughing', 'shocked', 'embarrassed'
+        ];
+        
+        // Process moods in batches for better resource management
+        for (const mood of moodTypes) {
+          const moodExpressionsPromises = characterIds.map(id => {
+            const expression = characterExpressions[id]?.[mood];
+            if (expression) {
               return preloadImage(expression.image).then(() => {
                 loadedAssets++;
                 setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
               });
-            });
+            }
+            return Promise.resolve();
           });
           
-          await Promise.all(batchPromises);
+          await Promise.all(moodExpressionsPromises);
         }
 
         setLoadingMessage('Finalizing game setup...');

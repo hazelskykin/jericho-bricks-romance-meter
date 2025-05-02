@@ -5,6 +5,7 @@ import { CharacterId } from '@/types/game';
 import characters, { maven } from '@/data/characters';
 import { MoodType } from '@/types/expressions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import characterExpressions from '@/data/characterExpressions';
 
 interface CharacterPortraitProps {
   characterId: CharacterId | 'maven' | 'narrator' | undefined;
@@ -13,18 +14,22 @@ interface CharacterPortraitProps {
 }
 
 const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood = 'neutral', isActive }) => {
-  // Early return if no character to display
+  // Early return if no character to display or character is narrator
   if (!characterId || characterId === 'narrator' || !isActive) {
     return null;
   }
   
-  // Use memoized values to prevent unnecessary calculations on re-render
+  // Get character data
   const character = characterId === 'maven' ? maven : characters[characterId];
   
   if (!character) return null;
   
-  // Create direct PNG path - using consistent naming convention
-  const pngImagePath = `/assets/characters/${characterId}-${mood}.png`;
+  // Get expression data from our centralized expressions data
+  const expressionSet = characterExpressions[characterId];
+  const expression = expressionSet?.[mood];
+  
+  // Fallback to neutral if the specific mood isn't available
+  const imagePath = expression?.image || expressionSet?.neutral?.image;
   
   // Memoize mood-specific styling
   const moodStyles = useMemo(() => {
@@ -60,17 +65,31 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
     }
   }, [mood]);
   
-  // Function to handle image error and provide fallback
+  // Function to handle image error and provide fallbacks
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     console.error(`Failed to load image for ${characterId} with mood ${mood}: ${e.currentTarget.src}`);
-    // If PNG fails, try avatar as fallback
-    e.currentTarget.src = character.avatar;
+    
+    // First fallback: Try neutral expression if it's not already neutral
+    if (mood !== 'neutral' && expressionSet?.neutral?.image) {
+      e.currentTarget.src = expressionSet.neutral.image;
+      return;
+    }
+    
+    // Second fallback: Use character avatar
+    if (character.avatar) {
+      e.currentTarget.src = character.avatar;
+      return;
+    }
+    
+    // Third fallback: Hide the image and let the AvatarFallback show
+    e.currentTarget.style.display = 'none';
   };
   
+  // Enhanced Avatar styling with stronger background color
   const avatarStyle = {
     borderColor: character.color,
-    boxShadow: `0 0 15px ${character.color}50`,
-    backgroundColor: `${character.color}30`, // Add semi-transparent background color
+    boxShadow: `0 0 15px ${character.color}60`,
+    backgroundColor: `${character.color}50`, // More opaque background (50% instead of 30%)
   };
   
   return (
@@ -81,31 +100,39 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.3 }} // Reduced animation duration for performance
+          transition={{ duration: 0.3 }}
         >
           <motion.div 
             className={`mb-4 ${moodStyles}`}
             initial={{ filter: 'brightness(0.9)' }}
             animate={{ filter: `brightness(${brightnessFactor})` }}
-            transition={{ duration: 0.3 }} // Reduced animation duration for performance
+            transition={{ duration: 0.3 }}
           >
             <Avatar 
               className="w-56 h-56 border-4" 
               style={avatarStyle}
             >
+              {/* AvatarFallback first in DOM for better initial rendering */}
               <AvatarFallback 
-                style={{ backgroundColor: character.color }}
+                style={{ 
+                  backgroundColor: `${character.color}90`, // Much more opaque fallback
+                  color: 'white'
+                }}
                 className="flex items-center justify-center text-white font-bold text-2xl"
               >
                 {character.name.substring(0, 2)}
               </AvatarFallback>
-              <AvatarImage 
-                src={pngImagePath}
-                alt={`${character.name} ${mood} expression`}
-                onError={handleImageError}
-                className="w-full h-full object-cover" // Ensure proper sizing
-                loading="eager" // Tell browser to load this image with high priority
-              />
+              
+              {/* Image loaded after fallback to ensure something always shows */}
+              {imagePath && (
+                <AvatarImage 
+                  src={imagePath}
+                  alt={`${character.name} ${mood} expression`}
+                  onError={handleImageError}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+              )}
             </Avatar>
           </motion.div>
           
@@ -113,14 +140,14 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
           <motion.div
             className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-white font-medium text-glow-sm"
             style={{ 
-              backgroundColor: character.color + '80',
+              backgroundColor: character.color + '90', // More opaque background
               backdropFilter: 'blur(4px)',
               border: `1px solid ${character.color}`,
-              boxShadow: `0 0 10px ${character.color}50`
+              boxShadow: `0 0 10px ${character.color}60`
             }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.2 }} // Reduced animation duration
+            transition={{ delay: 0.2, duration: 0.2 }}
           >
             {character.name}
           </motion.div>
@@ -130,4 +157,4 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   );
 };
 
-export default React.memo(CharacterPortrait); // Use React.memo to prevent unnecessary re-renders
+export default React.memo(CharacterPortrait);
