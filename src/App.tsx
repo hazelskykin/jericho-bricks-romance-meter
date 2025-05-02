@@ -11,33 +11,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { GameProvider, useGame } from '@/context/GameContext';
+import { GameProvider } from '@/context/GameContext';
+import GameSceneObserver from '@/components/GameSceneObserver';
 
 const queryClient = new QueryClient();
-
-// Game scene observer component to handle minigame transitions
-const GameSceneObserver = () => {
-  const { gameState, startMinigame } = useGame();
-
-  // Monitor scene changes to detect when to trigger minigames
-  useEffect(() => {
-    const currentScene = gameState.currentScene;
-    
-    // Check if we need to start a minigame based on the scene
-    if (currentScene === 'spring-brooms-away-start') {
-      startMinigame('broomsAway');
-    } else if (currentScene === 'spring-mud-fling-start') {
-      startMinigame('mudFling');
-    } else if (currentScene === 'spring-bloom-view-start') {
-      startMinigame('bloomWithAView');
-    } else if (currentScene === 'spring-transition') {
-      // Transition to summer season
-      // This is where we would handle season transition
-    }
-  }, [gameState.currentScene]);
-
-  return null; // This component doesn't render anything
-};
 
 function App() {
   const [viewMode, setViewMode] = useState<'game' | 'tester'>('game');
