@@ -75,7 +75,7 @@ const springConclusionScenes: Record<string, Scene> = {
     id: 'spring-transition',
     background: 'stonewich-cityscape',
     dialogue: [], // Empty dialogue to trigger season transition
-    nextSceneId: 'main-menu', // Temporarily return to main menu until summer content is implemented
+    nextSceneId: 'summer-intro', // Now points to summer content instead of main menu
   }
 };
 

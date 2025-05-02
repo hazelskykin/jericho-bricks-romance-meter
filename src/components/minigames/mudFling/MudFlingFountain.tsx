@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface MudFlingFountainProps {
+export interface MudFlingFountainProps {
   intensity: 'low' | 'medium' | 'high';
 }
 
