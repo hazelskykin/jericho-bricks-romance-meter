@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import MenuBackground from './menu/MenuBackground';
 import GameTitle from './menu/GameTitle';
 import MainContent from './menu/MainContent';
-import NeonWordTooltips from './menu/NeonWordTooltips';
 
 interface MainMenuProps {
   onNewGame: () => void;
@@ -27,11 +26,6 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
           <MainContent onNewGame={onNewGame} onAbout={onAbout} />
         </div>
       </div>
-
-      {/* Neon word tooltips overlay */}
-      <TooltipProvider>
-        <NeonWordTooltips />
-      </TooltipProvider>
       
       {/* Version info */}
       <div className="absolute bottom-4 right-4 text-xs text-white/50 z-20">
