@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Cell } from './BroomsAwayGame';
+import { Cell } from '@/hooks/useBroomsAwayGame';
 
 interface BroomsAwayGridProps {
   grid: Cell[][];
