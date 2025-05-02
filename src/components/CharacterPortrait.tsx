@@ -3,7 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CharacterId } from '@/types/game';
 import characters, { maven } from '@/data/characters';
-import characterExpressions, { MoodType } from '@/data/characterExpressions';
+import characterExpressions, { MoodType } from '@/types/expressions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface CharacterPortraitProps {
@@ -33,14 +33,9 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   
   console.log(`Loading character portrait: ${characterId}, mood: ${mood}, image: ${expression.image}`);
   
-  // Format image path to use PNG
-  let imageSrc = expression.image;
-  
-  // Ensure we're using PNG format for character images
-  if (imageSrc.endsWith('.jpeg') || imageSrc.endsWith('.jpg')) {
-    imageSrc = imageSrc.replace(/\.(jpeg|jpg)$/, '.png');
-    console.log(`Converted image path to PNG: ${imageSrc}`);
-  }
+  // Always use PNG format for character images
+  // Create direct PNG path
+  const pngImagePath = `/assets/characters/${characterId}-${mood}.png`;
   
   // Apply mood-specific styling
   const getMoodStyles = () => {
@@ -68,17 +63,9 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     console.error(`Failed to load image for ${characterId} with mood ${mood}: ${e.currentTarget.src}`);
     
-    // For character images, try direct PNG path first
-    const directPngPath = `/assets/characters/${characterId}-${mood}.png`;
-    console.log(`Trying direct PNG path: ${directPngPath}`);
-    
-    if (e.currentTarget.src !== directPngPath) {
-      e.currentTarget.src = directPngPath;
-    } else {
-      // If that fails, try avatar
-      console.log(`Falling back to avatar for ${characterId}: ${character.avatar}`);
-      e.currentTarget.src = character.avatar;
-    }
+    // If PNG fails, try avatar as fallback
+    console.log(`Falling back to avatar for ${characterId}: ${character.avatar}`);
+    e.currentTarget.src = character.avatar;
   };
   
   return (
@@ -114,7 +101,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
               }}
             >
               <AvatarImage 
-                src={`/assets/characters/${characterId}-${mood}.png`}
+                src={pngImagePath}
                 alt={expression.description} 
                 onError={handleImageError}
               />

@@ -1,6 +1,6 @@
 
 import { CharacterId } from '@/types/game';
-import { CharacterExpressionSet, MoodType } from '@/data/characterExpressions';
+import { CharacterExpressionSet, MoodType } from '@/types/expressions';
 
 const xavierExpressions: CharacterExpressionSet = {
   neutral: {
