@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import MinigameContainer from './MinigameContainer';
+import { Button } from "@/components/ui/button";
+import MinigameContainer from '../MinigameContainer';
+import BroomsAwayGrid from './BroomsAwayGrid';
+import BroomsAwayControls from './BroomsAwayControls';
+import GameStatusMessage from '../common/GameStatusMessage';
 import { useGame } from '@/context/GameContext';
 import { toast } from 'sonner';
 
-interface Cell {
+export interface Cell {
   isSensitive: boolean;
   isSwept: boolean;
   isFlagged: boolean;
@@ -162,46 +164,6 @@ const BroomsAwayGame: React.FC<BroomsAwayGameProps> = ({ onComplete, onExit }) =
     setCursorType(prev => prev === 'broom' ? 'duster' : 'broom');
   };
   
-  const getCellDisplay = (cell: Cell) => {
-    if (cell.isFlagged) {
-      return '🪶'; // Feather duster
-    }
-    
-    if (!cell.isSwept) {
-      return ''; // Covered in dust
-    }
-    
-    if (cell.isSensitive) {
-      return '💥'; // Broken sensitive spot
-    }
-    
-    if (cell.neighborCount > 0) {
-      return cell.neighborCount;
-    }
-    
-    return ''; // Empty swept cell
-  };
-  
-  const getCellStyle = (cell: Cell) => {
-    if (!cell.isSwept && !cell.isFlagged) {
-      return 'bg-gray-400'; // Dusty
-    }
-    
-    if (cell.isFlagged) {
-      return 'bg-blue-200'; // Feather dusted
-    }
-    
-    if (cell.isSensitive) {
-      return 'bg-red-500'; // Broken sensitive spot
-    }
-    
-    if (cell.isSwept) {
-      return 'bg-gray-200'; // Swept clean
-    }
-    
-    return 'bg-gray-300';
-  };
-  
   const getCursorClass = () => {
     if (gameStatus !== 'playing') return '';
     return cursorType === 'broom' ? 'cursor-pointer' : 'cursor-cell';
@@ -215,58 +177,27 @@ const BroomsAwayGame: React.FC<BroomsAwayGameProps> = ({ onComplete, onExit }) =
       onExit={onExit}
     >
       <div className="flex flex-col items-center">
-        <div className="mb-4 flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-white">Feather Dusters:</span>
-            <span className="font-bold text-yellow-300">{featherDusters}</span>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <span className="text-white">Broken Spots:</span>
-            <span className="font-bold text-red-500">{brokenSpots}/{maxBrokenSpots}</span>
-          </div>
-          
-          <Button 
-            variant="outline"
-            className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
-            onClick={toggleCursor}
-          >
-            {cursorType === 'broom' ? '🧹 Using Broom' : '🪶 Using Duster'}
-          </Button>
-        </div>
+        <BroomsAwayControls 
+          featherDusters={featherDusters}
+          brokenSpots={brokenSpots}
+          maxBrokenSpots={maxBrokenSpots}
+          cursorType={cursorType}
+          toggleCursor={toggleCursor}
+        />
         
-        <div 
-          className={`grid gap-1 p-4 bg-gray-700 rounded-lg ${getCursorClass()}`}
-          style={{ gridTemplateColumns: `repeat(${cols}, minmax(30px, 1fr))` }}
-        >
-          {grid.map((row, rowIndex) => (
-            row.map((cell, colIndex) => (
-              <motion.div
-                key={`${rowIndex}-${colIndex}`}
-                className={`w-full aspect-square flex items-center justify-center font-bold text-lg border border-gray-600 ${getCellStyle(cell)}`}
-                onClick={() => handleCellClick(rowIndex, colIndex)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.1 }}
-              >
-                {getCellDisplay(cell)}
-              </motion.div>
-            ))
-          ))}
-        </div>
+        <BroomsAwayGrid 
+          grid={grid}
+          cols={cols}
+          cursorClass={getCursorClass()}
+          onCellClick={handleCellClick}
+        />
         
-        {gameStatus === 'won' && (
-          <div className="mt-4 p-3 bg-green-800/70 rounded-lg text-white text-center">
-            <h3 className="text-xl font-bold">You Won!</h3>
-            <p>Excellent job keeping the city clean while protecting sensitive tech!</p>
-          </div>
-        )}
-        
-        {gameStatus === 'lost' && (
-          <div className="mt-4 p-3 bg-red-800/70 rounded-lg text-white text-center">
-            <h3 className="text-xl font-bold">Game Over</h3>
-            <p>Too many sensitive tech spots were broken. Better luck next time!</p>
-          </div>
+        {gameStatus !== 'playing' && (
+          <GameStatusMessage 
+            status={gameStatus}
+            winMessage="Excellent job keeping the city clean while protecting sensitive tech!"
+            loseMessage="Too many sensitive tech spots were broken. Better luck next time!"
+          />
         )}
       </div>
     </MinigameContainer>

@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import MinigameContainer from './MinigameContainer';
+import MinigameContainer from '../MinigameContainer';
 import { Button } from '@/components/ui/button';
+import BloomWithAViewScene from './BloomWithAViewScene';
+import BloomWithAViewItemList from './BloomWithAViewItemList';
+import GameStatusMessage from '../common/GameStatusMessage';
 import { toast } from 'sonner';
 
-interface HiddenItem {
+export interface HiddenItem {
   id: string;
   name: string;
   found: boolean;
@@ -21,7 +23,6 @@ interface BloomWithAViewGameProps {
 }
 
 const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({ onComplete, onExit }) => {
-  const itemSize = 40; // Size of the clickable area
   const [hiddenItems, setHiddenItems] = useState<HiddenItem[]>([
     {
       id: 'item-1',
@@ -69,6 +70,7 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({ onComplete, onE
     setClickPosition({ x, y });
     
     // Check if click is near any hidden items
+    const itemSize = 40; // Size of the clickable area
     hiddenItems.forEach(item => {
       const distance = Math.sqrt(
         Math.pow(x - item.position.x, 2) + 
@@ -139,63 +141,15 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({ onComplete, onE
     >
       <div className="flex flex-col items-center">
         {/* Items to find list */}
-        <div className="bg-[#1A1F2C]/50 p-4 rounded-lg mb-4 w-full">
-          <h3 className="font-medium text-white mb-2">Items to Find:</h3>
-          <div className="grid grid-cols-5 gap-4">
-            {hiddenItems.map(item => (
-              <div 
-                key={item.id} 
-                className={`text-center p-2 rounded-lg ${item.found ? 'bg-green-800/50 text-white/80' : 'bg-gray-800/50 text-white'}`}
-              >
-                <span className={item.found ? 'line-through' : ''}>
-                  {item.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <BloomWithAViewItemList items={hiddenItems} />
         
         {/* Garden scene */}
-        <div 
-          className="relative w-full h-[300px] bg-[url('/public/assets/backgrounds/city-cafe.jpg')] bg-cover bg-center rounded-lg cursor-pointer overflow-hidden"
+        <BloomWithAViewScene 
+          hiddenItems={hiddenItems} 
+          clickPosition={clickPosition}
+          showHint={showHint}
           onClick={handleSceneClick}
-        >
-          {/* Item hotspots (invisible unless hint is active) */}
-          {hiddenItems.map(item => (
-            <motion.div 
-              key={item.id}
-              className={`absolute rounded-full ${item.found ? 'bg-green-500/30' : 'bg-transparent'}`}
-              style={{ 
-                left: item.position.x - itemSize/2, 
-                top: item.position.y - itemSize/2,
-                width: itemSize,
-                height: itemSize
-              }}
-              animate={{ 
-                scale: showHint && !item.found ? [1, 1.5, 1] : 1,
-                opacity: showHint && !item.found ? [0, 0.7, 0] : item.found ? 0.5 : 0
-              }}
-              transition={{ 
-                repeat: showHint && !item.found ? Infinity : 0,
-                duration: 1
-              }}
-            />
-          ))}
-          
-          {/* Click feedback animation */}
-          {clickPosition && (
-            <motion.div 
-              className="absolute w-10 h-10 rounded-full border-2 border-white"
-              style={{ 
-                left: clickPosition.x - 20, 
-                top: clickPosition.y - 20 
-              }}
-              initial={{ scale: 0.5, opacity: 1 }}
-              animate={{ scale: 2, opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            />
-          )}
-        </div>
+        />
         
         {/* Hint button */}
         <div className="mt-4">
@@ -211,10 +165,11 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({ onComplete, onE
         
         {/* Game completion message */}
         {gameComplete && (
-          <div className="mt-4 p-3 bg-green-800/70 rounded-lg text-white text-center">
-            <h3 className="text-xl font-bold">All Items Found!</h3>
-            <p>Great job! You found all the hidden items in the garden.</p>
-          </div>
+          <GameStatusMessage 
+            status="won"
+            winMessage="Great job! You found all the hidden items in the garden."
+            loseMessage="" // Not used in this game
+          />
         )}
       </div>
     </MinigameContainer>

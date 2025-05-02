@@ -10,9 +10,9 @@ import CharacterStatus from './CharacterStatus';
 import MainMenu from './MainMenu';
 
 // Import minigames
-import BroomsAwayGame from './minigames/BroomsAwayGame';
-import MudFlingGame from './minigames/MudFlingGame';
-import BloomWithAViewGame from './minigames/BloomWithAViewGame';
+import BroomsAwayGame from './minigames/broomsAway/BroomsAwayGame';
+import MudFlingGame from './minigames/mudFling/MudFlingGame';
+import BloomWithAViewGame from './minigames/bloomWithAView/BloomWithAViewGame';
 
 const GameInterface: React.FC = () => {
   const { 

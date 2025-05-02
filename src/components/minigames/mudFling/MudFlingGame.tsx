@@ -1,18 +1,19 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import MinigameContainer from '../MinigameContainer';
 import { useGame } from '@/context/GameContext';
-import MinigameContainer from './MinigameContainer';
-import { CharacterId } from '@/types/game';
+import MudFlingArena from './MudFlingArena';
+import MudFlingControls from './MudFlingControls';
+import GameStatusMessage from '../common/GameStatusMessage';
 import { toast } from 'sonner';
+import { CharacterId } from '@/types/game';
 
-interface Position {
+export interface Position {
   x: number;
   y: number;
 }
 
-interface MudBall {
+export interface MudBall {
   id: string;
   position: Position;
   owner: 'player' | CharacterId;
@@ -25,7 +26,7 @@ interface MudBall {
   };
 }
 
-interface Character {
+export interface Character {
   id: CharacterId;
   position: Position;
   team: 'team1' | 'team2';
@@ -345,129 +346,30 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
       showExitButton={!gameEnded}
     >
       <div className="flex flex-col items-center">
-        <div className="mb-4 flex items-center gap-8">
-          <div className="flex items-center gap-2">
-            <span className="text-white">Time Remaining:</span>
-            <span className="font-bold text-yellow-300">{timeRemaining}s</span>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <span className="text-white">Fountain:</span>
-            <span className={`font-bold ${
-              fountainIntensity === 'low' ? 'text-blue-300' :
-              fountainIntensity === 'medium' ? 'text-blue-400' :
-              'text-blue-500'
-            }`}>
-              {fountainIntensity === 'low' ? 'Trickling' :
-               fountainIntensity === 'medium' ? 'Flowing' :
-               'Gushing'}
-            </span>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <span className="font-bold text-[#4CC2FF]">Your Team: {team1Score}</span>
-            <span>vs</span>
-            <span className="font-bold text-[#FF5E5B]">Opponents: {team2Score}</span>
-          </div>
-        </div>
+        <MudFlingControls
+          timeRemaining={timeRemaining}
+          fountainIntensity={fountainIntensity}
+          team1Score={team1Score}
+          team2Score={team2Score}
+        />
         
-        <div 
+        <MudFlingArena
           ref={gameAreaRef}
-          className="relative w-full h-[400px] bg-gradient-to-b from-[#335533] to-[#553311] rounded-lg overflow-hidden border-2 border-gray-700"
-          onClick={handleGameAreaClick}
-        >
-          {/* Fountain in center */}
-          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <motion.div 
-              className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center"
-              animate={{
-                scale: fountainIntensity === 'low' ? [1, 1.1] :
-                       fountainIntensity === 'medium' ? [1, 1.2] : [1, 1.3],
-                opacity: [0.7, 0.9]
-              }}
-              transition={{ repeat: Infinity, duration: 1 }}
-            >
-              <div className="w-8 h-8 rounded-full bg-blue-300" />
-            </motion.div>
-            
-            {/* Water spray */}
-            <motion.div 
-              className="absolute left-1/2 top-0 transform -translate-x-1/2 w-40 h-40"
-              initial={{ opacity: 0 }}
-              animate={{ 
-                opacity: fountainIntensity === 'low' ? 0.3 :
-                         fountainIntensity === 'medium' ? 0.5 : 0.7
-              }}
-            >
-              {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute left-1/2 top-1/2 w-1 h-1 bg-blue-300 rounded-full"
-                  animate={{
-                    x: Math.random() * 200 - 100,
-                    y: Math.random() * 200 - 100,
-                    opacity: [1, 0]
-                  }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1 + Math.random(),
-                    delay: Math.random()
-                  }}
-                />
-              ))}
-            </motion.div>
-          </div>
-          
-          {/* Mud balls */}
-          {mudBalls.map(ball => (
-            <motion.div
-              key={ball.id}
-              className={`absolute w-6 h-6 rounded-full bg-[#8B4513] border-2 ${
-                ball.id === selectedMudBall ? 'border-yellow-300' : 'border-[#5A3A1A]'
-              } cursor-pointer`}
-              style={{
-                left: ball.position.x - 12,
-                top: ball.position.y - 12
-              }}
-              animate={{
-                scale: ball.id === selectedMudBall ? [1, 1.2, 1] : 1
-              }}
-              onClick={() => handleMudBallClick(ball.id)}
-            />
-          ))}
-          
-          {/* Characters */}
-          {characters.map(char => (
-            <motion.div
-              key={char.id}
-              className={`absolute w-10 h-10 rounded-full ${
-                char.isHit ? 'opacity-50' : 'opacity-100'
-              }`}
-              style={{
-                left: char.position.x - 20,
-                top: char.position.y - 20,
-                backgroundColor: gameState.characters[char.id].color
-              }}
-              animate={{
-                scale: char.isHit ? [1, 0.8, 1] : 1
-              }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">
-                {char.id.charAt(0).toUpperCase()}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+          mudBalls={mudBalls}
+          characters={characters}
+          selectedMudBall={selectedMudBall}
+          fountainIntensity={fountainIntensity}
+          characterColors={gameState.characters}
+          onMudBallClick={handleMudBallClick}
+          onGameAreaClick={handleGameAreaClick}
+        />
         
         {gameEnded && (
-          <div className={`mt-4 p-3 rounded-lg text-white text-center ${
-            team1Score > team2Score ? 'bg-green-800/70' : 'bg-red-800/70'
-          }`}>
-            <h3 className="text-xl font-bold">
-              {team1Score > team2Score ? 'You Won!' : 'You Lost!'}
-            </h3>
-            <p>Final Score: {team1Score} - {team2Score}</p>
-          </div>
+          <GameStatusMessage 
+            status={team1Score > team2Score ? 'won' : 'lost'}
+            winMessage={`Final Score: ${team1Score} - ${team2Score}`}
+            loseMessage={`Final Score: ${team1Score} - ${team2Score}`}
+          />
         )}
       </div>
     </MinigameContainer>
