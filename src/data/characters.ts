@@ -48,7 +48,7 @@ export const characters: Record<string, Character> = {
 export const maven: Character = {
   id: 'maven',
   name: 'Maven',
-  role: 'X Factor',
+  role: 'Versa',
   description: 'Uncertain of her strengths, dealing with imposter syndrome.',
   affection: 0,
   avatar: '/assets/characters/maven-placeholder.jpg',
