@@ -29,9 +29,12 @@ const GameInterface: React.FC = () => {
     handleContinue();
   }, [handleContinue]);
   
+  // Modified to pass the index to handleChoiceSelected
   const onChoiceSelected = useCallback((index: number) => {
-    handleChoiceSelected(index);
-  }, [handleChoiceSelected]);
+    if (currentScene?.choices && currentScene.choices[index]) {
+      handleChoiceSelected(currentScene.choices[index]);
+    }
+  }, [handleChoiceSelected, currentScene]);
 
   // Otherwise show game interface
   return (

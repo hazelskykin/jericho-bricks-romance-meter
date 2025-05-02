@@ -5,7 +5,7 @@ import { DialogueChoice } from '@/types/game';
 
 interface ChoiceMenuProps {
   choices: DialogueChoice[];
-  onChoiceSelected: (choice: DialogueChoice) => void;
+  onChoiceSelected: (index: number) => void;
   isActive: boolean;
 }
 
@@ -29,7 +29,7 @@ const ChoiceMenu: React.FC<ChoiceMenuProps> = ({ choices, onChoiceSelected, isAc
           <motion.button
             key={index}
             className="choice-button w-full text-left p-4 rounded-md bg-cyberpunk-dark/50 border border-cyberpunk-primary/20 text-white/90 hover:text-white"
-            onClick={() => onChoiceSelected(choice)}
+            onClick={() => onChoiceSelected(index)}
             whileHover={{ x: 8 }}
             transition={{ duration: 0.2 }}
           >
