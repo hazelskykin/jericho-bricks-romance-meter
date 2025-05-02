@@ -32,6 +32,11 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   
   console.log(`Loading character portrait: ${characterId}, mood: ${mood}, image: ${expression.image}`);
   
+  // For Maven, always use PNG format
+  const imageSrc = characterId === 'maven' ? 
+    expression.image.replace('.jpeg', '.png') : 
+    expression.image;
+  
   // Apply mood-specific styling
   const getMoodStyles = () => {
     switch(mood) {
@@ -56,16 +61,17 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
   
   // Function to handle image error and provide fallback
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error(`Failed to load image: ${expression.image}`);
+    console.error(`Failed to load image for ${characterId} with mood ${mood}: ${e.currentTarget.src}`);
     
-    // Check if the characterId is 'maven' and we can try with a different extension
-    if (characterId === 'maven' && expression.image.endsWith('.jpeg')) {
-      // Try with .png extension instead
-      const pngImage = expression.image.replace('.jpeg', '.png');
-      console.log(`Trying alternative image format for Maven: ${pngImage}`);
-      e.currentTarget.src = pngImage;
+    // Check if the characterId is 'maven'
+    if (characterId === 'maven') {
+      // Try direct path to PNG file
+      const directPngPath = `/assets/characters/maven-${mood}.png`;
+      console.log(`Trying direct path for Maven: ${directPngPath}`);
+      e.currentTarget.src = directPngPath;
     } else {
       // Otherwise fallback to character avatar
+      console.log(`Falling back to avatar for ${characterId}: ${character.avatar}`);
       e.currentTarget.src = character.avatar;
     }
   };
@@ -103,7 +109,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
               }}
             >
               <AvatarImage 
-                src={expression.image} 
+                src={characterId === 'maven' ? `/assets/characters/maven-${mood}.png` : imageSrc}
                 alt={expression.description} 
                 onError={handleImageError}
               />
