@@ -2,15 +2,16 @@ import { useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
 import { showRelationshipMilestone } from '@/components/RelationshipMilestone';
 
-// Affection threshold to achieve a "Happy Ending"
+// Constants for season management
 const HAPPY_ENDING_THRESHOLD = 8;
+const VIABLE_ROUTE_COUNT = 2;
 
 export function useGameSeasons(
   gameState: GameState,
   setGameState: React.Dispatch<React.SetStateAction<GameState>>,
   handleSceneTransition: (nextSceneId: string) => void
 ) {
-  // Handle season transitions
+  // Handle transition to a new season
   const handleSeasonTransition = useCallback((newSeason: GameState['currentSeason']) => {
     // Update the current season
     setGameState(prev => ({
@@ -21,77 +22,113 @@ export function useGameSeasons(
     // Handle specific season transition logic
     switch (newSeason) {
       case 'spring':
-        // Logic for starting spring season
+        handleSpringTransition();
         break;
         
       case 'summer':
-        // At the end of spring, identify the two characters with lowest affection
-        const affectionRanking = Object.entries(gameState.characters)
-          .filter(([charId]) => charId !== 'maven')
-          .sort(([, charA], [, charB]) => charB.affection - charA.affection);
-        
-        // Keep only the top two characters as viable routes
-        const viableCharacters = affectionRanking
-          .slice(0, 2)
-          .map(([charId]) => charId as CharacterId);
-        
-        setGameState(prev => ({
-          ...prev,
-          viableRoutes: viableCharacters
-        }));
-        
-        // Show notification about narrowing down options
-        showRelationshipMilestone({
-          characterId: 'maven',
-          milestoneText: "You've narrowed down your potential connections.",
-          level: "Spring Complete"
-        });
+        handleSummerTransition();
         break;
         
       case 'autumn':
-        // At the end of summer, identify the character with highest affection
-        const topCharacter = Object.entries(gameState.characters)
-          .filter(([charId]) => charId !== 'maven' && gameState.viableRoutes.includes(charId as CharacterId))
-          .sort(([, charA], [, charB]) => charB.affection - charA.affection)[0];
-        
-        if (topCharacter) {
-          const [charId] = topCharacter;
-          
-          setGameState(prev => ({
-            ...prev,
-            currentLoveInterest: charId as CharacterId
-          }));
-          
-          // Show notification about focusing on one relationship
-          showRelationshipMilestone({
-            characterId: charId as CharacterId,
-            milestoneText: "Your relationship with this character deepens.",
-            level: "Romance Route"
-          });
-        }
+        handleAutumnTransition();
         break;
         
       case 'winter':
-        // Logic for starting winter season
+        handleWinterTransition();
         break;
         
       case 'epilogue':
-        // Logic for starting epilogue based on final affection score
-        if (gameState.currentLoveInterest) {
-          const finalAffection = gameState.characters[gameState.currentLoveInterest].affection;
-          
-          // Determine if happy ending or try again ending
-          if (finalAffection >= HAPPY_ENDING_THRESHOLD) {
-            // Happy ending achieved, mark character route as completed
-            completeCharacterRoute(gameState.currentLoveInterest);
-          } else {
-            // Try again ending
-            handleGameReset('incomplete');
-          }
-        }
+        handleEpilogueTransition();
         break;
     }
   }, [gameState.characters, gameState.viableRoutes, gameState.currentLoveInterest]);
+
+  // Spring season transition (beginning of the game)
+  const handleSpringTransition = useCallback(() => {
+    // Logic for starting spring season - could be expanded later
+    console.log('Transitioning to Spring season');
+  }, []);
+
+  // Summer season transition
+  const handleSummerTransition = useCallback(() => {
+    // At the end of spring, identify the characters with highest affection
+    const affectionRanking = Object.entries(gameState.characters)
+      .filter(([charId]) => charId !== 'maven')
+      .sort(([, charA], [, charB]) => charB.affection - charA.affection);
+    
+    // Keep only the top characters as viable routes
+    const viableCharacters = affectionRanking
+      .slice(0, VIABLE_ROUTE_COUNT)
+      .map(([charId]) => charId as CharacterId);
+    
+    setGameState(prev => ({
+      ...prev,
+      viableRoutes: viableCharacters
+    }));
+    
+    // Show notification about narrowing down options
+    showRelationshipMilestone({
+      characterId: 'maven',
+      milestoneText: "You've narrowed down your potential connections.",
+      level: "Spring Complete"
+    });
+
+    console.log('Transitioning to Summer season', viableCharacters);
+  }, [gameState.characters]);
+  
+  // Autumn season transition
+  const handleAutumnTransition = useCallback(() => {
+    // At the end of summer, identify the character with highest affection
+    const topCharacter = Object.entries(gameState.characters)
+      .filter(([charId]) => 
+        charId !== 'maven' && 
+        gameState.viableRoutes.includes(charId as CharacterId)
+      )
+      .sort(([, charA], [, charB]) => charB.affection - charA.affection)[0];
+    
+    if (topCharacter) {
+      const [charId] = topCharacter;
+      
+      setGameState(prev => ({
+        ...prev,
+        currentLoveInterest: charId as CharacterId
+      }));
+      
+      // Show notification about focusing on one relationship
+      showRelationshipMilestone({
+        characterId: charId as CharacterId,
+        milestoneText: "Your relationship with this character deepens.",
+        level: "Romance Route"
+      });
+
+      console.log('Transitioning to Autumn season', charId);
+    }
+  }, [gameState.characters, gameState.viableRoutes]);
+  
+  // Winter season transition
+  const handleWinterTransition = useCallback(() => {
+    // Logic for starting winter season
+    console.log('Transitioning to Winter season');
+  }, []);
+  
+  // Epilogue transition (end of the game)
+  const handleEpilogueTransition = useCallback(() => {
+    // Logic for starting epilogue based on final affection score
+    if (gameState.currentLoveInterest) {
+      const finalAffection = gameState.characters[gameState.currentLoveInterest].affection;
+      
+      // Determine if happy ending or try again ending
+      if (finalAffection >= HAPPY_ENDING_THRESHOLD) {
+        // Happy ending achieved, mark character route as completed
+        completeCharacterRoute(gameState.currentLoveInterest);
+        console.log('Happy ending achieved with', gameState.currentLoveInterest);
+      } else {
+        // Try again ending
+        handleGameReset('incomplete');
+        console.log('Affection too low for happy ending');
+      }
+    }
+  }, [gameState.characters, gameState.currentLoveInterest]);
 
   // Handle character route completion
   const completeCharacterRoute = useCallback((characterId: CharacterId) => {
@@ -118,7 +155,9 @@ export function useGameSeasons(
       [characterId]: true
     };
     
-    const allRoutesCompleted = Object.values(updatedCompletedRoutes).every(completed => completed);
+    const allRoutesCompleted = Object.entries(updatedCompletedRoutes)
+      .filter(([key]) => key !== 'maven')
+      .every(([, completed]) => completed);
     
     if (allRoutesCompleted) {
       // Unlock Versa route
@@ -168,7 +207,7 @@ export function useGameSeasons(
       ...prev,
       currentScene: 'intro',
       dialogueIndex: 0,
-      characters: JSON.parse(JSON.stringify(gameState.characters)), // Reset characters
+      characters: { ...prev.characters },
       sceneHistory: ['start'],
       showChoices: false,
       currentSeason: 'prologue',
@@ -184,12 +223,27 @@ export function useGameSeasons(
         level: "Try Again"
       });
     }
-  }, [gameState.characters]);
+  }, []);
+
+  // Create a function to check season progress for the GameSceneObserver
+  const checkSeasonProgress = useCallback((sceneId: string) => {
+    // Check for specific scene transitions that should trigger season changes
+    if (sceneId === 'spring-transition') {
+      handleSeasonTransition('summer');
+    } else if (sceneId === 'summer-transition') {
+      handleSeasonTransition('autumn');
+    } else if (sceneId === 'autumn-transition') {
+      handleSeasonTransition('winter');
+    } else if (sceneId === 'winter-transition') {
+      handleSeasonTransition('epilogue');
+    }
+  }, [handleSeasonTransition]);
 
   return {
     handleSeasonTransition,
     completeCharacterRoute,
     completeVersaRoute,
-    handleGameReset
+    handleGameReset,
+    checkSeasonProgress
   };
 }

@@ -28,7 +28,33 @@ const summerFestivalScenes: Record<string, Scene> = {
       }
     ],
     // This scene would typically have choices, but we'll leave it as a placeholder
-    nextSceneId: 'spring-transition', // Temporarily point back to spring for demo purposes
+    nextSceneId: 'summer-conclusion',
+  },
+  
+  // Added conclusion and transition scenes
+  'summer-conclusion': {
+    id: 'summer-conclusion',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "As the Summer Songs & Sips festival concludes, your relationships with your teammates have evolved.",
+      },
+      {
+        character: 'maven',
+        text: "I feel like I'm growing closer to certain people on the team.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'summer-transition',
+  },
+  
+  // Special scene to trigger autumn season transition
+  'summer-transition': {
+    id: 'summer-transition',
+    background: 'stonewich-cityscape',
+    dialogue: [], // Empty dialogue to trigger season transition
+    nextSceneId: 'autumn-intro', // Will point to autumn content when it's created
   }
 };
 

@@ -21,6 +21,9 @@ interface GameContextType {
   handleAbout: () => void;
   completeCharacterRoute: (characterId: CharacterId) => void;
   
+  // Season progression function
+  checkSeasonProgress: (sceneId: string) => void;
+  
   // Minigame-related functions
   startMinigame: ReturnType<typeof useGameMinigames>['startMinigame'];
   completeMinigame: ReturnType<typeof useGameMinigames>['completeMinigame'];
@@ -66,7 +69,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const { currentScene, currentLine, handleContinue, handleChoiceSelected, handleSceneTransition } = 
     useGameScenes(gameState, setGameState);
     
-  const { handleSeasonTransition, completeCharacterRoute, handleGameReset, completeVersaRoute } = 
+  const { handleSeasonTransition, completeCharacterRoute, handleGameReset, completeVersaRoute, checkSeasonProgress } = 
     useGameSeasons(gameState, setGameState, handleSceneTransition);
     
   const { activeMinigame, startMinigame, completeMinigame, exitMinigame } = 
@@ -101,6 +104,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     handleNewGame,
     handleAbout,
     completeCharacterRoute,
+    
+    // Add the season progression checker
+    checkSeasonProgress,
     
     // Minigame functions
     startMinigame,

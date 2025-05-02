@@ -5,6 +5,7 @@ import { Scene } from '../../types/game';
 import prologue from './prologue';
 import spring from './spring';
 import summer from './summer';
+import autumn from './autumn';
 import mainMenu from './mainMenu';
 
 // Merge all scenes into one collection
@@ -13,8 +14,8 @@ const scenes: Record<string, Scene> = {
   ...prologue,
   ...spring,
   ...summer,
+  ...autumn,
   // Future seasons will be added here:
-  // ...autumn,
   // ...winter,
 };
 

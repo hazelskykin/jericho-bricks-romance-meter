@@ -3,13 +3,12 @@ import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 
 /**
- * Game scene observer component to handle minigame transitions
- * Extracted from App.tsx to maintain separation of concerns
+ * Game scene observer component to handle minigame transitions and season changes
  */
 const GameSceneObserver = () => {
-  const { gameState, startMinigame } = useGame();
+  const { gameState, startMinigame, checkSeasonProgress } = useGame();
 
-  // Monitor scene changes to detect when to trigger minigames
+  // Monitor scene changes to detect when to trigger minigames or season transitions
   useEffect(() => {
     const currentScene = gameState.currentScene;
     
@@ -20,11 +19,12 @@ const GameSceneObserver = () => {
       startMinigame('mudFling');
     } else if (currentScene === 'spring-bloom-view-start') {
       startMinigame('bloomWithAView');
-    } else if (currentScene === 'spring-transition') {
-      // Transition to summer season
-      // This is where we would handle season transition
-    }
-  }, [gameState.currentScene, startMinigame]);
+    } 
+    
+    // Check for season transition scenes
+    checkSeasonProgress(currentScene);
+    
+  }, [gameState.currentScene, startMinigame, checkSeasonProgress]);
 
   return null; // This component doesn't render anything
 };
