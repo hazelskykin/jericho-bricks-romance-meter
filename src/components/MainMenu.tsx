@@ -45,7 +45,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
       <div className="relative w-full h-full z-20 flex flex-col">
         {/* Title - Moved closer to top */}
         <motion.h1 
-          className="text-6xl font-bold text-white text-glow mt-8 mb-4 text-center"
+          className="text-6xl font-bold text-white text-glow mt-6 mb-4 text-center"
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ repeat: Infinity, duration: 3 }}
         >
@@ -55,17 +55,17 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
         {/* Right-aligned content container */}
         <div className="flex flex-1 justify-end px-4">
           <motion.div 
-            className="max-w-md text-right pr-8 pt-8"
+            className="w-1/3 text-right pr-8 pt-8 flex flex-col items-end"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <p className="text-xl text-white/80 mb-6">
+            <p className="text-lg text-white/80 mb-6 max-w-md">
               Navigate relationships and technology in the city of Stonewich as part of Cybaton's elite administrative team.
             </p>
 
             {/* Character Chibi Preview */}
-            <div className="flex justify-end gap-1 mb-6">
+            <div className="flex justify-end gap-1 mb-6 max-w-md">
               {Object.values(characters).map((char) => {
                 const chibiData = characterChibis[char.id];
                 
@@ -107,15 +107,15 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
               })}
             </div>
             
-            <div className="space-y-4 w-64 ml-auto">
+            <div className="space-y-4 max-w-md">
               <Button 
-                className="w-full py-6 text-lg bg-cyberpunk-primary hover:bg-cyberpunk-accent transition-all duration-300" 
+                className="w-full py-6 text-base bg-cyberpunk-primary hover:bg-cyberpunk-accent transition-all duration-300" 
                 onClick={onNewGame}
               >
                 New Game
               </Button>
               <Button 
-                className="w-full py-6 text-lg bg-cyberpunk-dark hover:bg-cyberpunk-secondary transition-all duration-300" 
+                className="w-full py-6 text-base bg-cyberpunk-dark hover:bg-cyberpunk-secondary transition-all duration-300" 
                 onClick={onAbout}
                 variant="outline"
               >
@@ -126,13 +126,13 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
         </div>
       </div>
 
-      {/* Tooltip areas for the neon blue text in background */}
+      {/* Neon word overlay for precise tooltip positioning */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {/* GNARUS Tooltip */}
         <div className="absolute top-[22%] left-[23%] pointer-events-auto">
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="w-32 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
+              <div className="w-28 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
             </TooltipTrigger>
             <TooltipContent 
               className="bg-gradient-to-r from-[#1A1F2C] to-[#2A2045] border border-blue-400/30 text-blue-300 p-3 max-w-xs backdrop-blur-sm"
@@ -145,10 +145,10 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
         </div>
 
         {/* SOLVITOR Tooltip */}
-        <div className="absolute top-[34%] left-[19%] pointer-events-auto">
+        <div className="absolute top-[35%] left-[20%] pointer-events-auto">
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="w-32 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
+              <div className="w-40 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
             </TooltipTrigger>
             <TooltipContent 
               className="bg-gradient-to-r from-[#1A1F2C] to-[#2A2045] border border-blue-400/30 text-blue-300 p-3 max-w-xs backdrop-blur-sm"
@@ -161,10 +161,10 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
         </div>
 
         {/* DIVA Tooltip */}
-        <div className="absolute top-[46%] left-[24%] pointer-events-auto">
+        <div className="absolute top-[47%] left-[22%] pointer-events-auto">
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="w-24 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
+              <div className="w-20 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
             </TooltipTrigger>
             <TooltipContent 
               className="bg-gradient-to-r from-[#1A1F2C] to-[#2A2045] border border-blue-400/30 text-blue-300 p-3 max-w-xs backdrop-blur-sm"
@@ -177,10 +177,10 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
         </div>
 
         {/* BELLFOX Tooltip */}
-        <div className="absolute top-[58%] left-[18%] pointer-events-auto">
+        <div className="absolute top-[59%] left-[19%] pointer-events-auto">
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="w-32 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
+              <div className="w-36 h-12 cursor-help opacity-0 hover:opacity-20 bg-blue-500/30 rounded transition-all duration-300"></div>
             </TooltipTrigger>
             <TooltipContent 
               className="bg-gradient-to-r from-[#1A1F2C] to-[#2A2045] border border-blue-400/30 text-blue-300 p-3 max-w-xs backdrop-blur-sm"
