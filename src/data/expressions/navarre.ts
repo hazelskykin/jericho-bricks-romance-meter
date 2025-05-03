@@ -50,6 +50,18 @@ const navarreExpressions: CharacterExpressionSet = {
     mood: 'embarrassed',
     image: '/assets/characters/navarre-embarrassed.png',
     description: 'Navarre with rare vulnerability showing through a blush'
+  },
+  confident: {
+    characterId: 'navarre',
+    mood: 'confident',
+    image: '/assets/characters/navarre-happy.png', // Reusing happy as fallback
+    description: 'Navarre with an exceptionally self-assured, charismatic expression'
+  },
+  thoughtful: {
+    characterId: 'navarre',
+    mood: 'thoughtful',
+    image: '/assets/characters/navarre-neutral.png', // Reusing neutral as fallback
+    description: 'Navarre with a rare moment of quiet contemplation'
   }
 };
 

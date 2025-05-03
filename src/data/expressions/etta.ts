@@ -50,6 +50,18 @@ const ettaExpressions: CharacterExpressionSet = {
     mood: 'embarrassed',
     image: '/assets/characters/etta-embarrassed.png',
     description: 'Etta with a slightly flustered expression breaking her usual control'
+  },
+  confident: {
+    characterId: 'etta',
+    mood: 'confident',
+    image: '/assets/characters/etta-happy.png', // Reusing happy as fallback
+    description: 'Etta with an authoritative, commanding presence'
+  },
+  thoughtful: {
+    characterId: 'etta',
+    mood: 'thoughtful',
+    image: '/assets/characters/etta-neutral.png', // Reusing neutral as fallback
+    description: 'Etta with a strategic, analytical expression'
   }
 };
 

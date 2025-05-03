@@ -50,6 +50,18 @@ const mavenExpressions: CharacterExpressionSet = {
     mood: 'embarrassed',
     image: '/assets/characters/maven-embarrassed.png',
     description: 'Maven with a sheepish, slightly blushing expression'
+  },
+  confident: {
+    characterId: 'maven',
+    mood: 'confident',
+    image: '/assets/characters/maven-confident.png',
+    description: 'Maven with a self-assured, determined expression'
+  },
+  thoughtful: {
+    characterId: 'maven',
+    mood: 'thoughtful',
+    image: '/assets/characters/maven-thoughtful.png',
+    description: 'Maven with a contemplative, analytical expression'
   }
 };
 

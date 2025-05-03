@@ -50,6 +50,18 @@ const xavierExpressions: CharacterExpressionSet = {
     mood: 'embarrassed',
     image: '/assets/characters/xavier-embarrassed.png',
     description: 'Xavier with a self-conscious expression and slight blush'
+  },
+  confident: {
+    characterId: 'xavier',
+    mood: 'confident',
+    image: '/assets/characters/xavier-happy.png', // Reusing happy as fallback
+    description: 'Xavier with a self-assured, knowledgeable expression'
+  },
+  thoughtful: {
+    characterId: 'xavier',
+    mood: 'thoughtful',
+    image: '/assets/characters/xavier-neutral.png', // Reusing neutral as fallback
+    description: 'Xavier with a contemplative, problem-solving expression'
   }
 };
 

@@ -50,6 +50,18 @@ const senaraExpressions: CharacterExpressionSet = {
     mood: 'embarrassed',
     image: '/assets/characters/senara-embarrassed.jpeg',
     description: 'Senara with a subtle blush revealing hidden emotions'
+  },
+  confident: {
+    characterId: 'senara',
+    mood: 'confident',
+    image: '/assets/characters/senara-happy.jpeg', // Reusing happy as fallback
+    description: 'Senara with an assured, intellectually dominant expression'
+  },
+  thoughtful: {
+    characterId: 'senara',
+    mood: 'thoughtful',
+    image: '/assets/characters/senara-neutral.png', // Reusing neutral as fallback
+    description: 'Senara with a deeply contemplative, analytical gaze'
   }
 };
 
