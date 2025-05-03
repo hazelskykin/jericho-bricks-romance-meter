@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GameProvider } from '@/context/GameContext';
 import AssetPreloader from './AssetPreloader';
 import GameInterface from './GameInterface';
 import GameSceneObserver from './GameSceneObserver';
@@ -16,12 +15,10 @@ const Game: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <GameProvider>
-        <AssetPreloader>
-          <GameInterface />
-          <GameSceneObserver />
-        </AssetPreloader>
-      </GameProvider>
+      <AssetPreloader>
+        <GameInterface />
+        <GameSceneObserver />
+      </AssetPreloader>
     </motion.div>
   );
 };

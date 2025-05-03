@@ -7,7 +7,7 @@ import SeasonTransition from './SeasonTransition';
  * Game scene observer component to handle minigame transitions and season changes
  */
 const GameSceneObserver = () => {
-  const { gameState, startMinigame, checkSeasonProgress, handleSceneTransition } = useGame();
+  const { gameState, startMinigame, checkSeasonProgress } = useGame();
 
   // Monitor scene changes to detect when to trigger minigames or season transitions
   useEffect(() => {
@@ -29,7 +29,7 @@ const GameSceneObserver = () => {
     // Check for season transition scenes
     checkSeasonProgress(currentScene);
     
-  }, [gameState.currentScene, startMinigame, checkSeasonProgress, handleSceneTransition]);
+  }, [gameState.currentScene, startMinigame, checkSeasonProgress]);
 
   // Render season transition screens when needed
   const renderSeasonTransition = () => {
