@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { TooltipProvider } from "@/components/ui/tooltip";
 import MenuBackground from './menu/MenuBackground';
 import GameTitle from './menu/GameTitle';
 import MainContent from './menu/MainContent';
@@ -13,8 +12,6 @@ interface MainMenuProps {
 }
 
 const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
-  const { handleSceneTransition } = useGame();
-  
   return (
     <div className="flex flex-col items-center justify-start min-h-screen relative overflow-hidden">
       {/* Background */}
