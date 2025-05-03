@@ -30,6 +30,29 @@ const FestivalActivitiesScene: React.FC<FestivalActivitiesProps> = ({
 }) => {
   const { handleSceneTransition } = useGame();
   
+  // Log when component renders to debug navigation
+  console.log("FestivalActivitiesScene rendered", {
+    activities: activities.map(a => a.id),
+    title
+  });
+  
+  // Handle activity selection with logging
+  const handleActivitySelect = (activity: FestivalActivity) => {
+    if (!activity.available) {
+      console.log(`Activity ${activity.id} is not available`);
+      return;
+    }
+    
+    console.log(`Selected activity ${activity.id}, navigating to ${activity.sceneId}`);
+    handleSceneTransition(activity.sceneId);
+  };
+  
+  // Handle complete festival
+  const handleCompleteFestival = () => {
+    console.log(`Completing festival, navigating to ${completionSceneId}`);
+    handleSceneTransition(completionSceneId);
+  };
+  
   return (
     <>
       <BackgroundScene backgroundId="stonewich-cityscape" />
@@ -48,16 +71,16 @@ const FestivalActivitiesScene: React.FC<FestivalActivitiesProps> = ({
             {activities.map(activity => (
               <motion.button
                 key={activity.id}
-                className="flex flex-col items-center p-6 rounded-lg border transition-all duration-300"
+                className={`flex flex-col items-center p-6 rounded-lg border transition-all duration-300 ${!activity.available ? 'opacity-75' : ''}`}
                 style={{ 
                   borderColor: `${activity.color}50`,
                   backgroundColor: `${activity.color}10`
                 }}
-                whileHover={{ 
+                whileHover={activity.available ? { 
                   backgroundColor: `${activity.color}30`,
                   y: -5 
-                }}
-                onClick={() => handleSceneTransition(activity.sceneId)}
+                } : {}}
+                onClick={() => handleActivitySelect(activity)}
               >
                 <h3 className="font-bold text-xl mb-2" style={{ color: activity.color }}>{activity.title}</h3>
                 <p className="text-white/70 text-center">{activity.description}</p>
@@ -74,7 +97,7 @@ const FestivalActivitiesScene: React.FC<FestivalActivitiesProps> = ({
           <div className="mt-8 flex justify-center">
             <Button
               className="px-8 py-4 bg-[#9b87f5] hover:bg-[#7E69AB] text-white font-semibold text-lg transition-all duration-300"
-              onClick={() => handleSceneTransition(completionSceneId)}
+              onClick={handleCompleteFestival}
             >
               Complete Festival
             </Button>

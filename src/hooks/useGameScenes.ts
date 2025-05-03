@@ -33,8 +33,16 @@ export function useGameScenes(
     }
   }, [currentScene, gameState.dialogueIndex]);
 
-  // Handle scene transitions
+  // Enhanced scene transition with logging
   const handleSceneTransition = useCallback((nextSceneId: string) => {
+    console.log(`Transitioning from scene [${gameState.currentScene}] to [${nextSceneId}]`);
+    
+    // Check if the target scene exists
+    if (!scenes[nextSceneId]) {
+      console.error(`Scene transition failed: Target scene [${nextSceneId}] not found!`);
+      return;
+    }
+    
     setGameState(prev => ({
       ...prev,
       currentScene: nextSceneId,
@@ -42,7 +50,9 @@ export function useGameScenes(
       showChoices: false,
       sceneHistory: [...prev.sceneHistory, prev.currentScene]
     }));
-  }, []);
+    
+    console.log(`Scene transition complete, now at [${nextSceneId}]`);
+  }, [gameState.currentScene]);
 
   // Handle choice selection
   const handleChoiceSelected = useCallback((choice: DialogueChoice) => {

@@ -26,12 +26,10 @@ function App() {
           <Toaster />
           <Sonner />
           
-          {/* Remove the duplicate GameSceneObserver here */}
-          
           {/* Glossary dialog */}
           <Glossary open={glossaryOpen} onOpenChange={setGlossaryOpen} />
           
-          {/* Expandable menu for view toggle */}
+          {/* Expandable menu for view toggle and game navigation */}
           <ExpandableMenu 
             activeView={viewMode}
             onGameClick={() => setViewMode('game')}

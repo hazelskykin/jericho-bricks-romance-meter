@@ -22,10 +22,29 @@ const CharacterSelectionScene: React.FC<CharacterSelectionProps> = ({
 }) => {
   const { handleSceneTransition } = useGame();
   
+  // Log when component renders to debug navigation
+  console.log("CharacterSelectionScene rendered", {
+    availableCharacters,
+    scenePrefix,
+    title
+  });
+  
   // Filter only the specified characters
   const selectableCharacters = Object.values(characters).filter(
     character => availableCharacters.includes(character.id as CharacterId)
   );
+  
+  // Handle character selection with logging
+  const handleCharacterSelect = (characterId: string) => {
+    console.log(`Selected character ${characterId}, navigating to ${scenePrefix}-${characterId}`);
+    handleSceneTransition(`${scenePrefix}-${characterId}`);
+  };
+  
+  // Handle proceed to festival planning
+  const handleProceedToFestival = () => {
+    console.log("Proceeding to festival planning");
+    handleSceneTransition('spring-festival-planning');
+  };
   
   return (
     <>
@@ -54,7 +73,7 @@ const CharacterSelectionScene: React.FC<CharacterSelectionProps> = ({
                   backgroundColor: `${character.color}30`,
                   x: 5 
                 }}
-                onClick={() => handleSceneTransition(`${scenePrefix}-${character.id}`)}
+                onClick={() => handleCharacterSelect(character.id)}
               >
                 <div 
                   className="w-16 h-16 rounded-full mr-4 bg-cover bg-center"
@@ -76,7 +95,7 @@ const CharacterSelectionScene: React.FC<CharacterSelectionProps> = ({
           <div className="mt-8 flex justify-center">
             <Button
               className="px-8 py-4 bg-[#9b87f5] hover:bg-[#7E69AB] text-white font-semibold text-lg transition-all duration-300"
-              onClick={() => handleSceneTransition('spring-festival-planning')}
+              onClick={handleProceedToFestival}
             >
               Proceed to Festival Planning
             </Button>

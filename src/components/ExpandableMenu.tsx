@@ -41,12 +41,16 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
     setIsExpanded(false);
   };
   
+  // Updated navigation functions to ensure they properly transition to the right scenes
   const navigateToCharacterVisits = () => {
+    console.log("Navigating to character selection");
+    // Force transition to the base character selection scene
     handleSceneTransition('spring-character-selection');
     setIsExpanded(false);
   };
 
   const navigateToSpringFestival = () => {
+    console.log("Navigating to spring festival activities");
     handleSceneTransition('spring-festival-activities');
     setIsExpanded(false);
   };
@@ -116,7 +120,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                     </TooltipContent>
                   </Tooltip>
                   
-                  {/* Navigation buttons with fixed scene transitions */}
+                  {/* Navigation buttons with direct event handlers for better traceability */}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button 
