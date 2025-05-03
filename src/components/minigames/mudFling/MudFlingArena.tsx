@@ -4,7 +4,6 @@ import { CharacterId } from '@/types/game';
 import MudCharacter from './MudCharacter';
 import { Position, MudBall, Character } from './types';
 
-// Update the props interface to include the ref property
 export interface MudFlingArenaProps {
   mudBalls: MudBall[];
   characters: Character[];
@@ -31,7 +30,7 @@ const MudFlingArena = React.forwardRef<HTMLDivElement, MudFlingArenaProps>(
         ref={ref} 
         onClick={onGameAreaClick}
         className="relative w-[600px] h-[400px] bg-cover border-2 border-dashed border-amber-800 mx-auto my-5 overflow-hidden"
-        style={{ backgroundImage: "url('/img/mud-arena-background.png')" }}
+        style={{ backgroundImage: "url('/assets/backgrounds/stonewich-cityscape.jpg')" }}
       >
         <div className={`
           absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
@@ -53,18 +52,18 @@ const MudFlingArena = React.forwardRef<HTMLDivElement, MudFlingArenaProps>(
         </div>
         
         {mudBalls.map(ball => (
-          <img
+          <div
             key={ball.id}
-            src="/img/mudball.png"
-            alt="Mud Ball"
-            style={{ 
-              left: ball.position.x, 
-              top: ball.position.y,
-              transform: 'translate(-50%, -50%)'
-            }}
             className={`absolute w-[30px] h-[30px] cursor-pointer transition-transform hover:scale-110 ${
               selectedMudBall === ball.id ? 'ring-2 ring-yellow-400' : ''
             } ${ball.isFlying ? 'animate-none' : 'animate-bounce'}`}
+            style={{ 
+              left: ball.position.x, 
+              top: ball.position.y,
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: 'saddlebrown',
+              borderRadius: '50%'
+            }}
             onClick={(e) => {
               e.stopPropagation();
               onMudBallClick(ball.id);

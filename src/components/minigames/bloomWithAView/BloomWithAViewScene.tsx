@@ -20,7 +20,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
   
   return (
     <div 
-      className="relative w-full h-[300px] bg-[url('/assets/backgrounds/city-cafe.jpg')] bg-cover bg-center rounded-lg cursor-pointer overflow-hidden"
+      className="relative w-full h-[300px] bg-[url('/assets/backgrounds/stonewich-cityscape.jpg')] bg-cover bg-center rounded-lg cursor-pointer overflow-hidden"
       onClick={onClick}
     >
       {/* Item hotspots (invisible unless hint is active) */}

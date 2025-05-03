@@ -14,15 +14,14 @@ interface BloomWithAViewGameProps {
 
 const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({ onComplete, onExit }) => {
   const {
-    availableItems,
-    placedItems,
-    selectedItem,
-    score,
-    targetScore,
-    gameEnded,
-    selectItem,
-    placeItem,
-    isGameWon
+    hiddenItems,
+    clickPosition,
+    showHint,
+    hintCooldown,
+    gameComplete,
+    timeRemaining,
+    handleSceneClick,
+    handleHintClick
   } = useBloomWithAViewGame(onComplete);
 
   // This variable can be set to false when the game is under construction
@@ -39,26 +38,37 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({ onComplete, onE
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex-1">
             <BloomWithAViewItemList 
-              items={availableItems} 
-              selectedItemId={selectedItem?.id} 
-              onSelectItem={selectItem} 
+              items={hiddenItems}
             />
           </div>
           
           <div className="flex-[2]">
             <BloomWithAViewScene 
-              placedItems={placedItems} 
-              selectedItem={selectedItem}
-              onPlaceItem={placeItem}
-              score={score}
-              targetScore={targetScore}
+              hiddenItems={hiddenItems}
+              clickPosition={clickPosition}
+              showHint={showHint}
+              onClick={handleSceneClick}
             />
             
-            {gameEnded && (
+            <div className="mt-4 flex justify-between">
+              <div className="text-lg text-white">
+                <span className="font-bold">Time remaining:</span> {timeRemaining}s
+              </div>
+              
+              <Button
+                onClick={handleHintClick}
+                className="bg-[#9b87f5] hover:bg-[#7E69AB]"
+                disabled={hintCooldown > 0}
+              >
+                Hint {hintCooldown > 0 ? `(${hintCooldown}s)` : ''}
+              </Button>
+            </div>
+            
+            {gameComplete && (
               <GameStatusMessage 
-                status={isGameWon ? 'won' : 'lost'}
-                winMessage="Beautiful job! Your garden display is stunning!"
-                loseMessage="The garden isn't quite there yet. Keep working on your design skills!"
+                status={hiddenItems.every(item => item.found) ? 'won' : 'lost'}
+                winMessage="Beautiful job! You've found all the hidden items in time!"
+                loseMessage="Time's up! Keep searching - you'll find them all next time!"
               />
             )}
           </div>

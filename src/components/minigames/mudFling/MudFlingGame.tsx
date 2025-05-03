@@ -4,7 +4,7 @@ import MinigameContainer from '../MinigameContainer';
 import MudFlingArena from './MudFlingArena';
 import MudFlingControls from './MudFlingControls';
 import GameStatusMessage from '../common/GameStatusMessage';
-import { MudBallType, CharacterType } from './types';
+import { Character, Position } from './types';
 import { useMudFlingGame } from '@/hooks/useMudFlingGame';
 import { Button } from '@/components/ui/button';
 
@@ -15,19 +15,20 @@ interface MudFlingGameProps {
 
 const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
   const {
-    playerCharacter,
-    aiCharacter,
-    selectedMudBall,
-    playerScore,
-    aiScore,
-    gameEnded,
-    winScore,
+    timeRemaining,
+    fountainIntensity,
     mudBalls,
-    mudBallsLeft,
-    throwMudBall,
-    selectMudBall,
-    isPlayerWinner
+    characters,
+    selectedMudBall,
+    team1Score,
+    team2Score,
+    gameEnded,
+    handleMudBallClick,
+    handleGameAreaClick
   } = useMudFlingGame(onComplete);
+  
+  // Determine the winner based on team scores
+  const isPlayerWinner = team1Score > team2Score;
   
   // This variable can be set to false when the game is under construction
   const isGameReady = true;
@@ -43,21 +44,26 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
         {isGameReady ? (
           <>
             <MudFlingControls 
-              mudBalls={mudBalls}
-              mudBallsLeft={mudBallsLeft}
-              selectedMudBall={selectedMudBall}
-              playerScore={playerScore}
-              aiScore={aiScore}
-              winScore={winScore}
-              onSelectMudBall={selectMudBall}
+              timeRemaining={timeRemaining}
+              fountainIntensity={fountainIntensity}
+              team1Score={team1Score}
+              team2Score={team2Score}
             />
             
             <MudFlingArena 
-              playerCharacter={playerCharacter}
-              aiCharacter={aiCharacter}
+              mudBalls={mudBalls}
+              characters={characters}
               selectedMudBall={selectedMudBall}
-              onThrowMudBall={throwMudBall}
-              gameEnded={gameEnded}
+              fountainIntensity={fountainIntensity}
+              characterColors={{
+                'maven': { color: '#0D98BA' },
+                'xavier': { color: '#4CC2FF' },
+                'navarre': { color: '#FFB347' },
+                'etta': { color: '#FF5E5B' },
+                'senara': { color: '#9C89FF' }
+              }}
+              onMudBallClick={handleMudBallClick}
+              onGameAreaClick={handleGameAreaClick}
             />
             
             {gameEnded && (
