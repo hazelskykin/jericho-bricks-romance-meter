@@ -625,7 +625,7 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-senara-modern': {
     id: 'spring-visit-senara-modern',
-    background: 'cybaton-library',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'senara',
