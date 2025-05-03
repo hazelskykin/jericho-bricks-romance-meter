@@ -50,6 +50,13 @@ const backgrounds: Record<string, BackgroundAsset> = {
     description: 'Grand entrance with a mix of modern architecture and traditional craftsmanship.',
     gradient: 'linear-gradient(to bottom, rgba(31, 34, 53, 0.1), rgba(47, 34, 69, 0.2))'
   },
+  'cybaton-shuttle': {
+    id: 'cybaton-shuttle',
+    name: 'Cybaton Shuttle',
+    image: '/assets/backgrounds/cybaton-shuttle.jpg',
+    description: 'Sleek transport pod for traveling between cities, featuring panoramic windows and comfortable seating.',
+    gradient: 'linear-gradient(to bottom, rgba(29, 33, 58, 0.1), rgba(45, 38, 72, 0.2))'
+  },
   'city-cafe': {
     id: 'city-cafe',
     name: 'City Cafe',

@@ -73,7 +73,7 @@ const departureScenes: Record<string, Scene> = {
   
   'departure-journey': {
     id: 'departure-journey',
-    background: 'cybaton-office',
+    background: 'cybaton-shuttle',
     dialogue: [
       {
         character: 'narrator',
