@@ -1,7 +1,7 @@
 
 import { CharacterId } from './game';
 
-export type MoodType = 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised' | 'laughing' | 'shocked' | 'embarrassed';
+export type MoodType = 'neutral' | 'happy' | 'sad' | 'angry' | 'surprised' | 'laughing' | 'shocked' | 'embarrassed' | 'confident' | 'thoughtful';
 
 export interface CharacterExpression {
   characterId: CharacterId;
