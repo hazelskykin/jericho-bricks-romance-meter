@@ -8,7 +8,7 @@ const introScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'The gleaming Cybaton tower stands as a testament to technological innovation, its glass and steel structure reaching into the clear blue sky of downtown Stonewich.',
+        text: 'The gleaming Cybaton tower stands as a testament to technological innovation, its glass and steel structure reaching into the clear blue sky of downtown.',
       },
       {
         character: 'narrator',

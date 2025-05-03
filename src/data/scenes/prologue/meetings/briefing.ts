@@ -47,6 +47,14 @@ const briefingScenes: Record<string, Scene> = {
         character: 'narrator',
         text: 'Dr. Voss: "You leave for Stonewich tomorrow morning. I suggest you all get to know each other better before then."',
       },
+      {
+        character: 'narrator',
+        text: "You feel conflicted. You're reassured that it's not a mistake, but you're still uncertain what you can bring beyond what the others do.",
+      },
+      {
+        character: 'narrator',
+        text: "You decide that this will just be something you'll need to figure out for yourself as you go and decide to be proactive.",
+      },
     ],
     choices: [
       {

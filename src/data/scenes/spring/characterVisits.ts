@@ -5,7 +5,7 @@ const characterVisits: Record<string, Scene> = {
   // Xavier visit scene
   'spring-visit-xavier': {
     id: 'spring-visit-xavier',
-    background: 'cybaton-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
@@ -47,7 +47,7 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-xavier-help': {
     id: 'spring-visit-xavier-help',
-    background: 'cybaton-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'xavier',
@@ -84,7 +84,7 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-xavier-unsure': {
     id: 'spring-visit-xavier-unsure',
-    background: 'cybaton-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'xavier',
@@ -116,7 +116,7 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-xavier-practical': {
     id: 'spring-visit-xavier-practical',
-    background: 'cybaton-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'xavier',
@@ -307,7 +307,7 @@ const characterVisits: Record<string, Scene> = {
   // Etta visit scene
   'spring-visit-etta': {
     id: 'spring-visit-etta',
-    background: 'cybaton-meeting-room',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
@@ -325,28 +325,28 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "I'm calculating the optimal resource allocation for maximum community engagement. The previous years' festivals were inefficient.",
+        text: "Supplies, vendors, schedules - you name it. There's a million practical and logistical considerations to be finalized.",
         mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "Actually, since you're here, I could use an opinion. Should we focus our resources on more cleaning supplies for community cleanup, or more seedlings for the public gardens?",
+        text: "You came by to shadow me, right? I could use an opinion. Should we focus resources on pre-cleaning the venue to be more welcoming or providing more supplies for on-the-day activities for higher engagement?",
         mood: 'neutral',
       }
     ],
     choices: [
       {
-        text: "Cleaning supplies - a clean city is the foundation of the festival.",
-        affectionChanges: { etta: 1 },
+        text: "Cleaning - a clean city is the foundation of the festival.",
+        affectionChanges: { etta: -0.5 },
         nextSceneId: 'spring-visit-etta-cleaning',
       },
       {
-        text: "Why not balance both? We need clean spaces to plant new gardens.",
+        text: "Why not balance both? We need clean spaces for people to use for activities.",
+        affectionChanges: { etta: 1 },
         nextSceneId: 'spring-visit-etta-balance',
       },
       {
-        text: "Seedlings - focusing on new growth seems more in the spirit of spring.",
-        affectionChanges: { etta: -0.5 },
+        text: "Activity resources - people will remember what they did together at the event, not how clean it was beforehand.",
         nextSceneId: 'spring-visit-etta-seedlings',
       },
     ],
@@ -354,35 +354,40 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-etta-cleaning': {
     id: 'spring-visit-etta-cleaning',
-    background: 'cybaton-meeting-room',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'etta',
-        text: "Exactly. Aesthetics are meaningless without proper sanitation and organization.",
-        mood: 'happy',
+        text: "Exactly. Aesthetics are meaningless without proper sanitation and organization, but paid staff will need to be deployed.",
+        mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "Plus, once everything is clean, we can better plan where new plantings would have the most impact.",
-        mood: 'neutral',
+        text: "Oh, right. Volunteers aren't likely to sign-up to do what most consider the responsibility of the sanitation department.",
+        mood: 'embarrassed',
       },
       {
         character: 'etta',
-        text: "Hmm. A logical progression. I appreciate that you understand the importance of proper sequencing.",
+        text: "Right. I thought you might have a suggestion, but it's the same dilemma - cleaning doesn't directly contribute to higher engagement, only higher costs.",
+        mood: 'angry',
+      },
+      {
+        character: 'etta',
+        text: "Let's move on. I was expecting too much that you might have a solution for such an issue.",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "Etta makes adjustments to her spreadsheets, occasionally asking for your input on specific allocations.",
+        text: "Etta makes adjustments to her simulations, occasionally asking for your input on specific allocations.",
       },
       {
         character: 'etta',
-        text: "Your assessment was sound, Maven. It's... refreshing to work with someone who values efficiency.",
+        text: "Your reasoning was sound, Maven, but conventional. It's important to know where to invest wisely.",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "Coming from Etta, this seems like high praise indeed. You continue to work together for another hour, and find a certain satisfaction in the meticulous planning.",
+        text: "Coming from Etta, this seems like high praise indeed. You continue to work together for another hour, and find a certain satisfaction in the meticulous planning although it lacks something in creative innovation.",
       },
     ],
     nextSceneId: 'spring-character-selection-3',
@@ -390,7 +395,7 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-etta-balance': {
     id: 'spring-visit-etta-balance',
-    background: 'cybaton-meeting-room',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'etta',
@@ -399,27 +404,41 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "What I mean is that we should sequence the activities. Cleaning first, then planting. Both are equally important.",
+        text: "What I mean is that we should structure activities around both to meet your goal. Both are equally important.",
         mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "Hmm. That's not exactly balance, that's proper procedure.",
+        text: "Hmm. That's not exactly balance. The goal is to drive higher engagement.",
         mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "And we should ensure resources are appropriate for both phases.",
+        text: "Then let's make sure resources are appropriate for both phases, and we structure both as activities designed for participation.",
         mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "I suppose that's a reasonable approach, though I was hoping for a more decisive assessment.",
-        mood: 'neutral',
+        text: "Structured activities to clean? Will anyone want to do that? What's your idea exactly?",
+        mood: 'surprised',
+      },
+      {
+        character: 'maven',
+        text: "Let's start with a volunteer orientation the day before where volunteers can meet each other, preview the venues, and prep for the festival.",
+        mood: 'surprised',
       },
       {
         character: 'narrator',
-        text: "You work with Etta to create a two-phase plan for the festival. Though she doesn't seem entirely satisfied with your 'balanced' approach, she does incorporate some of your suggestions.",
+        text: "You work with Etta to create a two-phase plan for the festival with new activities designed for cleaning and higher volunteer engagement.",
+      },
+      {
+        character: 'etta',
+        text: "This is a novel approach and may save some budget on cleaners, but there are risks here too if volunteers don't show up. Your idea is innovative.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "Despite her remarks about risks, she does incorporate some of your suggestions. You feel a quiet pride in providing a practical approach to achieveing the outcomes desired."
       },
     ],
     nextSceneId: 'spring-character-selection-3',
@@ -427,31 +446,31 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-etta-seedlings': {
     id: 'spring-visit-etta-seedlings',
-    background: 'cybaton-meeting-room',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'etta',
-        text: "The spirit of spring? I'm not concerned with abstract concepts. I'm concerned with measurable outcomes.",
-        mood: 'angry',
-      },
-      {
-        character: 'maven',
-        text: "But public perception matters too. People remember beautiful gardens more than clean streets.",
-        mood: 'neutral',
-      },
-      {
-        character: 'etta',
-        text: "That's precisely the kind of short-sighted thinking that leads to inefficient city management.",
-        mood: 'angry',
-      },
-      {
-        character: 'etta',
-        text: "What's the point of planting gardens in trash-strewn parks? Sequencing matters, Maven.",
+        text: "I'm concerned with measurable outcomes. People's memories are hazy outcomes at best.",
         mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "I see your point. I was thinking too much about the end result without considering the process.",
+        text: "But public perception matters too. People remember the fun they had doing something together more than clean streets.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "The true return on such a plan would be the rate of return visitors to the festival next year.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "Can people really make good memories if the venues don't look inviting enough to go? Will the funding for next year get approved if the impact isn't visible from this year?",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I see your point. I was thinking too much about it as an experience and not enough as objective outcomes.",
         mood: 'embarrassed',
       },
       {
@@ -470,20 +489,20 @@ const characterVisits: Record<string, Scene> = {
   // Senara visit scene
   'spring-visit-senara': {
     id: 'spring-visit-senara',
-    background: 'cybaton-library',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Senara in the Cybaton library, surrounded by both physical books and holographic displays of historical data.",
+        text: "You find Senara in the relaxing with a tablet in hand in the Stonewich office and a cup of tea in easy reach.",
       },
       {
         character: 'senara',
-        text: "Maven. I didn't expect to see you here.",
+        text: "Maven. I didn't expect to see you here. I thought you were shadowing someone today?",
         mood: 'surprised',
       },
       {
         character: 'maven',
-        text: "I was looking for you, actually. What are you researching?",
+        text: "I was looking for you, actually. I thought I'd shadow you today. What are you researching?",
         mood: 'neutral',
       },
       {
@@ -493,22 +512,22 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "I'm trying to determine whether some of the original traditions should be reintroduced. There's a dilemma between honoring history and moving forward with new traditions. What's your perspective?",
+        text: "I'm trying to determine whether it's the history of the people or the place that have a greater significance to evolving traditions. There's a dilemma between maintaining traditions as historical and moving forward as societal values shift. What's your perspective?",
         mood: 'neutral',
       }
     ],
     choices: [
       {
-        text: "Historical traditions have value and should be preserved.",
+        text: "Traditions have value and should be preserved. Changing with societal values only chases fads.",
         affectionChanges: { senara: 1 },
         nextSceneId: 'spring-visit-senara-traditional',
       },
       {
-        text: "We should find a balance between honoring history and creating new traditions.",
+        text: "We should find a balance between honoring history and recognizing what is defining for people today.",
         nextSceneId: 'spring-visit-senara-balance',
       },
       {
-        text: "Society needs to evolve. We should focus on creating new traditions.",
+        text: "Society evolves. Change is inevitable. We should focus on managing the change proactively, not resisting against the ebb of time.",
         affectionChanges: { senara: -0.5 },
         nextSceneId: 'spring-visit-senara-modern',
       },
@@ -517,7 +536,7 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-senara-traditional': {
     id: 'spring-visit-senara-traditional',
-    background: 'cybaton-library',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'senara',
@@ -541,7 +560,17 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "That sounds amazing. Could we revive something like that?",
+        text: "That sounds amazing. Perhaps what began as the spring festival transitioned to the autumn with the focus on craftmanship?",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "It would seem so. Over time the city's commerce became more centered on the port trade and shifted the daily cadences of its citizens.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Perhaps the local art fair component of the spring festival is the living remnant of what was once more robust?",
         mood: 'happy',
       },
       {
@@ -551,7 +580,7 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "You spend the next hour discussing historical traditions with Senara. Her usually reserved demeanor softens as she shares her knowledge with someone who genuinely values it.",
+        text: "You spend the next hour discussing historical traditions with Senara. His usually reserved demeanor softens as he shares his knowledge with someone who genuinely values it.",
       },
     ],
     nextSceneId: 'spring-character-selection-4',
@@ -559,7 +588,7 @@ const characterVisits: Record<string, Scene> = {
   
   'spring-visit-senara-balance': {
     id: 'spring-visit-senara-balance',
-    background: 'cybaton-library',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'senara',
@@ -588,7 +617,7 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Senara shows you some of the historical records she's been studying. Together, you identify several traditions that could be modernized while preserving their core meaning.",
+        text: "Senara shows you some of the historical records he's been studying. Together, you identify several traditions that could be modernized while preserving their core meaning.",
       },
     ],
     nextSceneId: 'spring-character-selection-4',
@@ -600,12 +629,12 @@ const characterVisits: Record<string, Scene> = {
     dialogue: [
       {
         character: 'senara',
-        text: "A common perspective. But evolution without reference to the past often leads to repeating its mistakes.",
+        text: "A common perspective. But evolution without reference to the past has a dehumanizing effect on society where technology substitutes for community.",
         mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "But holding onto outdated traditions can hold society back.",
+        text: "But holding onto outdated traditions can create negative backlash or disengagement.",
         mood: 'neutral',
       },
       {
@@ -615,17 +644,17 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "I just think we should focus on creating traditions that reflect our current values.",
+        text: "I just think we should focus on being proactive in managing adaptations to traditions that reflect our current values.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "And what are those values, Maven? And how do you know they're better than what came before?",
+        text: "And what are those values, Maven? How do they shape our identity if not within the context of what we've been historically?",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "Your conversation with Senara becomes a philosophical debate. Though you disagree on some points, you gain a deeper appreciation for her thoughtful approach to change.",
+        text: "Your conversation with Senara becomes a philosophical debate. Though you disagree on some points, you gain a deeper appreciation for his thoughtful approach to change.",
       },
     ],
     nextSceneId: 'spring-character-selection-4',

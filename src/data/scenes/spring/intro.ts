@@ -25,24 +25,49 @@ const springIntroScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "Morning, Maven! Have you heard about the Spring festival? It's coming up next week—Blooms & Brooms.",
+        text: "Morning, Maven!",
         mood: 'happy',
       },
       {
         character: 'maven',
-        text: "Blooms & Brooms? That sounds interesting.",
+        text: "You're here early. Busy day?",
         mood: 'neutral',
       },
       {
         character: 'xavier',
-        text: "It's one of Stonewich's four seasonal festivals. Spring is all about renewal—cleaning up the city and planting new gardens.",
+        text: "Yep! The Blooms and Brooms spring festival is nearly here. There's so much to do!",
         mood: 'happy',
       },
       {
         character: 'navarre',
         text: "Did I hear someone mention the festival? It's a great PR opportunity for us newcomers. We should all participate.",
         mood: 'happy',
-      }
+      },
+      {
+        character: 'senara',
+        text: "Are we meeting now on the festival? Where's Etta?",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Oh, no. Nothing that formal. I was just chatting.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "Did someone call my name? I've been at my desk since dawn working out the vendor arrangements for the art fair at the festival.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "No, sorry to have bothered you. We were just chatting.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "All of you? Typical. Let's make the most of this since we're all here. Maven, why don't you shadow someone so things get done in time for the festival.",
+        mood: 'neutral',
+      },
     ],
     nextSceneId: 'spring-planning',
   }

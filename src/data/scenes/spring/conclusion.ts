@@ -28,7 +28,7 @@ const springConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "The seasonal traditions here are deeply rooted. Understanding them helps us better integrate our technological solutions.",
+        text: "The seasonal traditions here are deeply rooted. Understanding them helps us better appreciate the thread of continuity in our collective identity.",
         mood: 'neutral',
       },
       {

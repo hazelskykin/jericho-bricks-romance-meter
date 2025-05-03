@@ -13,7 +13,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "Hey everyone! I'm Xavier. Looks like we'll be working together in Stonewich.",
-        mood: 'happy',
+        mood: 'neutral',
       },
       {
         character: 'navarre',
@@ -78,6 +78,58 @@ const initialMeetingScenes: Record<string, Scene> = {
         text: "I've already studied them. The city's systems are stable but outdated.",
         mood: 'neutral',
       },
+      {
+        character: 'etta',
+        text: "Navarre Ellis? The media darling?",
+        mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "A perfect fit for the team's Bellfox.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "Seems my reputation proceeds me, like always.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "I know I'm a natural Solvitor.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Does everyone know their role already?",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I see...",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "Your anxiety starts to spiral since your results were inconclusive. You start to wonder whether you should actually be here. What if it's all a mistake?",
+      },
+      {
+        character: 'etta',
+        text: "Just great. I see a fifth will be adding a lot more chatter if nothing else. My role here is obvious, isn't it?",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. Etta must be the Diva.",
+      },
+      {
+        character: 'narrator',
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You automatically start to focus on your breathing to help calm down.",
+      },
     ],
     nextSceneId: 'briefing',
   },
@@ -106,6 +158,58 @@ const initialMeetingScenes: Record<string, Scene> = {
         text: "Well, whatever the reason, welcome aboard! We'll make it work.",
         mood: 'neutral',
       },
+      {
+        character: 'etta',
+        text: "Wait...Navarre Ellis? The media darling?",
+        mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "A perfect fit for the team's Bellfox.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "Seems my reputation proceeds me, like always.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "I know I'm a natural Solvitor.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Does everyone know their role already?",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I see...",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "Your anxiety starts to spiral since your results were inconclusive. You start to wonder whether you should actually be here. What if it's all a mistake?",
+      },
+      {
+        character: 'etta',
+        text: "Just great. I see a fifth will be adding a lot more chatter if nothing else. My role here is obvious, isn't it?",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. Etta must be the Diva.",
+      },
+      {
+        character: 'narrator',
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You automatically start to focus on your breathing to help calm down.",
+      },
     ],
     nextSceneId: 'briefing',
   },
@@ -133,6 +237,59 @@ const initialMeetingScenes: Record<string, Scene> = {
         character: 'senara',
         text: 'Inconclusive results often indicate complex thinking patterns. That could be beneficial.',
         mood: 'neutral',
+      },
+      
+      {
+        character: 'etta',
+        text: "Wait...Navarre Ellis? The media darling?",
+        mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "A perfect fit for the team's Bellfox.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "Seems my reputation proceeds me, like always.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "I know I'm a natural Solvitor.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Does everyone know their role already?",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I see...",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "Your anxiety starts to spiral since your results were inconclusive. You start to wonder whether you should actually be here. What if it's all a mistake?",
+      },
+      {
+        character: 'etta',
+        text: "Just great. I see a fifth will be adding a lot more chatter if nothing else. My role here is obvious, isn't it?",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. Etta must be the Diva.",
+      },
+      {
+        character: 'narrator',
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You automatically start to focus on your breathing to help calm down.",
       },
     ],
     nextSceneId: 'briefing',
