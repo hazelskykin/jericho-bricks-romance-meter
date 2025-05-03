@@ -29,7 +29,7 @@ export function useAutumnSeasonHandlers(
       showRelationshipMilestone({
         characterId: charId as CharacterId,
         milestoneText: "Your relationship has deepened. A more intimate bond may be possible.",
-        level: "Romance Route"
+        level: "Autumn Romance"
       });
 
       console.log('Transitioning to Autumn season', charId);
