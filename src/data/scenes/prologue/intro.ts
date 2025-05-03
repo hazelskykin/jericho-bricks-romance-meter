@@ -46,7 +46,7 @@ const introScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Five? That's unusual. Teams are always four...",
-        mood: 'surprised',
+        mood: 'shocked',
       },
     ],
     nextSceneId: 'team-meeting',
