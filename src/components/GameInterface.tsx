@@ -9,6 +9,7 @@ import BackgroundScene from './BackgroundScene';
 import CharacterStatus from './CharacterStatus';
 import MainMenu from './MainMenu';
 import CharacterSelectionScene from './CharacterSelectionScene';
+import FestivalActivitiesScene from './FestivalActivitiesScene';
 import { CharacterId } from '@/types/game';
 
 // Import minigames
@@ -68,6 +69,42 @@ const GameInterface: React.FC = () => {
             ? "As spring begins in Stonewich, take time to connect with your teammates. Who would you like to visit next?"
             : "You've visited all your teammates. You can proceed to the Spring festival planning."
         }
+      />
+    );
+  }
+  
+  // Handle festival activities selection scene
+  if (gameState.currentScene === 'spring-festival-activities') {
+    const festivalActivities = [
+      {
+        id: 'brooms-away',
+        title: 'Community Cleanup',
+        description: 'Help coordinate the cleanup efforts with the automated drones',
+        color: '#4CC2FF', // Xavier's color
+        sceneId: 'spring-brooms-away-intro'
+      },
+      {
+        id: 'bloom-view',
+        title: 'Garden Planting',
+        description: 'Assist residents with planting flowers and creating garden displays',
+        color: '#9C89FF', // Senara's color
+        sceneId: 'spring-bloom-view-intro'
+      },
+      {
+        id: 'mud-fling',
+        title: 'Festival Games',
+        description: 'Participate in the playful mud fling competition at the festival',
+        color: '#FFB347', // Navarre's color
+        sceneId: 'spring-mud-fling-intro'
+      }
+    ];
+    
+    return (
+      <FestivalActivitiesScene 
+        activities={festivalActivities}
+        title="Spring Blooms & Brooms Festival"
+        description="The festival is in full swing! Choose which activities you'd like to experience firsthand."
+        completionSceneId="spring-festival-completion"
       />
     );
   }
