@@ -50,24 +50,18 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
   // Function to start a new game via the menu
   const startNewGame = () => {
     handleNewGame();
-    toast({
-      title: "New Game",
-      description: "Starting a new game...",
-    });
+    // Removed toast notification
   };
 
   // Function to show about info via the menu
   const showAboutInfo = () => {
     handleAbout();
-    toast({
-      title: "About",
-      description: "Showing about information",
-    });
+    // Removed toast notification
   };
 
   return (
     <>
-      <div className="fixed bottom-4 left-4 z-50">
+      <div className="fixed bottom-4 right-4 z-50">
         <TooltipProvider>
           <div className="relative">
             {/* Toggle Button */}
@@ -83,7 +77,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                   {isExpanded ? <X /> : <Menu />}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">
+              <TooltipContent side="left">
                 <p>Toggle Menu</p>
               </TooltipContent>
             </Tooltip>
@@ -92,7 +86,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
             <AnimatePresence>
               {isExpanded && (
                 <motion.div
-                  className="absolute bottom-14 left-0 flex flex-col gap-2 w-48"
+                  className="absolute bottom-14 right-0 flex flex-col gap-2 w-48"
                   initial={{ opacity: 0, scale: 0.8, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8, y: 10 }}
@@ -110,7 +104,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                         Game View
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
+                    <TooltipContent side="left">
                       <p>Switch to Game View</p>
                     </TooltipContent>
                   </Tooltip>
@@ -126,7 +120,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                         Background Tester
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
+                    <TooltipContent side="left">
                       <p>Switch to Background Tester</p>
                     </TooltipContent>
                   </Tooltip>
@@ -143,7 +137,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                         New Game
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
+                    <TooltipContent side="left">
                       <p>Start a New Game</p>
                     </TooltipContent>
                   </Tooltip>
@@ -160,7 +154,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                         About
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
+                    <TooltipContent side="left">
                       <p>About the Game</p>
                     </TooltipContent>
                   </Tooltip>
@@ -178,7 +172,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                         Dialog History
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
+                    <TooltipContent side="left">
                       <p>View Dialog History</p>
                     </TooltipContent>
                   </Tooltip>
@@ -195,7 +189,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                         Glossary
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
+                    <TooltipContent side="left">
                       <p>Open Glossary</p>
                     </TooltipContent>
                   </Tooltip>

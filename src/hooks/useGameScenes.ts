@@ -3,7 +3,6 @@ import { useState, useCallback } from 'react';
 import { GameState, Scene, DialogueChoice } from '@/types/game';
 import scenes from '@/data/scenes';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
-import { toast } from "@/components/ui/use-toast";
 
 export function useGameScenes(
   gameState: GameState,
@@ -16,11 +15,6 @@ export function useGameScenes(
   const handleContinue = useCallback(() => {
     if (!currentScene) {
       console.error(`Cannot continue: Current scene ${gameState.currentScene} not found`);
-      toast({
-        title: "Navigation Error",
-        description: `Scene ${gameState.currentScene} not found`,
-        variant: "destructive"
-      });
       return;
     }
     
@@ -44,11 +38,6 @@ export function useGameScenes(
         handleSceneTransition(currentScene.nextSceneId);
       } else {
         console.warn(`Scene [${gameState.currentScene}] has no choices or nextSceneId, cannot progress`);
-        toast({
-          title: "Navigation Warning",
-          description: "Cannot progress - scene has no next step defined",
-          variant: "default"
-        });
       }
     }
   }, [currentScene, gameState.dialogueIndex, gameState.currentScene]);
@@ -60,19 +49,15 @@ export function useGameScenes(
     // Check if the target scene exists
     if (!scenes[nextSceneId]) {
       console.error(`Scene transition failed: Target scene [${nextSceneId}] not found!`);
-      toast({
-        title: "Navigation Error",
-        description: `Cannot navigate to scene "${nextSceneId}" - not found`,
-        variant: "destructive"
-      });
       return;
     }
     
     // Special handling for season transitions
     if (nextSceneId === 'season-transition-spring' || 
         nextSceneId === 'spring-intro' ||
-        nextSceneId === 'departure-morning') {
-      console.log(`Special season transition scene detected: ${nextSceneId}`);
+        nextSceneId === 'departure-morning' ||
+        nextSceneId === 'intro') {
+      console.log(`Special scene detected: ${nextSceneId}`);
     }
     
     setGameState(prev => ({

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { GameState, Scene, DialogueChoice, CharacterId } from '@/types/game';
 import characters from '@/data/characters';
@@ -86,9 +85,13 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const { updateCharacterAffection } = 
     useGameCharacters(gameState, setGameState);
 
-  // Start a new game
+  // Start a new game - updated to explicitly navigate to intro scene
   const handleNewGame = () => {
     handleGameReset('new');
+    // Explicitly move to intro scene after reset
+    setTimeout(() => {
+      handleSceneTransition('intro');
+    }, 100);
   };
 
   // Show about screen
@@ -100,11 +103,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const replayCurrentScene = () => {
     if (!currentScene) {
       console.error("Cannot replay: No current scene");
-      toast({
-        title: "Replay Error",
-        description: "Cannot replay scene: No current scene available",
-        variant: "destructive"
-      });
       return;
     }
     
@@ -125,12 +123,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         showChoices: false
       }));
     }
-    
-    toast({
-      title: "Scene Replay",
-      description: "Replaying current scene from the beginning",
-      variant: "default"
-    });
   };
   
   // Create scene backup when entering a new scene

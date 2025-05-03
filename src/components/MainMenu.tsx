@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import MenuBackground from './menu/MenuBackground';
 import GameTitle from './menu/GameTitle';
 import MainContent from './menu/MainContent';
+import { useGame } from '@/context/GameContext';
 
 interface MainMenuProps {
   onNewGame: () => void;
@@ -11,6 +12,13 @@ interface MainMenuProps {
 }
 
 const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
+  const { handleSceneTransition } = useGame();
+  
+  // Function to directly navigate to intro scene for "New Game" 
+  const startGame = () => {
+    handleSceneTransition('intro');
+  }
+
   return (
     <div className="flex flex-col items-center justify-start min-h-screen relative overflow-hidden">
       {/* Background */}

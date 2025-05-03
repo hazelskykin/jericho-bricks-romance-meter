@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import SeasonTransition from './SeasonTransition';
-import { toast } from "@/components/ui/use-toast";
 
 /**
  * Game scene observer component to handle minigame transitions and season changes
@@ -30,11 +29,7 @@ const GameSceneObserver = () => {
     // Handle the prologue to spring transition edge case
     if (currentScene === 'departure-morning') {
       console.log('Detected end of prologue, setting up spring transition');
-      // We'll display a toast to indicate the transition is happening
-      toast({
-        title: "Season Transition",
-        description: "Completing prologue and transitioning to Spring season",
-      });
+      // Removed toast notification
     }
     
     // Check for season transition scenes

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Heart, HeartCrack } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import characters, { maven } from '@/data/characters';
 import { CharacterId } from '@/types/game';
@@ -17,20 +17,21 @@ export const showAffectionChange = ({ characterId, changeAmount }: AffectionChan
   if (!character) return;
   
   const isPositive = changeAmount > 0;
-  const direction = isPositive ? 'increased' : 'decreased';
   
-  toast(`${character.name}'s affection ${direction}`, {
-    description: `Your choice has affected your relationship.`,
-    duration: 3000,
-    action: {
-      label: '',
-      onClick: () => {},
-    },
-    icon: isPositive 
-      ? <Heart color={character.color} fill={character.color} /> 
-      : <HeartCrack color={character.color} />,
-    style: {
-      borderLeft: `4px solid ${character.color}`,
-    },
-  });
+  toast(
+    // Empty string for no text content, just showing the heart icon
+    "",
+    {
+      duration: 2000,
+      icon: isPositive 
+        ? <Heart color={character.color} fill={character.color} /> 
+        : <Heart color={character.color} />,
+      style: {
+        borderLeft: `4px solid ${character.color}`,
+        padding: '8px',
+        minWidth: 'auto',
+        minHeight: 'auto'
+      },
+    }
+  );
 };
