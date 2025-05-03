@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { soundManager } from '@/utils/soundEffects';
 
 export interface Cell {
   isSensitive: boolean;
@@ -32,6 +33,7 @@ export function useBroomsAwayGame(onComplete: (success: boolean) => void) {
   useEffect(() => {
     if (brokenSpots >= maxBrokenSpots) {
       setGameStatus('lost');
+      soundManager.play('game-lose');
       setTimeout(() => onComplete(false), 2000);
     } else {
       checkForWin();
@@ -91,6 +93,7 @@ export function useBroomsAwayGame(onComplete: (success: boolean) => void) {
     
     if ((allNonSensitiveSwept || allSensitiveFlagged) && gameStatus === 'playing') {
       setGameStatus('won');
+      soundManager.play('game-win');
       setTimeout(() => onComplete(true), 2000);
     }
   };
@@ -108,9 +111,11 @@ export function useBroomsAwayGame(onComplete: (success: boolean) => void) {
         // Hit a sensitive spot
         newGrid[row][col].isSwept = true;
         setBrokenSpots(prev => prev + 1);
+        soundManager.play('spot-break');
         toast.error("Oh no! You broke a sensitive tech spot!");
       } else {
         // Reveal this cell and potentially neighboring cells
+        soundManager.play('broom-sweep');
         revealCell(newGrid, row, col);
       }
     } else {
@@ -118,6 +123,7 @@ export function useBroomsAwayGame(onComplete: (success: boolean) => void) {
       if (featherDusters > 0) {
         newGrid[row][col].isFlagged = true;
         setFeatherDusters(prev => prev - 1);
+        soundManager.play('spot-flag');
         
         if (grid[row][col].isSensitive) {
           toast.success("Good call! That was a sensitive tech spot!");
@@ -150,6 +156,7 @@ export function useBroomsAwayGame(onComplete: (success: boolean) => void) {
   };
   
   const toggleCursor = () => {
+    soundManager.play(cursorType === 'broom' ? 'spot-flag' : 'broom-sweep');
     setCursorType(prev => prev === 'broom' ? 'duster' : 'broom');
   };
   

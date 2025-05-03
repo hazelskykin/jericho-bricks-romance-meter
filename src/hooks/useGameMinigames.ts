@@ -2,6 +2,7 @@
 import { useState, useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
+import { soundManager } from '@/utils/soundEffects';
 
 // Add minigame types
 export type MinigameType = 'broomsAway' | 'mudFling' | 'bloomWithAView';
@@ -24,6 +25,8 @@ export function useGameMinigames(
   const completeMinigame = useCallback((success: boolean) => {
     // Apply affection bonuses based on minigame success
     if (success) {
+      // Play win sound (already played in the respective games)
+      
       // Different affection changes for each minigame
       let affectionChanges: Partial<Record<CharacterId, number>> = {};
       
@@ -64,6 +67,8 @@ export function useGameMinigames(
         ...prev,
         characters: updatedCharacters
       }));
+    } else {
+      // Play lose sound (already played in the respective games)
     }
     
     // Return to the previous scene

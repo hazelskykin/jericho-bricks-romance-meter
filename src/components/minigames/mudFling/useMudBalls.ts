@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { MudBall, Character, Position } from './types';
 import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
+import { soundManager } from '@/utils/soundEffects';
 
 export function useMudBalls(
   characters: Character[],
@@ -29,6 +30,9 @@ export function useMudBalls(
         isFlying: false
       });
     }
+    
+    // Play fountain sound when generating new mud balls
+    soundManager.play('mud-fountain');
     
     setMudBalls(prev => [...prev, ...newBalls]);
   };
@@ -62,9 +66,14 @@ export function useMudBalls(
               // Update score
               if (targetTeam === 'team1') {
                 updateScore('team2');
+                soundManager.play('score-up');
               } else {
                 updateScore('team1');
+                soundManager.play('score-up');
               }
+              
+              // Play hit sound
+              soundManager.play('mud-hit');
             }
             
             // Remove the ball
@@ -95,6 +104,8 @@ export function useMudBalls(
     const ball = mudBalls.find(b => b.id === ballId && !b.isFlying);
     
     if (ball) {
+      // Play selection sound
+      soundManager.play('mud-select');
       setSelectedMudBall(ballId);
     }
   };
@@ -105,6 +116,9 @@ export function useMudBalls(
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
+    
+    // Play throw sound
+    soundManager.play('mud-throw');
     
     // Throw mud ball at clicked position
     setMudBalls(balls => balls.map(ball => {
@@ -133,6 +147,9 @@ export function useMudBalls(
     targetTeam: 'team1' | 'team2',
     targetPosition: Position
   ) => {
+    // AI characters also play throw sound
+    soundManager.play('mud-throw');
+    
     setMudBalls(balls => balls.map(ball => {
       if (ball.id === ballId) {
         return {

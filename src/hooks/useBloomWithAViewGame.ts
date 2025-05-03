@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { soundManager } from '@/utils/soundEffects';
 
 export interface HiddenItem {
   id: string;
@@ -63,6 +64,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
     const y = event.clientY - rect.top;
     
     setClickPosition({ x, y });
+    soundManager.play('item-click');
     
     // Check if click is near any hidden items
     const itemSize = 40; // Size of the clickable area
@@ -78,6 +80,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
           prev.map(i => i.id === item.id ? { ...i, found: true } : i)
         );
         
+        soundManager.play('item-found');
         toast.success(`You found the ${item.name}!`);
       }
     });
@@ -108,6 +111,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
     if (timeRemaining <= 0 && !gameComplete) {
       // Time's up, end the game
       setGameComplete(true);
+      soundManager.play('game-lose');
       setTimeout(() => {
         onComplete(false);
       }, 2000);
@@ -127,6 +131,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
     
     if (allFound && !gameComplete) {
       setGameComplete(true);
+      soundManager.play('game-win');
       setTimeout(() => {
         onComplete(true);
       }, 2000);
@@ -139,6 +144,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
     
     setShowHint(true);
     setHintCooldown(10); // 10 second cooldown
+    soundManager.play('hint-activate');
     
     setTimeout(() => {
       setShowHint(false);
