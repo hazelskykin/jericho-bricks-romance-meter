@@ -30,7 +30,7 @@ export function useSummerSeasonHandlers(
     showRelationshipMilestone({
       characterId: 'maven',
       milestoneText: "You've grown closer to a couple team members. Maybe something special might yet develop with one of them.",
-      level: "Spring Complete"
+      level: "Summer Sizzle"
     });
 
     console.log('Transitioning to Summer season', viableCharacters);
