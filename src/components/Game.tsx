@@ -7,6 +7,8 @@ import GameInterface from './GameInterface';
 import GameSceneObserver from './GameSceneObserver';
 
 const Game: React.FC = () => {
+  console.log('Game component rendered');
+  
   return (
     <motion.div 
       className="min-h-screen overflow-hidden relative"

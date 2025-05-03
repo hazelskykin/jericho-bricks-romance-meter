@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { GameState, Scene, DialogueChoice, CharacterId } from '@/types/game';
 import characters from '@/data/characters';
 import scenes from '@/data/scenes';
@@ -50,13 +51,14 @@ interface GameProviderProps {
 }
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
+  // State initialization and hook usage must remain in this order to avoid React hooks order issues
   const [gameState, setGameState] = useState<GameState>({
     currentScene: 'start',
     dialogueIndex: 0,
     characters: JSON.parse(JSON.stringify(characters)), // Deep copy
     sceneHistory: [],
     showChoices: false,
-    hasCompletedGame: false, // True once the Versa epilogue is completed
+    hasCompletedGame: false,
     
     completedRoutes: {
       xavier: false,
@@ -67,8 +69,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     currentSeason: 'prologue',
     viableRoutes: ['xavier', 'navarre', 'etta', 'senara'],
     versaRouteUnlocked: false,
-    
-    // Add scene state backup for replaying
     sceneStateBackup: null
   });
   
@@ -86,21 +86,23 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     useGameCharacters(gameState, setGameState);
 
   // Start a new game - updated to explicitly navigate to intro scene
-  const handleNewGame = () => {
+  const handleNewGame = useCallback(() => {
+    console.log('Starting new game');
     handleGameReset('new');
     // Explicitly move to intro scene after reset
     setTimeout(() => {
+      console.log('Transitioning to intro scene');
       handleSceneTransition('intro');
     }, 100);
-  };
+  }, [handleGameReset, handleSceneTransition]);
 
   // Show about screen
-  const handleAbout = () => {
+  const handleAbout = useCallback(() => {
     handleSceneTransition('about');
-  };
+  }, [handleSceneTransition]);
   
   // New function to replay the current scene
-  const replayCurrentScene = () => {
+  const replayCurrentScene = useCallback(() => {
     if (!currentScene) {
       console.error("Cannot replay: No current scene");
       return;
@@ -123,7 +125,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         showChoices: false
       }));
     }
-  };
+  }, [currentScene, gameState.sceneStateBackup]);
   
   // Create scene backup when entering a new scene
   React.useEffect(() => {
@@ -143,7 +145,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     if (currentScene && currentScene.dialogue.length === 0 && currentScene.nextSceneId) {
       handleSceneTransition(currentScene.nextSceneId);
     }
-  }, [gameState.currentScene, currentScene]);
+  }, [gameState.currentScene, currentScene, handleSceneTransition]);
 
   const value = {
     gameState,
@@ -155,12 +157,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     handleAbout,
     completeCharacterRoute,
     handleSceneTransition,
-    replayCurrentScene, // Add the new function to the context
-    
-    // Add the season progression checker
+    replayCurrentScene,
     checkSeasonProgress,
-    
-    // Minigame functions
     startMinigame,
     completeMinigame,
     exitMinigame,
