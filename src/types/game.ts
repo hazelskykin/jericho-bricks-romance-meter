@@ -54,7 +54,7 @@ export interface GameState {
   };
   
   // Track current season and playthrough progression
-  currentSeason: 'prologue' | 'spring' | 'summer' | 'autumn' | 'winter' | 'epilogue';
+  currentSeason: 'prologue' | 'spring' | 'summer' | 'autumn' | 'winter' | 'epilogue' | 'versa-epilogue';
   
   // Track which characters are still viable love interests
   viableRoutes: CharacterId[];
