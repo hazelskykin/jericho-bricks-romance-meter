@@ -17,7 +17,7 @@ const getCharacterSelectionScene = (visitedCharacters: CharacterId[]): Scene => 
       dialogue: [
         {
           character: 'narrator',
-          text: "You've connected with each of your teammates. It's time to plan for the Spring festival.",
+          text: "You know a little about what each team member does. It's time to pitch in for the Spring festival.",
         }
       ],
       nextSceneId: 'spring-festival-planning',
