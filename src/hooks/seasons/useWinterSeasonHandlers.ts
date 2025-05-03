@@ -39,7 +39,7 @@ export function useWinterSeasonHandlers(
         showRelationshipMilestone({
           characterId,
           milestoneText: "Your relationship continues to deepen.",
-          level: "Winter Romance"
+          level: "Winter Love"
         });
         
         console.log(`Winter progression: ${characterId} affection increased from ${summerAffection} to ${currentAffection}`);
