@@ -3,7 +3,7 @@ import { Scene } from '../../../types/game';
 
 const departureScenes: Record<string, Scene> = {
   'departure': {
-    id: 'departure-morning',
+    id: 'departure',
     background: 'stonewich-cityscape',
     dialogue: [
       {
@@ -18,7 +18,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'As your team settles into Stonewich, you begin your new role as Cybaton administrators...',
+        text: 'As your team settles into Stonewich, you begin your new role as Cybaton administrators.',
       },
       {
         character: 'narrator',
