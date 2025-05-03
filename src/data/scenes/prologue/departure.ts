@@ -2,7 +2,6 @@
 import { Scene } from '../../../types/game';
 
 const departureScenes: Record<string, Scene> = {
-  'departure': {
   'departure-lobby': {
     id: 'departure-lobby',
     background: 'cybaton-lobby',
