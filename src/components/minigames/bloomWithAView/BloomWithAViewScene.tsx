@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { HiddenItem } from './BloomWithAViewGame';
+import { HiddenItem } from '@/hooks/useBloomWithAViewGame';
 
 interface BloomWithAViewSceneProps {
   hiddenItems: HiddenItem[];

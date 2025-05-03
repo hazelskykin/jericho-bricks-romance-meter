@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { HiddenItem } from './BloomWithAViewGame';
+import { HiddenItem } from '@/hooks/useBloomWithAViewGame';
 
 interface BloomWithAViewItemListProps {
   items: HiddenItem[];
