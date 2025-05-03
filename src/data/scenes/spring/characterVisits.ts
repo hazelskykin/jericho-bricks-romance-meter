@@ -1,19 +1,20 @@
 
 import { Scene } from '../../../types/game';
 
-const characterVisits: Record<string, Scene> = {
-  // Xavier visit scene
+// Create individual character visit scenes
+const characterVisitScenes: Record<string, Scene> = {
+  // Xavier visits - using the workstation for one-on-one time
   'spring-visit-xavier': {
     id: 'spring-visit-xavier',
     background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Xavier at his workstation, surrounded by digital screens showing various city systems.",
+        text: 'You find Xavier at his workstation, surrounded by multiple screens displaying city system diagnostics.',
       },
       {
         character: 'xavier',
-        text: "Maven! Perfect timing. I was just reviewing the plans for the Spring festival's tech setup.",
+        text: "Maven! Perfect timing. I was just looking at the festival's tech requirements. Want to help me plan the setup?",
         mood: 'happy',
       },
       {
@@ -93,25 +94,15 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "What matters is how the app feels to use, not the technical details behind it.",
+        text: "Let's work together to ensure the smart displays and environmental systems are working for the Blooms & Brooms festival. It's quite a challenge, and more hands will make light work.",
         mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "In that case, I think a simple layout with big buttons might work best for people who are in a hurry during the festival.",
-        mood: 'neutral',
-      },
-      {
-        character: 'xavier',
-        text: "That's actually a great point. I was getting caught up in all the features and might have made it too complicated.",
-        mood: 'surprised',
       },
       {
         character: 'narrator',
-        text: "Xavier takes your suggestions and simplifies the design. It's more accessible now, which was exactly what was needed.",
+        text: "You spend the next several hours testing hardware, connections, and systems. Xavier is always close by for issues that come up, and you slowly gain confidence in troubleshooting.",
       },
     ],
-    nextSceneId: 'spring-character-selection-1',
+    nextSceneId: 'spring-character-selection1', // Return to selection with '1' suffix to indicate Xavier was visited
   },
   
   'spring-visit-xavier-practical': {
@@ -140,182 +131,53 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "You help Xavier with the system checks. It's less exciting than designing a new app, but it uncovers a few potential issues that could have caused problems during the festival.",
+        text: "You help Xavier with the diagnostics checks and then run capacity simulations for load management. It's less exciting than designing a new app, but it uncovers a few potential issues that could have caused problems during the festival.",
       },
     ],
     nextSceneId: 'spring-character-selection-1',
   },
 
   // Navarre visit scene
+  // Navarre visits - using the workstation for one-on-one time
   'spring-visit-navarre': {
     id: 'spring-visit-navarre',
-    background: 'city-cafe',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Navarre at a popular cafe in the city center. He appears to be charming the staff and several patrons.",
+        text: 'You find Navarre reviewing public relations materials for the upcoming festival.',
       },
       {
         character: 'navarre',
-        text: "Maven! Come join us! I was just getting to know some of Stonewich's finest citizens.",
+        text: "Maven! Just the person I wanted to see. What do you think of these promotional designs for the festival?",
         mood: 'happy',
       },
       {
         character: 'maven',
-        text: "Networking already, I see.",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "Always! The Spring festival is our chance to make a good impression on the community. First impressions matter, as they say.",
+        text: "They look impressive. You've really captured the spirit of spring.",
         mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "In fact, I could use your help with something. The local business association wants our team to join their pre-festival mixer tonight. Will you come with me?",
-        mood: 'neutral',
+        text: "Thanks! I've been working with local artists to blend traditional Stonewich symbolism with our modern approach. Community engagement is essential.",
+        mood: 'happy',
       }
     ],
-    choices: [
-      {
-        text: "Sounds fun! I'd love to meet more local people.",
-        affectionChanges: { navarre: 1 },
-        nextSceneId: 'spring-visit-navarre-agree',
-      },
-      {
-        text: "I'm not really comfortable at those kinds of events.",
-        nextSceneId: 'spring-visit-navarre-hesitant',
-      },
-      {
-        text: "Shouldn't we focus on work instead of socializing?",
-        affectionChanges: { navarre: -0.5 },
-        nextSceneId: 'spring-visit-navarre-refuse',
-      },
-    ],
+    nextSceneId: 'spring-character-selection2', // Return to selection with '2' suffix to indicate Navarre was visited
   },
   
-  'spring-visit-navarre-agree': {
-    id: 'spring-visit-navarre-agree',
-    background: 'city-cafe',
-    dialogue: [
-      {
-        character: 'navarre',
-        text: "That's the spirit! You're going to love these people once you get to know them.",
-        mood: 'happy',
-      },
-      {
-        character: 'maven',
-        text: "Any tips for making a good impression?",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "Just be yourself! But also, let me tell you about the key players you'll want to meet tonight...",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
-        text: "Navarre enthusiastically briefs you on the local business owners and their interests. His knowledge of the social landscape is impressive.",
-      },
-      {
-        character: 'navarre',
-        text: "You know, Maven, you've got a natural charm that people respond to. Don't underestimate that.",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
-        text: "Later that night, you attend the mixer with Navarre. To your surprise, you find yourself easily conversing with the locals, and even make some valuable connections for the team.",
-      },
-    ],
-    nextSceneId: 'spring-character-selection-2',
-  },
-  
-  'spring-visit-navarre-hesitant': {
-    id: 'spring-visit-navarre-hesitant',
-    background: 'city-cafe',
-    dialogue: [
-      {
-        character: 'navarre',
-        text: "I understand. These events can be overwhelming if you're not used to them.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "It's just not really my strength. I get anxious in big crowds of strangers.",
-        mood: 'embarrassed',
-      },
-      {
-        character: 'navarre',
-        text: "Everyone has different strengths. Tell you what - why don't you come for just an hour? I'll stay by your side and introduce you to just a few key people.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "I guess that doesn't sound too bad...",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "Perfect! And if you want to leave after an hour, no questions asked. Deal?",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
-        text: "You agree to Navarre's compromise. That evening, he keeps his word, serving as a buffer between you and the crowd. To your surprise, you actually enjoy yourself and even stay longer than the promised hour.",
-      },
-    ],
-    nextSceneId: 'spring-character-selection-2',
-  },
-  
-  'spring-visit-navarre-refuse': {
-    id: 'spring-visit-navarre-refuse',
-    background: 'city-cafe',
-    dialogue: [
-      {
-        character: 'navarre',
-        text: "Oh, Maven... this IS work. Building relationships is a crucial part of city management.",
-        mood: 'surprised',
-      },
-      {
-        character: 'maven',
-        text: "I just think our time might be better spent on more concrete tasks.",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "I respect your opinion, but think about it this way: when the waste management system breaks down, who are you going to call? The person you met and built rapport with, or a stranger?",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "I hadn't thought of it that way...",
-        mood: 'surprised',
-      },
-      {
-        character: 'navarre',
-        text: "That's alright. We all have different approaches. I'll represent the team tonight, and I'll make sure to mention your dedication to the technical aspects of our work.",
-        mood: 'neutral',
-      },
-      {
-        character: 'narrator',
-        text: "Navarre heads to the mixer without you. The next day, he mentions that several people were asking about 'the new team member' and seemed disappointed you weren't there.",
-      },
-    ],
-    nextSceneId: 'spring-character-selection-2',
-  },
-
-  // Etta visit scene
+  // Etta visits - using the workstation for one-on-one time
   'spring-visit-etta': {
     id: 'spring-visit-etta',
     background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Etta in the meeting room, reviewing spreadsheets and making notes with fierce concentration.",
+        text: 'Etta is meticulously running complex simulations on her workstation.',
       },
       {
         character: 'etta',
-        text: "Maven. Did you need something?",
+        text: "Maven. Did you need something? I'm kind of busy here.",
         mood: 'neutral',
       },
       {
@@ -326,6 +188,11 @@ const characterVisits: Record<string, Scene> = {
       {
         character: 'etta',
         text: "Supplies, vendors, schedules - you name it. There's a million practical and logistical considerations to be finalized.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',       
+        text: "I'd be happy to help. What are you working on?",
         mood: 'neutral',
       },
       {
@@ -533,7 +400,7 @@ const characterVisits: Record<string, Scene> = {
       },
     ],
   },
-  
+    
   'spring-visit-senara-traditional': {
     id: 'spring-visit-senara-traditional',
     background: 'stonewich-office',
@@ -657,8 +524,8 @@ const characterVisits: Record<string, Scene> = {
         text: "Your conversation with Senara becomes a philosophical debate. Though you disagree on some points, you gain a deeper appreciation for his thoughtful approach to change.",
       },
     ],
-    nextSceneId: 'spring-character-selection-4',
-  },
+    nextSceneId: 'spring-character-selection4', // Return to selection with '4' suffix to indicate Senara was visited
+  }
 };
 
-export default characterVisits;
+export default characterVisitScenes;

@@ -4,7 +4,7 @@ import { Scene } from '../../../types/game';
 const springIntroScenes: Record<string, Scene> = {
   'spring-intro': {
     id: 'spring-intro',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',
@@ -69,7 +69,7 @@ const springIntroScenes: Record<string, Scene> = {
         mood: 'neutral',
       },
     ],
-    nextSceneId: 'spring-planning',
+    nextSceneId: 'spring-character-selection', // Changed this to point to character selection screen
   }
 };
 

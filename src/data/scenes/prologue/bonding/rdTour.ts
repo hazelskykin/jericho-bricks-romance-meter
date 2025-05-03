@@ -53,7 +53,7 @@ const rdTourScenes: Record<string, Scene> = {
         text: 'By the end of the tour, you feel more excited about the possibilities in Stonewich, and you\'ve definitely strengthened your connection with Xavier.',
       }
     ],
-    nextSceneId: 'departure-morning',
+    nextSceneId: 'departure-lobby', // Updated to go to the lobby scene first
   }
 };
 
