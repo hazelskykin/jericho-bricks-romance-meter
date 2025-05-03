@@ -17,7 +17,7 @@ export function useSeasonsCore(
   const { handleSpringTransition } = useSpringSeasonHandlers();
   const { handleSummerTransition } = useSummerSeasonHandlers(gameState, setGameState);
   const { handleAutumnTransition } = useAutumnSeasonHandlers(gameState, setGameState);
-  const { handleWinterTransition } = useWinterSeasonHandlers();
+  const { handleWinterTransition } = useWinterSeasonHandlers(gameState, setGameState);
   const { handleEpilogueTransition } = useEpilogueHandlers(gameState, setGameState, handleSceneTransition);
 
   // Handle transition to a new season
