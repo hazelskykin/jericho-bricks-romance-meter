@@ -1,10 +1,11 @@
+
 import { Scene } from '../../../types/game';
 
 const springIntroScenes: Record<string, Scene> = {
   // Spring season transition scene
   'spring-intro': {
     id: 'spring-intro',
-    background: 'spring-transition',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',
