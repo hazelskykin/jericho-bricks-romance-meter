@@ -1,6 +1,7 @@
 
 import { useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
+import { usePrologueHandlers } from './usePrologueHandlers';
 import { useSpringSeasonHandlers } from './useSpringSeasonHandlers';
 import { useSummerSeasonHandlers } from './useSummerSeasonHandlers';
 import { useAutumnSeasonHandlers } from './useAutumnSeasonHandlers';
@@ -15,6 +16,7 @@ export function useSeasonsCore(
   handleSceneTransition: (nextSceneId: string) => void
 ) {
   // Import handlers from season-specific hooks
+  const { handlePrologueTransition } = usePrologueHandlers();
   const { handleSpringTransition } = useSpringSeasonHandlers();
   const { handleSummerTransition } = useSummerSeasonHandlers(gameState, setGameState);
   const { handleAutumnTransition } = useAutumnSeasonHandlers(gameState, setGameState);
@@ -32,6 +34,10 @@ export function useSeasonsCore(
 
     // Handle specific season transition logic
     switch (newSeason) {
+      case 'prologue':
+        handlePrologueTransition();
+        break;
+        
       case 'spring':
         handleSpringTransition();
         break;
@@ -57,8 +63,9 @@ export function useSeasonsCore(
         break;
     }
   }, [gameState.characters, gameState.viableRoutes, gameState.currentLoveInterest, 
-      handleSpringTransition, handleSummerTransition, handleAutumnTransition, 
-      handleWinterTransition, handleEpilogueTransition]);
+      handlePrologueTransition, handleSpringTransition, handleSummerTransition, 
+      handleAutumnTransition, handleWinterTransition, handleEpilogueTransition, 
+      handleVersaEpilogueTransition]);
 
   return {
     handleSeasonTransition

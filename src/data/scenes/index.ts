@@ -7,6 +7,7 @@ import spring from './spring';
 import summer from './summer';
 import autumn from './autumn';
 import winter from './winter';
+import epilogue from './epilogue';
 import mainMenu from './mainMenu';
 import versaEpilogue from './versa-epilogue';
 
@@ -18,6 +19,7 @@ const scenes: Record<string, Scene> = {
   ...summer,
   ...autumn,
   ...winter,
+  ...epilogue,
   ...versaEpilogue,
 };
 
