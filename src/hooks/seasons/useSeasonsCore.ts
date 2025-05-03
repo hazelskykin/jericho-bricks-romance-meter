@@ -6,6 +6,7 @@ import { useSummerSeasonHandlers } from './useSummerSeasonHandlers';
 import { useAutumnSeasonHandlers } from './useAutumnSeasonHandlers';
 import { useWinterSeasonHandlers } from './useWinterSeasonHandlers';
 import { useEpilogueHandlers } from './useEpilogueHandlers';
+import { useVersaEpilogueHandlers } from './useVersaEpilogueHandlers';
 
 // Core season transition hook that delegates to season-specific hooks
 export function useSeasonsCore(
@@ -19,6 +20,7 @@ export function useSeasonsCore(
   const { handleAutumnTransition } = useAutumnSeasonHandlers(gameState, setGameState);
   const { handleWinterTransition } = useWinterSeasonHandlers(gameState, setGameState);
   const { handleEpilogueTransition } = useEpilogueHandlers(gameState, setGameState, handleSceneTransition);
+  const { handleVersaEpilogueTransition } = useVersaEpilogueHandlers(gameState, setGameState, handleSceneTransition);
 
   // Handle transition to a new season
   const handleSeasonTransition = useCallback((newSeason: GameState['currentSeason']) => {
