@@ -149,7 +149,7 @@ const departureScenes: Record<string, Scene> = {
         text: 'The city seems to welcome you, but there are challenges ahead that will test your adaptability.',
       },
     ],
-    nextSceneId: 'season-transition-spring', // Transition to spring season after departure
+    nextSceneId: 'season-transition-spring',
   }
 };
 

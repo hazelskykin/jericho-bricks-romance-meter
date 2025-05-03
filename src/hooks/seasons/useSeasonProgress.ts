@@ -1,6 +1,5 @@
 
 import { useCallback } from 'react';
-import { toast } from "@/components/ui/use-toast";
 
 export function useSeasonProgress(handleSeasonTransition: (newSeason: string) => void) {
   // Create a function to check season progress for the GameSceneObserver
@@ -47,18 +46,8 @@ export function useSeasonProgress(handleSeasonTransition: (newSeason: string) =>
       handleSeasonTransition('winter');
     }
     
-    // Check for prologue to spring transition specifically
-    if (sceneId === 'departure-morning') {
-      // This can also trigger the transition to spring at the end of the prologue
-      console.log('Departure morning scene detected, transitioning to spring season');
-      handleSeasonTransition('spring');
-      
-      // Display toast for better feedback
-      toast({
-        title: "Season Transition",
-        description: "Starting Spring season",
-      });
-    }
+    // Remove the inappropriate toast here - we'll let the SeasonTransition component
+    // handle the visual feedback for season changes
   }, [handleSeasonTransition]);
 
   return {

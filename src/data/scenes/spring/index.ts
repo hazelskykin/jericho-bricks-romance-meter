@@ -6,6 +6,7 @@ import minigameScenes from './minigames';
 import conclusionScenes from './conclusion';
 import characterSelections from './characterSelection';
 import characterVisits from './characterVisits';
+import transitionScenes from './transitions';
 
 const spring: Record<string, Scene> = {
   ...introScenes,
@@ -14,6 +15,7 @@ const spring: Record<string, Scene> = {
   ...festivalScenes,
   ...minigameScenes,
   ...conclusionScenes,
+  ...transitionScenes,
 };
 
 export default spring;

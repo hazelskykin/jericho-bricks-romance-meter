@@ -26,12 +26,6 @@ const GameSceneObserver = () => {
       startMinigame('bloomWithAView');
     } 
     
-    // Handle the prologue to spring transition edge case
-    if (currentScene === 'departure-morning') {
-      console.log('Detected end of prologue, setting up spring transition');
-      // Removed toast notification
-    }
-    
     // Check for season transition scenes
     checkSeasonProgress(currentScene);
     
