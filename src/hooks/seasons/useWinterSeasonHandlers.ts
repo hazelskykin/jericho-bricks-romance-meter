@@ -10,13 +10,13 @@ export function useWinterSeasonHandlers(
   // Store the previous affection values when entering winter
   const previousAffectionRef = useRef<Record<CharacterId, number>>({} as Record<CharacterId, number>);
   
-  // Effect to store affection values when a love interest is selected in autumn
+  // Effect to store affection values when a love interest is selected at the end of summer
   useEffect(() => {
-    if (gameState.currentSeason === 'autumn' && gameState.currentLoveInterest) {
-      // Store the affection value from when the character was selected as love interest in autumn
+    if (gameState.currentSeason === 'summer' && gameState.currentLoveInterest) {
+      // Store the affection value from when the character was selected as love interest in summer
       const characterId = gameState.currentLoveInterest;
       previousAffectionRef.current[characterId] = gameState.characters[characterId].affection;
-      console.log(`Storing autumn affection for ${characterId}: ${previousAffectionRef.current[characterId]}`);
+      console.log(`Storing summer affection for ${characterId}: ${previousAffectionRef.current[characterId]}`);
     }
   }, [gameState.currentSeason, gameState.currentLoveInterest, gameState.characters]);
   
@@ -29,12 +29,12 @@ export function useWinterSeasonHandlers(
     if (gameState.currentLoveInterest) {
       const characterId = gameState.currentLoveInterest;
       const currentAffection = gameState.characters[characterId].affection;
-      const autumnAffection = previousAffectionRef.current[characterId];
+      const summerAffection = previousAffectionRef.current[characterId];
       
-      console.log(`Winter check for ${characterId}: Current: ${currentAffection}, Autumn: ${autumnAffection}`);
+      console.log(`Winter check for ${characterId}: Current: ${currentAffection}, Summer: ${summerAffection}`);
       
-      // If we have a recorded autumn affection, compare with current
-      if (autumnAffection !== undefined && currentAffection > autumnAffection) {
+      // If we have a recorded summer affection, compare with current
+      if (summerAffection !== undefined && currentAffection > summerAffection) {
         // Relationship has deepened during winter
         showRelationshipMilestone({
           characterId,
@@ -42,7 +42,7 @@ export function useWinterSeasonHandlers(
           level: "Winter Romance"
         });
         
-        console.log(`Winter progression: ${characterId} affection increased from ${autumnAffection} to ${currentAffection}`);
+        console.log(`Winter progression: ${characterId} affection increased from ${summerAffection} to ${currentAffection}`);
       }
     }
   }, [gameState.currentLoveInterest, gameState.characters]);
