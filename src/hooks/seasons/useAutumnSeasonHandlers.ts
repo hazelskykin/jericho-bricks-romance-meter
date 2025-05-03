@@ -28,7 +28,7 @@ export function useAutumnSeasonHandlers(
       // Show notification about focusing on one relationship
       showRelationshipMilestone({
         characterId: charId as CharacterId,
-        milestoneText: "Your relationship with this character deepens.",
+        milestoneText: "Your relationship has deepened. A more intimate bond may be possible.",
         level: "Romance Route"
       });
 
