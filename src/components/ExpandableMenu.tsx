@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import Glossary from './Glossary';
 import { useGame } from '@/context/GameContext';
+import { toast } from "@/components/ui/use-toast";
 
 interface ExpandableMenuProps {
   onGameClick: () => void;
@@ -25,7 +26,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
-  const { handleSceneTransition } = useGame();
+  const { handleSceneTransition, gameState } = useGame();
 
   const toggleMenu = () => {
     setIsExpanded(!isExpanded);
@@ -43,16 +44,52 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
   
   // Updated navigation functions to ensure they properly transition to the right scenes
   const navigateToCharacterVisits = () => {
-    console.log("Navigating to character selection");
+    // Only allow navigation if not in tester view
+    if (activeView !== 'game') {
+      toast({
+        title: "Switch to Game View",
+        description: "Please switch to Game View first to navigate in the game",
+        variant: "default"
+      });
+      setIsExpanded(false);
+      return;
+    }
+    
+    const targetScene = 'spring-character-selection';
+    console.log(`Menu: Navigating to character selection [${targetScene}]`);
+    
     // Force transition to the base character selection scene
-    handleSceneTransition('spring-character-selection');
+    handleSceneTransition(targetScene);
     setIsExpanded(false);
+    
+    toast({
+      title: "Navigation",
+      description: "Character Visits scene loaded",
+    });
   };
 
   const navigateToSpringFestival = () => {
-    console.log("Navigating to spring festival activities");
-    handleSceneTransition('spring-festival-activities');
+    // Only allow navigation if not in tester view
+    if (activeView !== 'game') {
+      toast({
+        title: "Switch to Game View",
+        description: "Please switch to Game View first to navigate in the game",
+        variant: "default"
+      });
+      setIsExpanded(false);
+      return;
+    }
+    
+    const targetScene = 'spring-festival-activities';
+    console.log(`Menu: Navigating to spring festival activities [${targetScene}]`);
+    
+    handleSceneTransition(targetScene);
     setIsExpanded(false);
+    
+    toast({
+      title: "Navigation",
+      description: "Spring Festival scene loaded",
+    });
   };
 
   return (

@@ -19,6 +19,11 @@ function App() {
   const [viewMode, setViewMode] = useState<'game' | 'tester'>('game');
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   
+  // Log the view mode for debugging
+  useEffect(() => {
+    console.log(`App view mode changed to: ${viewMode}`);
+  }, [viewMode]);
+  
   return (
     <QueryClientProvider client={queryClient}>
       <GameProvider>
@@ -32,8 +37,14 @@ function App() {
           {/* Expandable menu for view toggle and game navigation */}
           <ExpandableMenu 
             activeView={viewMode}
-            onGameClick={() => setViewMode('game')}
-            onTesterClick={() => setViewMode('tester')}
+            onGameClick={() => {
+              console.log('Switching to Game view');
+              setViewMode('game');
+            }}
+            onTesterClick={() => {
+              console.log('Switching to Tester view');
+              setViewMode('tester');
+            }}
           />
           
           {/* Glossary button */}
