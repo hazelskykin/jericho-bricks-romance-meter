@@ -114,6 +114,14 @@ const backgrounds: Record<string, BackgroundAsset> = {
     image: '/assets/backgrounds/winter-transition.jpg',
     gradient: 'linear-gradient(to bottom, rgba(33, 150, 243, 0.2), rgba(13, 71, 161, 0.4))'
   },
+  
+  'happy-ending-epilogue': {
+    id: 'happy-ending-epilogue',
+    name: 'Happy Ending Epilogue',
+    image: '/assets/backgrounds/happy-ending-epilogue.jpg',
+    description: 'A serene, hopeful scene perfect for epilogue moments and happy endings.',
+    gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.1), rgba(42, 30, 78, 0.2))'
+  },
 };
 
 export default backgrounds;

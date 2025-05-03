@@ -1,10 +1,9 @@
-
 import { Scene } from '@/types/game';
 
 const conclusion: Record<string, Scene> = {
   'versa-epilogue-accept': {
     id: 'versa-epilogue-accept',
-    background: 'photo-1492321936769-b49830bc1d1e',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
@@ -45,7 +44,7 @@ const conclusion: Record<string, Scene> = {
   },
   'versa-epilogue-modify': {
     id: 'versa-epilogue-modify',
-    background: 'photo-1492321936769-b49830bc1d1e',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
@@ -83,7 +82,7 @@ const conclusion: Record<string, Scene> = {
   },
   'versa-epilogue-final': {
     id: 'versa-epilogue-final',
-    background: 'photo-1470813740244-df37b8c1edcb',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'narrator',

@@ -1,4 +1,3 @@
-
 import { Scene } from '@/types/game';
 
 const reflection: Record<string, Scene> = {
@@ -108,7 +107,7 @@ const reflection: Record<string, Scene> = {
   },
   'versa-epilogue-decision': {
     id: 'versa-epilogue-decision',
-    background: 'photo-1500673922987-e212871fec22',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'narrator',
