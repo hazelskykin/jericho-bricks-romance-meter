@@ -44,7 +44,7 @@ const springIntroScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'spring-planning',
+    nextSceneId: 'spring-character-selection', // Changed this to point to character selection screen
   }
 };
 
