@@ -12,7 +12,7 @@ interface MainMenuProps {
   onAbout: () => void;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
+const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
   const { handleSceneTransition } = useGame();
   
   return (
@@ -25,25 +25,19 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
         {/* Title */}
         <GameTitle />
         
-        {/* Right-aligned content container */}
-        <div className="flex flex-1 justify-end px-4">
-          <MainContent />
-        </div>
-
-        {/* Menu buttons - Adding these back */}
-        <div className="absolute bottom-20 right-10 z-30 flex flex-col gap-3">
+        {/* Main Button */}
+        <div className="flex justify-center my-6 z-30">
           <Button 
             onClick={onNewGame} 
-            className="px-8 py-2 bg-primary text-white rounded-md shadow-lg hover:bg-primary/90"
+            className="px-12 py-4 bg-primary text-white text-xl rounded-md shadow-lg hover:bg-primary/90 transform transition-all hover:scale-105"
           >
             New Game
           </Button>
-          <Button 
-            onClick={onAbout}
-            className="px-8 py-2 bg-secondary text-white rounded-md shadow-lg hover:bg-secondary/90"
-          >
-            About
-          </Button>
+        </div>
+        
+        {/* Content container - now positioned below the button */}
+        <div className="flex flex-1 justify-center px-4">
+          <MainContent />
         </div>
       </div>
       

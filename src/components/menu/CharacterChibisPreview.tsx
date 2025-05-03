@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const CharacterChibisPreview: React.FC = () => {
   return (
-    <div className="flex justify-end gap-1 mb-6 max-w-md">
+    <div className="flex justify-center gap-1 mb-6 max-w-md">
       {Object.values(characters).map((char) => {
         const chibiData = characterChibis[char.id];
         

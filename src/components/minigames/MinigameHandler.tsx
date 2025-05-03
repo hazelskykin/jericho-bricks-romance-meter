@@ -3,10 +3,10 @@ import React from 'react';
 import BroomsAwayGame from './broomsAway/BroomsAwayGame';
 import MudFlingGame from './mudFling/MudFlingGame';
 import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
-import { GameMinigameType } from '@/types/game';
 
+// Use string type instead of GameMinigameType
 interface MinigameHandlerProps {
-  activeMinigame: GameMinigameType;
+  activeMinigame: string;
   completeMinigame: () => void;
   exitMinigame: () => void;
 }
