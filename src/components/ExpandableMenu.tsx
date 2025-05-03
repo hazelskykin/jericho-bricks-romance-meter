@@ -46,7 +46,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
     setIsExpanded(false);
   };
 
-  const navigateToFestival = () => {
+  const navigateToSpringFestival = () => {
     handleSceneTransition('spring-festival-activities');
     setIsExpanded(false);
   };
@@ -116,7 +116,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                     </TooltipContent>
                   </Tooltip>
                   
-                  {/* New navigation buttons */}
+                  {/* Navigation buttons with fixed scene transitions */}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button 
@@ -140,14 +140,14 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                         className="shadow-md" 
                         size="sm" 
                         variant="outline" 
-                        onClick={navigateToFestival}
+                        onClick={navigateToSpringFestival}
                       >
                         <Gamepad className="h-4 w-4 mr-2" />
-                        Festival Games
+                        Spring Festival
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="right">
-                      <p>Go to Festival Games</p>
+                      <p>Go to Spring Festival</p>
                     </TooltipContent>
                   </Tooltip>
                   
