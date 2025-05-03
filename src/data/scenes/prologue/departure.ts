@@ -20,7 +20,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: 'I've triple-checked our itinerary. The transit should take approximately three hours, accounting for the morning traffic patterns.',
+        text: "I've triple-checked our itinerary. The transit should take approximately three hours, accounting for the morning traffic patterns.",
         mood: 'neutral',
       },
       {
@@ -33,7 +33,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: 'We won\'t let you down, Dr. Voss. The team\'s prepared for whatever comes our way.',
+        text: "We won't let you down, Dr. Voss. The team's prepared for whatever comes our way.",
         mood: 'happy',
       },
       {
@@ -90,7 +90,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: 'The challenge, of course. Cybaton manages 68% of urban infrastructure worldwide. It's where the real impact happens.',
+        text: "The challenge, of course. Cybaton manages 68% of urban infrastructure worldwide. It's where the real impact happens.",
         mood: 'neutral',
       },
       {
