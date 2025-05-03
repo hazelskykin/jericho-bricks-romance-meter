@@ -6,6 +6,7 @@ import prologue from './prologue';
 import spring from './spring';
 import summer from './summer';
 import autumn from './autumn';
+import winter from './winter';
 import mainMenu from './mainMenu';
 
 // Merge all scenes into one collection
@@ -15,8 +16,7 @@ const scenes: Record<string, Scene> = {
   ...spring,
   ...summer,
   ...autumn,
-  // Future seasons will be added here:
-  // ...winter,
+  ...winter,
 };
 
 export default scenes;

@@ -6,13 +6,21 @@ export function useSeasonProgress(handleSeasonTransition: (newSeason: string) =>
   const checkSeasonProgress = useCallback((sceneId: string) => {
     // Check for specific scene transitions that should trigger season changes
     if (sceneId === 'spring-transition') {
-      handleSeasonTransition('summer');
+      handleSeasonTransition('spring');
     } else if (sceneId === 'summer-transition') {
-      handleSeasonTransition('autumn');
+      handleSeasonTransition('summer');
     } else if (sceneId === 'autumn-transition') {
-      handleSeasonTransition('winter');
+      handleSeasonTransition('autumn');
     } else if (sceneId === 'winter-transition') {
+      handleSeasonTransition('winter');
+    } else if (sceneId === 'winter-ending') {
       handleSeasonTransition('epilogue');
+    }
+    
+    // Check for prologue to spring transition specifically
+    if (sceneId === 'departure-evening') {
+      // This triggers the transition to spring at the end of the prologue
+      handleSeasonTransition('spring');
     }
   }, [handleSeasonTransition]);
 
