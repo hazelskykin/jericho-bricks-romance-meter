@@ -8,11 +8,11 @@ const winterIntroScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'With autumn's harvest complete, winter settles in Stonewich. The air is crisp and the city prepares for its most celebrated event.',
+        text: "With autumn's harvest complete, winter settles in Stonewich. The air is crisp and the city prepares for its most celebrated event.",
       },
       {
         character: 'narrator',
-        text: 'The Winter Games & Gala is the crown jewel of Stonewich's seasonal festivals, drawing visitors from neighboring cities.',
+        text: "The Winter Games & Gala is the crown jewel of Stonewich's seasonal festivals, drawing visitors from neighboring cities.",
       },
       {
         character: 'xavier',
