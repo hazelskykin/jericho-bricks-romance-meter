@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { GameState, Scene, DialogueChoice, CharacterId } from '@/types/game';
 import characters from '@/data/characters';
@@ -20,6 +19,7 @@ interface GameContextType {
   handleNewGame: () => void;
   handleAbout: () => void;
   completeCharacterRoute: (characterId: CharacterId) => void;
+  handleSceneTransition: (nextSceneId: string) => void;
   
   // Season progression function
   checkSeasonProgress: (sceneId: string) => void;
@@ -104,6 +104,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     handleNewGame,
     handleAbout,
     completeCharacterRoute,
+    handleSceneTransition, // Add this to expose it to other components
     
     // Add the season progression checker
     checkSeasonProgress,

@@ -8,6 +8,7 @@ import ChoiceMenu from './ChoiceMenu';
 import BackgroundScene from './BackgroundScene';
 import CharacterStatus from './CharacterStatus';
 import MainMenu from './MainMenu';
+import CharacterSelectionScene from './CharacterSelectionScene';
 
 // Import minigames
 import BroomsAwayGame from './minigames/broomsAway/BroomsAwayGame';
@@ -25,12 +26,58 @@ const GameInterface: React.FC = () => {
     handleAbout,
     activeMinigame,
     completeMinigame,
-    exitMinigame
+    exitMinigame,
+    handleSceneTransition
   } = useGame();
 
   // If we're at the start or about screen, show main menu
   if (gameState.currentScene === 'start' || gameState.currentScene === 'about') {
     return <MainMenu onNewGame={handleNewGame} onAbout={handleAbout} />;
+  }
+  
+  // Handle special scenes like character selection
+  if (gameState.currentScene.startsWith('spring-character-selection')) {
+    // Get remaining characters
+    const visitedSuffixes = {
+      '': [],
+      '1': ['xavier'],
+      '2': ['navarre'],
+      '3': ['etta'],
+      '4': ['senara'],
+      '12': ['xavier', 'navarre'],
+      '13': ['xavier', 'etta'],
+      '14': ['xavier', 'senara'],
+      '23': ['navarre', 'etta'],
+      '24': ['navarre', 'senara'],
+      '34': ['etta', 'senara'],
+      '123': ['xavier', 'navarre', 'etta'],
+      '124': ['xavier', 'navarre', 'senara'],
+      '134': ['xavier', 'etta', 'senara'],
+      '234': ['navarre', 'etta', 'senara']
+    };
+    
+    // Extract suffix from scene ID
+    const suffix = gameState.currentScene.replace('spring-character-selection', '');
+    const visitedChars = visitedSuffixes[suffix] || [];
+    
+    // Determine remaining characters
+    const remainingChars = ['xavier', 'navarre', 'etta', 'senara'].filter(
+      char => !visitedChars.includes(char)
+    );
+    
+    if (remainingChars.length === 0) {
+      // If no characters remain, proceed with normal dialogue
+      // This will show the dialogue and then auto-advance to spring-festival-planning
+    } else {
+      return (
+        <CharacterSelectionScene 
+          availableCharacters={remainingChars}
+          scenePrefix="spring-visit"
+          title="Spring Connections"
+          description="As spring begins in Stonewich, take time to connect with your teammates. Who would you like to visit first?"
+        />
+      );
+    }
   }
   
   // If a minigame is active, show it

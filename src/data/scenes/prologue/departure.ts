@@ -1,4 +1,3 @@
-
 import { Scene } from '../../../types/game';
 
 const departureScenes: Record<string, Scene> = {
@@ -249,7 +248,33 @@ const departureScenes: Record<string, Scene> = {
       },
     ],
     nextSceneId: 'main-menu',
-  }
+  },
+  
+  'departure-end': {
+    id: 'departure-end',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: 'As your shuttle pulls up to the administrative buildings of Stonewich, you take a deep breath. This is it. The beginning of your year-long assignment.',
+      },
+      {
+        character: 'maven',
+        text: "I still don't know why Cybaton chose me... but I'll do my best not to let them down.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "Hey Maven, you ready? This is going to be quite the adventure.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: 'You nod, gathering your courage. Whether you belong here or not, this is your chance to prove yourself.',
+      },
+    ],
+    nextSceneId: 'season-transition-spring',
+  },
 };
 
 export default departureScenes;

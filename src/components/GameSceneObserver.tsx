@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
+import SeasonTransition from './SeasonTransition';
 
 /**
  * Game scene observer component to handle minigame transitions and season changes
@@ -26,7 +27,21 @@ const GameSceneObserver = () => {
     
   }, [gameState.currentScene, startMinigame, checkSeasonProgress]);
 
-  return null; // This component doesn't render anything
+  // Render season transition screens when needed
+  const renderSeasonTransition = () => {
+    if (gameState.currentScene === 'season-transition-spring') {
+      return <SeasonTransition season="spring" nextSceneId="spring-character-selection" />;
+    } else if (gameState.currentScene === 'season-transition-summer') {
+      return <SeasonTransition season="summer" nextSceneId="summer-intro" />;
+    } else if (gameState.currentScene === 'season-transition-autumn') {
+      return <SeasonTransition season="autumn" nextSceneId="autumn-intro" />;
+    } else if (gameState.currentScene === 'season-transition-winter') {
+      return <SeasonTransition season="winter" nextSceneId="winter-intro" />;
+    }
+    return null;
+  };
+
+  return renderSeasonTransition();
 };
 
 export default GameSceneObserver;
