@@ -1,30 +1,13 @@
-
 import { Scene } from '../../../types/game';
+import introScenes from './intro';
 
 // Import winter scene collections when they are developed
-// import introScenes from './intro';
 // import festivalScenes from './festival';
 
 const winter: Record<string, Scene> = {
-  // Create a placeholder scene for winter intro
-  'winter-intro': {
-    id: 'winter-intro',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: 'Winter has arrived in Stonewich, bringing with it snow-covered streets and festive decorations.',
-      },
-      {
-        character: 'maven',
-        text: "It's hard to believe we've been here for almost a year now.",
-        mood: 'neutral',
-      },
-    ],
-    nextSceneId: 'winter-planning',
-  },
+  ...introScenes,
   
-  // Placeholder for winter planning
+  // Create a placeholder scene for winter planning
   'winter-planning': {
     id: 'winter-planning',
     background: 'cybaton-meeting-room',

@@ -1,4 +1,3 @@
-
 interface BackgroundAsset {
   id: string;
   name: string;
@@ -84,6 +83,36 @@ const backgrounds: Record<string, BackgroundAsset> = {
     image: '/assets/backgrounds/stonewich-workstation.jpg',
     description: 'A quieter corner of the Stonewich office, perfect for one-on-one discussions and focused work sessions.',
     gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
+  },
+  
+  // Add explicit entries for the season transition backgrounds
+  'spring-transition': {
+    id: 'spring-transition',
+    name: 'Spring Transition',
+    description: 'Colorful spring flowers and foliage representing new beginnings',
+    image: '/assets/backgrounds/spring-transition.jpg',
+    gradient: 'linear-gradient(to bottom, rgba(76, 175, 80, 0.2), rgba(27, 94, 32, 0.4))'
+  },
+  'summer-transition': {
+    id: 'summer-transition',
+    name: 'Summer Transition',
+    description: 'Warm summer landscape with vibrant yellow and orange tones',
+    image: '/assets/backgrounds/summer-transition.jpg',
+    gradient: 'linear-gradient(to bottom, rgba(255, 152, 0, 0.2), rgba(230, 81, 0, 0.4))'
+  },
+  'autumn-transition': {
+    id: 'autumn-transition',
+    name: 'Autumn Transition',
+    description: 'Fall foliage with rich red and orange tones',
+    image: '/assets/backgrounds/autumn-transition.jpg',
+    gradient: 'linear-gradient(to bottom, rgba(230, 74, 25, 0.2), rgba(191, 54, 12, 0.4))'
+  },
+  'winter-transition': {
+    id: 'winter-transition',
+    name: 'Winter Transition',
+    description: 'Snow-covered landscape with cool blue tones',
+    image: '/assets/backgrounds/winter-transition.jpg',
+    gradient: 'linear-gradient(to bottom, rgba(33, 150, 243, 0.2), rgba(13, 71, 161, 0.4))'
   },
 };
 

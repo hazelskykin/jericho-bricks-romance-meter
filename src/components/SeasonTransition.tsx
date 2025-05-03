@@ -32,11 +32,12 @@ const seasonColors = {
   }
 };
 
+// Updated to use local season-specific images
 const seasonImages = {
-  spring: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843',
-  summer: 'https://images.unsplash.com/photo-1472396961693-142e6e269027',
-  autumn: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-  winter: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07',
+  spring: '/assets/backgrounds/spring-transition.jpg',
+  summer: '/assets/backgrounds/summer-transition.jpg',
+  autumn: '/assets/backgrounds/autumn-transition.jpg',
+  winter: '/assets/backgrounds/winter-transition.jpg',
 };
 
 const SeasonTransition: React.FC<SeasonTransitionProps> = ({ season, nextSceneId }) => {
