@@ -12,29 +12,57 @@ export function useVersaEpilogueHandlers(
   setGameState: React.Dispatch<React.SetStateAction<GameState>>,
   handleSceneTransition: (nextSceneId: string) => void
 ) {
-  const { completeCharacterRoute, handleGameReset } = useRouteCompletion(
+  const { completeCharacterRoute, completeVersaRoute, handleGameReset } = useRouteCompletion(
     gameState, setGameState, handleSceneTransition
   );
 
+  // Check if all character routes have been completed
+  const areAllRoutesCompleted = useCallback(() => {
+    return Object.entries(gameState.completedRoutes)
+      .every(([_, completed]) => completed === true);
+  }, [gameState.completedRoutes]);
+
   // Versa Epilogue transition (post-game)
   const handleVersaEpilogueTransition = useCallback(() => {
-    // Logic for starting versa-epilogue based on completion of all routes
-    if (gameState.currentLoveInterest) {
-      const finalAffection = gameState.characters[gameState.currentLoveInterest].affection;
-      
-      // Determine if versa ending or if still locked due to incompletion of other routes
-      if (finalAffection >= HAPPY_ENDING_THRESHOLD) {
-        // All routes completed, then update to mark game completion to unlock versa content
-        completeCharacterRoute(gameState.currentLoveInterest);
-        console.log('After achieving mastery of each role, you are now a true Versa.');
-      } else {
-        // keep playing ending
-        console.log('Your role mastery is not yet complete. Keep playing.');
+    // Check if all character routes have been completed
+    if (areAllRoutesCompleted()) {
+      // If all routes are completed, unlock the Versa epilogue
+      if (!gameState.versaRouteUnlocked) {
+        setGameState(prev => ({
+          ...prev,
+          versaRouteUnlocked: true
+        }));
+
+        // Show milestone notification for unlocking the Versa route
+        showRelationshipMilestone({
+          characterId: 'maven',
+          milestoneText: "With all paths explored, you've unlocked your true potential as Versa.",
+          level: "Versa Awakening"
+        });
       }
+
+      // Direct to the versa epilogue starting scene
+      handleSceneTransition('versa-epilogue-intro');
+      console.log('Beginning the Versa Epilogue content - all character routes completed!');
+    } else {
+      // Not all routes have been completed yet
+      console.log('Cannot access Versa Epilogue - not all character routes are completed yet.');
+      
+      // Return to main menu with a hint about unlocking the versa route
+      showRelationshipMilestone({
+        characterId: 'maven',
+        milestoneText: "To unlock your full potential as Versa, you must complete all character routes first.",
+        level: "Locked Content"
+      });
+      
+      setTimeout(() => {
+        handleSceneTransition('start');
+      }, 3000);
     }
-  }, [gameState.characters, gameState.currentLoveInterest, completeCharacterRoute, handleGameReset]);
+  }, [gameState.versaRouteUnlocked, gameState.completedRoutes, areAllRoutesCompleted, handleSceneTransition, setGameState]);
 
   return {
-    handleVersaEpilogueTransition
+    handleVersaEpilogueTransition,
+    areAllRoutesCompleted
   };
 }
