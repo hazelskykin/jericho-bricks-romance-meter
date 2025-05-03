@@ -1,3 +1,4 @@
+
 import React, { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '@/context/GameContext';
@@ -55,19 +56,20 @@ const GameInterface: React.FC = () => {
       char => !visitedChars.includes(char)
     );
     
-    if (remainingChars.length === 0) {
-      // If no characters remain, let the current scene dialogue play and then auto-advance to spring-festival-planning
-      // No need to render character selection UI
-    } else {
-      return (
-        <CharacterSelectionScene 
-          availableCharacters={remainingChars}
-          scenePrefix="spring-visit"
-          title="Spring Connections"
-          description="As spring begins in Stonewich, take time to connect with your teammates. Who would you like to visit next?"
-        />
-      );
-    }
+    // Always show the character selection screen, even if no characters remain
+    // The "Proceed to Festival Planning" button will always be available
+    return (
+      <CharacterSelectionScene 
+        availableCharacters={remainingChars}
+        scenePrefix="spring-visit"
+        title="Spring Connections"
+        description={
+          remainingChars.length > 0
+            ? "As spring begins in Stonewich, take time to connect with your teammates. Who would you like to visit next?"
+            : "You've visited all your teammates. You can proceed to the Spring festival planning."
+        }
+      />
+    );
   }
   
   // If a minigame is active, show it

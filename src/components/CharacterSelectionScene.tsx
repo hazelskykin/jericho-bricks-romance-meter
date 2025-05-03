@@ -5,6 +5,7 @@ import { useGame } from '@/context/GameContext';
 import BackgroundScene from './BackgroundScene';
 import characters from '@/data/characters';
 import { CharacterId } from '@/types/game';
+import { Button } from './ui/button';
 
 interface CharacterSelectionProps {
   availableCharacters: CharacterId[];
@@ -69,6 +70,16 @@ const CharacterSelectionScene: React.FC<CharacterSelectionProps> = ({
                 </div>
               </motion.button>
             ))}
+          </div>
+          
+          {/* Add Proceed to Festival Planning button */}
+          <div className="mt-8 flex justify-center">
+            <Button
+              className="px-8 py-4 bg-[#9b87f5] hover:bg-[#7E69AB] text-white font-semibold text-lg transition-all duration-300"
+              onClick={() => handleSceneTransition('spring-festival-planning')}
+            >
+              Proceed to Festival Planning
+            </Button>
           </div>
         </motion.div>
       </div>

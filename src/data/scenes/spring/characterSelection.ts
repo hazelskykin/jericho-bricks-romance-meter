@@ -9,37 +9,21 @@ const getCharacterSelectionScene = (visitedCharacters: CharacterId[]): Scene => 
       charId => !visitedCharacters.includes(charId as CharacterId)
     ) as CharacterId[];
   
-  // If all characters visited, move to festival planning
-  if (remainingCharacters.length === 0) {
-    return {
-      id: `spring-character-selection${visitedCharacters.length > 0 ? '-1234' : ''}`,
-      background: 'stonewich-cityscape',
-      dialogue: [
-        {
-          character: 'narrator',
-          text: "You've spent time with each team member and learned about their roles and perspectives. Now it's time to come together for the Spring festival.",
-        },
-        {
-          character: 'maven',
-          text: "I feel like I understand everyone a bit better now. Our different strengths will really come in handy for the festival.",
-          mood: 'happy',
+  // Create a scene ID suffix based on visited characters
+  const suffix = visitedCharacters.length > 0 
+    ? '-' + visitedCharacters.map(char => {
+        switch(char) {
+          case 'xavier': return '1';
+          case 'navarre': return '2';
+          case 'etta': return '3';
+          case 'senara': return '4';
+          default: return '';
         }
-      ],
-      nextSceneId: 'spring-festival-planning', // Direct transition to festival planning
-    };
-  }
+      }).join('')
+    : '';
   
-  // If characters remain to be visited
   return {
-    id: `spring-character-selection${visitedCharacters.length > 0 ? '-' + visitedCharacters.map(char => {
-      switch(char) {
-        case 'xavier': return '1';
-        case 'navarre': return '2';
-        case 'etta': return '3';
-        case 'senara': return '4';
-        default: return '';
-      }
-    }).join('') : ''}`,
+    id: `spring-character-selection${suffix}`,
     background: 'stonewich-cityscape',
     dialogue: [
       {
