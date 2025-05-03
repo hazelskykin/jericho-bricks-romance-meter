@@ -1,11 +1,12 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import MinigameContainer from '../MinigameContainer';
-import { useGame } from '@/context/GameContext';
 import MudFlingArena from './MudFlingArena';
 import MudFlingControls from './MudFlingControls';
 import GameStatusMessage from '../common/GameStatusMessage';
+import { MudBallType, CharacterType } from './types';
 import { useMudFlingGame } from '@/hooks/useMudFlingGame';
+import { Button } from '@/components/ui/button';
 
 interface MudFlingGameProps {
   onComplete: (success: boolean) => void;
@@ -13,27 +14,23 @@ interface MudFlingGameProps {
 }
 
 const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
-  const { gameState } = useGame();
-  const gameAreaRef = useRef<HTMLDivElement>(null);
-  
   const {
-    timeRemaining,
-    fountainIntensity,
-    mudBalls,
-    characters,
+    playerCharacter,
+    aiCharacter,
     selectedMudBall,
-    team1Score,
-    team2Score,
+    playerScore,
+    aiScore,
     gameEnded,
-    handleMudBallClick,
-    handleGameAreaClick,
-    initializeCharacters
+    winScore,
+    mudBalls,
+    mudBallsLeft,
+    throwMudBall,
+    selectMudBall,
+    isPlayerWinner
   } = useMudFlingGame(onComplete);
-
-  // Initialize characters based on game state
-  useEffect(() => {
-    initializeCharacters(gameState.characters);
-  }, []);
+  
+  // This variable can be set to false when the game is under construction
+  const isGameReady = true;
   
   return (
     <MinigameContainer
@@ -43,30 +40,50 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
       onExit={onExit}
     >
       <div className="flex flex-col items-center">
-        <MudFlingControls
-          timeRemaining={timeRemaining}
-          fountainIntensity={fountainIntensity}
-          team1Score={team1Score}
-          team2Score={team2Score}
-        />
-        
-        <MudFlingArena
-          ref={gameAreaRef}
-          mudBalls={mudBalls}
-          characters={characters}
-          selectedMudBall={selectedMudBall}
-          fountainIntensity={fountainIntensity}
-          characterColors={gameState.characters}
-          onMudBallClick={handleMudBallClick}
-          onGameAreaClick={handleGameAreaClick}
-        />
-        
-        {gameEnded && (
-          <GameStatusMessage 
-            status={team1Score > team2Score ? 'won' : 'lost'}
-            winMessage={`Final Score: ${team1Score} - ${team2Score}`}
-            loseMessage={`Final Score: ${team1Score} - ${team2Score}`}
-          />
+        {isGameReady ? (
+          <>
+            <MudFlingControls 
+              mudBalls={mudBalls}
+              mudBallsLeft={mudBallsLeft}
+              selectedMudBall={selectedMudBall}
+              playerScore={playerScore}
+              aiScore={aiScore}
+              winScore={winScore}
+              onSelectMudBall={selectMudBall}
+            />
+            
+            <MudFlingArena 
+              playerCharacter={playerCharacter}
+              aiCharacter={aiCharacter}
+              selectedMudBall={selectedMudBall}
+              onThrowMudBall={throwMudBall}
+              gameEnded={gameEnded}
+            />
+            
+            {gameEnded && (
+              <GameStatusMessage 
+                status={isPlayerWinner ? 'won' : 'lost'}
+                winMessage="You won the mud fling competition! The crowd goes wild!"
+                loseMessage="Better luck next time! You put up a good fight!"
+              />
+            )}
+          </>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="bg-[#1A1F2C]/80 p-8 rounded-lg border border-[#9b87f5]/30 max-w-md">
+              <h3 className="text-2xl font-bold text-[#9b87f5] mb-4">Game Under Construction</h3>
+              <p className="text-white/80 mb-6">
+                We're still working on this minigame. Please check back soon!
+              </p>
+              <Button 
+                variant="default" 
+                className="bg-[#9b87f5] hover:bg-[#7E69AB]"
+                onClick={() => onComplete(true)}
+              >
+                Skip This Game
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </MinigameContainer>

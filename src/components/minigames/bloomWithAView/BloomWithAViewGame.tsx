@@ -1,12 +1,11 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import MinigameContainer from '../MinigameContainer';
 import BloomWithAViewScene from './BloomWithAViewScene';
 import BloomWithAViewItemList from './BloomWithAViewItemList';
 import GameStatusMessage from '../common/GameStatusMessage';
 import { useBloomWithAViewGame } from '@/hooks/useBloomWithAViewGame';
+import { Button } from '@/components/ui/button';
 
 interface BloomWithAViewGameProps {
   onComplete: (success: boolean) => void;
@@ -15,64 +14,72 @@ interface BloomWithAViewGameProps {
 
 const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({ onComplete, onExit }) => {
   const {
-    hiddenItems,
-    clickPosition,
-    showHint,
-    hintCooldown,
-    gameComplete,
-    timeRemaining,
-    handleSceneClick,
-    handleHintClick
+    availableItems,
+    placedItems,
+    selectedItem,
+    score,
+    targetScore,
+    gameEnded,
+    selectItem,
+    placeItem,
+    isGameWon
   } = useBloomWithAViewGame(onComplete);
 
+  // This variable can be set to false when the game is under construction
+  const isGameReady = true;
+  
   return (
     <MinigameContainer
       title="Bloom with a View"
-      instructions="Find all 5 hidden items in the garden art fair. Click around to discover them!"
+      instructions="Create beautiful garden displays by selecting flowers and placing them in the scene. Score points for harmonious arrangements!"
       onComplete={onComplete}
       onExit={onExit}
     >
-      <div className="flex flex-col items-center">
-        {/* Timer */}
-        <div className="w-full mb-2 flex justify-between items-center">
-          <span className="text-white">Time: {timeRemaining}s</span>
-          <span className="text-white">
-            Items Found: {hiddenItems.filter(item => item.found).length}/{hiddenItems.length}
-          </span>
+      {isGameReady ? (
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1">
+            <BloomWithAViewItemList 
+              items={availableItems} 
+              selectedItemId={selectedItem?.id} 
+              onSelectItem={selectItem} 
+            />
+          </div>
+          
+          <div className="flex-[2]">
+            <BloomWithAViewScene 
+              placedItems={placedItems} 
+              selectedItem={selectedItem}
+              onPlaceItem={placeItem}
+              score={score}
+              targetScore={targetScore}
+            />
+            
+            {gameEnded && (
+              <GameStatusMessage 
+                status={isGameWon ? 'won' : 'lost'}
+                winMessage="Beautiful job! Your garden display is stunning!"
+                loseMessage="The garden isn't quite there yet. Keep working on your design skills!"
+              />
+            )}
+          </div>
         </div>
-        
-        {/* Items to find list */}
-        <BloomWithAViewItemList items={hiddenItems} />
-        
-        {/* Garden scene */}
-        <BloomWithAViewScene 
-          hiddenItems={hiddenItems} 
-          clickPosition={clickPosition}
-          showHint={showHint}
-          onClick={handleSceneClick}
-        />
-        
-        {/* Hint button */}
-        <div className="mt-4">
-          <Button
-            variant="outline"
-            className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
-            onClick={handleHintClick}
-            disabled={hintCooldown > 0}
-          >
-            {hintCooldown > 0 ? `Hint (${hintCooldown}s)` : 'Get Hint'}
-          </Button>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="bg-[#1A1F2C]/80 p-8 rounded-lg border border-[#9b87f5]/30 max-w-md">
+            <h3 className="text-2xl font-bold text-[#9b87f5] mb-4">Game Under Construction</h3>
+            <p className="text-white/80 mb-6">
+              We're still working on this minigame. Please check back soon!
+            </p>
+            <Button 
+              variant="default" 
+              className="bg-[#9b87f5] hover:bg-[#7E69AB]"
+              onClick={() => onComplete(true)}
+            >
+              Skip This Game
+            </Button>
+          </div>
         </div>
-        
-        {/* Game completion message */}
-        {gameComplete && (
-          <GameStatusMessage 
-            status={hiddenItems.every(item => item.found) ? "won" : "lost"}
-            winMessage="Great job! You found all the hidden items in the garden."
-            loseMessage="Time's up! You didn't find all the hidden items."
-          />
-        )}
-      </div>
+      )}
     </MinigameContainer>
   );
 };

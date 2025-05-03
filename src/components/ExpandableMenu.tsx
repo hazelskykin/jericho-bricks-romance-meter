@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Book } from 'lucide-react';
+import { Menu, X, Book, Calendar, Gamepad } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Glossary from './Glossary';
+import { useGame } from '@/context/GameContext';
 
 interface ExpandableMenuProps {
   onGameClick: () => void;
@@ -24,6 +25,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const { handleSceneTransition } = useGame();
 
   const toggleMenu = () => {
     setIsExpanded(!isExpanded);
@@ -36,6 +38,16 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
 
   const openGlossary = () => {
     setGlossaryOpen(true);
+    setIsExpanded(false);
+  };
+  
+  const navigateToCharacterVisits = () => {
+    handleSceneTransition('spring-character-selection');
+    setIsExpanded(false);
+  };
+
+  const navigateToFestival = () => {
+    handleSceneTransition('spring-festival-activities');
     setIsExpanded(false);
   };
 
@@ -101,6 +113,41 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                     </TooltipTrigger>
                     <TooltipContent side="right">
                       <p>Switch to Background Tester</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  
+                  {/* New navigation buttons */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        className="shadow-md" 
+                        size="sm" 
+                        variant="outline" 
+                        onClick={navigateToCharacterVisits}
+                      >
+                        <Calendar className="h-4 w-4 mr-2" />
+                        Character Visits
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      <p>Go to Character Visits</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        className="shadow-md" 
+                        size="sm" 
+                        variant="outline" 
+                        onClick={navigateToFestival}
+                      >
+                        <Gamepad className="h-4 w-4 mr-2" />
+                        Festival Games
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      <p>Go to Festival Games</p>
                     </TooltipContent>
                   </Tooltip>
                   
