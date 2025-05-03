@@ -1,3 +1,4 @@
+
 import { Scene } from '../../../types/game';
 
 const departureScenes: Record<string, Scene> = {
@@ -122,7 +123,7 @@ const departureScenes: Record<string, Scene> = {
 
   'departure-morning': {
     id: 'departure-morning',
-    background: 'stonewich-office',
+    background: 'stonewich-cityscape',
     dialogue: [
       {
         character: 'senara',
@@ -132,6 +133,11 @@ const departureScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "It's a little overwhelming, but I'm ready to learn.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "We should head to our central office first. That's where we'll be based for most of our work.",
         mood: 'neutral',
       },
       {
