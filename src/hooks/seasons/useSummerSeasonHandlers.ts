@@ -29,7 +29,7 @@ export function useSummerSeasonHandlers(
     // Show notification about narrowing down options
     showRelationshipMilestone({
       characterId: 'maven',
-      milestoneText: "You've narrowed down your potential connections.",
+      milestoneText: "You've grown closer to a couple team members. Maybe something special might yet develop with one of them.",
       level: "Spring Complete"
     });
 
