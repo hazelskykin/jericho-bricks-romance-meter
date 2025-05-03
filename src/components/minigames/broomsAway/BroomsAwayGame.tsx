@@ -31,11 +31,10 @@ const BroomsAwayGame: React.FC<BroomsAwayGameProps> = ({ onComplete, onExit }) =
   
   return (
     <MinigameContainer
-      title="Brooms Away"
+      title="Brooms Away!"
       instructions="Sweep away the dust covering the city without breaking sensitive tech spots. Use feather dusters to mark sensitive spots."
       onComplete={onComplete}
       onExit={onExit}
-      showExitButton={gameStatus === 'playing'}
     >
       <div className="flex flex-col items-center">
         <BroomsAwayControls 

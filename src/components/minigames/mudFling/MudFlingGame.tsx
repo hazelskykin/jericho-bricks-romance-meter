@@ -37,11 +37,10 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
   
   return (
     <MinigameContainer
-      title="Mud-fling"
+      title="Mud Fling"
       instructions="Select a mud ball and then click where you want to throw it. Hit the opposing team to score points!"
       onComplete={onComplete}
       onExit={onExit}
-      showExitButton={!gameEnded}
     >
       <div className="flex flex-col items-center">
         <MudFlingControls

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useGame } from '@/context/GameContext';
 import BackgroundScene from './BackgroundScene';
 import { Button } from './ui/button';
+import { X } from 'lucide-react';
 
 interface FestivalActivity {
   id: string;
@@ -11,6 +12,7 @@ interface FestivalActivity {
   description: string;
   color: string;
   sceneId: string;
+  available: boolean;
 }
 
 interface FestivalActivitiesProps {
@@ -59,6 +61,11 @@ const FestivalActivitiesScene: React.FC<FestivalActivitiesProps> = ({
               >
                 <h3 className="font-bold text-xl mb-2" style={{ color: activity.color }}>{activity.title}</h3>
                 <p className="text-white/70 text-center">{activity.description}</p>
+                {!activity.available && (
+                  <div className="mt-3 px-2 py-1 bg-gray-800/70 rounded text-xs text-white/90">
+                    Coming Soon
+                  </div>
+                )}
               </motion.button>
             ))}
           </div>

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useGame } from '@/context/GameContext';
 import { SoundToggle } from './common/SoundToggle';
 import { initializeGameSounds } from '@/utils/soundEffects';
+import { X } from 'lucide-react';
 
 interface MinigameContainerProps {
   title: string;
@@ -40,13 +41,14 @@ const MinigameContainer: React.FC<MinigameContainerProps> = ({
           <h2 className="text-xl font-bold text-[#9b87f5]">{title}</h2>
           <div className="flex items-center gap-2">
             <SoundToggle />
-            {showExitButton && onExit && (
+            {onExit && (
               <Button 
                 variant="outline" 
-                className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
+                className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10 flex items-center gap-1"
                 onClick={onExit}
               >
-                Exit
+                <X size={16} />
+                Exit Game
               </Button>
             )}
           </div>

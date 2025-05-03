@@ -78,24 +78,27 @@ const GameInterface: React.FC = () => {
     const festivalActivities = [
       {
         id: 'brooms-away',
-        title: 'Community Cleanup',
+        title: 'Brooms Away!',
         description: 'Help coordinate the cleanup efforts with the automated drones',
         color: '#4CC2FF', // Xavier's color
-        sceneId: 'spring-brooms-away-intro'
-      },
-      {
-        id: 'bloom-view',
-        title: 'Garden Planting',
-        description: 'Assist residents with planting flowers and creating garden displays',
-        color: '#9C89FF', // Senara's color
-        sceneId: 'spring-bloom-view-intro'
+        sceneId: 'spring-brooms-away-intro',
+        available: true
       },
       {
         id: 'mud-fling',
-        title: 'Festival Games',
+        title: 'Mud Fling',
         description: 'Participate in the playful mud fling competition at the festival',
         color: '#FFB347', // Navarre's color
-        sceneId: 'spring-mud-fling-intro'
+        sceneId: 'spring-mud-fling-intro',
+        available: true
+      },
+      {
+        id: 'bloom-view',
+        title: 'Bloom with a View',
+        description: 'Assist residents with planting flowers and creating garden displays',
+        color: '#9C89FF', // Senara's color
+        sceneId: 'spring-bloom-view-intro',
+        available: true
       }
     ];
     
