@@ -4,10 +4,9 @@ import BroomsAwayGame from './broomsAway/BroomsAwayGame';
 import MudFlingGame from './mudFling/MudFlingGame';
 import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
 
-// Use string type instead of GameMinigameType
 interface MinigameHandlerProps {
   activeMinigame: string;
-  completeMinigame: () => void;
+  completeMinigame: (success: boolean) => void;
   exitMinigame: () => void;
 }
 

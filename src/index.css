@@ -102,3 +102,15 @@
     }
   }
 }
+
+/* Toast customizations */
+[data-sonner-toast][data-styled=true] {
+  width: auto !important;
+  max-width: 420px !important;
+}
+
+[data-sonner-toast].affection-toast {
+  width: auto !important;
+  min-width: auto !important;
+  padding: 8px !important;
+}

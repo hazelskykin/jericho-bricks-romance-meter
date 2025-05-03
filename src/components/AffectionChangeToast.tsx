@@ -30,8 +30,13 @@ export const showAffectionChange = ({ characterId, changeAmount }: AffectionChan
         borderLeft: `4px solid ${character.color}`,
         padding: '8px',
         minWidth: 'auto',
-        minHeight: 'auto'
+        width: 'auto',
+        minHeight: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
       },
+      className: "affection-toast",
     }
   );
 };

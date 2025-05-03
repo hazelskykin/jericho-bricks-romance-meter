@@ -56,6 +56,8 @@ export const showRelationshipMilestone = ({ characterId, milestoneText, level }:
       icon: <Heart color={character.color} fill={character.color} />,
       style: {
         borderLeft: `4px solid ${character.color}`,
+        width: 'auto',
+        maxWidth: '420px'
       },
     }
   );
