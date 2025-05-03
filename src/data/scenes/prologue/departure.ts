@@ -2,7 +2,7 @@
 import { Scene } from '../../../types/game';
 
 const departureScenes: Record<string, Scene> = {
-  'departure': {
+  'departure-morning': {
     id: 'departure-morning',
     background: 'stonewich-cityscape',
     dialogue: [
@@ -25,7 +25,7 @@ const departureScenes: Record<string, Scene> = {
         text: 'The city seems to welcome you, but there are challenges ahead that will test your adaptability.',
       },
     ],
-    nextSceneId: 'season-transition-spring', // Changed from 'main-menu' to transition to spring
+    nextSceneId: 'season-transition-spring', // Transition to spring season after departure
   }
 };
 
