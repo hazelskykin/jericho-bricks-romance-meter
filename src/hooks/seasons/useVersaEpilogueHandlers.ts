@@ -4,9 +4,6 @@ import { GameState, CharacterId } from '@/types/game';
 import { showRelationshipMilestone } from '@/components/RelationshipMilestone';
 import { useRouteCompletion } from './useRouteCompletion';
 
-// Constants
-const HAPPY_ENDING_THRESHOLD = 8;
-
 export function useVersaEpilogueHandlers(
   gameState: GameState,
   setGameState: React.Dispatch<React.SetStateAction<GameState>>,
@@ -43,7 +40,7 @@ export function useVersaEpilogueHandlers(
 
       // Direct to the versa epilogue starting scene
       handleSceneTransition('versa-epilogue-intro');
-      console.log('Beginning the Versa Epilogue content - all character routes completed!');
+      console.log('Beginning the Versa Epilogue - all character routes completed!');
     } else {
       // Not all routes have been completed yet
       console.log('Cannot access Versa Epilogue - not all character routes are completed yet.');
@@ -51,7 +48,7 @@ export function useVersaEpilogueHandlers(
       // Return to main menu with a hint about unlocking the versa route
       showRelationshipMilestone({
         characterId: 'maven',
-        milestoneText: "To unlock your full potential as Versa, you must complete all character routes first.",
+        milestoneText: "To unlock your full potential as Versa, master all roles.",
         level: "Locked Content"
       });
       
