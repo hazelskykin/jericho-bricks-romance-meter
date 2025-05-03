@@ -2,7 +2,7 @@
 import React from 'react';
 import { CharacterId } from '@/types/game';
 import MudCharacter from './MudCharacter';
-import { Position, MudBall, Character } from '@/hooks/useMudFlingGame';
+import { Position, MudBall, Character } from './types';
 
 // Update the props interface to include the ref property
 export interface MudFlingArenaProps {

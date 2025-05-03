@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { CharacterId } from '@/types/game';
-import { Position } from '@/hooks/useMudFlingGame';
+import { Position } from './types';
 
 interface MudCharacterProps {
   id: CharacterId;
