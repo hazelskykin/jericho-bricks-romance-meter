@@ -9,6 +9,7 @@ import BackgroundScene from './BackgroundScene';
 import CharacterStatus from './CharacterStatus';
 import MainMenu from './MainMenu';
 import CharacterSelectionScene from './CharacterSelectionScene';
+import { CharacterId } from '@/types/game';
 
 // Import minigames
 import BroomsAwayGame from './minigames/broomsAway/BroomsAwayGame';
@@ -38,7 +39,7 @@ const GameInterface: React.FC = () => {
   // Handle special scenes like character selection
   if (gameState.currentScene.startsWith('spring-character-selection')) {
     // Get remaining characters
-    const visitedSuffixes = {
+    const visitedSuffixes: Record<string, CharacterId[]> = {
       '': [],
       '1': ['xavier'],
       '2': ['navarre'],
@@ -60,8 +61,8 @@ const GameInterface: React.FC = () => {
     const suffix = gameState.currentScene.replace('spring-character-selection', '');
     const visitedChars = visitedSuffixes[suffix] || [];
     
-    // Determine remaining characters
-    const remainingChars = ['xavier', 'navarre', 'etta', 'senara'].filter(
+    // Determine remaining characters - ensure we're working with properly typed arrays
+    const remainingChars = (['xavier', 'navarre', 'etta', 'senara'] as CharacterId[]).filter(
       char => !visitedChars.includes(char)
     );
     
