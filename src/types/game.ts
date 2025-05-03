@@ -32,6 +32,11 @@ export interface Scene {
   nextSceneId?: string;
 }
 
+// Interface for backup scene state (for replay feature)
+export interface SceneStateBackup {
+  characters: Record<CharacterId, Character>;
+}
+
 export interface GameState {
   currentScene: string;
   dialogueIndex: number;
@@ -59,6 +64,9 @@ export interface GameState {
   
   // Track whether the Versa route is unlocked
   versaRouteUnlocked: boolean;
+  
+  // New field to backup scene state for replay feature
+  sceneStateBackup: SceneStateBackup | null;
 }
 
 export interface BackgroundAsset {

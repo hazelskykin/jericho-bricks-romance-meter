@@ -21,9 +21,9 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
         {/* Title - Moved closer to top */}
         <GameTitle />
         
-        {/* Right-aligned content container */}
+        {/* Right-aligned content container - Now without buttons */}
         <div className="flex flex-1 justify-end px-4">
-          <MainContent onNewGame={onNewGame} onAbout={onAbout} />
+          <MainContent />
         </div>
       </div>
       

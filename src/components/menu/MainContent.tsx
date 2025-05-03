@@ -2,14 +2,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import CharacterChibisPreview from './CharacterChibisPreview';
-import MenuButtons from './MenuButtons';
 
-interface MainContentProps {
-  onNewGame: () => void;
-  onAbout: () => void;
-}
-
-const MainContent: React.FC<MainContentProps> = ({ onNewGame, onAbout }) => {
+const MainContent: React.FC = () => {
   return (
     <motion.div 
       className="w-1/3 text-right pr-8 pt-8 flex flex-col items-end"
@@ -24,8 +18,7 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, onAbout }) => {
       {/* Character Chibi Preview */}
       <CharacterChibisPreview />
       
-      {/* Menu Buttons */}
-      <MenuButtons onNewGame={onNewGame} onAbout={onAbout} />
+      {/* Menu buttons removed - now part of hamburger menu */}
     </motion.div>
   );
 };

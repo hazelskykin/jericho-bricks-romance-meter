@@ -1,3 +1,4 @@
+
 import { Scene } from '../../../types/game';
 import introScenes from './intro';
 
@@ -10,13 +11,23 @@ const winter: Record<string, Scene> = {
   // Create a placeholder scene for winter planning
   'winter-planning': {
     id: 'winter-planning',
-    background: 'cybaton-meeting-room',
+    background: 'winter-transition',
     dialogue: [
       {
         character: 'xavier',
         text: "Winter in Stonewich is special. The Winter Games & Gala is their biggest event of the year.",
         mood: 'happy',
       },
+      {
+        character: 'etta',
+        text: "We need to ensure all systems are operating at peak efficiency. The heating network alone requires significant oversight.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "And we'll need to coordinate with the various event committees. They've been planning this for months.",
+        mood: 'neutral',
+      }
     ],
     nextSceneId: 'winter-character-selection',
   },
@@ -24,9 +35,15 @@ const winter: Record<string, Scene> = {
   // Placeholder for character selection
   'winter-character-selection': {
     id: 'winter-character-selection',
-    background: 'stonewich-cityscape',
-    dialogue: [],
-    nextSceneId: 'winter-festival-planning',
+    background: 'winter-transition',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "I should see how everyone's preparing for the winter festivities.",
+        mood: 'neutral',
+      }
+    ],
+    nextSceneId: 'main-menu', // Loop back to main menu for now since we're in demo mode
   },
 };
 

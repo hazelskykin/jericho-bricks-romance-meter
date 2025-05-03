@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { GameState, Scene, DialogueChoice, CharacterId } from '@/types/game';
 import characters from '@/data/characters';
@@ -6,6 +7,7 @@ import { useGameScenes } from '@/hooks/useGameScenes';
 import { useGameSeasons } from '@/hooks/useGameSeasons';
 import { useGameMinigames } from '@/hooks/useGameMinigames';
 import { useGameCharacters } from '@/hooks/useGameCharacters';
+import { toast } from "@/components/ui/use-toast";
 
 // Re-export the type from the hooks
 export type { MinigameType } from '@/hooks/useGameMinigames';
@@ -20,6 +22,9 @@ interface GameContextType {
   handleAbout: () => void;
   completeCharacterRoute: (characterId: CharacterId) => void;
   handleSceneTransition: (nextSceneId: string) => void;
+  
+  // New function for scene replay
+  replayCurrentScene: () => void;
   
   // Season progression function
   checkSeasonProgress: (sceneId: string) => void;
@@ -62,7 +67,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     },
     currentSeason: 'prologue',
     viableRoutes: ['xavier', 'navarre', 'etta', 'senara'],
-    versaRouteUnlocked: false
+    versaRouteUnlocked: false,
+    
+    // Add scene state backup for replaying
+    sceneStateBackup: null
   });
   
   // Use the dedicated hooks for different game functionalities
@@ -88,6 +96,56 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     handleSceneTransition('about');
   };
   
+  // New function to replay the current scene
+  const replayCurrentScene = () => {
+    if (!currentScene) {
+      console.error("Cannot replay: No current scene");
+      toast({
+        title: "Replay Error",
+        description: "Cannot replay scene: No current scene available",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // If there's a backup of scene state, restore it first
+    if (gameState.sceneStateBackup) {
+      // Restore character affections and other state from backup
+      setGameState(prev => ({
+        ...prev,
+        characters: JSON.parse(JSON.stringify(gameState.sceneStateBackup!.characters)),
+        dialogueIndex: 0,
+        showChoices: false
+      }));
+    } else {
+      // No backup available - just reset dialogue index
+      setGameState(prev => ({
+        ...prev,
+        dialogueIndex: 0,
+        showChoices: false
+      }));
+    }
+    
+    toast({
+      title: "Scene Replay",
+      description: "Replaying current scene from the beginning",
+      variant: "default"
+    });
+  };
+  
+  // Create scene backup when entering a new scene
+  React.useEffect(() => {
+    // Create a backup of the current state when entering a new scene
+    if (gameState.dialogueIndex === 0) {
+      setGameState(prev => ({
+        ...prev,
+        sceneStateBackup: {
+          characters: JSON.parse(JSON.stringify(prev.characters)),
+        }
+      }));
+    }
+  }, [gameState.currentScene]);
+  
   // Auto-advance hidden empty scenes
   React.useEffect(() => {
     if (currentScene && currentScene.dialogue.length === 0 && currentScene.nextSceneId) {
@@ -104,7 +162,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     handleNewGame,
     handleAbout,
     completeCharacterRoute,
-    handleSceneTransition, // Add this to expose it to other components
+    handleSceneTransition,
+    replayCurrentScene, // Add the new function to the context
     
     // Add the season progression checker
     checkSeasonProgress,

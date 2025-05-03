@@ -8,32 +8,26 @@ const winterIntroScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'Winter has arrived in Stonewich, bringing with it snow-covered streets and festive decorations.',
+        text: 'With autumn's harvest complete, winter settles in Stonewich. The air is crisp and the city prepares for its most celebrated event.',
       },
       {
-        character: 'maven',
-        text: "It's hard to believe we've been here for almost a year now.",
-        mood: 'neutral',
+        character: 'narrator',
+        text: 'The Winter Games & Gala is the crown jewel of Stonewich's seasonal festivals, drawing visitors from neighboring cities.',
       },
       {
         character: 'xavier',
-        text: "Winter in Stonewich is special. The Winter Games & Gala is their biggest event of the year.",
-        mood: 'happy',
-      },
-      {
-        character: 'etta',
-        text: "The cold weather presents unique challenges for our systems. We need to ensure all heating and snow removal functions are operating at peak efficiency.",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "The gala is THE social event of the year. Everyone who's anyone will be there, and it's the perfect opportunity to strengthen our connections in the city.",
+        text: "Winter in Stonewich really is something special. The Games & Gala transforms the entire city.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "Winter celebrations in Stonewich date back to the founding of the city. They represent the community's resilience through hardship.",
+        text: "It's a complex logistical operation. Our systems will be running at maximum capacity.",
         mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I've heard so much about this festival. I'm excited to see it firsthand.",
+        mood: 'happy',
       },
     ],
     nextSceneId: 'winter-planning',

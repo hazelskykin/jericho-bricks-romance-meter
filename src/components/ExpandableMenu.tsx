@@ -1,8 +1,7 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Book, Calendar, Gamepad } from 'lucide-react';
+import { Menu, X, Book, RefreshCcw, Info } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -10,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Glossary from './Glossary';
+import DialogHistory from './DialogHistory';
 import { useGame } from '@/context/GameContext';
 import { toast } from "@/components/ui/use-toast";
 
@@ -24,9 +24,11 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
   onTesterClick, 
   activeView 
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  // Start with menu expanded by default
+  const [isExpanded, setIsExpanded] = useState(true);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
-  const { handleSceneTransition, gameState } = useGame();
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const { handleSceneTransition, gameState, handleNewGame, handleAbout, replayCurrentScene } = useGame();
 
   const toggleMenu = () => {
     setIsExpanded(!isExpanded);
@@ -34,61 +36,32 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
 
   const handleItemClick = (callback: () => void) => {
     callback();
-    setIsExpanded(false);
+    // Don't close menu after clicking - keep it open for better UX
   };
 
   const openGlossary = () => {
     setGlossaryOpen(true);
-    setIsExpanded(false);
   };
   
-  // Updated navigation functions to ensure they properly transition to the right scenes
-  const navigateToCharacterVisits = () => {
-    // Only allow navigation if not in tester view
-    if (activeView !== 'game') {
-      toast({
-        title: "Switch to Game View",
-        description: "Please switch to Game View first to navigate in the game",
-        variant: "default"
-      });
-      setIsExpanded(false);
-      return;
-    }
-    
-    const targetScene = 'spring-character-selection';
-    console.log(`Menu: Navigating to character selection [${targetScene}]`);
-    
-    // Force transition to the base character selection scene
-    handleSceneTransition(targetScene);
-    setIsExpanded(false);
-    
+  const openDialogHistory = () => {
+    setHistoryOpen(true);
+  };
+
+  // Function to start a new game via the menu
+  const startNewGame = () => {
+    handleNewGame();
     toast({
-      title: "Navigation",
-      description: "Character Visits scene loaded",
+      title: "New Game",
+      description: "Starting a new game...",
     });
   };
 
-  const navigateToSpringFestival = () => {
-    // Only allow navigation if not in tester view
-    if (activeView !== 'game') {
-      toast({
-        title: "Switch to Game View",
-        description: "Please switch to Game View first to navigate in the game",
-        variant: "default"
-      });
-      setIsExpanded(false);
-      return;
-    }
-    
-    const targetScene = 'spring-festival-activities';
-    console.log(`Menu: Navigating to spring festival activities [${targetScene}]`);
-    
-    handleSceneTransition(targetScene);
-    setIsExpanded(false);
-    
+  // Function to show about info via the menu
+  const showAboutInfo = () => {
+    handleAbout();
     toast({
-      title: "Navigation",
-      description: "Spring Festival scene loaded",
+      title: "About",
+      description: "Showing about information",
     });
   };
 
@@ -119,21 +92,22 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
             <AnimatePresence>
               {isExpanded && (
                 <motion.div
-                  className="absolute bottom-14 left-0 flex flex-col gap-2"
+                  className="absolute bottom-14 left-0 flex flex-col gap-2 w-48"
                   initial={{ opacity: 0, scale: 0.8, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8, y: 10 }}
                   transition={{ duration: 0.2 }}
                 >
+                  {/* Main Game Controls */}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button 
-                        className="shadow-md" 
+                        className="shadow-md w-full justify-start" 
                         size="sm" 
                         variant={activeView === 'game' ? 'default' : 'outline'} 
                         onClick={() => handleItemClick(onGameClick)}
                       >
-                        Game
+                        Game View
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="right">
@@ -144,7 +118,7 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button 
-                        className="shadow-md" 
+                        className="shadow-md w-full justify-start" 
                         size="sm" 
                         variant={activeView === 'tester' ? 'default' : 'outline'} 
                         onClick={() => handleItemClick(onTesterClick)}
@@ -157,48 +131,65 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
                     </TooltipContent>
                   </Tooltip>
                   
-                  {/* Navigation buttons with direct event handlers for better traceability */}
+                  {/* New buttons moved from main menu */}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button 
-                        className="shadow-md" 
+                        className="shadow-md w-full justify-start" 
                         size="sm" 
-                        variant="outline" 
-                        onClick={navigateToCharacterVisits}
+                        variant="default" 
+                        onClick={() => handleItemClick(startNewGame)}
                       >
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Character Visits
+                        New Game
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="right">
-                      <p>Go to Character Visits</p>
+                      <p>Start a New Game</p>
                     </TooltipContent>
                   </Tooltip>
                   
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button 
-                        className="shadow-md" 
+                        className="shadow-md w-full justify-start" 
                         size="sm" 
                         variant="outline" 
-                        onClick={navigateToSpringFestival}
+                        onClick={() => handleItemClick(showAboutInfo)}
                       >
-                        <Gamepad className="h-4 w-4 mr-2" />
-                        Spring Festival
+                        <Info className="h-4 w-4 mr-2" />
+                        About
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="right">
-                      <p>Go to Spring Festival</p>
+                      <p>About the Game</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  
+                  {/* Dialog history and glossary buttons */}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        className="shadow-md w-full justify-start" 
+                        size="sm" 
+                        variant="outline" 
+                        onClick={() => handleItemClick(openDialogHistory)}
+                      >
+                        <RefreshCcw className="h-4 w-4 mr-2" />
+                        Dialog History
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      <p>View Dialog History</p>
                     </TooltipContent>
                   </Tooltip>
                   
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button 
-                        className="shadow-md" 
+                        className="shadow-md w-full justify-start" 
                         size="sm" 
                         variant="outline" 
-                        onClick={openGlossary}
+                        onClick={() => handleItemClick(openGlossary)}
                       >
                         <Book className="h-4 w-4 mr-2" />
                         Glossary
@@ -215,8 +206,13 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
         </TooltipProvider>
       </div>
       
-      {/* Glossary Dialog */}
+      {/* Dialogs */}
       <Glossary open={glossaryOpen} onOpenChange={setGlossaryOpen} />
+      <DialogHistory 
+        open={historyOpen} 
+        onOpenChange={setHistoryOpen}
+        onReplayScene={replayCurrentScene} 
+      />
     </>
   );
 };
