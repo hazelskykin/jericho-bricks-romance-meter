@@ -1,19 +1,20 @@
 
 import { Scene } from '../../../types/game';
 
-const characterVisits: Record<string, Scene> = {
-  // Xavier visit scene
+// Create individual character visit scenes
+const characterVisitScenes: Record<string, Scene> = {
+  // Xavier visits - using the workstation for one-on-one time
   'spring-visit-xavier': {
     id: 'spring-visit-xavier',
     background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Xavier at his workstation, surrounded by digital screens showing various city systems.",
+        text: 'You find Xavier at his workstation, surrounded by multiple screens displaying city system diagnostics.',
       },
       {
         character: 'xavier',
-        text: "Maven! Perfect timing. I was just reviewing the plans for the Spring festival's tech setup.",
+        text: "Maven! Perfect timing. I was just looking at the festival's tech requirements. Want to help me plan the setup?",
         mood: 'happy',
       },
       {
@@ -93,25 +94,15 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "What matters is how the app feels to use, not the technical details behind it.",
+        text: "Let's work together to ensure the smart displays and environmental systems are working for the Blooms & Brooms festival. It's quite a challenge, and more hands will make light work.",
         mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "In that case, I think a simple layout with big buttons might work best for people who are in a hurry during the festival.",
-        mood: 'neutral',
-      },
-      {
-        character: 'xavier',
-        text: "That's actually a great point. I was getting caught up in all the features and might have made it too complicated.",
-        mood: 'surprised',
       },
       {
         character: 'narrator',
-        text: "Xavier takes your suggestions and simplifies the design. It's more accessible now, which was exactly what was needed.",
+        text: "You spend the next several hours testing hardware, connections, and systems. Xavier is always close by for issues that come up, and you slowly gain confidence in troubleshooting.",
       },
     ],
-    nextSceneId: 'spring-character-selection-1',
+    nextSceneId: 'spring-character-selection1', // Return to selection with '1' suffix to indicate Xavier was visited
   },
   
   'spring-visit-xavier-practical': {
@@ -140,12 +131,13 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "You help Xavier with the system checks. It's less exciting than designing a new app, but it uncovers a few potential issues that could have caused problems during the festival.",
+        text: "You help Xavier with the diagnostics checks and then run capacity simulations for load management. It's less exciting than designing a new app, but it uncovers a few potential issues that could have caused problems during the festival.",
       },
     ],
     nextSceneId: 'spring-character-selection-1',
   },
 
+ 
   // Navarre visit scene
   'spring-visit-navarre': {
     id: 'spring-visit-navarre',
@@ -303,19 +295,19 @@ const characterVisits: Record<string, Scene> = {
     ],
     nextSceneId: 'spring-character-selection-2',
   },
-
-  // Etta visit scene
+  
+  // Etta visits - using the workstation for one-on-one time
   'spring-visit-etta': {
     id: 'spring-visit-etta',
     background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Etta in the meeting room, reviewing spreadsheets and making notes with fierce concentration.",
+        text: 'Etta is meticulously running complex simulations on her workstation.',
       },
       {
         character: 'etta',
-        text: "Maven. Did you need something?",
+        text: "Maven. Did you need something? I'm kind of busy here.",
         mood: 'neutral',
       },
       {
@@ -326,6 +318,11 @@ const characterVisits: Record<string, Scene> = {
       {
         character: 'etta',
         text: "Supplies, vendors, schedules - you name it. There's a million practical and logistical considerations to be finalized.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',       
+        text: "I'd be happy to help. What are you working on?",
         mood: 'neutral',
       },
       {
@@ -438,6 +435,15 @@ const characterVisits: Record<string, Scene> = {
       },
       {
         character: 'narrator',
+        text: "You work with Etta to create a two-phase plan for the festival with new activities designed for cleaning and higher volunteer engagement.",
+      },
+      {
+        character: 'etta',
+        text: "This is a novel approach and may save some budget on cleaners, but there are risks here too if volunteers don't show up. Your idea is innovative.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
         text: "Despite her remarks about risks, she does incorporate some of your suggestions. You feel a quiet pride in providing a practical approach to achieveing the outcomes desired."
       },
     ],
@@ -533,7 +539,7 @@ const characterVisits: Record<string, Scene> = {
       },
     ],
   },
-  
+    
   'spring-visit-senara-traditional': {
     id: 'spring-visit-senara-traditional',
     background: 'stonewich-office',
@@ -657,8 +663,8 @@ const characterVisits: Record<string, Scene> = {
         text: "Your conversation with Senara becomes a philosophical debate. Though you disagree on some points, you gain a deeper appreciation for his thoughtful approach to change.",
       },
     ],
-    nextSceneId: 'spring-character-selection-4',
-  },
+    nextSceneId: 'spring-character-selection4', // Return to selection with '4' suffix to indicate Senara was visited
+  }
 };
 
-export default characterVisits;
+export default characterVisitScenes;

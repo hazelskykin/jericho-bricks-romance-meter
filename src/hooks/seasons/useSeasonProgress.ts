@@ -17,9 +17,20 @@ export function useSeasonProgress(handleSeasonTransition: (newSeason: string) =>
       handleSeasonTransition('epilogue');
     }
     
+    // Check for season transitions
+    if (sceneId === 'season-transition-spring') {
+      handleSeasonTransition('spring');
+    } else if (sceneId === 'season-transition-summer') {
+      handleSeasonTransition('summer');
+    } else if (sceneId === 'season-transition-autumn') {
+      handleSeasonTransition('autumn');
+    } else if (sceneId === 'season-transition-winter') {
+      handleSeasonTransition('winter');
+    }
+    
     // Check for prologue to spring transition specifically
-    if (sceneId === 'departure-evening') {
-      // This triggers the transition to spring at the end of the prologue
+    if (sceneId === 'departure-morning') {
+      // This can also trigger the transition to spring at the end of the prologue
       handleSeasonTransition('spring');
     }
   }, [handleSeasonTransition]);

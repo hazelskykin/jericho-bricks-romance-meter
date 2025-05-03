@@ -44,8 +44,8 @@ const coffeeShopScenes: Record<string, Scene> = {
         text: 'By the end of the evening, you feel more connected to the team and ready for tomorrow\'s departure.',
       }
     ],
-    nextSceneId: 'departure-morning',
-  },
+    nextSceneId: 'departure-lobby', // Updated to go to the lobby scene first
+  }
 };
 
 export default coffeeShopScenes;
