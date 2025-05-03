@@ -12,24 +12,44 @@ const getCharacterSelectionScene = (visitedCharacters: CharacterId[]): Scene => 
   // If all characters visited, move to festival planning
   if (remainingCharacters.length === 0) {
     return {
-      id: 'spring-character-selection',
+      id: `spring-character-selection${visitedCharacters.length > 0 ? '-1234' : ''}`,
       background: 'stonewich-cityscape',
       dialogue: [
         {
           character: 'narrator',
-          text: "You know a little about what each team member does. It's time to pitch in for the Spring festival.",
+          text: "You've spent time with each team member and learned about their roles and perspectives. Now it's time to come together for the Spring festival.",
+        },
+        {
+          character: 'maven',
+          text: "I feel like I understand everyone a bit better now. Our different strengths will really come in handy for the festival.",
+          mood: 'happy',
         }
       ],
-      nextSceneId: 'spring-festival-planning',
+      nextSceneId: 'spring-festival-planning', // Direct transition to festival planning
     };
   }
   
-  // Character selection interface doesn't use dialogue
+  // If characters remain to be visited
   return {
-    id: 'spring-character-selection',
+    id: `spring-character-selection${visitedCharacters.length > 0 ? '-' + visitedCharacters.map(char => {
+      switch(char) {
+        case 'xavier': return '1';
+        case 'navarre': return '2';
+        case 'etta': return '3';
+        case 'senara': return '4';
+        default: return '';
+      }
+    }).join('') : ''}`,
     background: 'stonewich-cityscape',
-    dialogue: [], // Empty dialogue as we use custom UI
-    // This scene doesn't advance automatically
+    dialogue: [
+      {
+        character: 'narrator',
+        text: visitedCharacters.length > 0 
+          ? "Who would you like to visit next to learn more about their role in the festival preparations?"
+          : "As spring begins in Stonewich, take time to connect with your teammates before the festival.",
+      }
+    ],
+    // This scene doesn't advance automatically as it uses the CharacterSelectionScene component
   };
 };
 
@@ -50,6 +70,7 @@ const springCharacterSelections: Record<string, Scene> = {
   'spring-character-selection-124': getCharacterSelectionScene(['xavier', 'navarre', 'senara']),
   'spring-character-selection-134': getCharacterSelectionScene(['xavier', 'etta', 'senara']),
   'spring-character-selection-234': getCharacterSelectionScene(['navarre', 'etta', 'senara']),
+  'spring-character-selection-1234': getCharacterSelectionScene(['xavier', 'navarre', 'etta', 'senara']),
 };
 
 export default springCharacterSelections;

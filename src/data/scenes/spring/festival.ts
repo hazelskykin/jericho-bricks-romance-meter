@@ -9,7 +9,7 @@ const springFestivalScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: "With the Spring festival approaching, the team gathers to finalize the plans.",
+        text: "A few days later, with the Spring festival approaching, the team gathers to finalize the plans.",
       },
       {
         character: 'etta',

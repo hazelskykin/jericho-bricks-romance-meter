@@ -1,4 +1,3 @@
-
 import React, { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '@/context/GameContext';
@@ -37,29 +36,19 @@ const GameInterface: React.FC = () => {
   }
   
   // Handle special scenes like character selection
-  if (gameState.currentScene.startsWith('spring-character-selection')) {
-    // Get remaining characters
-    const visitedSuffixes: Record<string, CharacterId[]> = {
-      '': [],
-      '1': ['xavier'],
-      '2': ['navarre'],
-      '3': ['etta'],
-      '4': ['senara'],
-      '12': ['xavier', 'navarre'],
-      '13': ['xavier', 'etta'],
-      '14': ['xavier', 'senara'],
-      '23': ['navarre', 'etta'],
-      '24': ['navarre', 'senara'],
-      '34': ['etta', 'senara'],
-      '123': ['xavier', 'navarre', 'etta'],
-      '124': ['xavier', 'navarre', 'senara'],
-      '134': ['xavier', 'etta', 'senara'],
-      '234': ['navarre', 'etta', 'senara']
-    };
-    
-    // Extract suffix from scene ID
+  if (gameState.currentScene.includes('spring-character-selection')) {
+    // Extract suffix from scene ID to identify which characters have been visited
     const suffix = gameState.currentScene.replace('spring-character-selection', '');
-    const visitedChars = visitedSuffixes[suffix] || [];
+    
+    // Parse the suffix to determine visited characters
+    let visitedChars: CharacterId[] = [];
+    if (suffix) {
+      // Convert the suffix numbering scheme to character IDs
+      if (suffix.includes('1')) visitedChars.push('xavier');
+      if (suffix.includes('2')) visitedChars.push('navarre');
+      if (suffix.includes('3')) visitedChars.push('etta');
+      if (suffix.includes('4')) visitedChars.push('senara');
+    }
     
     // Determine remaining characters - ensure we're working with properly typed arrays
     const remainingChars = (['xavier', 'navarre', 'etta', 'senara'] as CharacterId[]).filter(
@@ -67,15 +56,15 @@ const GameInterface: React.FC = () => {
     );
     
     if (remainingChars.length === 0) {
-      // If no characters remain, proceed with normal dialogue
-      // This will show the dialogue and then auto-advance to spring-festival-planning
+      // If no characters remain, let the current scene dialogue play and then auto-advance to spring-festival-planning
+      // No need to render character selection UI
     } else {
       return (
         <CharacterSelectionScene 
           availableCharacters={remainingChars}
           scenePrefix="spring-visit"
           title="Spring Connections"
-          description="As spring begins in Stonewich, take time to connect with your teammates. Who would you like to visit first?"
+          description="As spring begins in Stonewich, take time to connect with your teammates. Who would you like to visit next?"
         />
       );
     }

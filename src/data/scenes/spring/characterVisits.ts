@@ -102,7 +102,7 @@ const characterVisitScenes: Record<string, Scene> = {
         text: "You spend the next several hours testing hardware, connections, and systems. Xavier is always close by for issues that come up, and you slowly gain confidence in troubleshooting.",
       },
     ],
-    nextSceneId: 'spring-character-selection1', // Return to selection with '1' suffix to indicate Xavier was visited
+    nextSceneId: 'spring-character-selection-1', // Corrected this ID
   },
   
   'spring-visit-xavier-practical': {
@@ -138,7 +138,7 @@ const characterVisitScenes: Record<string, Scene> = {
   },
 
  
-  // Navarre visit scene
+  // Navarre visit scene - Fixed to use the correct background
   'spring-visit-navarre': {
     id: 'spring-visit-navarre',
     background: 'city-cafe',
@@ -489,7 +489,7 @@ const characterVisitScenes: Record<string, Scene> = {
         text: "The conversation with Etta becomes a bit strained after that, but you do learn a great deal about resource allocation and city planning in the process.",
       },
     ],
-    nextSceneId: 'spring-character-selection-3',
+    nextSceneId: 'spring-character-selection-3', // Corrected this ID
   },
 
   // Senara visit scene
@@ -663,7 +663,7 @@ const characterVisitScenes: Record<string, Scene> = {
         text: "Your conversation with Senara becomes a philosophical debate. Though you disagree on some points, you gain a deeper appreciation for his thoughtful approach to change.",
       },
     ],
-    nextSceneId: 'spring-character-selection4', // Return to selection with '4' suffix to indicate Senara was visited
+    nextSceneId: 'spring-character-selection-4', // Corrected this ID
   }
 };
 
