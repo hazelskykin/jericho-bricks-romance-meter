@@ -4,7 +4,7 @@ import { Scene } from '../../../types/game';
 const springIntroScenes: Record<string, Scene> = {
   'spring-intro': {
     id: 'spring-intro',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',

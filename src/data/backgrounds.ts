@@ -64,6 +64,20 @@ const backgrounds: Record<string, BackgroundAsset> = {
     description: 'Mixture of futuristic buildings and preserved historical architecture with modern transportation systems.',
     gradient: 'linear-gradient(to bottom, rgba(42, 42, 64, 0.1), rgba(74, 42, 80, 0.2))'
   },
+  'stonewich-office': {
+    id: 'stonewich-office',
+    name: 'Stonewich Office',
+    image: '/assets/backgrounds/stonewich-office.jpg',
+    description: 'The team\'s primary workspace in Stonewich with a blend of modern amenities and local architectural elements.',
+    gradient: 'linear-gradient(to bottom, rgba(35, 38, 56, 0.1), rgba(62, 48, 84, 0.2))'
+  },
+  'stonewich-workstation': {
+    id: 'stonewich-workstation',
+    name: 'Stonewich Workstation',
+    image: '/assets/backgrounds/stonewich-workstation.jpg',
+    description: 'A quieter corner of the Stonewich office, perfect for one-on-one discussions and focused work sessions.',
+    gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
+  },
 };
 
 export default backgrounds;

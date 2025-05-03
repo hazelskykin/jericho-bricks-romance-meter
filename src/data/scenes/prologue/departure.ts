@@ -1,4 +1,3 @@
-
 import { Scene } from '../../../types/game';
 
 const departureScenes: Record<string, Scene> = {
@@ -123,7 +122,7 @@ const departureScenes: Record<string, Scene> = {
 
   'departure-morning': {
     id: 'departure-morning',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'senara',
