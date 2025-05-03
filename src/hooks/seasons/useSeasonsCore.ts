@@ -49,6 +49,10 @@ export function useSeasonsCore(
       case 'epilogue':
         handleEpilogueTransition();
         break;
+      
+      case 'versa-epilogue':
+        handleVersaEpilogueTransition();
+        break;
     }
   }, [gameState.characters, gameState.viableRoutes, gameState.currentLoveInterest, 
       handleSpringTransition, handleSummerTransition, handleAutumnTransition, 
