@@ -1,12 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
-import { Character, MudBall, Position } from '@/components/minigames/mudFling/types';
+import type { Character, MudBall, Position } from '@/components/minigames/mudFling/types';
 import { useMudBalls } from '@/components/minigames/mudFling/useMudBalls';
 import { useCharacterAI } from '@/components/minigames/mudFling/useCharacterAI';
 
-export { Character, MudBall, Position };
+export type { Character, MudBall, Position };
 
 export function useMudFlingGame(onComplete: (success: boolean) => void) {
   // Game config

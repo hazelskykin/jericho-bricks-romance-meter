@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { MudBall, Character, Position } from './types';
+import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
 
 export function useMudBalls(
