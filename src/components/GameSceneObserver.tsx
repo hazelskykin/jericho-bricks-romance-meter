@@ -30,7 +30,7 @@ const GameSceneObserver = () => {
   // Render season transition screens when needed
   const renderSeasonTransition = () => {
     if (gameState.currentScene === 'season-transition-spring') {
-      return <SeasonTransition season="spring" nextSceneId="spring-character-selection" />;
+      return <SeasonTransition season="spring" nextSceneId="spring-intro" />;
     } else if (gameState.currentScene === 'season-transition-summer') {
       return <SeasonTransition season="summer" nextSceneId="summer-intro" />;
     } else if (gameState.currentScene === 'season-transition-autumn') {

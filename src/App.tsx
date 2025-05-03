@@ -12,7 +12,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GameProvider } from '@/context/GameContext';
-import GameSceneObserver from '@/components/GameSceneObserver';
 
 const queryClient = new QueryClient();
 
@@ -27,8 +26,7 @@ function App() {
           <Toaster />
           <Sonner />
           
-          {/* Scene observer for minigame transitions */}
-          <GameSceneObserver />
+          {/* Remove the duplicate GameSceneObserver here */}
           
           {/* Glossary dialog */}
           <Glossary open={glossaryOpen} onOpenChange={setGlossaryOpen} />
