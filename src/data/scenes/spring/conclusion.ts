@@ -71,8 +71,8 @@ const springConclusionScenes: Record<string, Scene> = {
   },
   
   // Special scene to handle transition between seasons
-  'summer-transition': {
-    id: 'summer-transition',
+  'season-transition-summer': {
+    id: 'season-transition-summer',
     background: 'summer-transition',
     dialogue: [
       {
