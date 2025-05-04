@@ -114,7 +114,7 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "Aren't we friends? I like to listen I'm a good listener if you want to give me a try.",
+        text: "Aren't we friends? I like to think I'm a good listener if you want to give me a try.",
         mood: 'neutral',
       },
       {
@@ -171,7 +171,7 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "Of course! Though today has been... interesting. Ran into Lissa Thornfield earlier.",
+        text: "Of course! Though today has been... interesting. Ran into Morgan Thornfield earlier.",
         mood: 'neutral',
       },
       {
@@ -192,7 +192,7 @@ const characterVisitScenes: Record<string, Scene> = {
         nextSceneId: 'summer-visit-navarre-technical',
       },
       {
-        text: "Tell me more about this rivalry with Lissa. Maybe I can help you navigate this social minefield.",
+        text: "Tell me more about this rivalry with Morgan. Maybe I can help you navigate this social minefield.",
         affectionChanges: { navarre: 1 },
         nextSceneId: 'summer-visit-navarre-personal',
       },
@@ -225,7 +225,7 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "That's where things get tricky. Lissa has been approaching our confirmed acts with better offers. We need to shore up those relationships.",
+        text: "That's where things get tricky. Morgan has been approaching our confirmed acts with better offers. We need to shore up those relationships.",
         mood: 'neutral',
       },
       {
@@ -242,7 +242,7 @@ const characterVisitScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'navarre',
-        text: "Lissa and I have... history. We studied together at the Academy before Cybaton recruited me.",
+        text: "Morgan and I have... history. We studied together at the Academy before Cybaton recruited me.",
         mood: 'neutral',
       },
       {
