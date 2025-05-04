@@ -68,6 +68,7 @@ const springFestivalScenes: Record<string, Scene> = {
     // No nextSceneId as this will use the FestivalActivitiesScene component
   },
 
+  /*
   // Intro scenes for each minigame
   'spring-brooms-away-intro': {
     id: 'spring-brooms-away-intro',
@@ -95,6 +96,7 @@ const springFestivalScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'spring-brooms-away-start',
   },
+  */
 
   'spring-mud-fling-intro': {
     id: 'spring-mud-fling-intro',
