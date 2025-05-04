@@ -81,7 +81,7 @@ export function useGameMinigames(
           break;
         case 'bloomWithAView':
           // All characters get a small affection boost
-          affectionChanges = { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 };
+          affectionChanges = { navarre: 0.5, etta: 0.5, senara: 0.5 };
           break;
         
         // Summer minigames  
