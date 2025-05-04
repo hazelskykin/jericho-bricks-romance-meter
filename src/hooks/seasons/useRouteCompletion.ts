@@ -22,7 +22,7 @@ export function useRouteCompletion(
     // Show notification about completing the route
     showRelationshipMilestone({
       characterId,
-      milestoneText: "You've completed this character's story!",
+      milestoneText: "You've mastered this character's role!",
       level: "Happy Ending"
     });
     
@@ -46,7 +46,7 @@ export function useRouteCompletion(
       // Show notification about unlocking Versa route
       showRelationshipMilestone({
         characterId: 'maven',
-        milestoneText: "You've unlocked the Versa route!",
+        milestoneText: "You've mastered the Versa role!",
         level: "All Routes Complete"
       });
     }
