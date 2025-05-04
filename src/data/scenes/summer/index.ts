@@ -14,9 +14,6 @@ const summer: Record<string, Scene> = {
   ...festivalScenes,
   ...minigameScenes,
   ...conclusionScenes,
-  // Future sections will be added here:
-  // ...minigameScenes,
-  // ...conclusionScenes,
 };
 
 export default summer;
