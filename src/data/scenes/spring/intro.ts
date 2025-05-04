@@ -9,7 +9,7 @@ const springIntroScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'As the weather warms, Stonewich prepares for the Spring Blooms & Brooms Festival, a time of renewal and community cleaning efforts.',
+        text: 'As the weather warms, Stonewich prepares for the Spring Blooms & Brooms Festival, a time of renewal and community beautification efforts.',
       },
       {
         character: 'xavier',
