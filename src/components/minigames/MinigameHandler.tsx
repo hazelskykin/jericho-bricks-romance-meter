@@ -38,6 +38,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     
     // Simulate loading time to ensure components have time to initialize
     const timer = setTimeout(() => {
+      console.log(`MinigameHandler: Finished loading ${activeMinigame}`);
       setIsLoading(false);
       
       // Show notification that minigame is ready
@@ -47,7 +48,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         duration: 2000,
       });
       
-    }, 1500);
+    }, 1000);
     
     return () => {
       clearTimeout(timer);
@@ -127,36 +128,42 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   
   // Render the appropriate minigame based on activeMinigame
   try {
-    console.log(`Attempting to render minigame: ${activeMinigame}`);
+    console.log(`Attempting to render minigame component: ${activeMinigame}`);
     
-    switch (activeMinigame) {
-      // Spring minigames
-      case 'broomsAway':
-        console.log('Rendering BroomsAwayGame');
-        return <BroomsAwayGame onComplete={completeMinigame} onExit={exitMinigame} />;
-      case 'mudFling':
-        console.log('Rendering MudFlingGame');
-        return <MudFlingGame onComplete={completeMinigame} onExit={exitMinigame} />;
-      case 'bloomWithAView':
-        console.log('Rendering BloomWithAViewGame');
-        return <BloomWithAViewGame onComplete={completeMinigame} onExit={exitMinigame} />;
-      
-      // Summer minigames
-      case 'serenade':
-        console.log('Rendering SerenadeGame');
-        return <SerenadeGame onComplete={completeMinigame} onExit={exitMinigame} />;
-      case 'spokenWord':
-        console.log('Rendering SpokenWordGame');
-        return <SpokenWordGame onComplete={completeMinigame} onExit={exitMinigame} />;
-      case 'whatsOnTap':
-        console.log('Rendering WhatsOnTapGame');
-        return <WhatsOnTapGame onComplete={completeMinigame} onExit={exitMinigame} />;
-      
-      default:
-        console.error(`No matching minigame component found for: ${activeMinigame}`);
-        // If no matching minigame is found, show the fallback UI
-        return <MinigameStartPrompt />;
-    }
+    // Create a helper function to safely render minigame components
+    const renderMinigameOrFallback = () => {
+      // Use explicit type check to avoid issues with string comparison
+      switch (activeMinigame) {
+        // Spring minigames
+        case 'broomsAway':
+          console.log('Rendering BroomsAwayGame');
+          return <BroomsAwayGame onComplete={completeMinigame} onExit={exitMinigame} />;
+        case 'mudFling':
+          console.log('Rendering MudFlingGame');
+          return <MudFlingGame onComplete={completeMinigame} onExit={exitMinigame} />;
+        case 'bloomWithAView':
+          console.log('Rendering BloomWithAViewGame');
+          return <BloomWithAViewGame onComplete={completeMinigame} onExit={exitMinigame} />;
+        
+        // Summer minigames
+        case 'serenade':
+          console.log('Rendering SerenadeGame');
+          return <SerenadeGame onComplete={completeMinigame} onExit={exitMinigame} />;
+        case 'spokenWord':
+          console.log('Rendering SpokenWordGame');
+          return <SpokenWordGame onComplete={completeMinigame} onExit={exitMinigame} />;
+        case 'whatsOnTap':
+          console.log('Rendering WhatsOnTapGame');
+          return <WhatsOnTapGame onComplete={completeMinigame} onExit={exitMinigame} />;
+        
+        default:
+          console.warn(`No matching minigame component found for: "${activeMinigame}"`);
+          return <MinigameStartPrompt />;
+      }
+    };
+    
+    // Render the appropriate minigame or fallback
+    return renderMinigameOrFallback();
   } catch (error) {
     console.error(`Error rendering minigame ${activeMinigame}:`, error);
     return (
@@ -169,6 +176,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         <div className="flex flex-col items-center justify-center p-8 h-full">
           <div className="mb-8 text-lg text-center text-red-500">
             <p>Failed to load the minigame component. Please try again.</p>
+            <p className="text-sm mt-4">Technical details: {error instanceof Error ? error.message : String(error)}</p>
           </div>
           <div className="flex gap-4">
             <Button onClick={exitMinigame} className="bg-red-600 hover:bg-red-700">

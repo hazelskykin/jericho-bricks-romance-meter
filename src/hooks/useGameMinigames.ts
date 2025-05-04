@@ -29,12 +29,12 @@ export function useGameMinigames(
   
   // Minigame functions
   const startMinigame = useCallback((minigameType: MinigameType) => {
-    console.log(`Starting minigame: ${minigameType} from scene: ${gameState.currentScene}`);
+    console.log(`useGameMinigames: Starting minigame: ${minigameType} from scene: ${gameState.currentScene}`);
     
     // Show a toast notification when starting a minigame
     toast({
-      title: "Starting Minigame",
-      description: `Loading ${minigameType} minigame...`,
+      title: "Loading Minigame",
+      description: `Preparing ${minigameType} minigame...`,
       duration: 3000,
     });
     
@@ -50,12 +50,9 @@ export function useGameMinigames(
       return;
     }
     
-    // Set active minigame with a slight delay to ensure state updates are processed
-    setTimeout(() => {
-      console.log(`Setting active minigame to: ${minigameType}`);
-      setActiveMinigame(minigameType);
-    }, 100);
-    
+    // Set active minigame with a delay to ensure state updates are processed
+    console.log(`Setting active minigame to: ${minigameType}`);
+    setActiveMinigame(minigameType);
   }, [gameState.currentScene, activeMinigame]);
   
   const completeMinigame = useCallback((success: boolean) => {
@@ -154,15 +151,17 @@ export function useGameMinigames(
       duration: 3000,
     });
     
-    // Set minigame as completed with a temporary variable to prevent race conditions
+    // Clear minigame state first before transitioning
     const completedMinigame = activeMinigame;
     
-    // Clear minigame state first before transitioning
-    setActiveMinigame(null);
+    // Store values before clearing state
     const savedReturnScene = returnSceneAfterMinigame;
+    
+    // Clear states
+    setActiveMinigame(null);
     setReturnSceneAfterMinigame('');
     
-    // Use setTimeout to ensure React has time to process the state change
+    // Navigate to the next scene with a delay to ensure state changes are processed
     setTimeout(() => {
       console.log(`Now navigating to scene: ${nextSceneId || savedReturnScene}`);
       // Return to the appropriate scene

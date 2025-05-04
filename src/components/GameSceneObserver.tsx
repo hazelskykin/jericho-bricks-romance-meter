@@ -27,7 +27,7 @@ const GameSceneObserver = () => {
     
     if (currentScene in minigameMappings) {
       const minigameType = minigameMappings[currentScene];
-      console.log(`Starting ${minigameType} minigame from scene: ${currentScene}`);
+      console.log(`GameSceneObserver: Starting ${minigameType} minigame from scene: ${currentScene}`);
       
       // Notify user that minigame is starting
       toast({
@@ -36,10 +36,11 @@ const GameSceneObserver = () => {
         duration: 3000,
       });
       
-      // Use setTimeout to ensure the game state is fully updated before starting the minigame
+      // Start the minigame with a slight delay to ensure state is updated
       setTimeout(() => {
+        console.log(`GameSceneObserver: Calling startMinigame(${minigameType})`);
         startMinigame(minigameType);
-      }, 500);
+      }, 300);
     }
     
     // Check for season transition scenes
