@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import SeasonTransition from './SeasonTransition';
+import { toast } from '@/components/ui/use-toast';
 
 /**
  * Game scene observer component to handle minigame transitions and season changes
@@ -14,27 +15,31 @@ const GameSceneObserver = () => {
     const currentScene = gameState.currentScene;
     console.log(`GameSceneObserver detected scene change to: [${currentScene}]`);
     
-    // Check if we need to start a minigame based on the scene
-    if (currentScene === 'spring-brooms-away-start') {
-      console.log('Starting Brooms Away minigame');
-      startMinigame('broomsAway');
-    } else if (currentScene === 'spring-mud-fling-start') {
-      console.log('Starting Mud Fling minigame');
-      startMinigame('mudFling');
-    } else if (currentScene === 'spring-bloom-view-start') {
-      console.log('Starting Bloom With a View minigame');
-      startMinigame('bloomWithAView');
-    }
-    // Summer minigames
-    else if (currentScene === 'summer-serenade-start') {
-      console.log('Starting Serenade minigame');
-      startMinigame('serenade');
-    } else if (currentScene === 'summer-spoken-word-start') {
-      console.log('Starting Spoken Word minigame');
-      startMinigame('spokenWord');
-    } else if (currentScene === 'summer-whats-on-tap-start') {
-      console.log('Starting What\'s On Tap minigame');
-      startMinigame('whatsOnTap');
+    // Check specific minigame trigger scenes
+    const minigameMappings = {
+      'spring-brooms-away-start': 'broomsAway',
+      'spring-mud-fling-start': 'mudFling',
+      'spring-bloom-view-start': 'bloomWithAView',
+      'summer-serenade-start': 'serenade',
+      'summer-spoken-word-start': 'spokenWord', 
+      'summer-whats-on-tap-start': 'whatsOnTap'
+    };
+    
+    if (currentScene in minigameMappings) {
+      const minigameType = minigameMappings[currentScene];
+      console.log(`Starting ${minigameType} minigame from scene: ${currentScene}`);
+      
+      // Notify user that minigame is starting
+      toast({
+        title: "Starting Minigame",
+        description: `Loading ${minigameType} minigame. Please wait...`,
+        duration: 3000,
+      });
+      
+      // Use setTimeout to ensure the game state is fully updated before starting the minigame
+      setTimeout(() => {
+        startMinigame(minigameType);
+      }, 500);
     }
     
     // Check for season transition scenes

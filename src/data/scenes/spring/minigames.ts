@@ -34,6 +34,10 @@ const springMinigameScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Xavier hands you a tablet with the drone control interface.",
+      },
+      {
+        character: 'narrator',
+        text: "GAME INSTRUCTIONS: In 'Brooms Away', you'll need to scan the area for litter and direct the drones to clean it up.",
       }
     ],
     nextSceneId: 'spring-brooms-away-start',
@@ -103,6 +107,10 @@ const springMinigameScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Senara hands you a checklist of items to find.",
+      },
+      {
+        character: 'narrator',
+        text: "GAME INSTRUCTIONS: In 'Bloom With A View', you'll need to locate gardening supplies hidden throughout the community garden.",
       }
     ],
     nextSceneId: 'spring-bloom-view-start',
@@ -173,6 +181,10 @@ const springMinigameScenes: Record<string, Scene> = {
         character: 'maven',
         text: "I guess I can't say no to a local tradition...",
         mood: 'embarrassed',
+      },
+      {
+        character: 'narrator',
+        text: "GAME INSTRUCTIONS: In 'Mud Fling', you'll participate in a friendly mud battle. Dodge incoming mud balls and try to hit your opponents!",
       }
     ],
     nextSceneId: 'spring-mud-fling-start',
@@ -250,6 +262,39 @@ const springMinigameScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'spring-festival-end',
+  },
+  
+  // Explicitly define spring-festival-end to avoid dead ends
+  'spring-festival-end': {
+    id: 'spring-festival-end',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "The Spring Blooms & Brooms Festival comes to a successful close as the sun begins to set.",
+      },
+      {
+        character: 'maven',
+        text: "That was quite a day. I think we all learned a lot about Stonewich and its traditions.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "And the people got to know us better too. That's important for establishing trust.",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "The festival was a strategic success. We should capitalize on this momentum for our future initiatives.",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "As the festival wraps up, you feel a sense of accomplishment and deeper connection to your new home.",
+      }
+    ],
+    // Connect back to the main story progression
+    nextSceneId: 'spring-conclusion',
   },
 };
 
