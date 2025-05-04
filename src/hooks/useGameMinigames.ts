@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
 import { soundManager } from '@/utils/soundEffects';
+import { toast } from '@/components/ui/use-toast';
 
 // Add minigame types including summer minigames
 export type MinigameType = 'broomsAway' | 'mudFling' | 'bloomWithAView' | 'serenade' | 'spokenWord' | 'whatsOnTap';
@@ -19,6 +20,14 @@ export function useGameMinigames(
   // Minigame functions
   const startMinigame = useCallback((minigameType: MinigameType) => {
     console.log(`Starting minigame: ${minigameType}`);
+    
+    // Show a toast notification when starting a minigame
+    toast({
+      title: "Starting Minigame",
+      description: `Loading ${minigameType} minigame...`,
+      duration: 2000,
+    });
+    
     setActiveMinigame(minigameType);
     setReturnSceneAfterMinigame(gameState.currentScene);
   }, [gameState.currentScene]);
@@ -109,6 +118,13 @@ export function useGameMinigames(
     }
     
     console.log(`Transitioning to next scene after minigame: ${nextSceneId}`);
+    
+    // Show a toast notification when completing a minigame
+    toast({
+      title: success ? "Minigame Completed" : "Minigame Ended",
+      description: success ? "Great job!" : "Better luck next time!",
+      duration: 2000,
+    });
     
     // Return to the appropriate scene
     handleSceneTransition(nextSceneId);

@@ -16,24 +16,24 @@ const GameSceneObserver = () => {
     
     // Check if we need to start a minigame based on the scene
     // Spring minigames
-    if (currentScene === 'spring-brooms-away-start') {
+    if (currentScene === 'spring-brooms-away-start' || currentScene === 'spring-brooms-away-intro') {
       console.log('Starting Brooms Away minigame');
       startMinigame('broomsAway');
-    } else if (currentScene === 'spring-mud-fling-start') {
+    } else if (currentScene === 'spring-mud-fling-start' || currentScene === 'spring-mud-fling-intro') {
       console.log('Starting Mud Fling minigame');
       startMinigame('mudFling');
-    } else if (currentScene === 'spring-bloom-view-start') {
+    } else if (currentScene === 'spring-bloom-view-start' || currentScene === 'spring-bloom-view-intro') {
       console.log('Starting Bloom With a View minigame');
       startMinigame('bloomWithAView');
     }
     // Summer minigames
-    else if (currentScene === 'summer-serenade-start') {
+    else if (currentScene === 'summer-serenade-start' || currentScene === 'summer-serenade-intro') {
       console.log('Starting Serenade minigame');
       startMinigame('serenade');
-    } else if (currentScene === 'summer-spoken-word-start') {
+    } else if (currentScene === 'summer-spoken-word-start' || currentScene === 'summer-spoken-word-intro') {
       console.log('Starting Spoken Word minigame');
       startMinigame('spokenWord');
-    } else if (currentScene === 'summer-whats-on-tap-start') {
+    } else if (currentScene === 'summer-whats-on-tap-start' || currentScene === 'summer-whats-on-tap-intro') {
       console.log('Starting What\'s On Tap minigame');
       startMinigame('whatsOnTap');
     }

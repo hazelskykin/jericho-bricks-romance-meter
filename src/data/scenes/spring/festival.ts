@@ -68,6 +68,158 @@ const springFestivalScenes: Record<string, Scene> = {
     // No nextSceneId as this will use the FestivalActivitiesScene component
   },
 
+  // Intro scenes for each minigame
+  'spring-brooms-away-intro': {
+    id: 'spring-brooms-away-intro',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Maven approaches the city square where several cleaning drones hover, ready for the community cleanup event.",
+      },
+      {
+        character: 'xavier',
+        text: "Maven! Perfect timing. I could use your help coordinating these drones. The automated systems need a human touch sometimes.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "I'd be happy to help. How does it work?",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "It's simple—guide the drones to clean up debris while avoiding obstacles. Ready to try?",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'spring-brooms-away-start',
+  },
+
+  'spring-mud-fling-intro': {
+    id: 'spring-mud-fling-intro',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "In one corner of the festival grounds, a crowd has gathered around what appears to be a playful mud competition.",
+      },
+      {
+        character: 'navarre',
+        text: "Maven! Come join us! The annual mud fling is a Stonewich tradition.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "A mud... fling? That sounds messy.",
+        mood: 'surprised',
+      },
+      {
+        character: 'navarre',
+        text: "That's the point! It's all about connecting with the earth as spring arrives. Plus, it's fantastic for social media content. Want to give it a try?",
+        mood: 'laughing',
+      }
+    ],
+    nextSceneId: 'spring-mud-fling-start',
+  },
+
+  'spring-bloom-view-intro': {
+    id: 'spring-bloom-view-intro',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Maven notices Senara guiding residents at a flower planting station, surrounded by vibrant blooms and gardening tools.",
+      },
+      {
+        character: 'senara',
+        text: "The selection of flora here represents both native species and adaptive imports that thrive in Stonewich's climate.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "It all looks beautiful. Are you helping people choose what to plant?",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "Indeed. Each plant serves a specific ecological function. Would you like to assist? Your insight on optimal arrangements could be valuable.",
+        mood: 'neutral',
+      }
+    ],
+    nextSceneId: 'spring-bloom-view-start',
+  },
+
+  // Completion scenes for each minigame
+  'spring-brooms-away-complete': {
+    id: 'spring-brooms-away-complete',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'xavier',
+        text: "That was excellent work! The drones responded well to your guidance.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "It was actually fun. The drone AI is impressive.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "I made some modifications to make them more intuitive. The residents seem to love seeing them in action too.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'spring-festival-activities',
+  },
+
+  'spring-mud-fling-complete': {
+    id: 'spring-mud-fling-complete',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'navarre',
+        text: "Look at you! A natural mud-flinger!",
+        mood: 'laughing',
+      },
+      {
+        character: 'maven',
+        text: "I'm covered in mud from head to toe!",
+        mood: 'surprised',
+      },
+      {
+        character: 'navarre',
+        text: "That's how you know you did it right. The photos are already trending. #StonewichMudFling is going viral!",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'spring-festival-activities',
+  },
+
+  'spring-bloom-view-complete': {
+    id: 'spring-bloom-view-complete',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'senara',
+        text: "Your arrangements demonstrate a surprising understanding of companion planting principles.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Thanks. I just tried to balance colors and sizes mostly.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "Aesthetic appeal often aligns with ecological harmony. These gardens will serve both functions effectively.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'spring-festival-activities',
+  },
+
   // Scene after completing the festival activities
   'spring-festival-completion': {
     id: 'spring-festival-completion',
