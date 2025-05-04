@@ -18,11 +18,13 @@ export function useGameMinigames(
   
   // Minigame functions
   const startMinigame = useCallback((minigameType: MinigameType) => {
+    console.log(`Starting minigame: ${minigameType}`);
     setActiveMinigame(minigameType);
     setReturnSceneAfterMinigame(gameState.currentScene);
   }, [gameState.currentScene]);
   
   const completeMinigame = useCallback((success: boolean) => {
+    console.log(`Completing minigame: ${activeMinigame}, success: ${success}`);
     // Apply affection bonuses based on minigame success
     if (success) {
       // Play win sound (already played in the respective games)
@@ -88,11 +90,36 @@ export function useGameMinigames(
       // Play lose sound (already played in the respective games)
     }
     
-    // Return to the previous scene
-    exitMinigame();
-  }, [activeMinigame, gameState.characters]);
+    // Determine which scene to go to after completing the minigame
+    let nextSceneId = returnSceneAfterMinigame;
+    
+    // For each minigame, set the proper next scene ID
+    if (activeMinigame === 'broomsAway') {
+      nextSceneId = 'spring-brooms-away-complete';
+    } else if (activeMinigame === 'mudFling') {
+      nextSceneId = 'spring-mud-fling-complete';
+    } else if (activeMinigame === 'bloomWithAView') {
+      nextSceneId = 'spring-bloom-view-complete';
+    } else if (activeMinigame === 'serenade') {
+      nextSceneId = 'summer-serenade-complete';
+    } else if (activeMinigame === 'spokenWord') {
+      nextSceneId = 'summer-spoken-word-complete';
+    } else if (activeMinigame === 'whatsOnTap') {
+      nextSceneId = 'summer-whats-on-tap-complete';
+    }
+    
+    console.log(`Transitioning to next scene after minigame: ${nextSceneId}`);
+    
+    // Return to the appropriate scene
+    handleSceneTransition(nextSceneId);
+    
+    // Clear minigame state
+    setActiveMinigame(null);
+    setReturnSceneAfterMinigame('');
+  }, [activeMinigame, gameState.characters, returnSceneAfterMinigame, handleSceneTransition]);
   
   const exitMinigame = useCallback(() => {
+    console.log(`Exiting minigame, returning to: ${returnSceneAfterMinigame}`);
     // Return to the previous scene
     if (returnSceneAfterMinigame) {
       handleSceneTransition(returnSceneAfterMinigame);

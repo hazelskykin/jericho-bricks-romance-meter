@@ -19,6 +19,8 @@ const GameInterface: React.FC = () => {
     handleSceneTransition
   } = useGame();
 
+  console.log('GameInterface rendering, activeMinigame:', activeMinigame, 'currentScene:', gameState.currentScene);
+
   // If we're at the start screen, show main menu
   if (gameState.currentScene === 'start') {
     return <MainMenu onNewGame={handleNewGame} onAbout={handleAbout} />;
@@ -104,6 +106,7 @@ const GameInterface: React.FC = () => {
   
   // Handle festival activities selection scene for spring
   if (gameState.currentScene === 'spring-festival-activities') {
+    // ... keep existing code (spring festival activities)
     const festivalActivities = [
       {
         id: 'brooms-away',
@@ -143,6 +146,7 @@ const GameInterface: React.FC = () => {
   
   // Handle festival activities selection scene for summer
   if (gameState.currentScene === 'summer-festival-activities') {
+    // ... keep existing code (summer festival activities)
     const festivalActivities = [
       {
         id: 'serenade',
@@ -182,6 +186,7 @@ const GameInterface: React.FC = () => {
   
   // If a minigame is active, show it
   if (activeMinigame) {
+    console.log(`Showing active minigame: ${activeMinigame}`);
     return (
       <MinigameHandler 
         activeMinigame={activeMinigame}
