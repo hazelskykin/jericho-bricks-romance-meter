@@ -12,13 +12,15 @@ interface CharacterSelectionProps {
   scenePrefix: string;
   title: string;
   description: string;
+  completionSceneId?: string; // Added optional completionSceneId prop
 }
 
 const CharacterSelectionScene: React.FC<CharacterSelectionProps> = ({
   availableCharacters,
   scenePrefix,
   title,
-  description
+  description,
+  completionSceneId // Include in component props
 }) => {
   const { handleSceneTransition } = useGame();
   
@@ -26,7 +28,8 @@ const CharacterSelectionScene: React.FC<CharacterSelectionProps> = ({
   console.log("CharacterSelectionScene rendered", {
     availableCharacters,
     scenePrefix,
-    title
+    title,
+    completionSceneId // Log the new prop as well
   });
   
   // Filter only the specified characters
@@ -42,8 +45,9 @@ const CharacterSelectionScene: React.FC<CharacterSelectionProps> = ({
   
   // Handle proceed to festival planning
   const handleProceedToFestival = () => {
-    console.log("Proceeding to festival planning");
-    handleSceneTransition('spring-festival-planning');
+    console.log(`Proceeding to festival planning: ${completionSceneId || 'spring-festival-planning'}`);
+    // Use the completionSceneId prop if provided, otherwise use default
+    handleSceneTransition(completionSceneId || 'spring-festival-planning');
   };
   
   return (
