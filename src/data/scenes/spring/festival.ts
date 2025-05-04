@@ -195,7 +195,7 @@ const springFestivalScenes: Record<string, Scene> = {
         text: "As the team files out, the weight of Dr. Voss's expectations settles on their shoulders. There's clearly much more at stake than seasonal festivals.",
       }
     ],
-    nextSceneId: 'season-transition-summer',
+    nextSceneId: 'spring-conclusion',
   },
 };
 
