@@ -18,6 +18,11 @@ export function useGameMinigames(
   const [returnSceneAfterMinigame, setReturnSceneAfterMinigame] = useState<string>('');
   const [pendingMinigame, setPendingMinigame] = useState<MinigameType | null>(null);
   
+  // Debug log current state whenever minigame state changes
+  useEffect(() => {
+    console.log(`Minigame state updated - activeMinigame: ${activeMinigame}, returnScene: ${returnSceneAfterMinigame}`);
+  }, [activeMinigame, returnSceneAfterMinigame, pendingMinigame]);
+  
   // Effect to handle pending minigame requests
   useEffect(() => {
     if (pendingMinigame && !activeMinigame) {
@@ -50,9 +55,17 @@ export function useGameMinigames(
       return;
     }
     
-    // Set active minigame with a delay to ensure state updates are processed
+    // Set active minigame 
     console.log(`Setting active minigame to: ${minigameType}`);
     setActiveMinigame(minigameType);
+    
+    // Additional debug toast to track flow
+    setTimeout(() => {
+      console.log(`Minigame should now be active: ${minigameType}`);
+      if (!activeMinigame) {
+        console.warn("Minigame state not updated as expected");
+      }
+    }, 700);
   }, [gameState.currentScene, activeMinigame]);
   
   const completeMinigame = useCallback((success: boolean) => {
@@ -142,7 +155,7 @@ export function useGameMinigames(
       nextSceneId = 'summer-whats-on-tap-complete';
     }
     
-    console.log(`Transitioning to next scene after minigame: ${nextSceneId}`);
+    console.log(`Transitioning to next scene after minigame: ${nextSceneId || "using fallback"}`);
     
     // Show a toast notification when completing a minigame
     toast({
@@ -151,42 +164,48 @@ export function useGameMinigames(
       duration: 3000,
     });
     
-    // Clear minigame state first before transitioning
+    // Store values for later use (after state reset)
     const completedMinigame = activeMinigame;
-    
-    // Store values before clearing state
     const savedReturnScene = returnSceneAfterMinigame;
     
-    // Clear states
+    // Clear states immediately to prevent re-renders with stale data
     setActiveMinigame(null);
     setReturnSceneAfterMinigame('');
     
     // Navigate to the next scene with a delay to ensure state changes are processed
     setTimeout(() => {
-      console.log(`Now navigating to scene: ${nextSceneId || savedReturnScene}`);
-      // Return to the appropriate scene
-      if (nextSceneId) {
-        handleSceneTransition(nextSceneId);
-      } else if (savedReturnScene) {
-        handleSceneTransition(savedReturnScene);
-      } else {
-        console.error('No next scene ID or return scene available after minigame completion');
-        // Default to spring festival midway scene as a fallback
-        handleSceneTransition('spring-festival-midway');
+      console.log(`Now navigating to scene: ${nextSceneId || savedReturnScene || "fallback scene"}`);
+      try {
+        // Return to the appropriate scene
+        if (nextSceneId) {
+          handleSceneTransition(nextSceneId);
+        } else if (savedReturnScene) {
+          handleSceneTransition(savedReturnScene);
+        } else {
+          console.error('No next scene ID or return scene available after minigame completion');
+          // Default to spring festival midway scene as a fallback
+          handleSceneTransition('spring-festival-midway');
+        }
+      } catch (error) {
+        console.error("Error during scene transition after minigame:", error);
+        // Emergency fallback
+        handleSceneTransition('spring-festival-activities');
       }
       
-      // Check if there's a pending minigame to start next
-      if (pendingMinigame) {
-        console.log(`Processing pending minigame after completion: ${pendingMinigame}`);
-        // Clear pending state first to avoid infinite loop
-        const nextMinigame = pendingMinigame;
-        setPendingMinigame(null);
-        
-        // Start the next minigame after a delay
-        setTimeout(() => {
-          startMinigame(nextMinigame);
-        }, 500);
-      }
+      // Check for pending minigame after a further delay
+      setTimeout(() => {
+        if (pendingMinigame) {
+          console.log(`Processing pending minigame after completion: ${pendingMinigame}`);
+          // Clear pending state first to avoid infinite loop
+          const nextMinigame = pendingMinigame;
+          setPendingMinigame(null);
+          
+          // Start the next minigame after a delay
+          setTimeout(() => {
+            startMinigame(nextMinigame);
+          }, 500);
+        }
+      }, 300);
     }, 500);
     
   }, [activeMinigame, gameState.characters, returnSceneAfterMinigame, handleSceneTransition, pendingMinigame, startMinigame]);
@@ -210,7 +229,13 @@ export function useGameMinigames(
     if (savedReturnScene) {
       setTimeout(() => {
         console.log(`Now navigating back to scene: ${savedReturnScene}`);
-        handleSceneTransition(savedReturnScene);
+        try {
+          handleSceneTransition(savedReturnScene);
+        } catch (error) {
+          console.error("Error returning from minigame:", error);
+          // Emergency fallback
+          handleSceneTransition('spring-festival-activities');
+        }
       }, 300);
     } else {
       console.error('No return scene available after minigame exit');

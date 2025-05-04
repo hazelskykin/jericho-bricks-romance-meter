@@ -32,6 +32,13 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   useEffect(() => {
     console.log(`MinigameHandler mounted with activeMinigame: ${activeMinigame}`);
     
+    if (!activeMinigame) {
+      console.error("MinigameHandler received null or undefined activeMinigame!");
+      setLoadError("No minigame specified to load");
+      setIsLoading(false);
+      return;
+    }
+    
     // Reset states when minigame changes
     setIsLoading(true);
     setLoadError(null);
@@ -130,40 +137,40 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   try {
     console.log(`Attempting to render minigame component: ${activeMinigame}`);
     
-    // Create a helper function to safely render minigame components
-    const renderMinigameOrFallback = () => {
-      // Use explicit type check to avoid issues with string comparison
-      switch (activeMinigame) {
-        // Spring minigames
-        case 'broomsAway':
-          console.log('Rendering BroomsAwayGame');
-          return <BroomsAwayGame onComplete={completeMinigame} onExit={exitMinigame} />;
-        case 'mudFling':
-          console.log('Rendering MudFlingGame');
-          return <MudFlingGame onComplete={completeMinigame} onExit={exitMinigame} />;
-        case 'bloomWithAView':
-          console.log('Rendering BloomWithAViewGame');
-          return <BloomWithAViewGame onComplete={completeMinigame} onExit={exitMinigame} />;
-        
-        // Summer minigames
-        case 'serenade':
-          console.log('Rendering SerenadeGame');
-          return <SerenadeGame onComplete={completeMinigame} onExit={exitMinigame} />;
-        case 'spokenWord':
-          console.log('Rendering SpokenWordGame');
-          return <SpokenWordGame onComplete={completeMinigame} onExit={exitMinigame} />;
-        case 'whatsOnTap':
-          console.log('Rendering WhatsOnTapGame');
-          return <WhatsOnTapGame onComplete={completeMinigame} onExit={exitMinigame} />;
-        
-        default:
-          console.warn(`No matching minigame component found for: "${activeMinigame}"`);
-          return <MinigameStartPrompt />;
-      }
-    };
+    // Guaranteed fallback in case switch statement doesn't match
+    if (!activeMinigame) {
+      console.warn("No active minigame specified, showing fallback UI");
+      return <MinigameStartPrompt />;
+    }
     
-    // Render the appropriate minigame or fallback
-    return renderMinigameOrFallback();
+    // Use explicit type check to avoid issues with string comparison
+    switch (activeMinigame) {
+      // Spring minigames
+      case 'broomsAway':
+        console.log('Rendering BroomsAwayGame');
+        return <BroomsAwayGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      case 'mudFling':
+        console.log('Rendering MudFlingGame');
+        return <MudFlingGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      case 'bloomWithAView':
+        console.log('Rendering BloomWithAViewGame');
+        return <BloomWithAViewGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      
+      // Summer minigames
+      case 'serenade':
+        console.log('Rendering SerenadeGame');
+        return <SerenadeGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      case 'spokenWord':
+        console.log('Rendering SpokenWordGame');
+        return <SpokenWordGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      case 'whatsOnTap':
+        console.log('Rendering WhatsOnTapGame');
+        return <WhatsOnTapGame onComplete={completeMinigame} onExit={exitMinigame} />;
+      
+      default:
+        console.warn(`No matching minigame component found for: "${activeMinigame}"`);
+        return <MinigameStartPrompt />;
+    }
   } catch (error) {
     console.error(`Error rendering minigame ${activeMinigame}:`, error);
     return (

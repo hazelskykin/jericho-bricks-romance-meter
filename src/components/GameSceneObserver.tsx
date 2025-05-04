@@ -15,7 +15,7 @@ const GameSceneObserver = () => {
     const currentScene = gameState.currentScene;
     console.log(`GameSceneObserver detected scene change to: [${currentScene}]`);
     
-    // Check specific minigame trigger scenes
+    // Check specific minigame trigger scenes - these MUST match the scene IDs in data files
     const minigameMappings = {
       'spring-brooms-away-start': 'broomsAway',
       'spring-mud-fling-start': 'mudFling',
@@ -25,6 +25,7 @@ const GameSceneObserver = () => {
       'summer-whats-on-tap-start': 'whatsOnTap'
     };
     
+    // Explicitly check if the current scene is a minigame trigger
     if (currentScene in minigameMappings) {
       const minigameType = minigameMappings[currentScene];
       console.log(`GameSceneObserver: Starting ${minigameType} minigame from scene: ${currentScene}`);
@@ -36,11 +37,21 @@ const GameSceneObserver = () => {
         duration: 3000,
       });
       
-      // Start the minigame with a slight delay to ensure state is updated
+      // Add a clearer delay to ensure state updates are processed in the right order
       setTimeout(() => {
-        console.log(`GameSceneObserver: Calling startMinigame(${minigameType})`);
-        startMinigame(minigameType);
-      }, 300);
+        try {
+          console.log(`GameSceneObserver: Calling startMinigame(${minigameType})`);
+          startMinigame(minigameType);
+        } catch (error) {
+          console.error("Error starting minigame:", error);
+          toast({
+            title: "Error Loading Minigame",
+            description: "There was a problem starting the game. Please try again.",
+            variant: "destructive",
+            duration: 5000,
+          });
+        }
+      }, 500); // Increase delay to ensure state is ready
     }
     
     // Check for season transition scenes
