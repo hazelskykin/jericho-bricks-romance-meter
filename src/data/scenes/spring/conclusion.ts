@@ -33,12 +33,98 @@ const springConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "I feel like I'm starting to find my place here in Stonewich.",
+        text: "Time to head back to Cybaton for the end of season report. I feel like I'm starting to understand how I can contribute.",
         mood: 'happy',
       }
     ],
-    nextSceneId: 'spring-conclusion',
+    nextSceneId: 'spring-conclusion-meeting',
   },
+
+   // Spring conclusion with Dr. Voss
+  'spring-conclusion-meeting': {
+    id: 'spring-conclusion-meeting',
+    background: 'cybaton-meeting-room',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Back at Cybaton headquarters, the team presents their spring festival results to Dr. Voss.",
+      },
+      {
+        character: 'etta',
+        text: "As you can see from our metrics, Dr. Voss, the Spring Blooms & Brooms festival was executed perfectly. All objectives were met or exceeded.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "Our technological implementations functioned at 98.7% efficiency, and we've gathered valuable data for future improvements. No major downtime or incidents.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "The social and economic impact has been substantial. Tourism enjoyed a huge lift as a direct result of the festival connections.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "The usage patterns from the AI assistant indicate a 37% skill productivity increase on average and 43% knowledge extension rates. Attendees became more adept at cleaning, beautification and eagerly shared knowledge."
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "The community really came together. There was a genuine sense of civic pride.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss listens carefully, occasionally making notes as the team presents.",
+      },
+      {
+        character: 'narrator',
+        text: "After the presentation concludes, Dr. Voss stands and addresses the team.",
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss is a commanding presence with silver-streaked hair and piercing eyes that seem to evaluate everything.",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss speaks with a measured tone, each word precisely chosen.",
+      },
+      {
+        character: 'narrator',
+        text: "\"I'm impressed with what you've accomplished. Each of you has demonstrated excellence in your respective domains.\"",
+      },
+      {
+        character: 'narrator',
+        text: "\"This is a promising start, but merely the beginning of what Stonewich requires.\"",
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss paces slowly before continuing.",
+      },
+      {
+        character: 'narrator',
+        text: "\"Festivals and community events are important, yes. But beneath Stonewich's charming exterior lie systemic issues that will demand more from you.\"",
+      },
+      {
+        character: 'narrator',
+        text: "\"In the coming seasons, I expect you to move beyond executing pleasant civic functions and begin addressing the core challenges facing Stonewich.\"",
+      },
+      {
+        character: 'narrator',
+        text: "\"When you truly begin to function as a unified team rather than exceptional individuals, you'll become a model for city administration that others will follow.\"",
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss nods firmly, a clear dismissal.",
+      },
+      {
+        character: 'narrator',
+        text: "As the team files out, the weight of Dr. Voss's expectations settles on their shoulders. There's clearly much more at stake than seasonal festivals.",
+      }
+    ],
+    nextSceneId: 'spring-conclusion',
   
   'spring-conclusion': {
     id: 'spring-conclusion',
@@ -50,7 +136,7 @@ const springConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "You've begun to see patterns in how your teammates operate, and found yourself gravitating toward certain approaches.",
+        text: "You've begun to see patterns in how your teammates operate, and found yourself gravitating toward certain approaches. Dr. Voss's words weigh at the back of your mind, but daily routines make it seem less urgent.",
       },
       {
         character: 'maven',
@@ -67,7 +153,7 @@ const springConclusionScenes: Record<string, Scene> = {
         mood: 'neutral',
       }
     ],
-    nextSceneId: 'summer-transition',
+    nextSceneId: 'season-transition-summer',
   },
   
   // Special scene to handle transition between seasons
