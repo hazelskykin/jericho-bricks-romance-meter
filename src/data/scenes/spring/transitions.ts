@@ -7,7 +7,7 @@ const springTransitionScenes: Record<string, Scene> = {
     background: 'spring-transition',
     dialogue: [
       {
-        character: narrator,
+        character: 'narrator',
         text: "Spring Chapter 1",
       },
     ],  // Empty dialogue as this will be handled by the SeasonTransition component
