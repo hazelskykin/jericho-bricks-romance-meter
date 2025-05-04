@@ -4,7 +4,7 @@ import { Scene } from '../../types/game';
 const mainMenu: Record<string, Scene> = {
   'start': {
     id: 'start',
-    background: 'cybaton-office',
+    background: 'wall-tiles',
     dialogue: [
       {
         character: 'narrator',
@@ -23,23 +23,6 @@ const mainMenu: Record<string, Scene> = {
     ],
   },
   
-  'about': {
-    id: 'about',
-    background: 'cybaton-office',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: 'Jericho Bricks is a visual novel where you play as Maven, a new recruit in the Cybaton city administration program.',
-      },
-      {
-        character: 'narrator',
-        text: 'Your choices will affect your relationships with your teammates, each of whom is a potential romance option.',
-      },
-      {
-        character: 'narrator',
-        text: 'Explore the city of Stonewich, navigate workplace challenges, and maybe find love along the way!',
-      },
-    ],
     choices: [
       {
         text: 'Back to Main Menu',
@@ -54,7 +37,7 @@ const mainMenu: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'End of prologue. Thank you for playing the demo of Jericho Bricks!',
+        text: 'Thank you for playing Jericho Bricks!',
       },
     ],
     choices: [
