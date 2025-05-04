@@ -15,6 +15,7 @@ const GameSceneObserver = () => {
     console.log(`GameSceneObserver detected scene change to: [${currentScene}]`);
     
     // Check if we need to start a minigame based on the scene
+    // Spring minigames
     if (currentScene === 'spring-brooms-away-start') {
       console.log('Starting Brooms Away minigame');
       startMinigame('broomsAway');
@@ -24,12 +25,18 @@ const GameSceneObserver = () => {
     } else if (currentScene === 'spring-bloom-view-start') {
       console.log('Starting Bloom With a View minigame');
       startMinigame('bloomWithAView');
-    } 
-    // Add hooks for potential future summer minigames
-    // else if (currentScene === 'summer-music-game') {
-    //   console.log('Starting Music Game minigame');
-    //   startMinigame('musicGame');
-    // }
+    }
+    // Summer minigames
+    else if (currentScene === 'summer-serenade-start') {
+      console.log('Starting Serenade minigame');
+      startMinigame('serenade');
+    } else if (currentScene === 'summer-spoken-word-start') {
+      console.log('Starting Spoken Word minigame');
+      startMinigame('spokenWord');
+    } else if (currentScene === 'summer-whats-on-tap-start') {
+      console.log('Starting What\'s On Tap minigame');
+      startMinigame('whatsOnTap');
+    }
     
     // Check for season transition scenes
     checkSeasonProgress(currentScene);

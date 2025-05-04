@@ -1,8 +1,47 @@
-
 import { Scene } from '../../../types/game';
 
 const summerMinigameScenes: Record<string, Scene> = {
-  // Summer minigame intro scenes
+  // Summer minigame start scenes - these trigger actual minigames
+  'summer-serenade-start': {
+    id: 'summer-serenade-start',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "You approach the interactive music exhibit, ready to test your rhythm skills.",
+      },
+    ],
+    // This triggers the Serenade minigame
+    nextSceneId: 'summer-serenade-complete',
+  },
+  
+  'summer-spoken-word-start': {
+    id: 'summer-spoken-word-start',
+    background: 'city-cafe',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "You take a seat at the spoken word competition area, ready to craft your poem.",
+      },
+    ],
+    // This triggers the Spoken Word minigame
+    nextSceneId: 'summer-spoken-word-complete',
+  },
+  
+  'summer-whats-on-tap-start': {
+    id: 'summer-whats-on-tap-start',
+    background: 'city-cafe',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "You put on an apron and take your position behind the beer tent counter.",
+      },
+    ],
+    // This triggers the What's On Tap minigame
+    nextSceneId: 'summer-whats-on-tap-complete',
+  },
+  
+  // Old minigame scenes - keeping for compatibility but they'll be replaced by the proper games
   'summer-music-game-intro': {
     id: 'summer-music-game-intro',
     background: 'stonewich-cityscape',
@@ -18,10 +57,9 @@ const summerMinigameScenes: Record<string, Scene> = {
         mood: 'happy',
       },
     ],
-    nextSceneId: 'summer-music-game-start',
+    nextSceneId: 'summer-serenade-intro',
   },
   
-  // Placeholder for summer minigame start scenes - these would trigger actual minigames
   'summer-music-game-start': {
     id: 'summer-music-game-start',
     background: 'stonewich-cityscape',
@@ -31,11 +69,9 @@ const summerMinigameScenes: Record<string, Scene> = {
         text: "You approach the interactive music exhibit, ready to test your skills.",
       },
     ],
-    // This would typically trigger a minigame, but for now just continues the story
-    nextSceneId: 'summer-music-game-complete',
+    nextSceneId: 'summer-serenade-start',
   },
   
-  // Result scenes for minigames
   'summer-music-game-complete': {
     id: 'summer-music-game-complete',
     background: 'stonewich-cityscape',
@@ -50,7 +86,7 @@ const summerMinigameScenes: Record<string, Scene> = {
         mood: 'happy',
       },
     ],
-    nextSceneId: 'summer-conclusion',
+    nextSceneId: 'summer-serenade-complete',
   },
   
   // Additional summer activities
@@ -74,7 +110,7 @@ const summerMinigameScenes: Record<string, Scene> = {
         mood: 'happy',
       },
     ],
-    nextSceneId: 'summer-wine-tasting-game',
+    nextSceneId: 'summer-whats-on-tap-intro',
   },
   
   'summer-wine-tasting-game': {
@@ -86,7 +122,7 @@ const summerMinigameScenes: Record<string, Scene> = {
         text: "Under Navarre's guidance, you learn to distinguish different wine varieties and their unique characteristics.",
       },
     ],
-    nextSceneId: 'summer-wine-tasting-complete',
+    nextSceneId: 'summer-whats-on-tap-start',
   },
   
   'summer-wine-tasting-complete': {
@@ -109,7 +145,7 @@ const summerMinigameScenes: Record<string, Scene> = {
         mood: 'happy',
       },
     ],
-    nextSceneId: 'summer-conclusion-meeting',
+    nextSceneId: 'summer-whats-on-tap-complete',
   },
   
   'summer-conclusion-meeting': {

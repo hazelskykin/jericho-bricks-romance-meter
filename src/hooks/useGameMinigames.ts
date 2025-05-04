@@ -4,8 +4,8 @@ import { GameState, CharacterId } from '@/types/game';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
 import { soundManager } from '@/utils/soundEffects';
 
-// Add minigame types
-export type MinigameType = 'broomsAway' | 'mudFling' | 'bloomWithAView';
+// Add minigame types including summer minigames
+export type MinigameType = 'broomsAway' | 'mudFling' | 'bloomWithAView' | 'serenade' | 'spokenWord' | 'whatsOnTap';
 
 export function useGameMinigames(
   gameState: GameState,
@@ -31,6 +31,7 @@ export function useGameMinigames(
       let affectionChanges: Partial<Record<CharacterId, number>> = {};
       
       switch(activeMinigame) {
+        // Spring minigames
         case 'broomsAway':
           affectionChanges = { xavier: 1, senara: 1 };
           break;
@@ -40,6 +41,22 @@ export function useGameMinigames(
         case 'bloomWithAView':
           // All characters get a small affection boost
           affectionChanges = { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 };
+          break;
+        
+        // Summer minigames  
+        case 'serenade':
+          // The specific character boost would be determined by song choice within the game
+          // This is handled directly in the minigame component
+          affectionChanges = { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 };
+          break;
+        case 'spokenWord':
+          // The specific character boost would be determined by poem theme within the game
+          // This is handled directly in the minigame component
+          affectionChanges = { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 };
+          break;
+        case 'whatsOnTap':
+          // Social activity boosts Navarre affection most, with smaller boosts to others
+          affectionChanges = { navarre: 1, xavier: 0.5, etta: 0.5, senara: 0.5 };
           break;
       }
       

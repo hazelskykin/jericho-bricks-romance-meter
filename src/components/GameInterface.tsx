@@ -61,6 +61,7 @@ const GameInterface: React.FC = () => {
             ? "As spring begins in Stonewich, take time to connect with your teammates. Who would you like to visit next?"
             : "You've visited all your teammates. You can proceed to the Spring festival planning."
         }
+        completionSceneId={remainingChars.length === 0 ? 'spring-festival-planning' : undefined}
       />
     );
   }
@@ -144,19 +145,27 @@ const GameInterface: React.FC = () => {
   if (gameState.currentScene === 'summer-festival-activities') {
     const festivalActivities = [
       {
-        id: 'music-game',
-        title: 'Interactive Music Exhibit',
-        description: 'Experience Xavier\'s innovative musical technology installations',
+        id: 'serenade',
+        title: 'Serenade',
+        description: 'Experience the interactive rhythm game at the music stages',
         color: '#4CC2FF', // Xavier's color
-        sceneId: 'summer-music-game-intro',
+        sceneId: 'summer-serenade-intro',
         available: true
       },
       {
-        id: 'wine-tasting',
-        title: 'Wine Tasting Tour',
-        description: 'Join Navarre for an exclusive tasting of local vineyards\' finest offerings',
+        id: 'spoken-word',
+        title: 'Spoken Word',
+        description: 'Participate in the poetry competition by crafting your own verses',
+        color: '#9C89FF', // Senara's color
+        sceneId: 'summer-spoken-word-intro',
+        available: true
+      },
+      {
+        id: 'whats-on-tap',
+        title: "What's On-Tap?",
+        description: 'Work the beer tent and serve drinks to festival attendees',
         color: '#FFB347', // Navarre's color
-        sceneId: 'summer-wine-tasting-intro',
+        sceneId: 'summer-whats-on-tap-intro',
         available: true
       }
     ];

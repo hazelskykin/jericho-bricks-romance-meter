@@ -12,7 +12,7 @@ const summerConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "You've begun to see not only the patterns in how your teammates operate but their blindspots as well. You know now that Dr. Voss's omnious words from the spring report meeting were no mere motivational speech.",
+        text: "You've begun to see not only the patterns in how your teammates operate but their blindspots as well. You know now that Dr. Voss's ominous words from the spring report meeting were no mere motivational speech.",
       },
       {
         character: 'maven',
@@ -28,7 +28,7 @@ const summerConclusionScenes: Record<string, Scene> = {
         text: "But your experiences have already begun to shape your path. Your strongest connections are becoming clear.",
       }
     ],
-    nextSceneId: 'season-transition-summer',
+    nextSceneId: 'season-transition-autumn',
   },
   
   // Special scene to handle transition between seasons
@@ -41,7 +41,7 @@ const summerConclusionScenes: Record<string, Scene> = {
         text: "Autumn, Chapter 3",
       },
     ], // Empty dialogue to trigger season transition
-    nextSceneId: 'autumn-intro', // Now points to summer content instead of main menu
+    nextSceneId: 'autumn-intro', // Now points to autumn content instead of main menu
   }
 };
 
