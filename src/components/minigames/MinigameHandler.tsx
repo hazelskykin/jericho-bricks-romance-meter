@@ -7,6 +7,7 @@ import SerenadeGame from './serenade/SerenadeGame';
 import SpokenWordGame from './spokenWord/SpokenWordGame';
 import WhatsOnTapGame from './whatsOnTap/WhatsOnTapGame';
 import { Button } from '@/components/ui/button';
+import MinigameContainer from './MinigameContainer';
 
 interface MinigameHandlerProps {
   activeMinigame: string;
@@ -29,20 +30,28 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     };
   }, [activeMinigame]);
   
-  // Fallback component in case of loading issues
+  // Fallback component for minigame loading issues
   const MinigameStartPrompt = () => (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/80 p-4 text-white">
-      <h2 className="text-2xl font-bold mb-4">Ready to play {activeMinigame}?</h2>
-      <p className="mb-8">Click the button below to start the game!</p>
-      <div className="flex gap-4">
-        <Button onClick={() => completeMinigame(true)} className="bg-green-600 hover:bg-green-700">
-          Start Game
-        </Button>
-        <Button onClick={exitMinigame} className="bg-red-600 hover:bg-red-700">
-          Exit
-        </Button>
+    <MinigameContainer
+      title={`Play ${activeMinigame}`}
+      instructions="Click the button below to start the game!"
+      onComplete={completeMinigame}
+      onExit={exitMinigame}
+    >
+      <div className="flex flex-col items-center justify-center p-8 h-full">
+        <div className="mb-8 text-lg text-center">
+          Ready to play <span className="font-bold text-[#9b87f5]">{activeMinigame}</span>?
+        </div>
+        <div className="flex gap-4">
+          <Button onClick={() => completeMinigame(true)} className="bg-green-600 hover:bg-green-700">
+            Start Game
+          </Button>
+          <Button onClick={exitMinigame} className="bg-red-600 hover:bg-red-700">
+            Exit
+          </Button>
+        </div>
       </div>
-    </div>
+    </MinigameContainer>
   );
   
   switch (activeMinigame) {

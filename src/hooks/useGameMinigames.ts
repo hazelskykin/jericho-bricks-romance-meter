@@ -28,16 +28,21 @@ export function useGameMinigames(
       duration: 2000,
     });
     
-    setActiveMinigame(minigameType);
-    setReturnSceneAfterMinigame(gameState.currentScene);
+    // Clear any existing minigame state first to ensure a clean start
+    setActiveMinigame(null);
+    
+    // Use setTimeout to ensure React has time to process the state change
+    setTimeout(() => {
+      setActiveMinigame(minigameType);
+      setReturnSceneAfterMinigame(gameState.currentScene);
+      console.log(`Minigame ${minigameType} activated, return scene will be: ${gameState.currentScene}`);
+    }, 100);
   }, [gameState.currentScene]);
   
   const completeMinigame = useCallback((success: boolean) => {
     console.log(`Completing minigame: ${activeMinigame}, success: ${success}`);
     // Apply affection bonuses based on minigame success
     if (success) {
-      // Play win sound (already played in the respective games)
-      
       // Different affection changes for each minigame
       let affectionChanges: Partial<Record<CharacterId, number>> = {};
       
@@ -95,8 +100,6 @@ export function useGameMinigames(
         ...prev,
         characters: updatedCharacters
       }));
-    } else {
-      // Play lose sound (already played in the respective games)
     }
     
     // Determine which scene to go to after completing the minigame
@@ -126,24 +129,31 @@ export function useGameMinigames(
       duration: 2000,
     });
     
-    // Return to the appropriate scene
-    handleSceneTransition(nextSceneId);
-    
-    // Clear minigame state
+    // Clear minigame state first before transitioning
     setActiveMinigame(null);
     setReturnSceneAfterMinigame('');
+    
+    // Use setTimeout to ensure React has time to process the state change
+    setTimeout(() => {
+      // Return to the appropriate scene
+      handleSceneTransition(nextSceneId);
+    }, 100);
+    
   }, [activeMinigame, gameState.characters, returnSceneAfterMinigame, handleSceneTransition]);
   
   const exitMinigame = useCallback(() => {
     console.log(`Exiting minigame, returning to: ${returnSceneAfterMinigame}`);
-    // Return to the previous scene
-    if (returnSceneAfterMinigame) {
-      handleSceneTransition(returnSceneAfterMinigame);
-    }
     
-    // Clear minigame state
+    // Clear minigame state first before transitioning
     setActiveMinigame(null);
-    setReturnSceneAfterMinigame('');
+    
+    // Return to the previous scene if we have one
+    if (returnSceneAfterMinigame) {
+      setTimeout(() => {
+        handleSceneTransition(returnSceneAfterMinigame);
+        setReturnSceneAfterMinigame('');
+      }, 100);
+    }
   }, [returnSceneAfterMinigame, handleSceneTransition]);
 
   return {
