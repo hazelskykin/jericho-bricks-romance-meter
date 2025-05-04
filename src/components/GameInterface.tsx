@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
@@ -97,7 +96,8 @@ const GameInterface: React.FC = () => {
             ? "As summer heats up in Stonewich, spend time with your teammates to prepare for the festival. Who would you like to visit next?"
             : "You've connected with all your teammates. You can proceed to the Summer festival planning."
         }
-        completionSceneId={remainingChars.length === 0 ? 'summer-planning' : undefined}
+        // This is the fix - explicitly use 'summer-planning' instead of relying on default value
+        completionSceneId='summer-planning'
       />
     );
   }
