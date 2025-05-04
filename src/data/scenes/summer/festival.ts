@@ -27,28 +27,32 @@ const summerFestivalScenes: Record<string, Scene> = {
         mood: 'neutral',
       }
     ],
-    // This scene would typically have choices, but we'll leave it as a placeholder
-    nextSceneId: 'summer-conclusion',
+    choices: [
+      {
+        text: "Let's focus on the musical performances first",
+        nextSceneId: 'summer-music-game-intro',
+        affectionChanges: { xavier: 0.5, senara: 0.5 }
+      },
+      {
+        text: "I'm more interested in the wine tasting events",
+        nextSceneId: 'summer-wine-tasting-intro',
+        affectionChanges: { navarre: 0.5, etta: 0.5 }
+      }
+    ]
   },
   
-  // Added conclusion and transition scenes
-  'summer-conclusion': {
-    id: 'summer-conclusion',
+  // Festival activities selection scene
+  'summer-festival-activities': {
+    id: 'summer-festival-activities',
     background: 'stonewich-cityscape',
     dialogue: [
       {
         character: 'narrator',
-        text: "As the Summer Songs & Sips festival concludes, your relationships with your teammates have evolved.",
-      },
-      {
-        character: 'maven',
-        text: "I feel like I'm growing closer to certain people on the team.",
-        mood: 'happy',
+        text: "The Summer Songs & Sips festival is underway! What aspect would you like to experience first?",
       }
     ],
-    nextSceneId: 'summer-conclusion-meeting',
+    // This scene doesn't advance automatically as it uses the FestivalActivitiesScene component
   },
-  
 };
 
 export default summerFestivalScenes;

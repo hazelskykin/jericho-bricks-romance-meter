@@ -31,7 +31,7 @@ const characterVisitScenes: Record<string, Scene> = {
         character: 'xavier',
         text: "To answer your question, yes, actually. I indeed have a reason to bring us up here. Two even.",
         mood: 'happy',
-      }
+      },
       {
         character: 'maven',
         text: "Oh? Now I'm curious.",
@@ -149,534 +149,439 @@ const characterVisitScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'summer-character-selection-1',
   },
- 
-  // Navarre visit scene - Fixed to use the correct background
-  'spring-visit-navarre': {
-    id: 'spring-visit-navarre',
+  
+  // Navarre visit scene - Summer version
+  'summer-visit-navarre': {
+    id: 'summer-visit-navarre',
     background: 'city-cafe',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Navarre at a popular cafe in the city center. He appears to be charming the staff and several patrons.",
+        text: "You find Navarre at an outdoor patio of a trendy bistro, engaged in an animated conversation with a group of well-dressed locals.",
       },
       {
         character: 'navarre',
-        text: "Maven! Come join us! I was just getting to know some of Stonewich's finest citizens.",
+        text: "Maven! Perfect timing. I was just telling these fine people about our plans for the Summer Songs & Sips festival.",
         mood: 'happy',
       },
       {
         character: 'maven',
-        text: "Networking already, I see.",
+        text: "I see you're working the connections as usual.",
         mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "Always! The Spring festival is our chance to make a good impression on the community. First impressions matter, as they say.",
-        mood: 'happy',
+        text: "Of course! Though today has been... interesting. Ran into Lissa Thornfield earlier.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Thornfield? From the competing management company?",
+        mood: 'surprised',
       },
       {
         character: 'navarre',
-        text: "In fact, I could use your help with something. The local business association wants our team to join their pre-festival mixer tonight. Will you come with me?",
+        text: "The very same. She's been spreading some unsavory rumors about our festival plans. I could use your help deciding how to handle this situation.",
         mood: 'neutral',
       }
     ],
     choices: [
       {
-        text: "Sounds fun! I'd love to meet more local people.",
-        affectionChanges: { navarre: 1 },
-        nextSceneId: 'spring-visit-navarre-agree',
-      },
-      {
-        text: "I'm not really comfortable at those kinds of events.",
-        nextSceneId: 'spring-visit-navarre-hesitant',
-      },
-      {
-        text: "Shouldn't we focus on work instead of socializing?",
+        text: "Let's focus on the logistics. What venues need to be secured and what connections do we need to prioritize?",
         affectionChanges: { navarre: -0.5 },
-        nextSceneId: 'spring-visit-navarre-refuse',
+        nextSceneId: 'summer-visit-navarre-technical',
+      },
+      {
+        text: "Tell me more about this rivalry with Lissa. Maybe I can help you navigate this social minefield.",
+        affectionChanges: { navarre: 1 },
+        nextSceneId: 'summer-visit-navarre-personal',
       },
     ],
   },
   
-  'spring-visit-navarre-agree': {
-    id: 'spring-visit-navarre-agree',
+  'summer-visit-navarre-technical': {
+    id: 'summer-visit-navarre-technical',
     background: 'city-cafe',
     dialogue: [
       {
         character: 'navarre',
-        text: "That's the spirit! You're going to love these people once you get to know them.",
-        mood: 'happy',
+        text: "All business today, I see. Alright, let's talk strategy.",
+        mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "Any tips for making a good impression?",
+        text: "I figure the best way to counter rumors is to deliver an exceptional festival experience.",
         mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "Just be yourself! But also, let me tell you about the key players you'll want to meet tonight...",
-        mood: 'happy',
+        text: "You're right. We need to secure the riverside pavilion for the headline performances and the vineyard estate for the tasting events.",
+        mood: 'neutral',
       },
       {
-        character: 'narrator',
-        text: "Navarre enthusiastically briefs you on the local business owners and their interests. His knowledge of the social landscape is impressive.",
+        character: 'maven',
+        text: "What about local musicians? Have we confirmed the lineup?",
+        mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "You know, Maven, you've got a natural charm that people respond to. Don't underestimate that.",
-        mood: 'happy',
+        text: "That's where things get tricky. Lissa has been approaching our confirmed acts with better offers. We need to shore up those relationships.",
+        mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "Later that night, you attend the mixer with Navarre. To your surprise, you find yourself easily conversing with the locals, and even make some valuable connections for the team.",
+        text: "You spend the afternoon with Navarre, mapping out a strategic plan for venue arrangements and artist relations. Though he maintains his professional demeanor, you notice his smile doesn't quite reach his eyes when Lissa's name comes up.",
       },
     ],
-    nextSceneId: 'spring-character-selection-2',
+    nextSceneId: 'summer-character-selection-2',
   },
   
-  'spring-visit-navarre-hesitant': {
-    id: 'spring-visit-navarre-hesitant',
+  'summer-visit-navarre-personal': {
+    id: 'summer-visit-navarre-personal',
     background: 'city-cafe',
     dialogue: [
       {
         character: 'navarre',
-        text: "I understand. These events can be overwhelming if you're not used to them.",
+        text: "Lissa and I have... history. We studied together at the Academy before Cybaton recruited me.",
         mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "It's just not really my strength. I get anxious in big crowds of strangers.",
-        mood: 'embarrassed',
+        text: "And now you're competitors. That must be awkward.",
+        mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "Everyone has different strengths. Tell you what - why don't you come for just an hour? I'll stay by your side and introduce you to just a few key people.",
-        mood: 'neutral',
+        text: "More than awkward. She takes it personally. Every success I have is somehow a slight against her.",
+        mood: 'sad',
+      },
+      {
+        character: 'navarre',
+        text: "She's telling people our sound equipment is substandard, that we've cut corners on the quality of refreshments... anything to diminish our event.",
+        mood: 'angry',
       },
       {
         character: 'maven',
-        text: "I guess that doesn't sound too bad...",
+        text: "Why is she so determined to undermine you specifically?",
         mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "Perfect! And if you want to leave after an hour, no questions asked. Deal?",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
-        text: "You agree to Navarre's compromise. That evening, he keeps his word, serving as a buffer between you and the crowd. To your surprise, you actually enjoy yourself and even stay longer than the promised hour.",
-      },
-    ],
-    nextSceneId: 'spring-character-selection-2',
-  },
-  
-  'spring-visit-navarre-refuse': {
-    id: 'spring-visit-navarre-refuse',
-    background: 'city-cafe',
-    dialogue: [
-      {
-        character: 'navarre',
-        text: "Oh, Maven... this IS work. Building relationships is a crucial part of city management.",
-        mood: 'surprised',
+        text: "Because... we were more than classmates once. And when Cybaton chose me over her, she took it as a betrayal.",
+        mood: 'sad',
       },
       {
         character: 'maven',
-        text: "I just think our time might be better spent on more concrete tasks.",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "I respect your opinion, but think about it this way: when the waste management system breaks down, who are you going to call? The person you met and built rapport with, or a stranger?",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "I hadn't thought of it that way...",
+        text: "I had no idea you carried this weight while making everything look so effortless.",
         mood: 'surprised',
       },
       {
         character: 'navarre',
-        text: "That's alright. We all have different approaches. I'll represent the team tonight, and I'll make sure to mention your dedication to the technical aspects of our work.",
+        text: "That's part of the job, isn't it? Everyone sees the charming socialite, but nobody sees the calculations behind every smile and handshake.",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "Navarre heads to the mixer without you. The next day, he mentions that several people were asking about 'the new team member' and seemed disappointed you weren't there.",
+        text: "You spend the afternoon listening to Navarre open up about the personal toll of his public persona. For perhaps the first time, you see beyond his polished exterior to the genuine person underneath.",
       },
     ],
-    nextSceneId: 'spring-character-selection-2',
+    nextSceneId: 'summer-character-selection-2',
   },
   
-  // Etta visits - using the workstation for one-on-one time
-  'spring-visit-etta': {
-    id: 'spring-visit-etta',
+  // Etta visits for summer
+  'summer-visit-etta': {
+    id: 'summer-visit-etta',
     background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'narrator',
-        text: 'Etta is meticulously running complex simulations on her workstation.',
+        text: "You find Etta analyzing budget projections for the summer festival with intense focus.",
       },
       {
         character: 'etta',
-        text: "Maven. Did you need something? I'm kind of busy here.",
+        text: "Maven. Did you need something? I'm in the middle of optimizing our resource allocation.",
         mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "I wanted to see how the Spring festival preparations are going from your end.",
+        text: "I came to see if you needed any assistance with the summer festival preparations.",
         mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "Supplies, vendors, schedules - you name it. There's a million practical and logistical considerations to be finalized.",
+        text: "Actually, your timing is... acceptable. I could use a second opinion.",
         mood: 'neutral',
       },
       {
-        character: 'maven',       
-        text: "I'd be happy to help. What are you working on?",
+        character: 'maven',
+        text: "Happy to help. What are you working on?",
         mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "You came by to shadow me, right? I could use an opinion. Should we focus resources on pre-cleaning the venue to be more welcoming or providing more supplies for on-the-day activities for higher engagement?",
+        text: "I just received a call from my father. He wants me to prioritize showcasing Watanabe Industries' new sound equipment at the festival.",
         mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "You notice Etta's normally perfect posture is slightly rigid, her hands tense on the keyboard.",
       }
     ],
     choices: [
       {
-        text: "Cleaning - a clean city is the foundation of the festival.",
+        text: "Let's analyze the technical specifications and cost-benefit ratio of using their equipment.",
         affectionChanges: { etta: -0.5 },
-        nextSceneId: 'spring-visit-etta-cleaning',
+        nextSceneId: 'summer-visit-etta-technical',
       },
       {
-        text: "Why not balance both? We need clean spaces for people to use for activities.",
+        text: "It sounds like there's more to this situation than just equipment choices.",
         affectionChanges: { etta: 1 },
-        nextSceneId: 'spring-visit-etta-balance',
-      },
-      {
-        text: "Activity resources - people will remember what they did together at the event, not how clean it was beforehand.",
-        nextSceneId: 'spring-visit-etta-seedlings',
+        nextSceneId: 'summer-visit-etta-personal',
       },
     ],
   },
   
-  'spring-visit-etta-cleaning': {
-    id: 'spring-visit-etta-cleaning',
+  'summer-visit-etta-technical': {
+    id: 'summer-visit-etta-technical',
     background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'etta',
-        text: "Exactly. Aesthetics are meaningless without proper sanitation and organization, but paid staff will need to be deployed.",
+        text: "Yes, let's focus on the metrics. That's what matters.",
         mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "Oh, right. Volunteers aren't likely to sign-up to do what most consider the responsibility of the sanitation department.",
-        mood: 'embarrassed',
+        text: "Do we have the specs for their equipment? We should compare it against alternatives.",
+        mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "Right. I thought you might have a suggestion, but it's the same dilemma - cleaning doesn't directly contribute to higher engagement, only higher costs.",
+        text: "Here they are. Their amplification system is 12% more energy-efficient, but costs 30% more than our current provider.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "What about sound quality? That's crucial for a music festival.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "Comparable, possibly marginally better in outdoor settings. But not enough to justify the cost increase in my assessment.",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "You work with Etta to create a detailed analysis of various sound equipment options. Though she doesn't say it directly, you sense her relief at having objective data to counter her father's pressure.",
+      },
+      {
+        character: 'etta',
+        text: "Your analytical skills are improving, Maven. This report will be... useful.",
+        mood: 'neutral',
+      },
+    ],
+    nextSceneId: 'summer-character-selection-3',
+  },
+  
+  'summer-visit-etta-personal': {
+    id: 'summer-visit-etta-personal',
+    background: 'stonewich-workstation',
+    dialogue: [
+      {
+        character: 'etta',
+        text: "What are you implying?",
+        mood: 'angry',
+      },
+      {
+        character: 'maven',
+        text: "Nothing negative. Just that you seem tense about your father's request.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "I'm not... It's just... complicated.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Family expectations often are.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "My father expects the Watanabe name to open doors. He expects me to leverage my position to benefit the family business.",
+        mood: 'sad',
+      },
+      {
+        character: 'maven',
+        text: "And you don't feel comfortable with that.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "It's a conflict of interest. I was selected for this position based on merit, not my family connections. I refuse to blur those lines.",
         mood: 'angry',
       },
       {
         character: 'etta',
-        text: "Let's move on. I was expecting too much that you might have a solution for such an issue.",
+        text: "But every time I say no, I'm reminded of how I've disappointed him yet again. How I'm not the dutiful daughter he expected.",
+        mood: 'sad',
+      },
+      {
+        character: 'maven',
+        text: "It takes integrity to maintain those boundaries. I admire that about you.",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "Etta makes adjustments to her simulations, occasionally asking for your input on specific allocations.",
-      },
-      {
-        character: 'etta',
-        text: "Your reasoning was sound, Maven, but conventional. It's important to know where to invest wisely.",
-        mood: 'neutral',
-      },
-      {
-        character: 'narrator',
-        text: "Coming from Etta, this seems like high praise indeed. You continue to work together for another hour, and find a certain satisfaction in the meticulous planning although it lacks something in creative innovation.",
+        text: "You sit with Etta as she opens up about the weight of family expectations. Though she quickly composes herself and returns to her professional demeanor, there's a new understanding between you.",
       },
     ],
-    nextSceneId: 'spring-character-selection-3',
+    nextSceneId: 'summer-character-selection-3',
   },
   
-  'spring-visit-etta-balance': {
-    id: 'spring-visit-etta-balance',
-    background: 'stonewich-workstation',
-    dialogue: [
-      {
-        character: 'etta',
-        text: "Balance? That's a vague concept that doesn't help with specific resource allocation.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "What I mean is that we should structure activities around both to meet your goal. Both are equally important.",
-        mood: 'neutral',
-      },
-      {
-        character: 'etta',
-        text: "Hmm. That's not exactly balance. The goal is to drive higher engagement.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "Then let's make sure resources are appropriate for both phases, and we structure both as activities designed for participation.",
-        mood: 'neutral',
-      },
-      {
-        character: 'etta',
-        text: "Structured activities to clean? Will anyone want to do that? What's your idea exactly?",
-        mood: 'surprised',
-      },
-      {
-        character: 'maven',
-        text: "Let's start with a volunteer orientation the day before where volunteers can meet each other, preview the venues, and prep for the festival.",
-        mood: 'surprised',
-      },
-      {
-        character: 'narrator',
-        text: "You work with Etta to create a two-phase plan for the festival with new activities designed for cleaning and higher volunteer engagement.",
-      },
-      {
-        character: 'etta',
-        text: "This is a novel approach and may save some budget on cleaners, but there are risks here too if volunteers don't show up. Your idea is innovative.",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
-        text: "You work with Etta to create a two-phase plan for the festival with new activities designed for cleaning and higher volunteer engagement.",
-      },
-      {
-        character: 'etta',
-        text: "This is a novel approach and may save some budget on cleaners, but there are risks here too if volunteers don't show up. Your idea is innovative.",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
-        text: "Despite her remarks about risks, she does incorporate some of your suggestions. You feel a quiet pride in providing a practical approach to achieveing the outcomes desired."
-      },
-    ],
-    nextSceneId: 'spring-character-selection-3',
-  },
-  
-  'spring-visit-etta-seedlings': {
-    id: 'spring-visit-etta-seedlings',
-    background: 'stonewich-workstation',
-    dialogue: [
-      {
-        character: 'etta',
-        text: "I'm concerned with measurable outcomes. People's memories are hazy outcomes at best.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "But public perception matters too. People remember the fun they had doing something together more than clean streets.",
-        mood: 'neutral',
-      },
-      {
-        character: 'etta',
-        text: "The true return on such a plan would be the rate of return visitors to the festival next year.",
-        mood: 'neutral',
-      },
-      {
-        character: 'etta',
-        text: "Can people really make good memories if the venues don't look inviting enough to go? Will the funding for next year get approved if the impact isn't visible from this year?",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "I see your point. I was thinking too much about it as an experience and not enough as objective outcomes.",
-        mood: 'embarrassed',
-      },
-      {
-        character: 'etta',
-        text: "At least you can admit when you're wrong. That's... something.",
-        mood: 'neutral',
-      },
-      {
-        character: 'narrator',
-        text: "The conversation with Etta becomes a bit strained after that, but you do learn a great deal about resource allocation and city planning in the process.",
-      },
-    ],
-    nextSceneId: 'spring-character-selection-3', // Corrected this ID
-  },
-
-  // Senara visit scene
-  'spring-visit-senara': {
-    id: 'spring-visit-senara',
+  // Senara visits for summer
+  'summer-visit-senara': {
+    id: 'summer-visit-senara',
     background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',
-        text: "You find Senara in the relaxing with a tablet in hand in the Stonewich office and a cup of tea in easy reach.",
+        text: "You find Senara in a quiet corner of the office, surrounded by historical texts and digital displays showing intricate neural pathway diagrams.",
       },
       {
         character: 'senara',
-        text: "Maven. I didn't expect to see you here. I thought you were shadowing someone today?",
+        text: "Maven. I didn't expect company today.",
         mood: 'surprised',
       },
       {
         character: 'maven',
-        text: "I was looking for you, actually. I thought I'd shadow you today. What are you researching?",
+        text: "What are you working on? It looks fascinating.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "The historical context of Stonewich's Spring festival. Did you know it dates back over three centuries?",
+        text: "I'm studying historical musical patterns from Stonewich's past summer festivals and their neurological impact on listeners.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "I'm trying to determine whether it's the history of the people or the place that have a greater significance to evolving traditions. There's a dilemma between maintaining traditions as historical and moving forward as societal values shift. What's your perspective?",
+        text: "My analysis suggests certain chord progressions produce a 37% increase in dopamine release when performed at sunset versus midday.",
         mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "That's... remarkably specific. How can you tell?",
+        mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "My neural interfacing allows me to process patterns that others might miss. But sometimes I wonder if my conclusions are truly mine or just the algorithms my parents had implanted.",
+        mood: 'sad',
       }
     ],
     choices: [
       {
-        text: "Traditions have value and should be preserved. Changing with societal values only chases fads.",
-        affectionChanges: { senara: 1 },
-        nextSceneId: 'spring-visit-senara-traditional',
-      },
-      {
-        text: "We should find a balance between honoring history and recognizing what is defining for people today.",
-        nextSceneId: 'spring-visit-senara-balance',
-      },
-      {
-        text: "Society evolves. Change is inevitable. We should focus on managing the change proactively, not resisting against the ebb of time.",
+        text: "Let's focus on applying your research to optimize the festival schedule for maximum impact.",
         affectionChanges: { senara: -0.5 },
-        nextSceneId: 'spring-visit-senara-modern',
+        nextSceneId: 'summer-visit-senara-technical',
+      },
+      {
+        text: "Tell me more about these neural enhancements. How do they affect your sense of self?",
+        affectionChanges: { senara: 1 },
+        nextSceneId: 'summer-visit-senara-personal',
       },
     ],
   },
-    
-  'spring-visit-senara-traditional': {
-    id: 'spring-visit-senara-traditional',
+  
+  'summer-visit-senara-technical': {
+    id: 'summer-visit-senara-technical',
     background: 'stonewich-office',
     dialogue: [
       {
         character: 'senara',
-        text: "Interesting. Most people are quick to dismiss historical practices as outdated.",
+        text: "A practical approach. Very well.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Your insights could help us create a truly memorable experience for attendees.",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "According to my analysis, we should schedule the string quartet at sunset, followed by percussion-heavy ensembles as night falls.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "And what about the wine tasting events? Is there an optimal time for those?",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "Mid-afternoon provides the optimal balance of light, temperature, and taste sensitivity. I can show you the data.",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "You spend hours with Senara, creating an intricate schedule based on their remarkable insights. Though focused on the technical aspects, you occasionally catch them watching your reactions with what seems like curiosity.",
+      },
+    ],
+    nextSceneId: 'summer-character-selection-4',
+  },
+  
+  'summer-visit-senara-personal': {
+    id: 'summer-visit-senara-personal',
+    background: 'stonewich-office',
+    dialogue: [
+      {
+        character: 'senara',
+        text: "You... want to know about that? Most people prefer to ignore the augmentations.",
         mood: 'surprised',
       },
       {
         character: 'maven',
-        text: "There's wisdom in traditions that have endured. They connect us to our past.",
+        text: "I'm interested in you as a person. That includes understanding how you experience the world.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "Indeed. One such tradition was the 'Spring Makers Fair' where citizens would showcase crafts made from materials gathered during winter.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "It encouraged resourcefulness and community skill-sharing. Concepts that remain valuable.",
+        text: "My parents were pioneers in neural enhancement. They believed they were giving me a gift—expanded cognitive capacity, pattern recognition beyond human baseline.",
         mood: 'neutral',
       },
       {
-        character: 'maven',
-        text: "That sounds amazing. Perhaps what began as the spring festival transitioned to the autumn with the focus on craftmanship?",
-        mood: 'happy',
-      },
-      {
         character: 'senara',
-        text: "It would seem so. Over time the city's commerce became more centered on the port trade and shifted the daily cadences of its citizens.",
-        mood: 'happy',
+        text: "But sometimes I process information so differently from others that I feel... disconnected. Like I'm observing humanity rather than participating in it.",
+        mood: 'sad',
       },
       {
         character: 'maven',
-        text: "Perhaps the local art fair component of the spring festival is the living remnant of what was once more robust?",
-        mood: 'happy',
+        text: "Do you ever resent them for making that choice for you?",
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "Perhaps. I appreciate your interest in preservation, Maven. Few take the time to look backward before moving forward.",
+        text: "How can I? They gave me abilities that make me valuable. But I often wonder—if I find beauty in a musical pattern because of mathematical precision rather than emotional resonance, am I really experiencing beauty at all?",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'maven',
+        text: "Perhaps there's beauty in both approaches. Different paths to appreciation don't make your experience less valid.",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'senara',
+        text: "An intriguing perspective. I... appreciate you listening, Maven. Few people ask these questions.",
         mood: 'happy',
       },
       {
         character: 'narrator',
-        text: "You spend the next hour discussing historical traditions with Senara. His usually reserved demeanor softens as he shares his knowledge with someone who genuinely values it.",
+        text: "You spend the afternoon in philosophical conversation with Senara. As you talk, you notice their typically rigid posture gradually relaxing, as if unburdened by sharing these deeply personal thoughts.",
       },
     ],
-    nextSceneId: 'spring-character-selection-4',
+    nextSceneId: 'summer-character-selection-4',
   },
-  
-  'spring-visit-senara-balance': {
-    id: 'spring-visit-senara-balance',
-    background: 'stonewich-office',
-    dialogue: [
-      {
-        character: 'senara',
-        text: "A diplomatic answer. But what does balance look like in practice?",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "Perhaps we could reintroduce historical elements but present them in modern contexts?",
-        mood: 'neutral',
-      },
-      {
-        character: 'senara',
-        text: "Such as?",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "Like the spring cleaning traditions, but with modern technology to make it more efficient and engaging.",
-        mood: 'neutral',
-      },
-      {
-        character: 'senara',
-        text: "Hmm. That could work. History isn't meant to be a museum piece, but a living foundation for the present.",
-        mood: 'neutral',
-      },
-      {
-        character: 'narrator',
-        text: "Senara shows you some of the historical records he's been studying. Together, you identify several traditions that could be modernized while preserving their core meaning.",
-      },
-    ],
-    nextSceneId: 'spring-character-selection-4',
-  },
-  
-  'spring-visit-senara-modern': {
-    id: 'spring-visit-senara-modern',
-    background: 'stonewich-office',
-    dialogue: [
-      {
-        character: 'senara',
-        text: "A common perspective. But evolution without reference to the past has a dehumanizing effect on society where technology substitutes for community.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "But holding onto outdated traditions can create negative backlash or disengagement.",
-        mood: 'neutral',
-      },
-      {
-        character: 'senara',
-        text: "And who decides what is 'outdated'? Contemporary biases often misinterpret historical wisdom.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "I just think we should focus on being proactive in managing adaptations to traditions that reflect our current values.",
-        mood: 'neutral',
-      },
-      {
-        character: 'senara',
-        text: "And what are those values, Maven? How do they shape our identity if not within the context of what we've been historically?",
-        mood: 'neutral',
-      },
-      {
-        character: 'narrator',
-        text: "Your conversation with Senara becomes a philosophical debate. Though you disagree on some points, you gain a deeper appreciation for his thoughtful approach to change.",
-      },
-    ],
-    nextSceneId: 'spring-character-selection-4', // Corrected this ID
-  }
 };
 
 export default characterVisitScenes;

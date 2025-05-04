@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
@@ -29,7 +30,7 @@ const GameInterface: React.FC = () => {
     return <AboutScreen />;
   }
   
-  // Handle special scenes like character selection
+  // Handle special scenes like character selection for spring season
   if (gameState.currentScene.includes('spring-character-selection')) {
     // Extract suffix from scene ID to identify which characters have been visited
     const suffix = gameState.currentScene.replace('spring-character-selection', '');
@@ -64,7 +65,43 @@ const GameInterface: React.FC = () => {
     );
   }
   
-  // Handle festival activities selection scene
+  // Handle special scenes like character selection for summer season
+  if (gameState.currentScene.includes('summer-character-selection')) {
+    // Extract suffix from scene ID to identify which characters have been visited
+    const suffix = gameState.currentScene.replace('summer-character-selection', '');
+    
+    // Parse the suffix to determine visited characters
+    let visitedChars: CharacterId[] = [];
+    if (suffix) {
+      // Convert the suffix numbering scheme to character IDs
+      if (suffix.includes('1')) visitedChars.push('xavier');
+      if (suffix.includes('2')) visitedChars.push('navarre');
+      if (suffix.includes('3')) visitedChars.push('etta');
+      if (suffix.includes('4')) visitedChars.push('senara');
+    }
+    
+    // Determine remaining characters - ensure we're working with properly typed arrays
+    const remainingChars = (['xavier', 'navarre', 'etta', 'senara'] as CharacterId[]).filter(
+      char => !visitedChars.includes(char)
+    );
+    
+    // Always show the character selection screen, even if no characters remain
+    return (
+      <CharacterSelectionScene 
+        availableCharacters={remainingChars}
+        scenePrefix="summer-visit"
+        title="Summer Connections"
+        description={
+          remainingChars.length > 0
+            ? "As summer heats up in Stonewich, spend time with your teammates to prepare for the festival. Who would you like to visit next?"
+            : "You've connected with all your teammates. You can proceed to the Summer festival planning."
+        }
+        completionSceneId={remainingChars.length === 0 ? 'summer-planning' : undefined}
+      />
+    );
+  }
+  
+  // Handle festival activities selection scene for spring
   if (gameState.currentScene === 'spring-festival-activities') {
     const festivalActivities = [
       {
@@ -99,6 +136,37 @@ const GameInterface: React.FC = () => {
         title="Spring Blooms & Brooms Festival"
         description="The festival is in full swing! Choose which activities you'd like to experience firsthand."
         completionSceneId="spring-festival-completion"
+      />
+    );
+  }
+  
+  // Handle festival activities selection scene for summer
+  if (gameState.currentScene === 'summer-festival-activities') {
+    const festivalActivities = [
+      {
+        id: 'music-game',
+        title: 'Interactive Music Exhibit',
+        description: 'Experience Xavier\'s innovative musical technology installations',
+        color: '#4CC2FF', // Xavier's color
+        sceneId: 'summer-music-game-intro',
+        available: true
+      },
+      {
+        id: 'wine-tasting',
+        title: 'Wine Tasting Tour',
+        description: 'Join Navarre for an exclusive tasting of local vineyards\' finest offerings',
+        color: '#FFB347', // Navarre's color
+        sceneId: 'summer-wine-tasting-intro',
+        available: true
+      }
+    ];
+    
+    return (
+      <FestivalActivitiesScene 
+        activities={festivalActivities}
+        title="Summer Songs & Sips Festival"
+        description="The festival is in full swing! Choose which activities you'd like to experience firsthand."
+        completionSceneId="summer-conclusion-meeting"
       />
     );
   }

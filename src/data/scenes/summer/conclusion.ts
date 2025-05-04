@@ -18,7 +18,7 @@ const summerConclusionScenes: Record<string, Scene> = {
         character: 'maven',
         text: "Did I never notice these things before when I merely followed others, assuming they were better than I was? Could I have been so oblivious?",
         mood: 'sad',
-      }
+      },
       {
         character: 'narrator',
         text: "With summer coming to a close, it's time to prepare for autumn—and the next seasonal festival.",
