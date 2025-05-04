@@ -26,7 +26,6 @@ const springConclusionScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "But your experiences have already begun to shape your path. Your strongest connections are becoming clear.",
-        mood: 'neutral',
       }
     ],
     nextSceneId: 'season-transition-summer',
@@ -38,7 +37,7 @@ const springConclusionScenes: Record<string, Scene> = {
     background: 'summer-transition',
     dialogue: [
       {
-        character: narrator,
+        character: 'narrator',
         text: "Summer, Chapter 2",
       },
     ], // Empty dialogue to trigger season transition
