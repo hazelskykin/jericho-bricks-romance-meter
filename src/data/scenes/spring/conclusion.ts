@@ -67,14 +67,19 @@ const springConclusionScenes: Record<string, Scene> = {
         mood: 'neutral',
       }
     ],
-    nextSceneId: 'spring-transition',
+    nextSceneId: 'summer-transition',
   },
   
   // Special scene to handle transition between seasons
-  'spring-transition': {
-    id: 'spring-transition',
-    background: 'stonewich-cityscape',
-    dialogue: [], // Empty dialogue to trigger season transition
+  'summer-transition': {
+    id: 'summer-transition',
+    background: 'summer-transition',
+    dialogue: [
+      {
+        character: narrator,
+        text: "Summer, Chapter 2",
+      },
+    ], // Empty dialogue to trigger season transition
     nextSceneId: 'summer-intro', // Now points to summer content instead of main menu
   }
 };
