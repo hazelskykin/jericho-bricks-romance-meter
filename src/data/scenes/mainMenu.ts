@@ -23,6 +23,19 @@ const mainMenu: Record<string, Scene> = {
     ],
   },
   
+  'about': {
+    id: 'about',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: 'Jericho Bricks is a visual novel game set in the city of Stonewich.',
+      },
+      {
+        character: 'narrator',
+        text: 'Follow Maven and her teammates as they navigate their roles as city administrators.',
+      },
+    ],
     choices: [
       {
         text: 'Back to Main Menu',
