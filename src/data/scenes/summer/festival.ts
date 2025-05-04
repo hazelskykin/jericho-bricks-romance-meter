@@ -4,7 +4,7 @@ import { Scene } from '../../../types/game';
 const summerFestivalScenes: Record<string, Scene> = {
   'summer-planning': {
     id: 'summer-planning',
-    background: 'cybaton-meeting-room',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'xavier',
@@ -18,12 +18,12 @@ const summerFestivalScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "We should consider how our participation can optimize city maintenance during the increased tourism.",
+        text: "We should consider how our participation can optimize tourism revenues.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "The festival includes historical performances that document Stonewich's cultural evolution.",
+        text: "The festival includes performances that celebrate Stonewich's dynamic cultural evolution.",
         mood: 'neutral',
       }
     ],
