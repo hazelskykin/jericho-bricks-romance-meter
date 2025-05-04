@@ -81,7 +81,7 @@ const summerIntroScenes: Record<string, Scene> = {
       },
     ],
     // This would typically point to a summer character selection or planning scene
-    nextSceneId: 'summer-characterSelections',
+    nextSceneId: 'summer-character-selection',
   },
 };
 
