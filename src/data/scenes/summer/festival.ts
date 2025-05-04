@@ -46,16 +46,9 @@ const summerFestivalScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'summer-transition',
+    nextSceneId: 'summer-conclusion-meeting',
   },
   
-  // Special scene to trigger autumn season transition
-  'summer-transition': {
-    id: 'summer-transition',
-    background: 'stonewich-cityscape',
-    dialogue: [], // Empty dialogue to trigger season transition
-    nextSceneId: 'autumn-intro', // Will point to autumn content when it's created
-  }
 };
 
 export default summerFestivalScenes;
