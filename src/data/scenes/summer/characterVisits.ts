@@ -10,7 +10,7 @@ const characterVisitScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'Xavier has taken you to the rooftop of a municipal building where you have a good view of the city's skyline.',
+        text: "Xavier has taken you to the rooftop of a municipal building where you have a good view of the city's skyline.",
       },
       {
         character: 'xavier',
