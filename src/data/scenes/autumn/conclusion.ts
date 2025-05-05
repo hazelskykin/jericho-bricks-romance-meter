@@ -1,9 +1,11 @@
 
 import { Scene } from '../../../types/game';
 
-const springConclusionScenes: Record<string, Scene> = {
-  'spring-conclusion': {
-    id: 'spring-conclusion',
+const autumnConclusionScenes: Record<string, Scene> = {
+  
+  
+  'autumn-conclusion': {
+    id: 'autumn-conclusion',
     background: 'stonewich-cityscape',
     dialogue: [
       {
