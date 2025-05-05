@@ -14,7 +14,7 @@ const summerConclusionScenes: Record<string, Scene> = {
       {
         character: 'etta',
         text: "Dr. Voss, despite the unusual heatwave, the Summer Songs & Sips festival garnered higher attendance than the last few years. All stated objectives were met or exceeded.",
-        mood: 'neutral',
+        mood: 'happy',
       },
       {
         character: 'xavier',
@@ -111,7 +111,7 @@ const summerConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "Fine. I'm angry. We are meeting the objectives stated for the taskk, but she's measuring us against a different standard altogether. Marriage and family statistics? Where did that come from?",
+        text: "Fine. I'm angry. We are meeting the objectives stated for the task, but she's measuring us against a different standard altogether. Marriage and family statistics? Where did that come from?",
         mood: 'angry',      
       },
       {
@@ -121,7 +121,7 @@ const summerConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I thought my efforts at automating systems were helping the people of Stonewich. Did it really destabilize central control functions to distribute cellular systems?",
+        text: "I thought my efforts at automating systems were helping the people of Stonewich. Did I unintentionally destabilize central control functions when I distributed micro systems for people to control for themselves?",
         mood: 'sad',
       },
       {
@@ -195,7 +195,7 @@ const summerConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "If it means that we can finalize get recognition from Dr. Voss for our results, let's give it a try.",
+        text: "If it means that we can finally get recognition from Dr. Voss for our results, let's give it a try.",
         mood: 'neutral',
       },
       {
