@@ -4,7 +4,7 @@ import { Scene } from '@/types/game';
 const activitiesScenes: Record<string, Scene> = {
   'autumn-festival-activities': {
     id: 'autumn-festival-activities',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'maven',
@@ -37,7 +37,7 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'thoughtful',
       },
       {
-        character: 'xavier',
+        character: 'etta',
         text: "Don't forget that tours need a minimum number of people to run, and they can't exceed the maximum capacity.",
         mood: 'neutral',
       },
@@ -69,7 +69,7 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
-        character: 'xavier',
+        character: 'etta',
         text: "How did it go? Were you able to organize the tours successfully?",
         mood: 'curious',
       },
@@ -79,9 +79,19 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'thoughtful',
       },
       {
+        character: 'etta',
+        text: "Maybe you're learning something from me after all.",
+        mood: 'happy',
+      }
+      {
+        character: 'xavier',
+        text: "Etta! Are you trying to take credit for Maven's success? haha!",
+        mood: 'happy',
+      }
+      {
         character: 'senara',
-        text: "The historical knowledge you've gained about Stonewich certainly must have helped in arranging appropriate tours.",
-        mood: 'thoughtful',
+        text: "I think we all feel a sense of pride when our team members excel, don't we? There's nothing wrong with sharing that sense of accomplishment.",
+        mood: 'happy',
       }
     ],
     nextSceneId: 'autumn-festival-midway',
@@ -90,7 +100,7 @@ const activitiesScenes: Record<string, Scene> = {
   // Crafter Minigame Introduction
   'autumn-crafter-intro': {
     id: 'autumn-crafter-intro',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'maven',
@@ -114,7 +124,7 @@ const activitiesScenes: Record<string, Scene> = {
   // Trigger for Crafter minigame
   'autumn-crafter-start': {
     id: 'autumn-crafter-start',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [],
     nextSceneId: 'autumn-crafter-complete',
   },
@@ -122,7 +132,7 @@ const activitiesScenes: Record<string, Scene> = {
   // After Crafter minigame
   'autumn-crafter-complete': {
     id: 'autumn-crafter-complete',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'maven',
@@ -131,12 +141,12 @@ const activitiesScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "That looks lovely! Are you planning to keep it as a memento or give it as a gift?",
+        text: "Are you enjoying the crafters guild? What have you got there?",
         mood: 'happy',
       },
       {
         character: 'maven',
-        text: "I think I'll save it for our date later. It would make a nice gift.",
+        text: "Yes, it was fun. But nevermind this. It's a secret.",
         mood: 'happy',
       }
     ],
@@ -146,22 +156,22 @@ const activitiesScenes: Record<string, Scene> = {
   // Memories Date Introduction
   'autumn-memories-date-intro': {
     id: 'autumn-memories-date-intro',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'maven',
-        text: "I'm looking forward to exploring the festival together.",
+        text: "It's time for my date!",
         mood: 'happy',
       }
     ],
     choices: [
       {
-        text: "I've been looking forward to spending time with you.",
+        text: "I've been looking forward to spending some time alone with a certain someone, without work.",
         affectionChanges: { xavier: 1, navarre: 1, etta: 1, senara: 1 },
         nextSceneId: 'autumn-memories-date-start'
       },
       {
-        text: "Let's make the most of today's festival.",
+        text: "It'll be good to have a break at today's festival.",
         nextSceneId: 'autumn-memories-date-start'
       }
     ]
@@ -170,7 +180,7 @@ const activitiesScenes: Record<string, Scene> = {
   // Trigger for Memories Date minigame
   'autumn-memories-date-start': {
     id: 'autumn-memories-date-start',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [],
     nextSceneId: 'autumn-memories-date-complete',
   },
@@ -186,16 +196,7 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    choices: [
-      {
-        text: "I made something for you at the crafting booth.",
-        nextSceneId: 'autumn-gift-giving'
-      },
-      {
-        text: "The Heritage Food Fest looks interesting. Shall we try some local specialties?",
-        nextSceneId: 'autumn-food-fest'
-      }
-    ]
+      nextSceneId: 'autumn-gift-giving'
   },
 
   // Gift giving scene
@@ -228,7 +229,7 @@ const activitiesScenes: Record<string, Scene> = {
   // Heritage Food Fest scene
   'autumn-food-fest': {
     id: 'autumn-food-fest',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'maven',
@@ -236,9 +237,8 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
-        character: 'navarre',
-        text: "The food is one of the best parts of the Heritage Festival. These recipes have been passed down for generations.",
-        mood: 'happy',
+        character: 'narrator'
+        text: "The food is one of the best parts of the Heritage Festival. The two of you grow closer with every shared bite and smile.",
       }
     ],
     nextSceneId: 'autumn-festival-conclusion',
@@ -247,7 +247,7 @@ const activitiesScenes: Record<string, Scene> = {
   // Festival midway point - player can choose other activities
   'autumn-festival-midway': {
     id: 'autumn-festival-midway',
-    background: 'stonewich-cityscape',
+    background: 'autumn-festival',
     dialogue: [
       {
         character: 'maven',
@@ -261,15 +261,15 @@ const activitiesScenes: Record<string, Scene> = {
   // Festival completion scene
   'autumn-festival-completion': {
     id: 'autumn-festival-completion',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'maven',
-        text: "What an incredible festival! I've learned so much about the history and traditions of Stonewich.",
+        text: "What an incredible festival! I feel so much closer to Stonewich and the people here than before.",
         mood: 'happy',
       },
       {
-        character: 'xavier',
+        character: 'maven',
         text: "It's days like today that make me realize how much I've come to love this city.",
         mood: 'happy',
       }
@@ -282,18 +282,28 @@ const activitiesScenes: Record<string, Scene> = {
     background: 'stonewich-office',
     dialogue: [
       {
-        character: 'maven',
-        text: "The Heritage & Handicrafts Festival was amazing. I feel more connected to Stonewich than ever.",
-        mood: 'happy',
-      },
-      {
         character: 'etta',
-        text: "The festival was a success by all metrics. The systems we implemented handled the increased traffic perfectly.",
+        text: "The festival was a success by all metrics.",
         mood: 'happy',
       },
       {
         character: 'xavier',
-        text: "And more importantly, everyone had a great time. The community really came together.",
+        text: "And more importantly, people made new connections in fun ways.",
+        mood: 'happy',
+      }
+      {
+        character: 'senara',
+        text: "Nevarre might have found a new outlet for his creative talents.",
+        mood: 'happy',
+      }
+      {
+        character: 'navarre',
+        text: "Do you mean that crafters' challenge? It was viral before it was even finished the first time.",
+        mood: 'happy',
+      }
+      {
+        character: 'maven',
+        text: "Now we just need to prepare for the report to Dr. Voss.",
         mood: 'happy',
       }
     ],
