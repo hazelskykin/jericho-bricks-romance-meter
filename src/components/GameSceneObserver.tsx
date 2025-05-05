@@ -17,12 +17,25 @@ const GameSceneObserver = () => {
     
     // Check specific minigame trigger scenes - these MUST match the scene IDs in data files
     const minigameMappings = {
+      // Spring minigames
       'spring-brooms-away-start': 'broomsAway',
       'spring-mud-fling-start': 'mudFling',
       'spring-bloom-view-start': 'bloomWithAView',
+      
+      // Summer minigames
       'summer-serenade-start': 'serenade',
       'summer-spoken-word-start': 'spokenWord', 
-      'summer-whats-on-tap-start': 'whatsOnTap'
+      'summer-whats-on-tap-start': 'whatsOnTap',
+      
+      // Autumn minigames
+      'autumn-tour-guide-start': 'tourGuide',
+      'autumn-crafter-start': 'crafter',
+      'autumn-memories-date-start': 'memoriesDate',
+      
+      // Winter minigames
+      'winter-charity-auction-start': 'charityAuction',
+      'winter-gala-dance-start': 'galaDance',
+      'winter-looking-signs-start': 'lookingSigns'
     };
     
     // Explicitly check if the current scene is a minigame trigger

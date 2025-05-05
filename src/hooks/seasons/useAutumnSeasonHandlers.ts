@@ -2,6 +2,7 @@
 import { useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
 import { showRelationshipMilestone } from '@/components/RelationshipMilestone';
+import { toast } from '@/components/ui/use-toast';
 
 export function useAutumnSeasonHandlers(
   gameState: GameState,
@@ -20,9 +21,12 @@ export function useAutumnSeasonHandlers(
     if (topCharacter) {
       const [charId] = topCharacter;
       
+      console.log(`Autumn transition - selected love interest: ${charId} with affection: ${topCharacter[1].affection}`);
+      
       setGameState(prev => ({
         ...prev,
-        currentLoveInterest: charId as CharacterId
+        currentLoveInterest: charId as CharacterId,
+        currentSeason: 'autumn'
       }));
       
       // Show notification about focusing on one relationship
@@ -31,8 +35,29 @@ export function useAutumnSeasonHandlers(
         milestoneText: "Your relationship has deepened. A more intimate bond may be possible.",
         level: "Autumn Romance"
       });
+      
+      // Show toast notification
+      toast({
+        title: "Autumn Begins",
+        description: `Your connection with ${topCharacter[1].name} has grown stronger than your other relationships.`,
+        duration: 5000,
+      });
 
-      console.log('Transitioning to Autumn season', charId);
+      console.log('Transitioning to Autumn season with love interest:', charId);
+    } else {
+      console.warn('No top character found for Autumn transition');
+      
+      // Fallback to continue the game without a love interest
+      setGameState(prev => ({
+        ...prev,
+        currentSeason: 'autumn'
+      }));
+      
+      toast({
+        title: "Autumn Begins",
+        description: "You haven't formed a strong enough connection with any team member yet.",
+        duration: 5000,
+      });
     }
   }, [gameState.characters, gameState.viableRoutes, setGameState]);
 

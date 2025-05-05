@@ -106,24 +106,25 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     );
   }
   
-  // Fallback component when no matching minigame is found
-  const MinigameStartPrompt = () => (
+  // Generic minigame placeholder for unimplemented minigames
+  const PlaceholderMinigame = ({ title }: { title: string }) => (
     <MinigameContainer
-      title={`Play ${activeMinigame}`}
-      instructions="Click the button below to start the game!"
+      title={title}
+      instructions="This is a placeholder for the minigame that will be implemented later."
       onComplete={completeMinigame}
       onExit={exitMinigame}
     >
       <div className="flex flex-col items-center justify-center p-8 h-full">
         <div className="mb-8 text-lg text-center">
-          Ready to play <span className="font-bold text-[#9b87f5]">{activeMinigame}</span>?
+          <p>This minigame is coming soon!</p>
+          <p className="mt-4 text-base text-gray-400">The current version is a placeholder to demonstrate the game flow.</p>
         </div>
         <div className="flex gap-4">
           <Button onClick={() => completeMinigame(true)} className="bg-green-600 hover:bg-green-700">
-            Complete Game (Success)
+            Complete (Success)
           </Button>
           <Button onClick={() => completeMinigame(false)} className="bg-yellow-600 hover:bg-yellow-700">
-            Complete Game (Failure)
+            Complete (Failure)
           </Button>
           <Button onClick={exitMinigame} className="bg-red-600 hover:bg-red-700">
             Exit
@@ -140,7 +141,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     // Guaranteed fallback in case switch statement doesn't match
     if (!activeMinigame) {
       console.warn("No active minigame specified, showing fallback UI");
-      return <MinigameStartPrompt />;
+      return <PlaceholderMinigame title="Unknown Minigame" />;
     }
     
     // Use explicit type check to avoid issues with string comparison
@@ -167,9 +168,31 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         console.log('Rendering WhatsOnTapGame');
         return <WhatsOnTapGame onComplete={completeMinigame} onExit={exitMinigame} />;
       
+      // Autumn minigames (placeholders)
+      case 'tourGuide':
+        console.log('Rendering Tour Guide placeholder');
+        return <PlaceholderMinigame title="Tour Guide" />;
+      case 'crafter':
+        console.log('Rendering Crafter placeholder');
+        return <PlaceholderMinigame title="Crafter" />;
+      case 'memoriesDate':
+        console.log('Rendering Memories Date placeholder');
+        return <PlaceholderMinigame title="Making Memories Date" />;
+      
+      // Winter minigames (placeholders)
+      case 'charityAuction':
+        console.log('Rendering Charity Auction placeholder');
+        return <PlaceholderMinigame title="Charity Auction" />;
+      case 'galaDance':
+        console.log('Rendering Gala Dance placeholder');
+        return <PlaceholderMinigame title="Gala Dance" />;
+      case 'lookingSigns':
+        console.log('Rendering Looking for Signs placeholder');
+        return <PlaceholderMinigame title="Looking for Signs" />;
+      
       default:
         console.warn(`No matching minigame component found for: "${activeMinigame}"`);
-        return <MinigameStartPrompt />;
+        return <PlaceholderMinigame title={`${activeMinigame}`} />;
     }
   } catch (error) {
     console.error(`Error rendering minigame ${activeMinigame}:`, error);

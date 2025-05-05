@@ -1,13 +1,13 @@
 
 import { Scene } from '../../../types/game';
 import introScenes from './intro';
+import activitiesScenes from './activities';
+import relationshipScenes from './relationship';
 
 const autumn: Record<string, Scene> = {
   ...introScenes,
-  // Future sections will be added here:
-  // ...festivalScenes,
-  // ...minigameScenes,
-  // ...conclusionScenes,
+  ...activitiesScenes,
+  ...relationshipScenes,
 };
 
 export default autumn;

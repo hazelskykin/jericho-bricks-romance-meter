@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
@@ -98,10 +99,57 @@ const GameInterface: React.FC = () => {
             ? "As summer heats up in Stonewich, spend time with your teammates to prepare for the festival. Who would you like to visit next?"
             : "You've connected with all your teammates. You can proceed to the Summer festival planning."
         }
-        // This is the fix - explicitly use 'summer-planning' instead of relying on default value
         completionSceneId='summer-planning'
       />
     );
+  }
+  
+  // Handle special scenes like character selection for autumn season - focused on the romantic interest
+  if (gameState.currentScene.includes('autumn-character-selection')) {
+    if (gameState.currentLoveInterest) {
+      return (
+        <CharacterSelectionScene 
+          availableCharacters={[gameState.currentLoveInterest]} 
+          scenePrefix="autumn"
+          title="Autumn Romance"
+          description="As autumn arrives in Stonewich, it's time to deepen your connection with your romantic interest."
+          completionSceneId={`autumn-${gameState.currentLoveInterest}-path`}
+        />
+      );
+    } else {
+      // Fallback if no love interest is selected
+      handleSceneTransition('autumn-festival-introduction');
+      return null;
+    }
+  }
+
+  // Handle special scenes like character selection for winter season - focused on the romantic interest
+  if (gameState.currentScene.includes('winter-character-selection')) {
+    if (gameState.currentLoveInterest) {
+      return (
+        <CharacterSelectionScene 
+          availableCharacters={[gameState.currentLoveInterest]} 
+          scenePrefix="winter"
+          title="Winter Romance"
+          description="As winter blankets Stonewich, your relationship with your romantic interest reaches a crucial point."
+          completionSceneId={`winter-${gameState.currentLoveInterest}-confession`}
+        />
+      );
+    } else {
+      // Fallback if no love interest is selected
+      handleSceneTransition('winter-festival-introduction');
+      return null;
+    }
+  }
+  
+  // Handle character-specific confession scenes in winter
+  if (gameState.currentScene === 'winter-character-confession') {
+    if (gameState.currentLoveInterest) {
+      handleSceneTransition(`winter-${gameState.currentLoveInterest}-confession`);
+    } else {
+      handleSceneTransition('winter-festival-activities');
+    }
+    return null;
   }
   
   // Handle festival activities selection scene for spring
@@ -180,6 +228,84 @@ const GameInterface: React.FC = () => {
         title="Summer Songs & Sips Festival"
         description="The festival is in full swing! Choose which activities you'd like to experience firsthand."
         completionSceneId="summer-conclusion-meeting"
+      />
+    );
+  }
+  
+  // Handle festival activities selection scene for autumn
+  if (gameState.currentScene === 'autumn-festival-activities') {
+    const festivalActivities = [
+      {
+        id: 'tour-guide',
+        title: 'Tour Guide',
+        description: 'Match up tour itineraries with guests\' interests at the visitor information kiosk',
+        color: '#FF5E5B', // Etta's color
+        sceneId: 'autumn-tour-guide-intro',
+        available: true
+      },
+      {
+        id: 'crafter',
+        title: 'Crafter',
+        description: 'Create a custom item at the DIY crafting booth',
+        color: '#9C89FF', // Senara's color
+        sceneId: 'autumn-crafter-intro',
+        available: true
+      },
+      {
+        id: 'memories-date',
+        title: 'Making Memories Date',
+        description: 'Go on a sightseeing date around the city with your romantic interest',
+        color: '#0D98BA', // Maven's color
+        sceneId: 'autumn-memories-date-intro',
+        available: gameState.currentLoveInterest !== undefined
+      }
+    ];
+    
+    return (
+      <FestivalActivitiesScene 
+        activities={festivalActivities}
+        title="Autumn Heritage & Handicrafts Festival"
+        description="The festival is in full swing! Choose which activities you'd like to experience."
+        completionSceneId="autumn-festival-completion"
+      />
+    );
+  }
+  
+  // Handle festival activities selection scene for winter
+  if (gameState.currentScene === 'winter-festival-activities') {
+    const festivalActivities = [
+      {
+        id: 'charity-auction',
+        title: 'Charity Auction',
+        description: 'Bid on items in the silent auction to support local historical preservation',
+        color: '#FFB347', // Navarre's color
+        sceneId: 'winter-charity-auction-intro',
+        available: true
+      },
+      {
+        id: 'gala-dance',
+        title: 'Gala Dance',
+        description: 'Dance with your romantic interest at the formal winter gala',
+        color: '#4CC2FF', // Xavier's color
+        sceneId: 'winter-gala-dance-intro',
+        available: gameState.currentLoveInterest !== undefined
+      },
+      {
+        id: 'looking-signs',
+        title: 'Looking for Signs',
+        description: 'Take a walk with your romantic interest and search for signs of future fortune',
+        color: '#9C89FF', // Senara's color
+        sceneId: 'winter-looking-signs-intro',
+        available: gameState.currentLoveInterest !== undefined
+      }
+    ];
+    
+    return (
+      <FestivalActivitiesScene 
+        activities={festivalActivities}
+        title="Winter Gala & Games Festival"
+        description="The winter festival is underway! Choose which activities you'd like to experience."
+        completionSceneId="winter-festival-completion"
       />
     );
   }
