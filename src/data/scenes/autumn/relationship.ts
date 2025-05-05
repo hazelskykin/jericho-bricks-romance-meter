@@ -5,7 +5,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Xavier's autumn route
   'autumn-xavier-path': {
     id: 'autumn-xavier-path',
-    background: 'cybaton-office',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'maven',
@@ -24,12 +24,12 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I've been developing a new communications system for the city. It's more efficient and accessible than what we currently have.",
+        text: "I've been developing a new communications system for the city. It incorporates the latest Cybaton technology, but I wanted your perspective.",
         mood: 'nervous',
       },
       {
         character: 'xavier',
-        text: "But I'm worried that it might not be good enough. Or that it might disrupt the existing systems too much.",
+        text: "I'm worried that it might just be another way that people will be able to self-isolate rather than connect.",
         mood: 'sad',
       }
     ],
@@ -40,7 +40,7 @@ const relationshipScenes: Record<string, Scene> = {
         nextSceneId: 'autumn-xavier-support'
       },
       {
-        text: "Change can be scary, but it's often necessary for progress. Let's look at it together.",
+        text: "Self-sufficiency isn't necessarily self-isolating. Let's look at it together.",
         affectionChanges: { xavier: 0.5 },
         nextSceneId: 'autumn-xavier-support'
       }
@@ -48,7 +48,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'autumn-xavier-support': {
     id: 'autumn-xavier-support',
-    background: 'cybaton-office',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'xavier',
@@ -62,30 +62,74 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "That's what I've been focusing on with this project. Making sure it's not just efficient but also user-friendly for everyone in Stonewich.",
+        text: "That's what I've been focusing on with this project. Making sure it's not just efficient and a good UI but does actual good for everyone in Stonewich.",
         mood: 'thoughtful',
       },
       {
+        character: 'maven',
+        text: "What inspired you to work on this? How did you come up with the idea for the design?",
+        mood: 'neutral',
+      },
+      {
         character: 'xavier',
-        text: "I've been struggling with this for months. Balancing innovation with stability is hard.",
+        text: "You did, at least in part. Remember that day that we worked on synching the drones together?",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Yes, of course, for the summer festival.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "I was feeling pretty lonely that day, like I was just another drone fulfilling my presequenced actions.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "And then after hearing what Dr. Voss said, I thought about that day again. Systems can be efficient, but when wwe worked on it together, the result was much better.",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "I've been struggling with this for months. Balancing innovation with social adaptability is hard.",
         mood: 'thoughtful',
       }
+      {
+        character: 'maven',
+        text: "Yes, it's a very thorny issue. Tell me more about your new system, Xavier. How do you envision that it'll make it better for Stonewich?",
+        mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "At a high level, it takes social forums to a new engagement level. Let me give you a demonstration.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "For the next hour, Xavier takes you on a deep dive of his proposed new system and how it can foster new social connections and make communication in general more inclusive.",
+      },
     ],
     nextSceneId: 'autumn-xavier-resolution',
   },
   'autumn-xavier-resolution': {
     id: 'autumn-xavier-resolution',
-    background: 'cybaton-office',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'maven',
-        text: "Maybe we could present it to the team first? Get their feedback before taking it to the city council?",
+        text: "Maybe we could present it to the team first as a small scale pilot? Get their feedback before taking it to the city council?",
         mood: 'thoughtful',
       },
       {
         character: 'xavier',
         text: "That's a great idea. A smaller test group would help refine it before a larger rollout.",
         mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "We can also see for ourselves if we're able to leverage the functionality to generate new connections like you envision.",
+        mood: 'thoughtful',
       },
       {
         character: 'xavier',
@@ -96,7 +140,22 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'xavier',
         text: "Working with you... it reminds me why I got into this field in the first place. To help people connect.",
         mood: 'happy',
-      }
+      },
+      {
+        character: 'maven',
+        text: "Are you still feeling lonely?",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'xavier',
+        text: "I've been working on resolving that feeling with a therapist, and it's been getting better. The time we've spent together has also helped me feel supported.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I'm glad you are finding ways to cope. I think your new communications system may be the catalyst for others in Stonewich to get that feeling of support too.",
+        mood: 'happy',
+      },
     ],
     nextSceneId: 'autumn-festival-introduction',
   },
