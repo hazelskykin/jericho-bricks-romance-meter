@@ -93,10 +93,10 @@ const SeasonTransition: React.FC<SeasonTransitionProps> = ({ season, nextSceneId
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.7 }}
           >
-            {season === 'spring' && "As winter fades away, Stonewich welcomes the Spring Blooms & Brooms Festival, where the city is renewed through community cleaning and planting efforts."}
+            {season === 'spring' && "As winter fades away, Stonewich welcomes the Spring Blooms & Brooms Festival, where the city is renewed through community beautification efforts."}
             {season === 'summer' && "The heat brings the Summer Songs & Sips Festival, a time for music, refreshment, and social connection throughout Stonewich."}
-            {season === 'autumn' && "Leaves turn as Stonewich celebrates the Autumn Handicrafts & Heritage Festival, honoring traditional skills and historical roots."}
-            {season === 'winter' && "Snow covers the city during the Winter Games & Gala, where Stonewich enjoys friendly competition and elegant celebration."}
+            {season === 'autumn' && "Leaves turn as Stonewich celebrates the Autumn Handicrafts & Heritage Festival, honoring traditional craftsmanship and community spirit."}
+            {season === 'winter' && "Snow covers the city during the Winter Gala & Games, where Stonewich enjoys friendly competition and elegant celebration."}
           </motion.p>
           
           {/* Continue button */}
