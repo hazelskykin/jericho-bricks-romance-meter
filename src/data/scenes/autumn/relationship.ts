@@ -513,39 +513,38 @@ const relationshipScenes: Record<string, Scene> = {
     background: 'cybaton-library',
     dialogue: [
       {
+        character: 'narrator',
+        text: "Senara had requested that you join him on a trip back to the Cybaton HQ library.",
+      },
+      {
+        character: 'senara',
+        text: "Maven. thanks for coming with me today.",
+        mood: 'happy',
+      },
+      {
         character: 'maven',
-        text: "I found Senara in the library again. She seems troubled about something.",
-        mood: 'thoughtful',
+        text: "Of course, although I'm not sure what we are doing here? Is there something I can help with?",
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "Maven. I didn't hear you come in.",
-        mood: 'surprised',
-      },
-      {
-        character: 'maven',
-        text: "Sorry, I didn't mean to startle you. What are you researching?",
-        mood: 'curious',
+        text: "Just being here with me is comforting in an expected way. I am scheduled to interface with the Cybaton oracle periodically.",
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "I've discovered some concerning data in the city's historical records. There are patterns suggesting that Cybaton's involvement in Stonewich goes back further than the official contract.",
-        mood: 'serious',
-      },
-      {
-        character: 'senara',
-        text: "I'm torn between my loyalty to the company and my commitment to truth and knowledge.",
-        mood: 'conflicted',
+        text: "The experience is a bit tedious, but more than that, it's rather dehumanizing.",
+        mood: 'sad',
       }
     ],
     choices: [
       {
-        text: "The truth matters, even when it's uncomfortable. What have you found exactly?",
+        text: "Who you are matters, as a person and not just a collection of data.",
         affectionChanges: { senara: 1 },
         nextSceneId: 'autumn-senara-truth'
       },
       {
-        text: "That sounds concerning. Do you think there could be another explanation for what you've found?",
+        text: "That sounds concerning. Is this something you're forced to do in some way?",
         affectionChanges: { senara: 0.5 },
         nextSceneId: 'autumn-senara-truth'
       }
@@ -582,6 +581,26 @@ const relationshipScenes: Record<string, Scene> = {
     id: 'autumn-senara-resolution',
     background: 'cybaton-library',
     dialogue: [
+      {
+        character: 'senara',
+        text: "Thank you for the concern. These sessions are not mandatory, but they offer a benefit that seems illogical to refuse.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Oh? What is that?",
+        mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "Others can have access to the data I've collected, curated, and analyzed in my mind in a way that's unique for me to share.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Yes, I can see the benefit is hard to deny for others, but what do you get out of it?",
+        mood: 'surprised',
+      },
       {
         character: 'maven',
         text: "What does your heart tell you is the right thing to do?",
