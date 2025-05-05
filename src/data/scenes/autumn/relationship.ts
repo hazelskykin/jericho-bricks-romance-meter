@@ -528,7 +528,7 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Just being here with me is comforting in an expected way. I am scheduled to interface with the Cybaton oracle periodically.",
+        text: "Just being here with me is comforting in an unexpected way. I am scheduled to interface with the Cybaton oracle periodically.",
         mood: 'neutral',
       },
       {
@@ -539,7 +539,7 @@ const relationshipScenes: Record<string, Scene> = {
     ],
     choices: [
       {
-        text: "Who you are matters, as a person and not just a collection of data.",
+        text: "Who you are matters, as a person and not just a collection of data. Never forget that.",
         affectionChanges: { senara: 1 },
         nextSceneId: 'autumn-senara-truth'
       },
@@ -552,33 +552,6 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'autumn-senara-truth': {
     id: 'autumn-senara-truth',
-    background: 'cybaton-library',
-    dialogue: [
-      {
-        character: 'senara',
-        text: "There are indications that Cybaton may have had a hand in some of the 'natural' technological evolutions of Stonewich decades before the official contract.",
-        mood: 'serious',
-      },
-      {
-        character: 'senara',
-        text: "Nothing illegal, per se. But there's evidence of subtle influence, guiding the city toward technologies that would eventually be compatible with Cybaton systems.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'maven',
-        text: "That would mean the relationship between Stonewich and Cybaton isn't quite what everyone believes.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'senara',
-        text: "Precisely. And now I'm facing an ethical dilemma. Do I pursue this line of inquiry? Do I report it to headquarters? Or do I let sleeping dogs lie?",
-        mood: 'conflicted',
-      }
-    ],
-    nextSceneId: 'autumn-senara-resolution',
-  },
-  'autumn-senara-resolution': {
-    id: 'autumn-senara-resolution',
     background: 'cybaton-library',
     dialogue: [
       {
@@ -599,33 +572,139 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Yes, I can see the benefit is hard to deny for others, but what do you get out of it?",
-        mood: 'surprised',
-      },
-      {
-        character: 'maven',
-        text: "What does your heart tell you is the right thing to do?",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "My heart? I usually rely on my mind for such matters.",
+        text: "Nothing tangible, if that's what you're asking. I do get to see what analysis others have done. Even with my processing powers, I do not have the interest or bandwidth in pursuing every line of inquiry.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I mean, we share information all the time. What makes this different to you?",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "Sharing in more conventional ways allows me to filter the information, just feels more natural. Sharing this way leaves me open without a filter, but I have nothing to hide so why not?",
+        mood: 'sad',
+      },
+      {
+        character: 'maven',
+        text: "Anyone would feel vulnerable if others were privy to every data point and thought in their head.",
+        mood: 'sad',
+      },
+      {
+        character: 'senara',
+        text: "Are you suggesting that others would find this objectionable, that they would refuse to do it?",
         mood: 'surprised',
       },
       {
         character: 'maven',
-        text: "Sometimes ethical questions need more than just logical analysis.",
-        mood: 'thoughtful',
+        text: "I can't speak for everyone, but if it doesn't feel right to you, then that's your answer.",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "You've given me more to think about, Maven. Would you mind staying at my side while I complete the session today?",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Of course. I'm here with you. I'm glad you felt you could ask me to support you like this.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "The interface time seemed brief to you, but Senara's usual calm expression showed subtle signs of weariness.",
+      },
+    ],
+    nextSceneId: 'autumn-senara-resolution',
+  },
+  'autumn-senara-resolution': {
+    id: 'autumn-senara-resolution',
+    background: 'cybaton-shuttle',
+    dialogue: [
+      {
+        character: 'senara',
+        text: "Thank you once again for coming with me today.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Senara, are you alright? That seemed to take a lot out of you.",
+        mood: 'sad',
+      },
+      {
+        character: 'senara',
+        text: "You can tell? I did not think others had such an acute level of neuroperceptor sensitivity.",
+        mood: 'surprised',
+      },
+      {
+        character: 'maven',
+        text: "Sometimes ethical questions need more than just logical analysis. After seeing what this does to you, are you certain you're not feeling pressured into it?",
+        mood: 'sad',
+      },
+      {
+        character: 'maven',
+        text: "What does your heart tell you is the right thing to do?"
+        mood: 'sad'
+      },
+      {
+        character: 'senara',
+        text: "My heart? Not my conscience or the logical conclusion? You ask the most difficult questions sometimes.",
+        mood: 'surprised',
       },
       {
         character: 'senara',
         text: "You... might be right. I've always prided myself on my objectivity, but perhaps some matters require a different approach.",
-        mood: 'thoughtful',
+        mood: 'sad',
       },
       {
         character: 'senara',
-        text: "Thank you, Maven. You've given me a new perspective to consider. I need to reflect on this further.",
-        mood: 'grateful',
-      }
+        text: "I've been doing these interface sessions routinely without assessing it in the context of a consenting human adult.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "And now that you have?"
+        mood: 'neutral'
+      },
+      {
+        character: 'senara',
+        text: "You surprise me again. Most people would back off to give the person time, but you realize that's not what I need."
+        mood: 'surprised'
+      },
+      {
+        character: 'senara',
+        text: "I will not be doing the interface sessions going forward. I want the privacy of my thoughts to be sancrosanct."
+        mood: 'neutral'
+      },
+      {
+        character: 'maven',
+        text: "How does that decision make you feel?"
+        mood: 'neutral'
+      },
+      {
+        character: 'senara',
+        text: "Like a weight has been lifted. I never realized how oppressive I found that experience before."
+        mood: 'happy'
+      },
+      {
+        character: 'maven',
+        text: "I've never seen you smile like that before."
+        mood: 'happy'
+      },
+      {
+        character: 'senara',
+        text: "May I share a personal insight with you? This experience, today with you, has been a turning point for me, and I feel a closeness to you I have never felt with anyone else."
+        mood: 'happy'
+      },
+      {
+        character: 'maven',
+        text: "I'm glad."
+        mood: 'embarrassed'
+      },
     ],
     nextSceneId: 'autumn-festival-introduction',
   },
@@ -642,7 +721,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "We've all grown so much since we first arrived here. It's hard to believe winter is already approaching.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'etta',
