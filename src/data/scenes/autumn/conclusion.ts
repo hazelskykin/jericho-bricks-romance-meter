@@ -3,48 +3,51 @@ import { Scene } from '../../../types/game';
 
 const autumnConclusionScenes: Record<string, Scene> = {
   
-  
   'autumn-conclusion': {
     id: 'autumn-conclusion',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-office',
     dialogue: [
       {
-        character: 'narrator',
-        text: "As spring continues in Stonewich, your team settles into a rhythm. Each member's strengths become more apparent in different situations.",
-      },
-      {
-        character: 'narrator',
-        text: "You've begun to see patterns in how your teammates operate, and found yourself gravitating toward certain approaches. Dr. Voss's words weigh at the back of your mind, but daily routines make it seem less urgent.",
-      },
-      {
         character: 'maven',
-        text: "These past few months have taught me so much about everyone... and about myself.",
+        text: "Autumn in Stonewich has been a time of reflection and deeper connections. The Heritage & Handicrafts Festival was amazing.",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'xavier',
+        text: "We've all grown so much since we first arrived here. It's hard to believe winter is already approaching.",
         mood: 'neutral',
       },
       {
-        character: 'narrator',
-        text: "With spring coming to a close, it's time to prepare for summer—and the next seasonal festival.",
+        character: 'etta',
+        text: "The annual review will be coming up at the end of winter. We should start preparing our reports.",
+        mood: 'neutral',
       },
       {
-        character: 'narrator',
-        text: "But your experiences have already begun to shape your path. Your strongest connections are becoming clear.",
+        character: 'navarre',
+        text: "Always thinking ahead, Etta! But you're right. The Winter Gala & Games will be here before we know it.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "The winter festival is quite the spectacle, from what I've read. A formal gala, charity auction, and various winter games.",
+        mood: 'thoughtful',
       }
     ],
-    nextSceneId: 'season-transition-summer',
+    nextSceneId: 'season-transition-winter',
   },
   
   // Special scene to handle transition between seasons
-  'season-transition-summer': {
-    id: 'season-transition-summer',
-    background: 'summer-transition',
+  'season-transition-winter': {
+    id: 'season-transition-winter',
+    background: 'winter-transition',
     dialogue: [
       {
         character: 'narrator',
-        text: "Summer, Chapter 2",
+        text: "Winter, Chapter 4",
       },
     ], // Empty dialogue to trigger season transition
-    nextSceneId: 'summer-intro', // Now points to summer content instead of main menu
+    nextSceneId: 'winter-intro', // Now points to summer content instead of main menu
   }
 };
 
-export default springConclusionScenes;
+export default winterConclusionScenes;
