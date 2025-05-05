@@ -101,6 +101,7 @@ const introScenes: Record<string, Scene> = {
         text: "As autumn deepens, I find myself thinking more and more about the connections I've made here in Stonewich.",
         mood: 'thoughtful',
       },
+      //nextSceneId should be determined by the locked-in character route
     ],
     nextSceneId: 'autumn-festival-introduction',
   },
