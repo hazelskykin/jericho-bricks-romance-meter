@@ -163,7 +163,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Navarre's autumn route
   'autumn-navarre-path': {
     id: 'autumn-navarre-path',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'maven',
@@ -206,7 +206,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'autumn-navarre-dilemma': {
     id: 'autumn-navarre-dilemma',
-    background: 'stonewich-cityscape',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'navarre',
@@ -270,6 +270,11 @@ const relationshipScenes: Record<string, Scene> = {
     id: 'autumn-navarre-resolution',
     background: 'stonewich-office',
     dialogue: [
+      {
+        character: 'narrator',
+        text: "The next day you catch Navarre when he stops by the office.",
+        mood: 'neutral',
+      },
       {
         character: 'maven',
         text: "Hi Navarre. How did Morgan take the news?",
@@ -337,32 +342,32 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Etta's been working even longer hours than usual lately. I'm getting worried about her.",
-        mood: 'concerned',
+        mood: 'sad',
       },
       {
         character: 'etta',
         text: "Maven, could you look over these reports for me? I need to make sure they're perfect before I submit them to headquarters.",
-        mood: 'stressed',
+        mood: 'angry',
       },
       {
         character: 'maven',
         text: "Etta, these reports look fine. But you seem exhausted. When was the last time you took a break?",
-        mood: 'concerned',
+        mood: 'sad',
       },
       {
         character: 'etta',
-        text: "Breaks are inefficient. There's too much at stake. The annual review is coming up, and our performance here determines everything.",
-        mood: 'stressed',
+        text: "There's too much at stake. The annual review is coming up, and our performance here determines everything.",
+        mood: 'angry',
       }
     ],
     choices: [
       {
-        text: "Even the most efficient machines need maintenance. You can't keep pushing yourself like this.",
+        text: "You can't keep pushing yourself like this. Let's go!",
         affectionChanges: { etta: 1 },
         nextSceneId: 'autumn-etta-burnout'
       },
       {
-        text: "What are you afraid will happen if you take a break?",
+        text: "What are you afraid will happen if you take a break? Let's find out if it's as bad you think.",
         affectionChanges: { etta: 0.5 },
         nextSceneId: 'autumn-etta-burnout'
       }
@@ -370,28 +375,97 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'autumn-etta-burnout': {
     id: 'autumn-etta-burnout',
-    background: 'stonewich-workstation',
+    background: 'autumn-transition',
     dialogue: [
+      {
+        character: 'maven',
+        text: "There! I have dragged you outside without your consent. Now tell me what's going on with you.",
+        mood: 'happy',
+      },
       {
         character: 'etta',
         text: "I... I can't fail, Maven. I've never failed at anything in my life.",
-        mood: 'vulnerable',
-      },
-      {
-        character: 'maven',
-        text: "Taking care of yourself isn't failure, Etta. It's necessary.",
-        mood: 'concerned',
-      },
-      {
-        character: 'etta',
-        text: "You don't understand. My entire identity is built around success and achievement. If I'm not the best, then what am I?",
         mood: 'sad',
       },
       {
         character: 'maven',
-        text: "You're Etta. You're brilliant and driven and passionate. That doesn't change whether you're working or resting.",
-        mood: 'sincere',
+        text: "Why fear failure? It's just part of the process to get better.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "You don't understand. My entire identity, my family's reputation are built around success and achievement.",
+        mood: 'sad',
+      },
+      {
+        character: 'maven',
+        text: "You're Etta. You're brilliant and driven and passionate. That doesn't change whether you're working or resting, whether you've achieved a benchmark or missed the mark.",
+        mood: 'neutral',
       }
+      {
+        character: 'etta',
+        text: "I chose this path for myself, but if I can't be successful, then...my family is ready with an alternative.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "What do you mean? You don't have to follow a different life path just because things might get rocky.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "I think you might remember that my family owns Watanabe Enterprises? My father considers this job for Cybaton as a prelude to my career there.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Is that what you want?",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "I don't know. It's not just the job though. They also have a suitor lined up for me.",
+        mood: 'sad',
+      },
+      {
+        character: 'maven',
+        text: "What? No one does arranged marriages in these modern times.",
+        mood: 'surprised',
+      },
+      {
+        character: 'etta',
+        text: "Unfortunately, they do. And before Stonewich, I had agreed to the arrangement as a compromise with my father so I could work here.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Are you still thinking to go through with it?",
+        mood: 'surprised',
+      },
+      {
+        character: 'etta',
+        text: "I'm not sure. I think part of the reason I've been so stressed and focused on work is because, well, I've been distracted by that.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Distracted? That would be news to me. I've never seen you anything but focused and determined.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "Don't be dense. I'm talking about you. I have been distracted thinking about you instead of the one my father has arranged for me.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'etta',
+        text: "Thanks for bringing me out for a break today, Maven, but I need to get back.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'narrator',
+        text: "Etta rushed back to the office before you had a chance to respond to her surprising revelations.",
+      },
     ],
     nextSceneId: 'autumn-etta-resolution',
   },
@@ -400,23 +474,28 @@ const relationshipScenes: Record<string, Scene> = {
     background: 'stonewich-workstation',
     dialogue: [
       {
+        character: 'maven',
+        text: "Hi, Etta. I've been thinking about what you said. You don't need to feel pressured to succeed to impress me. Just do what's right for you, be yourself.",
+        mood: 'neutral',
+      },
+      {
         character: 'etta',
-        text: "No one's ever... seen me that way before. Just for who I am, not what I achieve.",
+        text: "No one's ever... seen me that way before. Just for who I am, not what I achieve or the connections I represent. But you do.",
         mood: 'surprised',
       },
       {
         character: 'maven',
         text: "Maybe it's time you started seeing yourself that way too.",
-        mood: 'sincere',
+        mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "I don't know if I can change overnight. But... maybe I could try taking a short break. Just a small one.",
-        mood: 'thoughtful',
+        text: "I don't know. But... maybe I could try.",
+        mood: 'neutral',
       },
       {
         character: 'etta',
-        text: "Would you... would you come with me? To make sure I actually relax?",
+        text: "Would you... would you want to get to know one another more, in a more personal way?",
         mood: 'embarrassed',
       },
       {
