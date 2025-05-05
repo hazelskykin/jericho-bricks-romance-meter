@@ -102,6 +102,8 @@ const introScenes: Record<string, Scene> = {
         mood: 'thoughtful',
       },
       //nextSceneId should be determined by the locked-in character route
+      //all possible scenes are written in relationship.ts for selection
+      //after the relationship-development arc, then the festival should kick off with autumn-festival-introduction
     ],
     nextSceneId: 'autumn-festival-introduction',
   },
