@@ -17,17 +17,17 @@ const introScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "The Heritage & Handicrafts Festival is a big deal around here. It's all about celebrating the history and traditions of Stonewich.",
+        text: "The Heritage & Handicrafts Festival is about celebrating the community and shared culture of Stonewich. Maybe it can spark some better connections.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: "We'll need to make sure all the systems are optimized for the increased foot traffic around the historic districts.",
+        text: "We need to reconsider the metrics we've been using beyond performance efficiency. It'll be a challenge to measure anything as hazy as community spirit.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "The festival provides a fascinating look into the cultural evolution of the city. The artifacts on display are quite remarkable.",
+        text: "The festival provides a fascinating look into the cultural evolution of the city. The artisans on display are quite remarkable.",
         mood: 'thoughtful',
       },
       {
@@ -60,17 +60,32 @@ const introScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "I've been compiling historical data about Stonewich for the tour guides to use. The city has a fascinating history that dates back several centuries.",
+        text: "The city has a fascinating history of craftmanship and skills development. I wonder what likely contributed to periods of exceptional growth.",
         mood: 'thoughtful',
       },
       {
         character: 'maven',
-        text: "I'd like to volunteer at the visitor information kiosk. It seems like a great way to get involved and help out the community.",
+        text: "I have a good feeling about the autumn season. I have decided on a focus that may help us address the larger picture that Dr. Voss shared.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: "That's a good idea, Maven. We need all hands on deck for this festival. It's a major event for Stonewich.",
+        text: "That's great, Maven, but whatever it is, we still need to deliver on expectations for the festival and our other administration duties.",
+        mood: 'neutral',
+      }
+      {
+        character: 'nevarre',
+        text: "We are counting on you, Maven, but you're not alone.",
+        mood: 'neutral',
+      }
+      {
+        character: 'xavier',
+        text: "That's right! If you need a hand, it'll be our turn to pitch in for you.",
+        mood: 'neutral',
+      }
+      {
+        character: 'maven',
+        text: "Thanks, everyone. Let's all do our best!",
         mood: 'neutral',
       }
     ],
