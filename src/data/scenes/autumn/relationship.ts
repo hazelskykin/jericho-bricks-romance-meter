@@ -183,7 +183,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'navarre',
         text: "I received a job offer from a competing corporation. It's a significant promotion with more influence and a higher salary.",
-        mood: 'conflicted',
+        mood: 'neutral',
       },
       {
         character: 'navarre',
@@ -193,12 +193,12 @@ const relationshipScenes: Record<string, Scene> = {
     ],
     choices: [
       {
-        text: "That's a big opportunity, but only you can decide what will truly make you happy.",
+        text: "That's a big opportunity, but the timing seems too perfect for coincidence.",
         affectionChanges: { navarre: 0.5 },
         nextSceneId: 'autumn-navarre-dilemma'
       },
       {
-        text: "I understand, but I'd miss you terribly if you left. The team wouldn't be the same without you.",
+        text: "I'd miss you terribly if you left. But, it makes me wonder why now?",
         affectionChanges: { navarre: 1 },
         nextSceneId: 'autumn-navarre-dilemma'
       }
@@ -210,13 +210,13 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'navarre',
-        text: "That's just it. I've built my career on always taking the next step up, always chasing the next big opportunity.",
-        mood: 'conflicted',
+        text: "That's just it. We countered their competitive pressure moves in the summer, so now they're taking a more aggressive approach.",
+        mood: 'angry',
       },
       {
         character: 'navarre',
-        text: "But for the first time, I'm hesitating. I've never felt so connected to a place... or to people... before.",
-        mood: 'thoughtful',
+        text: "Before, I would have accepted it and happily moved on. But now, I am hesitating. Am I being played like a pawn? Do I have loyalties at stake?",
+        mood: 'neutral',
       },
       {
         character: 'maven',
@@ -225,41 +225,106 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "I've always defined success by my career achievements. But being here in Stonewich, working with the team, spending time with you...",
+        text: "Being here in Stonewich, working with the team, spending time with you...",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "I'm starting to think about where I want to be and how my impact can shape that place for the better.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "How did you get this offer? Did they just send you a message? It doesn't seem like something you'd take so seriously from a corporate communication.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "Good instincts. Morgan met me for dinner to bury the hatchet from the summer. She extended it to me person.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Morgan Thornfield? She seems even more interested in you than before.",
         mood: 'thoughtful',
       },
       {
         character: 'navarre',
-        text: "I'm starting to wonder if there's more to success than just climbing the corporate ladder.",
-        mood: 'thoughtful',
-      }
+        text: "Jealous? It was a lovely dinner with a view of the water and soft lighting. She picked a great spot to soften me for her offer.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Maybe, I mean, no! Of course not.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'navarre',
+        text: "Maybe I'll have to take Morgan to a nicer place to let her down easy, in the spirit of fostering good relationships.",
+        mood: 'laughing',
+      },
     ],
     nextSceneId: 'autumn-navarre-resolution',
   },
   'autumn-navarre-resolution': {
     id: 'autumn-navarre-resolution',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'maven',
-        text: "Maybe success is also about finding where you truly belong and what makes you genuinely happy.",
-        mood: 'thoughtful',
+        text: "Hi Navarre. How did Morgan take the news?",
+        mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "You know, that's exactly what I've been thinking. My whole life has been about moving forward, never staying in one place too long.",
-        mood: 'thoughtful',
+        text: "Like I would if I really wanted something to happen.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "...what does that mean?",
+        mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "But Stonewich feels different. For the first time, I'm considering what it might mean to put down roots.",
+        text: "Worried?",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "That you'll leave for the competition? No, not really. That you and Morgan might reconcile and both leave to do something amazing together? Yes, definitely.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "You do have a wild imagination!",
+        mood: 'laughing',
+      },
+      {
+        character: 'maven',
+        text: "So where do things really stand then?",
+        mood: 'angry',
+      },
+      {
+        character: 'navarre',
+        text: "I've turned down the offer, but Morgan was ready to pitch an alternative as a way to continue a close collaboration.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "How do you feel about that?",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "I'm where I want to be for now, and I'd like to see how things will unfold, here in Stonewich...and with you.",
         mood: 'happy',
       },
       {
-        character: 'navarre',
-        text: "Thank you for listening, Maven. You've given me a lot to think about.",
-        mood: 'happy',
-      }
+        character: 'maven',
+        text: "Oh, that's good, I mean, me too.",
+        mood: 'embarrassed',
+      },
     ],
     nextSceneId: 'autumn-festival-introduction',
   },
