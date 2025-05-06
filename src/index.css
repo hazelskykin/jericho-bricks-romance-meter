@@ -106,8 +106,8 @@
 /* Toast customizations */
 [data-sonner-toast][data-styled=true] {
   width: auto !important;
-  max-width: auto !important;
   min-width: auto !important;
+  max-width: auto !important;
 }
 
 [data-sonner-toast].affection-toast {
@@ -115,6 +115,8 @@
   min-width: auto !important;
   max-width: auto !important;
   padding: 8px !important;
+  height: auto !important;
+  max-height: auto !important;
 }
 
 .affection-toast div[data-icon] {
@@ -123,4 +125,14 @@
 
 .affection-toast div[data-content] {
   flex: 0 !important;
+}
+
+/* Fix for sonner toast positioning */
+[data-sonner-toaster][data-theme] {
+  --viewport-padding: 16px !important;
+  position: fixed !important;
+  top: var(--viewport-padding) !important;
+  right: var(--viewport-padding) !important;
+  width: auto !important;
+  height: auto !important;
 }

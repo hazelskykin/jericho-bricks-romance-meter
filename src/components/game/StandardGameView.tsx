@@ -38,7 +38,7 @@ const StandardGameView: React.FC = () => {
       
       {/* Only render CharacterPortrait if we have a character to display */}
       {currentLine?.character && !gameState.showChoices && (
-        <div className="fixed bottom-4 left-8 z-20">
+        <div className="fixed bottom-4 left-8 z-10">
           <CharacterPortrait 
             characterId={currentLine.character} 
             mood={currentLine.mood}

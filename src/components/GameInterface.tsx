@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
@@ -25,16 +24,22 @@ const GameInterface: React.FC = () => {
 
   console.log('GameInterface rendering, activeMinigame:', activeMinigame, 'currentScene:', gameState.currentScene);
 
-  // Handle epilogue routing
+  // Handle epilogue routing and character-specific scenes
   useEffect(() => {
+    // Handle epilogue routing
     if (gameState.currentScene === 'epilogue-route') {
       const nextSceneId = routeToEpilogue(gameState.currentScene);
       handleSceneTransition(nextSceneId);
     }
     
     // Handle character-specific happy endings
-    if (gameState.currentScene === 'happy-ending-character' && gameState.currentLoveInterest) {
+    else if (gameState.currentScene === 'happy-ending-character' && gameState.currentLoveInterest) {
       handleSceneTransition(`happy-ending-${gameState.currentLoveInterest}`);
+    }
+    
+    // Handle character-specific winter planning
+    else if (gameState.currentScene === 'winter-character-specific-planning' && gameState.currentLoveInterest) {
+      handleSceneTransition(`winter-${gameState.currentLoveInterest}-planning`);
     }
   }, [gameState.currentScene, gameState.currentLoveInterest, handleSceneTransition, routeToEpilogue]);
 

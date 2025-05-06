@@ -25,7 +25,9 @@ export type MoodType =
   'proud' | 
   'impressed' | 
   'pleased' |
-  'confident'; // Adding 'confident' to fix build errors
+  'confident' |
+  'reflective' |
+  'touched';
 
 export interface CharacterExpression {
   characterId: CharacterId;

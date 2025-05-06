@@ -1,240 +1,188 @@
 
 import { Scene } from '@/types/game';
 
-const activitiesScenes: Record<string, Scene> = {
-  'winter-festival-activities': {
-    id: 'winter-festival-activities',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "The Winter Gala & Games festival is in full swing. There's so much to explore!",
-        mood: 'happy',
-      }
-    ],
-    // This scene will be handled by the FestivalActivitiesScene component
-    nextSceneId: 'winter-festival-completion',
-  },
-
-  // Charity Auction Minigame Introduction
+const winterActivityScenes: Record<string, Scene> = {
+  // Charity Auction activity
   'winter-charity-auction-intro': {
     id: 'winter-charity-auction-intro',
-    background: 'winter-transition',
+    background: 'stonewich-cityscape',
     dialogue: [
       {
-        character: 'maven',
-        text: "The charity auction looks interesting. I wonder if I could win something special.",
-        mood: 'thoughtful',
+        character: 'narrator',
+        text: "The Winter Gala's charity auction is one of the most anticipated events of the season. Luxury items and experiences are available to the highest bidders, with all proceeds going to local charities.",
       },
       {
-        character: 'xavier',
-        text: "It's all about strategy! Timing your bids and knowing when to go all in.",
+        character: 'navarre',
+        text: "The auction is about to start. I've been helping curate some of the items - there's some incredible stuff up for grabs.",
+        mood: 'excited',
+      },
+      {
+        character: 'maven',
+        text: "It looks like quite a high-end event. I'm not sure I can afford anything here.",
+        mood: 'concerned',
+      },
+      {
+        character: 'navarre',
+        text: "Don't worry about that. The experience is what matters. Besides, I've arranged a special item that I think you'll be interested in.",
         mood: 'happy',
       },
-      {
-        character: 'etta',
-        text: "Remember, the auction benefits the city's charities. It's for a good cause.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "I'll keep an eye on the prizes and see if there's something worth bidding on.",
-        mood: 'confident',
-      }
     ],
-    nextSceneId: 'winter-charity-auction-start',
+    nextSceneId: 'winter-charity-auction-start'
   },
-
-  // Trigger for Charity Auction minigame
-  'winter-charity-auction-start': {
-    id: 'winter-charity-auction-start',
-    background: 'winter-transition',
-    dialogue: [],
-    nextSceneId: 'winter-charity-auction-complete',
-  },
-
-  // After Charity Auction minigame
   'winter-charity-auction-complete': {
     id: 'winter-charity-auction-complete',
-    background: 'winter-transition',
+    background: 'stonewich-cityscape',
     dialogue: [
       {
-        character: 'maven',
-        text: "That was quite the bidding war! The auction raised a lot of money for charity.",
-        mood: 'happy',
+        character: 'narrator',
+        text: "The charity auction concludes with impressive results. The funds raised will support several local initiatives throughout the coming year.",
       },
       {
-        character: 'xavier',
-        text: "Did you win anything?",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "It was exciting to participate, whether I won or not. The important thing is that it was for a good cause.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'winter-festival-midway',
-  },
-
-  // Gala Dance Minigame Introduction
-  'winter-gala-dance-intro': {
-    id: 'winter-gala-dance-intro',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "The winter gala is so elegant. Everyone's dressed up and the music is beautiful.",
-        mood: 'happy',
-      }
-    ],
-    choices: [
-      {
-        text: "Would you like to dance with me?",
-        affectionChanges: { xavier: 1, navarre: 1, etta: 1, senara: 1 },
-        nextSceneId: 'winter-gala-dance-invitation'
-      },
-      {
-        text: "This is a beautiful event, isn't it?",
-        nextSceneId: 'winter-gala-dance-conversation'
-      }
-    ]
-  },
-
-  'winter-gala-dance-invitation': {
-    id: 'winter-gala-dance-invitation',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "Would you like to dance with me?",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'winter-gala-dance-acceptance',
-  },
-
-  'winter-gala-dance-acceptance': {
-    id: 'winter-gala-dance-acceptance',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "I'll try to follow your lead. It's been a while since I've danced formally.",
-        mood: 'embarrassed',
-      }
-    ],
-    nextSceneId: 'winter-gala-dance-start',
-  },
-
-  'winter-gala-dance-conversation': {
-    id: 'winter-gala-dance-conversation',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "This is such a beautiful event. Stonewich really knows how to celebrate winter.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'winter-gala-dance-invitation',
-  },
-
-  // Trigger for Gala Dance minigame
-  'winter-gala-dance-start': {
-    id: 'winter-gala-dance-start',
-    background: 'winter-transition',
-    dialogue: [],
-    nextSceneId: 'winter-gala-dance-complete',
-  },
-
-  // After Gala Dance minigame
-  'winter-gala-dance-complete': {
-    id: 'winter-gala-dance-complete',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "That was wonderful! Thank you for the dance.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'winter-festival-midway',
-  },
-
-  // Looking for Signs Minigame Introduction
-  'winter-looking-signs-intro': {
-    id: 'winter-looking-signs-intro',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "Would you like to take a walk with me? I heard there's a tradition of looking for signs of fortune during the winter festival.",
-        mood: 'happy',
-      },
-      {
-        character: 'maven',
-        text: "It's supposed to be fun! We look for symbols around us and interpret them as good or bad luck for the coming year.",
+        character: 'navarre',
+        text: "That was fantastic! Did you see how much the historical city tour package went for?",
         mood: 'excited',
-      }
-    ],
-    nextSceneId: 'winter-looking-signs-start',
-  },
-
-  // Trigger for Looking for Signs minigame
-  'winter-looking-signs-start': {
-    id: 'winter-looking-signs-start',
-    background: 'winter-transition',
-    dialogue: [],
-    nextSceneId: 'winter-looking-signs-complete',
-  },
-
-  // After Looking for Signs minigame
-  'winter-looking-signs-complete': {
-    id: 'winter-looking-signs-complete',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "That was interesting! I wonder if any of those signs will come true.",
-        mood: 'thoughtful',
       },
-    ],
-    nextSceneId: 'winter-festival-midway',
-  },
-
-  // Festival midway point - player can choose other activities
-  'winter-festival-midway': {
-    id: 'winter-festival-midway',
-    background: 'winter-transition',
-    dialogue: [
       {
         character: 'maven',
-        text: "There's still more to experience at the Winter Gala & Games. What should I do next?",
+        text: "The whole event was a huge success. I'm glad we could be part of it.",
         mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "Events like this remind me why I love what I do. Connecting people, creating experiences... it matters.",
+        mood: 'sincere',
       }
     ],
-    nextSceneId: 'winter-festival-activities',
+    nextSceneId: 'winter-festival-activities'
   },
   
-  // Festival completion scene
-  'winter-festival-completion': {
-    id: 'winter-festival-completion',
-    background: 'winter-transition',
+  // Gala Dance activity
+  'winter-gala-dance-intro': {
+    id: 'winter-gala-dance-intro',
+    background: 'stonewich-cityscape',
     dialogue: [
       {
+        character: 'narrator',
+        text: "The grand ballroom is beautifully decorated for the Winter Gala. Crystal chandeliers sparkle overhead as couples take to the floor for the traditional winter waltz.",
+      },
+      {
+        character: 'xavier',
+        text: "I've been looking forward to this all evening. Would you care to dance?",
+        mood: 'happy',
+      },
+      {
         character: 'maven',
-        text: "The Winter Gala & Games was spectacular. It was the perfect way to end our year in Stonewich.",
+        text: "I have to admit, I'm not the most graceful dancer.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'xavier',
+        text: "Don't worry about that. It's all about enjoying the moment. Just follow my lead.",
+        mood: 'sincere',
+      },
+    ],
+    nextSceneId: 'winter-gala-dance-start'
+  },
+  'winter-gala-dance-complete': {
+    id: 'winter-gala-dance-complete',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "As the music fades, the two of you gradually stop dancing, but remain close together in the center of the ballroom.",
+      },
+      {
+        character: 'maven',
+        text: "That was... wonderful. Thank you.",
         mood: 'happy',
       },
       {
         character: 'xavier',
-        text: "It's hard to believe our year here is almost over. The annual review is coming up next week.",
-        mood: 'thoughtful',
+        text: "Thank you for trusting me to lead. You know, I used to be terrified of dancing in public.",
+        mood: 'reflective',
+      },
+      {
+        character: 'maven',
+        text: "Really? I wouldn't have guessed.",
+        mood: 'surprised',
+      },
+      {
+        character: 'xavier',
+        text: "It's amazing how the right partner can change everything.",
+        mood: 'sincere',
       }
     ],
-    nextSceneId: 'winter-confession',
+    nextSceneId: 'winter-festival-activities'
+  },
+  
+  // Looking for Signs activity
+  'winter-looking-signs-intro': {
+    id: 'winter-looking-signs-intro',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "A unique Winter Games & Gala tradition involves couples walking through the snow-covered Stonewich Gardens, looking for 'signs' that predict their future together.",
+      },
+      {
+        character: 'senara',
+        text: "This tradition dates back centuries. People believe that certain natural patterns in the winter landscape can reveal truths about relationships.",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'maven',
+        text: "Do you believe in that kind of thing?",
+        mood: 'curious',
+      },
+      {
+        character: 'senara',
+        text: "I believe in observing closely and finding meaning in what others might overlook. Whether that's mystical or simply mindful attention, does it matter?",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'senara',
+        text: "Would you like to walk the garden path with me? We could look for signs together.",
+        mood: 'vulnerable',
+      }
+    ],
+    nextSceneId: 'winter-looking-signs-start'
+  },
+  'winter-looking-signs-complete': {
+    id: 'winter-looking-signs-complete',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Your walk through the winter gardens comes to an end as you reach a small frozen pond, its surface reflecting the starlight above.",
+      },
+      {
+        character: 'senara',
+        text: "Look at that. The way the stars reflect on the ice - it's like two worlds meeting.",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'maven',
+        text: "What kind of sign is that supposed to be?",
+        mood: 'curious',
+      },
+      {
+        character: 'senara',
+        text: "A reminder that boundaries aren't always as solid as they seem. That sometimes, what appears to separate us can actually be the place where we connect most deeply.",
+        mood: 'sincere',
+      },
+      {
+        character: 'maven',
+        text: "I think I like that sign.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "So do I.",
+        mood: 'sincere',
+      }
+    ],
+    nextSceneId: 'winter-festival-activities'
   }
 };
 
-export default activitiesScenes;
+export default winterActivityScenes;

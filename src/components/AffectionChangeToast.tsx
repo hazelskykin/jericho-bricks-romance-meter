@@ -38,7 +38,6 @@ export const showAffectionChange = ({ characterId, changeAmount, newLevel, previ
         zIndex: 100,
         width: 'auto',
         minWidth: 'auto',
-        maxWidth: 'auto',
         height: 'auto'
       },
       className: "affection-toast",
