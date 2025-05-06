@@ -60,7 +60,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "You know that communications system we worked on? I've been thinking about expanding it for the Winter Games.",
-        mood: 'excited',
+        mood: 'happy',
       },
       {
         character: 'maven',
@@ -141,7 +141,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'navarre',
         text: "Have you seen the latest video Morgan and I posted? The viewership is incredible!",
-        mood: 'excited',
+        mood: 'happy',
       },
       {
         character: 'maven',

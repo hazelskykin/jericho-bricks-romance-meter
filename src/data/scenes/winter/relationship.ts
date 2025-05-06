@@ -1,3 +1,4 @@
+
 import { Scene } from '@/types/game';
 
 const relationshipScenes: Record<string, Scene> = {
@@ -32,12 +33,12 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I found someone who understands me, who sees beyond the technical expertise to the person underneath.",
+        text: "I've been asked to lead a team of Solvitors at headquarters to explore my innovations. To help connect people through technology, just like we've connected.",
         mood: 'happy',
       },
       {
         character: 'xavier',
-        text: "Maven, I've fallen in love with you. And whatever happens with the review, I want you to know that.",
+        text: "But none of it means anything without you, Maven. I've fallen in love with you, and whatever happens with the review, I want us to face it together.",
         mood: 'happy',
       }
     ],
@@ -65,6 +66,16 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
+        text: "The team at headquarters - they're like-minded people, but finding connection with them has been so much easier because of what I learned with you.",
+        mood: 'laughing',
+      },
+      {
+        character: 'xavier',
+        text: "My dream is to help people connect through technology, but you've shown me that the human element is just as important.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
         text: "Whatever happens with the review, knowing how you feel gives me confidence that we'll face it together.",
         mood: 'laughing',
       }
@@ -79,6 +90,11 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'xavier',
         text: "That means a lot to me, Maven. I'm hopeful for our future, whatever form it takes.",
         mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "The team I'm leading at headquarters - they've already made me feel welcome, but it's different from what we have here.",
+        mood: 'thoughtful',
       },
       {
         character: 'xavier',
@@ -106,12 +122,17 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "For the first time in my life, I've found someone who makes me want to stay. Who makes me think that all the networking and connections in the world don't compare to one real, meaningful connection.",
+        text: "Morgan and I are planning a special broadcast for the Winter Gala - interviewing couples about what makes love last.",
         mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "I love you, Maven. And I want to see where this goes, beyond our assignment here.",
+        text: "And I want us to be the final guests. To show everyone that I've found someone who makes me want to stay. Who makes all the networking and connections in the world insignificant compared to one real, meaningful connection.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "I love you, Maven. And I want everyone to know it.",
         mood: 'happy',
       }
     ],
@@ -139,6 +160,11 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
+        text: "The special broadcast will make it clear to everyone who has won my heart. No more speculation, no more rumors.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
         text: "This is the happiest I've been, Maven. And I promise, whatever happens with the review, we'll face it together.",
         mood: 'laughing',
       }
@@ -153,6 +179,11 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'navarre',
         text: "I understand. Taking things slowly is probably wise. But know that my feelings for you are genuine.",
         mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "The broadcast will still go forward. I want my audience to see that there's more to me than just charm.",
+        mood: 'thoughtful',
       },
       {
         character: 'navarre',
@@ -180,7 +211,12 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "But I've learned so much from you this year. About balance. About seeing value beyond just achievement.",
+        text: "My father is coming to the Winter Gala. I want you to meet him - properly, as someone important to me.",
+        mood: 'nervous',
+      },
+      {
+        character: 'etta',
+        text: "I've learned so much from you this year. About balance. About seeing value beyond just achievement.",
         mood: 'happy',
       },
       {
@@ -213,6 +249,11 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
+        text: "Meeting my father will be... interesting. But I think he'll see what I see in you. How you've helped me become stronger.",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'etta',
         text: "I don't know what I did to deserve you, Maven. But I promise I'll try to be worthy of your love.",
         mood: 'laughing',
       },
@@ -232,6 +273,11 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'etta',
         text: "That's... a logical approach. Taking things step by step.",
         mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "I still want you to meet my father. He needs to see that I've found my own path, with people who value me for who I am.",
+        mood: 'determined',
       },
       {
         character: 'etta',
@@ -264,6 +310,11 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
+        text: "I'd like to introduce you to the community advisory group I've formed. People who've struggled with being heard, just as I have.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
         text: "My conclusion, after thorough analysis, is that I've developed deep feelings for you. What most would call love.",
         mood: 'happy',
       },
@@ -292,8 +343,13 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'senara',
-        text: "You... love me too? I am not sure how to charaterize this emotive effusion.",
+        text: "You... love me too? I am not sure how to characterize this emotive effusion.",
         mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "The advisory group has taught me so much about expressing myself, finding my voice. But you were the first to truly hear me.",
+        mood: 'happy',
       },
       {
         character: 'senara',
@@ -316,6 +372,11 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'senara',
         text: "A measured approach. Yes, that makes sense. Emotions are complex and deserve careful consideration.",
         mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "I would still like you to meet the advisory group. They've helped me find my voice, much as you have.",
+        mood: 'thoughtful',
       },
       {
         character: 'senara',
@@ -373,22 +434,18 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Dr. Voss: Good morning, team. It's time for your annual review and future assignments.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "The results now speak for themselves. Other cities are clamoring for the innovations in tech, process, and engagement that you spearheaded this year.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "Competitive bids have started to decrease and rapidly replaced by collaborative partnership offers.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "These results speak well of you both as individual talents and even more so as a collective team. Your place with Cybaton is assured.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
@@ -406,27 +463,22 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Now, for your future assignments. Cybaton has several options for your team.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "Option one: You remain together as a team and continue your work in Stonewich. The city has requested to extend your contract.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "Option two: The team is disbanded, and each of you is assigned to different projects where your individual skills are needed.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "Option three: You remain together as a team but are reassigned to a new city that could benefit from your collaborative approach.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "The decision will be based on company needs, but I'd like to hear your preferences.",
-        mood: 'neutral',
       }
     ],
     choices: [
@@ -474,7 +526,6 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Thank you for your input. I'll take your preferences into consideration. The final decision will be announced shortly.",
-        mood: 'neutral',
       }
     ],
     nextSceneId: 'winter-conclusion',
@@ -487,22 +538,18 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Dr. Voss: After reviewing all factors, I've made a decision regarding your team's future.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "Given your exceptional performance and the positive feedback from Stonewich, your team will remain together and continue your assignment there.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "As for the 'Versa' role experiment, a conclusion has not yet been reached. We will discuss that separately at another time. Maven, for now, you will continue as a permanent member of the team.",
-        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "Congratulations to all of you. Your work this year has set a new standard for Cybaton's city management teams.",
-        mood: 'neutral',
       },
       {
         character: 'maven',

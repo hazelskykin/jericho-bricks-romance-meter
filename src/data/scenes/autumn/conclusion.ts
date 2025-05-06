@@ -61,11 +61,11 @@ const autumnConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Indeed. I've observed considerable growth in all of you. Personal development is as important as professional achievements in this program.",
+        text: "Dr. Voss: Indeed. I've observed considerable growth in all of you. Personal development is as important as professional achievements in this program.",
       },
       {
         character: 'narrator',
-        text: "Keep this momentum going into winter. It will determine your final evaluations and future assignments with Cybaton.",
+        text: "Dr. Voss: Keep this momentum going into winter. It will determine your final evaluations and future assignments with Cybaton.",
       }
     ],
     nextSceneId: 'autumn-conclusion'

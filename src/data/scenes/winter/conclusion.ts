@@ -81,7 +81,7 @@ const winterConclusionScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "I can't believe it's almost over. This year changed everything for me.",
-        mood: 'reflective',
+        mood: 'thoughtful',
       },
       {
         character: 'etta',
