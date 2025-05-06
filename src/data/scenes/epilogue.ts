@@ -52,7 +52,7 @@ const epilogueScenes: Record<string, Scene> = {
 
   'happy-ending-intro': {
     id: 'happy-ending-intro',
-    background: 'happy-ending',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
@@ -65,7 +65,7 @@ const epilogueScenes: Record<string, Scene> = {
 
   'happy-ending-character': {
     id: 'happy-ending-character',
-    background: 'stonewich-sunset',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'narrator',
