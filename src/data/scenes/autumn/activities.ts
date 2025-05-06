@@ -110,7 +110,7 @@ const activitiesScenes: Record<string, Scene> = {
       {
         character: 'senara',
         text: "Crafting is a meaningful way to connect with the heritage of Stonewich. Each item tells a story.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'maven',
