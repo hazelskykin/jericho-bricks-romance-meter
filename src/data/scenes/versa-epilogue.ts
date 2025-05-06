@@ -51,7 +51,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Almost too stable for the purposes of the experiment. Fortunately, Cybaton could adjust those factors easily - as it was an entirely artificial environment.",
+        text: "Dr. Voss: Almost too stable for the purposes of the experiment. Fortunately, Cybaton could adjust those factors easily - as it was an entirely artificial environment.",
       },
       {
         character: 'narrator',
