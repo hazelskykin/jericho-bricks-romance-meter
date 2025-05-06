@@ -80,7 +80,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'laughing',
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
   'winter-xavier-noncommit': {
     id: 'winter-xavier-noncommit',
@@ -102,7 +102,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
 
   // Navarre's confession
@@ -179,7 +179,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'laughing',
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
   'winter-navarre-noncommit': {
     id: 'winter-navarre-noncommit',
@@ -201,7 +201,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
 
   // Etta's confession
@@ -283,7 +283,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
   'winter-etta-noncommit': {
     id: 'winter-etta-noncommit',
@@ -310,7 +310,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
 
   // Senara's confession
@@ -422,7 +422,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: "happy",
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
   'winter-senara-noncommit': {
     id: 'winter-senara-noncommit',
@@ -459,7 +459,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'winter-review-preparation',
+    nextSceneId: 'team-future-meeting',
   },
 };
 
