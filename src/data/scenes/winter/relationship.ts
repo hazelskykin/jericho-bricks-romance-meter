@@ -10,12 +10,12 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "While the team waits to hear what their future assignments may be from Cybaton, you have time to ponder more personal matters.",
-      }
+      },
       {
         character: 'maven',
         text: "I can't help but think about what happens next... and about us. Maybe we should talk.",
         mood: 'thoughtful',
-      }
+      ,}
     ],
     nextSceneId: 'winter-character-confession',
   },
