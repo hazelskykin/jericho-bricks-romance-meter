@@ -8,9 +8,13 @@ const teamFutureScenes: Record<string, Scene> = {
     id: 'team-future-meeting',
     background: 'cybaton-meeting-room',
     dialogue: [
-      {
-        character: 'narrator',
-        text: "Dr. Voss: Thank you all for coming, and thank you once again for your hard work this past year. Our faith in you as individuals and as a team has been validated beyond expectations.",
+        {
+            character: 'narrator',
+            text: "The air is thick with anticipation. The cool, collected demeanor your team members have usually composed betrays small hints of stress."
+        }
+        {
+            character: 'narrator',
+            text: "Dr. Voss: Thank you all for coming, and thank you once again for your hard work this past year. Our faith in you as individuals and as a team has been validated beyond expectations.",
       },
       {
         character: 'narrator',
@@ -40,79 +44,18 @@ const teamFutureScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'epilogue-intro',
   },
-  
-  'winter-voss-report': {
-    id: 'winter-voss-report',
-    background: 'cybaton-office',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "The team gathers for their final seasonal report to Dr. Voss. There's tension in the air - this evaluation will determine their future with Cybaton.",
-      },
-      {
-        character: 'narrator',
-        text: "Dr. Voss: Your team has shown remarkable growth over the course of this year. The Winter Games & Gala was a resounding success.",
-      },
-      {
-        character: 'narrator',
-        text: "The metrics show unprecedented efficiency, public satisfaction, and technological innovation.",
-      },
-      {
-        character: 'narrator',
-        text: "What's more impressive is how you've each developed individually and as a cohesive unit.",
-      },
-      {
-        character: 'maven',
-        text: "Thank you, Dr. Voss. This experience has transformed all of us.",
-        mood: 'grateful',
-      },
-      {
-        character: 'narrator',
-        text: "Indeed. And now it's time to discuss your future assignments with Cybaton.",
-      }
-    ],
-    nextSceneId: 'winter-conclusion'
-  },
-  'winter-conclusion': {
-    id: 'winter-conclusion',
-    background: 'cybaton-lobby',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "With the final assessment complete, the team gathers one last time in Stonewich. Their year-long assignment is coming to an end.",
-      },
-      {
-        character: 'xavier',
-        text: "I can't believe it's almost over. This year changed everything for me.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'etta',
-        text: "For all of us. We're not the same people who arrived here last spring.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'navarre',
-        text: "Oh, I'm definitely still charming and devastatingly handsome. But maybe a bit wiser too.",
-        mood: 'laughing',
-      },
-      {
-        character: 'senara',
-        text: "We've built something meaningful here. Not just for the city, but for ourselves.",
-        mood: 'sincere',
-      },
-      {
-        character: 'maven',
-        text: "Whatever comes next, I'm grateful for this time with all of you.",
-        mood: 'grateful',
-      }
-    ],
+],
+    //if happy-ending criteria is achieved, then progress to "epilogue-route"
     choices: [
       {
         text: "Look toward the future",
         nextSceneId: "epilogue-route"
       }
 ]
+    {
+        text: "Reflecting on the past",
+        nextSceneId: "try-again-route"
+    }
   }
 };
 
