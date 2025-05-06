@@ -12,12 +12,12 @@ const epilogueScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "It's hard to believe a full year has passed since our team first arrived in Stonewich.",
+        text: "It's hard to believe two years have passed since I first arrived in Stonewich.",
         mood: 'thoughtful',
       },
       {
         character: 'maven',
-        text: "So much has changed since then. We've grown as individuals and as a team.",
+        text: "So much has changed since then. I never could have imagined it back then as awkward and unsure of myself as I was.",
         mood: 'happy',
       }
     ],
@@ -30,7 +30,7 @@ const epilogueScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: "Looking back on everything that's happened, I can honestly say...",
+        text: "Looking back on everything that's happened, the biggest change for me...",
         mood: 'thoughtful',
       }
     ],
@@ -52,12 +52,12 @@ const epilogueScenes: Record<string, Scene> = {
 
   'happy-ending-intro': {
     id: 'happy-ending-intro',
-    background: 'stonewich-sunset',
+    background: 'happy-ending',
     dialogue: [
       {
         character: 'maven',
         text: "I've found something I never expected when I came to Stonewich... I found love.",
-        mood: 'happy',
+        mood: 'embarrassed',
       }
     ],
     nextSceneId: 'happy-ending-character',
