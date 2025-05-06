@@ -38,11 +38,13 @@ const StandardGameView: React.FC = () => {
       
       {/* Only render CharacterPortrait if we have a character to display */}
       {currentLine?.character && !gameState.showChoices && (
-        <CharacterPortrait 
-          characterId={currentLine.character} 
-          mood={currentLine.mood}
-          isActive={!gameState.showChoices}
-        />
+        <div className="fixed bottom-4 left-8 z-20">
+          <CharacterPortrait 
+            characterId={currentLine.character} 
+            mood={currentLine.mood}
+            isActive={!gameState.showChoices}
+          />
+        </div>
       )}
       
       <DialogueBox 

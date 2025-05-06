@@ -1,4 +1,6 @@
 
+import { CharacterId } from '@/types/game';
+
 export type MoodType = 
   'neutral' | 
   'happy' | 
@@ -22,4 +24,20 @@ export type MoodType =
   'excited' | 
   'proud' | 
   'impressed' | 
-  'pleased';
+  'pleased' |
+  'confident'; // Adding 'confident' to fix build errors
+
+export interface CharacterExpression {
+  characterId: CharacterId;
+  mood: MoodType;
+  image: string;
+  description: string;
+}
+
+export interface CharacterExpressionSet {
+  [key: string]: CharacterExpression;
+}
+
+export interface AllCharacterExpressions {
+  [characterId: string]: CharacterExpressionSet;
+}

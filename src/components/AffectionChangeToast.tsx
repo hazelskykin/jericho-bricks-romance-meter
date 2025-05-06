@@ -24,23 +24,22 @@ export const showAffectionChange = ({ characterId, changeAmount, newLevel, previ
   const isPositive = newLevel === 'Hostile' || newLevel === 'Cold' ? false : true;
   
   toast(
-    <div className="flex items-center gap-2">
-      <span className="font-semibold" style={{ color: character.color }}>{character.name}</span>
-      <span className="text-sm">relationship is now</span>
-      <span className="font-bold" style={{ color: character.color }}>{newLevel}</span>
+    <div className="flex items-center justify-center">
+      <Heart color={character.color} fill={isPositive ? character.color : 'transparent'} />
     </div>,
     {
       duration: 3000,
-      icon: isPositive 
-        ? <Heart color={character.color} fill={character.color} /> 
-        : <Heart color={character.color} />,
       style: {
         borderLeft: `4px solid ${character.color}`,
         padding: '8px',
         position: 'fixed',
         top: '20px',
         right: '20px',
-        zIndex: 100
+        zIndex: 100,
+        width: 'auto',
+        minWidth: 'auto',
+        maxWidth: 'auto',
+        height: 'auto'
       },
       className: "affection-toast",
     }

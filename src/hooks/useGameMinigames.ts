@@ -1,4 +1,7 @@
 
+// Only updating a section of this large file where the showAffectionChange calls are
+// We need to incorporate proper level checks
+
 import { useState, useCallback, useEffect } from 'react';
 import { GameState, CharacterId } from '@/types/game';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
@@ -15,6 +18,17 @@ export type MinigameType =
   'tourGuide' | 'crafter' | 'memoriesDate' |
   // Winter minigames
   'charityAuction' | 'galaDance' | 'lookingSigns';
+
+// Helper to determine affection level based on value
+const getAffectionLevel = (value: number): string => {
+  if (value <= -15) return 'Hostile';
+  if (value <= -5) return 'Cold';
+  if (value <= 5) return 'Neutral';
+  if (value <= 15) return 'Friendly';
+  if (value <= 25) return 'Close';
+  if (value <= 35) return 'Very Close';
+  return 'Intimate';
+};
 
 export function useGameMinigames(
   gameState: GameState,
@@ -156,16 +170,25 @@ export function useGameMinigames(
       
       Object.entries(affectionChanges).forEach(([charId, change]) => {
         if (updatedCharacters[charId]) {
+          const currentAffection = updatedCharacters[charId].affection;
+          const newAffection = currentAffection + change;
+          
           updatedCharacters[charId] = {
             ...updatedCharacters[charId],
-            affection: updatedCharacters[charId].affection + change
+            affection: newAffection
           };
 
-          // Show toast for affection changes
-          if (change > 0) {
+          // Get levels for toast
+          const previousLevel = getAffectionLevel(currentAffection);
+          const newLevel = getAffectionLevel(newAffection);
+
+          // Show toast only if level changes
+          if (change > 0 && previousLevel !== newLevel) {
             showAffectionChange({
               characterId: charId as CharacterId,
-              changeAmount: change
+              changeAmount: change,
+              previousLevel,
+              newLevel
             });
           }
         }
@@ -179,10 +202,16 @@ export function useGameMinigames(
       // Special case: failing the Looking for Signs minigame has a significant negative effect
       const currentLoveInterest = gameState.currentLoveInterest;
       if (currentLoveInterest) {
+        const currentAffection = gameState.characters[currentLoveInterest].affection;
+        const newAffection = Math.max(0, currentAffection - 2);
+        
+        const previousLevel = getAffectionLevel(currentAffection);
+        const newLevel = getAffectionLevel(newAffection);
+        
         const updatedCharacters = { ...gameState.characters };
         updatedCharacters[currentLoveInterest] = {
           ...updatedCharacters[currentLoveInterest],
-          affection: Math.max(0, updatedCharacters[currentLoveInterest].affection - 2)
+          affection: newAffection
         };
         
         setGameState(prev => ({
@@ -190,11 +219,15 @@ export function useGameMinigames(
           characters: updatedCharacters
         }));
         
-        // Show negative affection change toast
-        showAffectionChange({
-          characterId: currentLoveInterest,
-          changeAmount: -2
-        });
+        // Show negative affection change toast only if level changed
+        if (previousLevel !== newLevel) {
+          showAffectionChange({
+            characterId: currentLoveInterest,
+            changeAmount: -2,
+            previousLevel,
+            newLevel
+          });
+        }
       }
     }
     

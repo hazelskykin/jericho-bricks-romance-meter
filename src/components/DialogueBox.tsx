@@ -40,13 +40,11 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
     return '';
   };
 
-  // Note: Emoji indicators removed as requested
-
   return (
     <AnimatePresence mode="wait">
       {isActive && (
         <motion.div 
-          className="dialog-box fixed bottom-4 left-80 right-8 p-6 rounded-lg z-30 mx-auto max-w-4xl"
+          className="dialog-box fixed bottom-4 left-0 right-0 p-6 rounded-lg z-30 mx-auto max-w-4xl"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}

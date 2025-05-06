@@ -91,7 +91,7 @@ const autumnConclusionScenes: Record<string, Scene> = {
         text: "Relief and a renewed sense of purpose fills your heart. You can tell the others on the team feel similarly.",
       }
     ],
-    nextSceneId: 'summer-conclusion-fallout',
+    nextSceneId: 'autumn-conclusion-fallout',
   },
   
   'autumn-conclusion-fallout': {
@@ -203,8 +203,8 @@ const autumnConclusionScenes: Record<string, Scene> = {
         text: "Winter, Chapter 4",
       },
     ], // Empty dialogue to trigger season transition
-    nextSceneId: 'winter-intro', // Now points to summer content instead of main menu
+    nextSceneId: 'winter-intro', // Now points to winter content
   }
 };
 
-export default winterConclusionScenes;
+export default autumnConclusionScenes;
