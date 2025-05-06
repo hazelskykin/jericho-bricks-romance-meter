@@ -24,14 +24,14 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I'd like to take our relationship to the next level. Share a secure home router, maybe?",
+        text: "I'd like to take our relationship to the next level. Share a secure home network, maybe?",
         mood: 'happy',
       },
       {
         character: 'maven',
         text: "Is that your way of asking if we should move in together?",
         mood: 'laughing',
-      }
+      },
       {
         character: 'maven',
         text: "I'd love that, Xavier. With you, I've found a home both in Stonewich and in my heart.",
