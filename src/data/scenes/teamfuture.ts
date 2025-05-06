@@ -116,5 +116,9 @@ const teamFutureScenes: Record<string, Scene> = {
       {
         text: "Look toward the future",
         nextSceneId: "epilogue-route"
-      },
-}
+      }
+]
+  }
+};
+
+export default teamFutureScenes;
