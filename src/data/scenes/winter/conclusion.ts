@@ -101,7 +101,7 @@ const winterConclusionScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Indeed. And now it's time to discuss your future assignments with Cybaton.",
-      }
+      },
     ],
     nextSceneId: 'winter-annual-review',
    },
