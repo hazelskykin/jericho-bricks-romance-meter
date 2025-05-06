@@ -4,7 +4,7 @@ import { Scene } from '../../../types/game';
 const winterConclusionScenes: Record<string, Scene> = {
   'winter-festival-completion': {
     id: 'winter-festival-completion',
-    background: 'stonewich-cityscape',
+    background: 'winter-transition',
     dialogue: [
       {
         character: 'narrator',
@@ -18,12 +18,12 @@ const winterConclusionScenes: Record<string, Scene> = {
       {
         character: 'navarre',
         text: "And the social media engagement was off the charts. People loved this year's events.",
-        mood: 'proud',
+        mood: 'happy',
       },
       {
         character: 'etta',
         text: "The organizational structure we implemented was highly efficient. Dr. Voss should be pleased with the results.",
-        mood: 'pleased',
+        mood: 'happy',
       },
       {
         character: 'maven',
@@ -32,8 +32,8 @@ const winterConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "We should prepare our final report for Dr. Voss. This will be our last seasonal assessment.",
-        mood: 'neutral',
+        text: "We should prepare our final report for Dr. Voss. This could be our last seasonal assessment.",
+        mood: 'sad',
       }
     ],
     nextSceneId: 'winter-voss-report'
