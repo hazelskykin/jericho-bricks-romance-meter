@@ -1,6 +1,8 @@
 
 import { Scene } from '@/types/game';
 
+//scene ID winter-festival-activities is the landing page where the intro scenes for the winter minigames are; winter-intro transitions there and the end of minigames also transitions back to it
+
 const winterActivityScenes: Record<string, Scene> = {
   // Charity Auction activity
   'winter-charity-auction-intro': {
@@ -184,5 +186,5 @@ const winterActivityScenes: Record<string, Scene> = {
     nextSceneId: 'winter-festival-activities'
   }
 };
-
+//when winter-festival-activities are complete or skipped, the scene should transition to 
 export default winterActivityScenes;
