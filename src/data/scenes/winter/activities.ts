@@ -27,19 +27,19 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'thoughtful',
       },
       {
-        character: 'navarre',
+        character: 'xavier',
         text: "It's all about strategy! Timing your bids and knowing when to go all in.",
-        mood: 'excited',
+        mood: 'happy',
       },
       {
         character: 'etta',
-        text: "Remember, the auction benefits the city's historical preservation fund. It's for a good cause.",
+        text: "Remember, the auction benefits the city's charities. It's for a good cause.",
         mood: 'neutral',
       },
       {
         character: 'maven',
         text: "I'll keep an eye on the prizes and see if there's something worth bidding on.",
-        mood: 'determined',
+        mood: 'confident',
       }
     ],
     nextSceneId: 'winter-charity-auction-start',
@@ -60,13 +60,13 @@ const activitiesScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: "That was quite the bidding war! The auction raised a lot of money for the city.",
+        text: "That was quite the bidding war! The auction raised a lot of money for charity.",
         mood: 'happy',
       },
       {
         character: 'xavier',
         text: "Did you win anything?",
-        mood: 'curious',
+        mood: 'neutral',
       },
       {
         character: 'maven',
@@ -173,11 +173,6 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
-        character: 'senara',
-        text: "Ah, the 'Looking for Signs' tradition. It's fascinating how cultures develop systems of symbols and omens.",
-        mood: 'thoughtful',
-      },
-      {
         character: 'maven',
         text: "It's supposed to be fun! We look for symbols around us and interpret them as good or bad luck for the coming year.",
         mood: 'excited',
@@ -204,11 +199,6 @@ const activitiesScenes: Record<string, Scene> = {
         text: "That was interesting! I wonder if any of those signs will come true.",
         mood: 'thoughtful',
       },
-      {
-        character: 'senara',
-        text: "Whether or not you believe in such things, it's the shared experience that matters.",
-        mood: 'thoughtful',
-      }
     ],
     nextSceneId: 'winter-festival-midway',
   },
