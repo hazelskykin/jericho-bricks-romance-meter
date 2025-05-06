@@ -101,7 +101,7 @@ const autumnConclusionScenes: Record<string, Scene> = {
       {
         character: 'senara',
         text: "I think we've all changed since then. For the better.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'maven',
