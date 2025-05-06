@@ -40,7 +40,7 @@ const autumnConclusionScenes: Record<string, Scene> = {
   },
   'autumn-conclusion-meeting': {
     id: 'autumn-conclusion-meeting',
-    background: 'cybaton-office',
+    background: 'cybaton-meeting-room',
     dialogue: [
       {
         character: 'narrator',
