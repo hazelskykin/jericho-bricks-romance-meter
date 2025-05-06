@@ -45,18 +45,6 @@ const teamFutureScenes: Record<string, Scene> = {
     nextSceneId: 'epilogue-intro',
   },
 ],
-    //if happy-ending criteria is achieved, then progress to "epilogue-route"
-    choices: [
-      {
-        text: "Look toward the future",
-        nextSceneId: "epilogue-route"
-      }
-]
-    {
-        text: "Reflecting on the past",
-        nextSceneId: "try-again-route"
-    }
-  }
 };
 
 export default teamFutureScenes;
