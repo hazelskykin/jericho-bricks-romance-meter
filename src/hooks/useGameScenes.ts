@@ -4,6 +4,16 @@ import { GameState, Scene, DialogueChoice } from '@/types/game';
 import scenes from '@/data/scenes';
 import { showAffectionChange } from '@/components/AffectionChangeToast';
 
+// Helper function to determine affection level
+const getAffectionLevel = (affection: number): string => {
+  if (affection <= -5) return 'Hostile';
+  if (affection <= -1) return 'Cold';
+  if (affection <= 2) return 'Neutral';
+  if (affection <= 5) return 'Friendly';
+  if (affection <= 10) return 'Close';
+  return 'Romantic';
+};
+
 export function useGameScenes(
   gameState: GameState,
   setGameState: React.Dispatch<React.SetStateAction<GameState>>
@@ -71,7 +81,7 @@ export function useGameScenes(
     console.log(`Scene transition complete, now at [${nextSceneId}]`);
   }, [gameState.currentScene]);
 
-  // Handle choice selection
+  // Handle choice selection with improved affection change notification
   const handleChoiceSelected = useCallback((choice: DialogueChoice) => {
     // Apply affection changes
     if (choice.affectionChanges) {
@@ -79,16 +89,24 @@ export function useGameScenes(
       
       Object.entries(choice.affectionChanges).forEach(([charId, change]) => {
         if (updatedCharacters[charId]) {
+          const previousAffection = updatedCharacters[charId].affection;
+          const previousLevel = getAffectionLevel(previousAffection);
+          
+          const newAffection = previousAffection + change;
+          const newLevel = getAffectionLevel(newAffection);
+          
           updatedCharacters[charId] = {
             ...updatedCharacters[charId],
-            affection: updatedCharacters[charId].affection + change
+            affection: newAffection
           };
 
-          // Show toast for significant affection changes
-          if (Math.abs(change) >= 1) {
+          // Show toast only if affection level changed
+          if (newLevel !== previousLevel) {
             showAffectionChange({
               characterId: charId as any,
-              changeAmount: change
+              changeAmount: change,
+              previousLevel,
+              newLevel
             });
           }
         }

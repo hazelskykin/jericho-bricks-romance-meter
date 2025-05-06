@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DialogueLine } from '@/types/game';
@@ -39,35 +40,13 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
     return '';
   };
 
-  /*
-  // Determine mood indicator
-  const getMoodIndicator = (mood: MoodType = 'neutral') => {
-    switch(mood) {
-      case "happy":
-        return '😊';
-      case "sad":
-        return '😔';
-      case "angry":
-        return '😠';
-      case "surprised":
-        return '😮';
-      case "laughing":
-        return '😄';
-      case "shocked":
-        return '😲';
-      case "embarrassed":
-        return '😳';
-      default:
-        return '';
-    }
-  };
-  */
+  // Note: Emoji indicators removed as requested
 
   return (
     <AnimatePresence mode="wait">
       {isActive && (
         <motion.div 
-          className="dialog-box fixed bottom-4 left-8 right-8 p-6 rounded-lg z-30 mx-auto max-w-4xl"
+          className="dialog-box fixed bottom-4 left-80 right-8 p-6 rounded-lg z-30 mx-auto max-w-4xl"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
@@ -82,13 +61,10 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
           <div className="flex items-center justify-between mb-3">
             {line.character && (
               <div 
-                className="font-medium text-lg flex items-center gap-2"
+                className="font-medium text-lg"
                 style={{ color: characterData?.color || 'white' }}
               >
                 <span>{displayName()}</span>
-                {line.mood && line.mood !== 'neutral' && (
-                  <span className="text-sm opacity-70">{getMoodIndicator(line.mood)}</span>
-                )}
               </div>
             )}
           </div>

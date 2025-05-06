@@ -1,4 +1,3 @@
-
 import { Scene } from '@/types/game';
 
 const relationshipScenes: Record<string, Scene> = {
@@ -493,14 +492,17 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Given your exceptional performance and the positive feedback from Stonewich, your team will remain together and continue your assignment there.",
+        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "As for the 'Versa' role experiment, a conclusion has not yet been reached. We will discuss that separately at another time. Maven, for now, you will continue as a permanent member of the team.",
+        mood: 'neutral',
       },
       {
         character: 'narrator',
         text: "Congratulations to all of you. Your work this year has set a new standard for Cybaton's city management teams.",
+        mood: 'neutral',
       },
       {
         character: 'maven',

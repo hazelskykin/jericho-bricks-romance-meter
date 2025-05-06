@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { CharacterId } from '@/types/game';
@@ -50,7 +51,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
     e.currentTarget.style.display = 'none';
   };
   
-  // Enhanced Avatar styling - keeping this but removing animations
+  // Enhanced Avatar styling - positioned to the left of dialog box
   const avatarStyle = {
     borderColor: character.color,
     boxShadow: `0 0 15px ${character.color}60`,
@@ -88,7 +89,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({ characterId, mood
         </Avatar>
       </div>
       
-      {/* Character name badge - simplified with no animation */}
+      {/* Character name badge */}
       <div
         className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-white font-medium text-glow-sm"
         style={{ 

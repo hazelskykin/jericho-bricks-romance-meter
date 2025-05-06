@@ -8,8 +8,9 @@ import summer from './summer';
 import autumn from './autumn';
 import winter from './winter';
 import epilogue from './epilogue';
-import mainMenu from './mainMenu';
 import versaEpilogue from './versa-epilogue';
+import happyEndings from './happy-endings';
+import mainMenu from './mainMenu';
 
 // Merge all scenes into one collection
 const scenes: Record<string, Scene> = {
@@ -21,6 +22,7 @@ const scenes: Record<string, Scene> = {
   ...winter,
   ...epilogue,
   ...versaEpilogue,
+  ...happyEndings,
 };
 
 export default scenes;

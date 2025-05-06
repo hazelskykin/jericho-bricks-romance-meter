@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
 import CharacterSelectionScene from './CharacterSelectionScene';
@@ -8,6 +8,7 @@ import { CharacterId } from '@/types/game';
 import AboutScreen from './about/AboutScreen';
 import MinigameHandler from './minigames/MinigameHandler';
 import StandardGameView from './game/StandardGameView';
+import { useEpilogueChecker } from '@/hooks/useEpilogueChecker';
 
 const GameInterface: React.FC = () => {
   const { 
@@ -19,8 +20,23 @@ const GameInterface: React.FC = () => {
     exitMinigame,
     handleSceneTransition
   } = useGame();
+  
+  const { routeToEpilogue } = useEpilogueChecker(gameState, setGameState => setGameState);
 
   console.log('GameInterface rendering, activeMinigame:', activeMinigame, 'currentScene:', gameState.currentScene);
+
+  // Handle epilogue routing
+  useEffect(() => {
+    if (gameState.currentScene === 'epilogue-route') {
+      const nextSceneId = routeToEpilogue(gameState.currentScene);
+      handleSceneTransition(nextSceneId);
+    }
+    
+    // Handle character-specific happy endings
+    if (gameState.currentScene === 'happy-ending-character' && gameState.currentLoveInterest) {
+      handleSceneTransition(`happy-ending-${gameState.currentLoveInterest}`);
+    }
+  }, [gameState.currentScene, gameState.currentLoveInterest, handleSceneTransition, routeToEpilogue]);
 
   // If we're at the start screen, show main menu
   if (gameState.currentScene === 'start') {

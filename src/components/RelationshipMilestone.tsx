@@ -57,7 +57,11 @@ export const showRelationshipMilestone = ({ characterId, milestoneText, level }:
       style: {
         borderLeft: `4px solid ${character.color}`,
         width: 'auto',
-        maxWidth: '420px'
+        maxWidth: '420px',
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        zIndex: 100
       },
     }
   );
