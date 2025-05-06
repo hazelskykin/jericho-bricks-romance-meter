@@ -48,15 +48,15 @@ const versaEpilogueScenes: Record<string, Scene> = {
         character: 'maven',
         text: "Stonewich? Yes, it seemed ideal for us as a learning environment for a new team with an established position and stability.",
         mood: 'neutral',
-      }
+      },
       {
         character: 'narrator',
         text: "Almost too stable for the purposes of the experiment. Fortunately, Cybaton could adjust those factors easily - as it was an entirely artificial environment."
-      }
+      },
       {
         character: 'narrator',
         text: "Dr. Voss waited patiently for a moment while Maven absorbed the meaning of this revelation."
-      }
+      },
       {
         character: 'narrator',
         text: "Dr. Voss: I can see you understand the situation now. The Stonewich and experiences with the deployed team this past year have been a simulation run with your participation to determine the viability of the Versa role.",
@@ -98,7 +98,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Dr. Voss: The 'Versa' experiment was designed to identify individuals with exceptional adaptability. You've exceeded all expectations.",
-      }
+      },
     ],
     nextSceneId: 'versa-epilogue-decision',
   },
@@ -145,7 +145,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Dr. Voss: The choice is yours, Maven. You've earned the right to decide your own path forward.",
-      }
+      },
     ],
     choices: [
       {
@@ -155,7 +155,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       {
         text: "I appreciate the offer, but my place is in Stonewich.",
         nextSceneId: 'versa-epilogue-decline'
-      }
+      },
     ]
   },
 
@@ -188,7 +188,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "This is just the beginning of a new chapter in Maven's journey...",
-      }
+      },
     ],
     nextSceneId: 'versa-epilogue-complete',
   },
@@ -246,7 +246,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Thank you for playing!",
-      }
+      },
     ],
     choices: [
       {
@@ -256,7 +256,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       {
         text: "About Jericho Bricks",
         nextSceneId: 'about'
-      }
+      },
     ]
   },
 };
