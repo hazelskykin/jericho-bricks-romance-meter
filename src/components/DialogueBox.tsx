@@ -39,6 +39,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
     return '';
   };
 
+  /*
   // Determine mood indicator
   const getMoodIndicator = (mood: MoodType = 'neutral') => {
     switch(mood) {
@@ -60,6 +61,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
         return '';
     }
   };
+  */
 
   return (
     <AnimatePresence mode="wait">
