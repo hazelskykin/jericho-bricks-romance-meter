@@ -320,28 +320,38 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'senara',
-        text: "Maven, I've been researching something quite different lately. Something I never expected to encounter in my analytical work.",
+        text: "Maven, please sit here next to me. I'd like to share with you something new I've been researching. Something that has not come up in my analytical work before.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "I told you before about the floodgate opening and the outpouring of emotions I've been experiencing. I've been studying my own emotional responses. Particularly those I experience in your presence.",
         mood: 'neutral',
       },
       {
-        character: 'senara',
-        text: "I've been studying my own emotional responses. Particularly those I experience in your presence.",
-        mood: 'neutral',
+        character: 'maven',
+        text: "Really? You make it sound like you've constructed a scientific study of stimulus and response.",
+        mood: 'surprised',
       },
       {
         character: 'senara',
-        text: "I'd like to introduce you to the community advisory group I've formed. People who've struggled with being heard, just as I have.",
+        text: "Yes, of course. That's the natural step to take when faced with an uncertain environment and undocumented phenomena. I'm glad you thought of it too.",
         mood: 'happy',
       },
       {
-        character: 'senara',
-        text: "My conclusion, after thorough analysis, is that I've developed deep feelings for you. What most would call love.",
-        mood: 'happy',
-      },
+        character: 'maven',
+        text: "Then I'm curious to hear your findings as you have no doubt been thorough.",
+        mood: 'laughing',
+      }
       {
         character: 'senara',
-        text: "This isn't a subject I have expertise in. But I know what I feel is real and significant.",
+        text: "I must preface my findings by saying this isn't a subject I have expertise in. But I know what I feel is real and significant.",
         mood: 'happy',
+      }
+      {
+        character: 'senara',
+        text: "My conclusion, after thorough analysis, is that I've developed passionate feelings for you. What most would call love.",
+        mood: "happy"     
       }
     ],
     choices: [
