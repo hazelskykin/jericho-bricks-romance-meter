@@ -10,25 +10,20 @@ const teamFutureScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
+        text: "Dr. Voss: Thank you all for coming, and thank you once again for your hard work this past year. Our faith in you as individuals and as a team has been validated beyond expectations.",
+      },
+      {
+        character: 'narrator',
         text: "Dr. Voss: After reviewing all factors, I've made a decision regarding your team's future.",
       },
       {
         character: 'narrator',
-        text: "Given your exceptional performance and the positive feedback from Stonewich, your team will remain together and continue your assignment there.",
+        text: "Your exceptional performance and the positive feedback from Stonewich has been taken into account and prioritized with other current needs that Cybaton is managing.",
       },
       {
         character: 'narrator',
-        text: "As for the 'Versa' role experiment, a conclusion has not yet been reached. We will discuss that separately at another time. Maven, for now, you will continue as a permanent member of the team.",
+        text: "As for the 'Versa' role experiment, a conclusion has not yet been reached. We will discuss that separately at another time.",
       },
-      {
-        character: 'narrator',
-        text: "Congratulations to all of you. Your work this year has set a new standard for Cybaton's city management teams.",
-      },
-      {
-        character: 'maven',
-        text: "Thank you, Dr. Voss. We're honored to continue our work in Stonewich.",
-        mood: 'grateful',
-      }
     ],
     nextSceneId: 'winter-epilogue-check',
   },
@@ -39,8 +34,8 @@ const teamFutureScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: "As Dr. Voss leaves the room, I catch the eye of my teammates. This next year in Stonewich promises to be even more exciting than the last.",
-        mood: 'happy',
+        text: "I catch the eye of my teammates. This is the moment we have been waiting to hear.",
+        mood: 'neutral',
       }
     ],
     nextSceneId: 'epilogue-intro',
