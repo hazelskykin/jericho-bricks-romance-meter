@@ -112,7 +112,7 @@ const GameInterface: React.FC = () => {
           availableCharacters={[gameState.currentLoveInterest]} 
           scenePrefix="autumn"
           title="Autumn Romance"
-          description="As autumn arrives in Stonewich, it's time to deepen your connection with your romantic interest."
+          description="As autumn arrives in Stonewich, you imagine how you might deepen your connection with someone special to you."
           completionSceneId={`autumn-${gameState.currentLoveInterest}-path`}
         />
       );
@@ -131,7 +131,7 @@ const GameInterface: React.FC = () => {
           availableCharacters={[gameState.currentLoveInterest]} 
           scenePrefix="winter"
           title="Winter Romance"
-          description="As winter blankets Stonewich, your relationship with your romantic interest reaches a crucial point."
+          description="As winter blankets Stonewich, the festive season acts as a catalyst for a close relationship to change."
           completionSceneId={`winter-${gameState.currentLoveInterest}-confession`}
         />
       );
@@ -238,7 +238,7 @@ const GameInterface: React.FC = () => {
       {
         id: 'tour-guide',
         title: 'Tour Guide',
-        description: 'Match up tour itineraries with guests\' interests at the visitor information kiosk',
+        description: 'Match up tour itineraries with guests at the visitor information kiosk',
         color: '#FF5E5B', // Etta's color
         sceneId: 'autumn-tour-guide-intro',
         available: true
@@ -254,7 +254,7 @@ const GameInterface: React.FC = () => {
       {
         id: 'memories-date',
         title: 'Making Memories Date',
-        description: 'Go on a sightseeing date around the city with your romantic interest',
+        description: 'Go on a sightseeing date around the city with someone special',
         color: '#0D98BA', // Maven's color
         sceneId: 'autumn-memories-date-intro',
         available: gameState.currentLoveInterest !== undefined
@@ -277,7 +277,7 @@ const GameInterface: React.FC = () => {
       {
         id: 'charity-auction',
         title: 'Charity Auction',
-        description: 'Bid on items in the silent auction to support local historical preservation',
+        description: 'Bid on items in the silent auction to support local charities',
         color: '#FFB347', // Navarre's color
         sceneId: 'winter-charity-auction-intro',
         available: true
@@ -285,7 +285,7 @@ const GameInterface: React.FC = () => {
       {
         id: 'gala-dance',
         title: 'Gala Dance',
-        description: 'Dance with your romantic interest at the formal winter gala',
+        description: 'Dance with someone special at the formal winter gala',
         color: '#4CC2FF', // Xavier's color
         sceneId: 'winter-gala-dance-intro',
         available: gameState.currentLoveInterest !== undefined
@@ -293,7 +293,7 @@ const GameInterface: React.FC = () => {
       {
         id: 'looking-signs',
         title: 'Looking for Signs',
-        description: 'Take a walk with your romantic interest and search for signs of future fortune',
+        description: 'Take a walk with someone special to search for signs of love fortune',
         color: '#9C89FF', // Senara's color
         sceneId: 'winter-looking-signs-intro',
         available: gameState.currentLoveInterest !== undefined
