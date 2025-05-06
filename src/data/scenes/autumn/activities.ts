@@ -307,7 +307,7 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-conclusion',
+    nextSceneId: 'autumn-conclusion-meeting',
   },
 };
 
