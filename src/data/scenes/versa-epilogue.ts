@@ -51,11 +51,11 @@ const versaEpilogueScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Almost too stable for the purposes of the experiment. Fortunately, Cybaton could adjust those factors easily - as it was an entirely artificial environment."
+        text: "Almost too stable for the purposes of the experiment. Fortunately, Cybaton could adjust those factors easily - as it was an entirely artificial environment.",
       },
       {
         character: 'narrator',
-        text: "Dr. Voss waited patiently for a moment while Maven absorbed the meaning of this revelation."
+        text: "Dr. Voss waited patiently for a moment while Maven absorbed the meaning of this revelation.",
       },
       {
         character: 'narrator',
@@ -114,7 +114,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Dr. Voss: Today is the seventh day, approximately one day for transition, one day for each season, and today.",
+        text: "Dr. Voss: Today is the seventh day, approximately one day for transition at beginning and end, one day for each season, and today.",
       },
       {
         character: 'maven',
@@ -229,7 +229,7 @@ const versaEpilogueScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Coming full circle, Maven at last feels at peace as if she has come home again. She suddenly recalls a poem she knew not from where, 'I am the master of my fate: I am the captain of my soul'.",
+        text: "Coming full circle at Stonewich, Maven at last feels at peace as if she has come home again. She suddenly recalls a poem she knew not from where, 'I am the master of my fate: I am the captain of my soul'.",
       },
     ],
     nextSceneId: 'versa-epilogue-complete',
