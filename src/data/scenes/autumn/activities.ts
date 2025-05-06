@@ -274,40 +274,7 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-festival-conclusion',
-  },
-
-  'autumn-festival-conclusion': {
-    id: 'autumn-festival-conclusion',
-    background: 'stonewich-office',
-    dialogue: [
-      {
-        character: 'etta',
-        text: "The festival was a success by all metrics.",
-        mood: 'happy',
-      },
-      {
-        character: 'xavier',
-        text: "And more importantly, people made new connections in fun ways.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "Nevarre might have found a new outlet for his creative talents.",
-        mood: 'happy',
-      },
-      {
-        character: 'navarre',
-        text: "Do you mean that crafters' challenge? It was viral before it was even finished the first time.",
-        mood: 'happy',
-      },
-      {
-        character: 'maven',
-        text: "Now we just need to prepare for the report to Dr. Voss.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'autumn-conclusion-meeting',
+    nextSceneId: 'autumn-festivities-conclusion',
   },
 };
 
