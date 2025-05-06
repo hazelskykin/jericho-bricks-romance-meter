@@ -4,8 +4,8 @@ const teamFutureScenes: Record<string, Scene> = {
 
 // game-end-team-futures, follows relationship-confession scenes
 
-'winter-conclusion': {
-    id: 'winter-conclusion',
+'team-future-meeting': {
+    id: 'team-future-meeting',
     background: 'cybaton-meeting-room',
     dialogue: [
       {
