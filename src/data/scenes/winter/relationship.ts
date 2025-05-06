@@ -15,7 +15,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "I can't help but think about what happens next... and about us. Maybe we should talk.",
         mood: 'thoughtful',
-      ,}
+      },
     ],
     nextSceneId: 'winter-character-confession',
   },
