@@ -94,7 +94,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'xavier',
         text: "I've been struggling with this for months. Balancing innovation with social adaptability is hard.",
         mood: 'thoughtful',
-      }
+      },
       {
         character: 'maven',
         text: "Yes, it's a very thorny issue. Tell me more about your new system, Xavier. How do you envision that it'll make it better for Stonewich?",
@@ -108,7 +108,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "For the next hour, Xavier takes you on a deep dive of his proposed new system and how it can foster new social connections and make communication in general more inclusive.",
-      },
+      }
     ],
     nextSceneId: 'autumn-xavier-resolution',
   },
@@ -155,7 +155,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "I'm glad you are finding ways to cope. I think your new communications system may be the catalyst for others in Stonewich to get that feeling of support too.",
         mood: 'happy',
-      },
+      }
     ],
     nextSceneId: 'autumn-festival-introduction',
   },
@@ -262,7 +262,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'navarre',
         text: "Maybe I'll have to take Morgan to a nicer place to let her down easy, in the spirit of fostering good relationships.",
         mood: 'laughing',
-      },
+      }
     ],
     nextSceneId: 'autumn-navarre-resolution',
   },
@@ -329,7 +329,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "Oh, that's good, I mean, me too.",
         mood: 'embarrassed',
-      },
+      }
     ],
     nextSceneId: 'autumn-festival-introduction',
   },
@@ -401,7 +401,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "You're Etta. You're brilliant and driven and passionate. That doesn't change whether you're working or resting, whether you've achieved a benchmark or missed the mark.",
         mood: 'neutral',
-      }
+      },
       {
         character: 'etta',
         text: "I chose this path for myself, but if I can't be successful, then...my family is ready with an alternative.",
@@ -465,7 +465,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Etta rushed back to the office before you had a chance to respond to her surprising revelations.",
-      },
+      }
     ],
     nextSceneId: 'autumn-etta-resolution',
   },
@@ -617,7 +617,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "The interface time seemed brief to you, but Senara's usual calm expression showed subtle signs of weariness.",
-      },
+      }
     ],
     nextSceneId: 'autumn-senara-resolution',
   },
@@ -647,8 +647,8 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "What does your heart tell you is the right thing to do?"
-        mood: 'sad'
+        text: "What does your heart tell you is the right thing to do?",
+        mood: 'sad',
       },
       {
         character: 'senara',
@@ -667,44 +667,44 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "And now that you have?"
-        mood: 'neutral'
+        text: "And now that you have?",
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "You surprise me again. Most people would back off to give the person time, but you realize that's not what I need."
-        mood: 'surprised'
+        text: "You surprise me again. Most people would back off to give the person time, but you realize that's not what I need.",
+        mood: 'surprised',
       },
       {
         character: 'senara',
-        text: "I will not be doing the interface sessions going forward. I want the privacy of my thoughts to be sancrosanct."
-        mood: 'neutral'
+        text: "I will not be doing the interface sessions going forward. I want the privacy of my thoughts to be sancrosanct.",
+        mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "How does that decision make you feel?"
-        mood: 'neutral'
+        text: "How does that decision make you feel?",
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "Like a weight has been lifted. I never realized how oppressive I found that experience before."
-        mood: 'happy'
+        text: "Like a weight has been lifted. I never realized how oppressive I found that experience before.",
+        mood: 'happy',
       },
       {
         character: 'maven',
-        text: "I've never seen you smile like that before."
-        mood: 'happy'
+        text: "I've never seen you smile like that before.",
+        mood: 'happy',
       },
       {
         character: 'senara',
-        text: "May I share a personal insight with you? This experience, today with you, has been a turning point for me, and I feel a closeness to you I have never felt with anyone else."
-        mood: 'happy'
+        text: "May I share a personal insight with you? This experience, today with you, has been a turning point for me, and I feel a closeness to you I have never felt with anyone else.",
+        mood: 'happy',
       },
       {
         character: 'maven',
-        text: "I'm glad."
-        mood: 'embarrassed'
-      },
+        text: "I'm glad.",
+        mood: 'embarrassed',
+      }
     ],
     nextSceneId: 'autumn-festival-introduction',
   },

@@ -1,4 +1,3 @@
-/*
 import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -57,13 +56,11 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
       <div className="fixed bottom-4 right-4 z-50">
         <TooltipProvider>
           <div className="relative">
-            {/* Toggle Button */}
             <MenuToggleButton 
               isExpanded={isExpanded} 
               onClick={toggleMenu} 
             />
 
-            {/* Expandable Menu Items */}
             <AnimatePresence>
               <MenuItems 
                 isExpanded={isExpanded}
@@ -81,7 +78,6 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
         </TooltipProvider>
       </div>
       
-      {/* Dialogs */}
       <Glossary open={glossaryOpen} onOpenChange={setGlossaryOpen} />
       <DialogHistory 
         open={historyOpen} 
@@ -93,4 +89,3 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
 };
 
 export default ExpandableMenu;
-/*

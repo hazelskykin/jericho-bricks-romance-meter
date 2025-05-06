@@ -82,12 +82,12 @@ const activitiesScenes: Record<string, Scene> = {
         character: 'etta',
         text: "Maybe you're learning something from me after all.",
         mood: 'happy',
-      }
+      },
       {
         character: 'xavier',
         text: "Etta! Are you trying to take credit for Maven's success? haha!",
         mood: 'happy',
-      }
+      },
       {
         character: 'senara',
         text: "I think we all feel a sense of pride when our team members excel, don't we? There's nothing wrong with sharing that sense of accomplishment.",
@@ -237,7 +237,7 @@ const activitiesScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
-        character: 'narrator'
+        character: 'narrator',
         text: "The food is one of the best parts of the Heritage Festival. The two of you grow closer with every shared bite and smile.",
       }
     ],
@@ -290,17 +290,17 @@ const activitiesScenes: Record<string, Scene> = {
         character: 'xavier',
         text: "And more importantly, people made new connections in fun ways.",
         mood: 'happy',
-      }
+      },
       {
         character: 'senara',
         text: "Nevarre might have found a new outlet for his creative talents.",
         mood: 'happy',
-      }
+      },
       {
         character: 'navarre',
         text: "Do you mean that crafters' challenge? It was viral before it was even finished the first time.",
         mood: 'happy',
-      }
+      },
       {
         character: 'maven',
         text: "Now we just need to prepare for the report to Dr. Voss.",

@@ -72,17 +72,17 @@ const introScenes: Record<string, Scene> = {
         character: 'etta',
         text: "That's great, Maven, but whatever it is, we still need to deliver on expectations for the festival and our other administration duties.",
         mood: 'neutral',
-      }
+      },
       {
-        character: 'nevarre',
+        character: 'navarre',
         text: "We are counting on you, Maven, but you're not alone.",
         mood: 'neutral',
-      }
+      },
       {
         character: 'xavier',
         text: "That's right! If you need a hand, it'll be our turn to pitch in for you.",
         mood: 'neutral',
-      }
+      },
       {
         character: 'maven',
         text: "Thanks, everyone. Let's all do our best!",
@@ -100,7 +100,7 @@ const introScenes: Record<string, Scene> = {
         character: 'maven',
         text: "As autumn deepens, I find myself thinking more and more about the connections I've made here in Stonewich.",
         mood: 'thoughtful',
-      },
+      }
       //nextSceneId should be determined by the locked-in character route
       //all possible scenes are written in relationship.ts for selection
       //after the relationship-development arc, then the festival should kick off with autumn-festival-introduction
@@ -114,7 +114,7 @@ const introScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'The day of the Autumn Heritage & Handicrafts Festival arrives. The streets are decorated with autumn leaves and historical artifacts, and the air is filled with excitement.',
+        text: "The day of the Autumn Heritage & Handicrafts Festival arrives. The streets are decorated with autumn leaves and historical artifacts, and the air is filled with excitement.",
       },
       {
         character: 'maven',
