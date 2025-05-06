@@ -108,7 +108,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         
         // Priority 5: Remaining character expressions in batches
         const moodTypes: (keyof typeof characterExpressions[CharacterId])[] = [
-          'happy', 'sad', 'angry', 'surprised', 'laughing', 'shocked', 'embarrassed'
+          'happy', 'sad', 'angry', 'surprised', 'laughing', 'shocked', 'embarrassed', 'thoughtful', 'confident'
         ];
         
         // Process moods in batches for better resource management
