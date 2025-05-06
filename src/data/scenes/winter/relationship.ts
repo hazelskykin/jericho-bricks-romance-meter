@@ -8,8 +8,12 @@ const relationshipScenes: Record<string, Scene> = {
     background: 'winter-transition',
     dialogue: [
       {
+        character: 'narrator',
+        text: "While the team waits to hear what their future assignments may be from Cybaton, you have time to ponder more personal matters.",
+      }
+      {
         character: 'maven',
-        text: "With the annual review behind us, I can't help but think about what happens next... and about us.",
+        text: "I can't help but think about what happens next... and about us. Maybe we should talk.",
         mood: 'thoughtful',
       }
     ],
