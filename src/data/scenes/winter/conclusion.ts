@@ -36,7 +36,7 @@ const winterConclusionScenes: Record<string, Scene> = {
         mood: 'sad',
       }
     ],
-    nextSceneId: 'winter-review-preparation'
+    nextSceneId: 'winter-review-preparation',
   },
 
   // Annual Review Preparation
@@ -103,7 +103,7 @@ const winterConclusionScenes: Record<string, Scene> = {
         text: "Indeed. And now it's time to discuss your future assignments with Cybaton.",
       }
     ],
-    nextSceneId: 'winter-annual-review'
+    nextSceneId: 'winter-annual-review',
    },
   
   // Annual Review Scene
@@ -161,16 +161,16 @@ const winterConclusionScenes: Record<string, Scene> = {
       {
         text: "I'd like to stay in Stonewich. We've built something special here.",
         affectionChanges: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
-        nextSceneId: 'winter-team-responses'
+        nextSceneId: 'winter-team-responses',
       },
       {
         text: "I believe our team works well together. We should stay together, wherever we're needed.",
         affectionChanges: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
-        nextSceneId: 'winter-team-responses'
+        nextSceneId: 'winter-team-responses',
       },
       {
         text: "I trust Cybaton to place us where we can be most effective.",
-        nextSceneId: 'winter-team-responses'
+        nextSceneId: 'winter-team-responses',
       }
     ]
   },
@@ -244,7 +244,7 @@ const winterConclusionScenes: Record<string, Scene> = {
     choices: [
       {
         text: "Look toward the future",
-        nextSceneId: "winter-confession"
+        nextSceneId: "winter-confession",
       }
     ]
   }
