@@ -213,7 +213,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "May I/?",
+        text: "May I?",
         mood: 'embarrassed',
       },
       {
