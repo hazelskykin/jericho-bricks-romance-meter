@@ -9,7 +9,7 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: "With the annual review approaching, I can't help but think about what happens next... and about us.",
+        text: "With the annual review behind us, I can't help but think about what happens next... and about us.",
         mood: 'thoughtful',
       }
     ],
@@ -23,7 +23,7 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'xavier',
-        text: "Maven, before we get our assignments from the annual review, there's something I need to tell you.",
+        text: "Maven, before we get our assignments for next year, there's something I need to tell you.",
         mood: 'neutral',
       },
       {
@@ -49,9 +49,9 @@ const relationshipScenes: Record<string, Scene> = {
         nextSceneId: 'winter-xavier-happy'
       },
       {
-        text: "I care about you deeply, Xavier. Let's see what the future holds for us.",
-        affectionChanges: { xavier: 1 },
-        nextSceneId: 'winter-xavier-hopeful'
+        text: "I care about you deeply, Xavier, but I'm not ready for anything more right now.",
+        affectionChanges: { xavier: -2 },
+        nextSceneId: 'winter-xavier-noncommit'
       }
     ]
   },
@@ -66,7 +66,7 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "The team at headquarters - they're like-minded people, but finding connection with them has been so much easier because of what I learned with you.",
+        text: "The team at headquarters - they're like-minded people, but finding connections with them has been so much easier because of what I learned with you.",
         mood: 'laughing',
       },
       {
@@ -76,29 +76,29 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "Whatever happens with the review, knowing how you feel gives me confidence that we'll face it together.",
+        text: "Whatever happens going forward, knowing how you feel gives me confidence that we'll face it together.",
         mood: 'laughing',
       }
     ],
     nextSceneId: 'winter-review-preparation',
   },
-  'winter-xavier-hopeful': {
-    id: 'winter-xavier-hopeful',
+  'winter-xavier-noncommit': {
+    id: 'winter-xavier-noncommit',
     background: 'winter-transition',
     dialogue: [
       {
         character: 'xavier',
-        text: "That means a lot to me, Maven. I'm hopeful for our future, whatever form it takes.",
-        mood: 'happy',
+        text: "That's understandable, Maven. I'm hopeful for our future, whatever form it takes.",
+        mood: 'neutral',
       },
       {
         character: 'xavier',
         text: "The team I'm leading at headquarters - they've already made me feel welcome, but it's different from what we have here.",
-        mood: 'thoughtful',
+        mood: 'happy',
       },
       {
         character: 'xavier',
-        text: "Let's focus on the review for now, and then we can talk more about us.",
+        text: "Let's on what we have here and now. Let me know when you feel ready, and then we can talk more about us.",
         mood: 'happy',
       }
     ],
@@ -122,12 +122,17 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "Morgan and I are planning a special broadcast for the Winter Gala - interviewing couples about what makes love last.",
+        text: "Do you remember the special broadcast for the Winter Gala where Morgan and I interviewed couples about what makes love last?",
         mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "And I want us to be the final guests. To show everyone that I've found someone who makes me want to stay. Who makes all the networking and connections in the world insignificant compared to one real, meaningful connection.",
+        text: "Featuring the two of us together was very special to me. Declaring before the world so publicly that you have my heart was humbling and liberating.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "I've found someone who makes me want to stay. Who makes all the networking and connections in the world insignificant compared to one real, meaningful connection.",
         mood: 'happy',
       },
       {
@@ -143,9 +148,9 @@ const relationshipScenes: Record<string, Scene> = {
         nextSceneId: 'winter-navarre-happy'
       },
       {
-        text: "I care about you deeply, Navarre. Let's see where our paths take us.",
-        affectionChanges: { navarre: 1 },
-        nextSceneId: 'winter-navarre-hopeful'
+        text: "I care about you deeply, Navarre, but I'm not sure I'm ready yet for anything more.",
+        affectionChanges: { navarre: -2 },
+        nextSceneId: 'winter-navarre-noncommit'
       }
     ]
   },
@@ -155,24 +160,29 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'navarre',
-        text: "You love me too? I was worried that my reputation might make you doubt my sincerity.",
+        text: "Just like that? No questions about my sincerity or my rumored love life that surround my reputation like a dustcloud?",
+        mood: 'surprised',
+      },
+      {
+        character: 'maven',
+        text: "Why would you ask that? Should I be worried?",
         mood: 'surprised',
       },
       {
         character: 'navarre',
-        text: "The special broadcast will make it clear to everyone who has won my heart. No more speculation, no more rumors.",
+        text: "No, I'm happy you showed me such deep and immediate trust. That special broadcast we did together made it clear to everyone. No more speculation, no more rumors.",
         mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "This is the happiest I've been, Maven. And I promise, whatever happens with the review, we'll face it together.",
+        text: "This is the happiest I've been, Maven. And I promise, whatever happens going forward, we'll face it together.",
         mood: 'laughing',
       }
     ],
     nextSceneId: 'winter-review-preparation',
   },
-  'winter-navarre-hopeful': {
-    id: 'winter-navarre-hopeful',
+  'winter-navarre-noncommit': {
+    id: 'winter-navarre-noncommit',
     background: 'city-cafe',
     dialogue: [
       {
@@ -182,12 +192,12 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "The broadcast will still go forward. I want my audience to see that there's more to me than just charm.",
-        mood: 'thoughtful',
+        text: "You are worth waiting for, however long it may be. I'm happy to be with you as we are.",
+        mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "For now, let's focus on the upcoming review. We can talk more about us afterwards.",
+        text: "I've stated clearly my intentions toward you to the world. When you're ready, we can talk more about us.",
         mood: 'happy',
       }
     ],
@@ -211,8 +221,13 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "My father is coming to the Winter Gala. I want you to meet him - properly, as someone important to me.",
-        mood: 'nervous',
+        text: "My father and I made great progress on our relationship during the Gala, and he views our relationship favorably.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "The arranged marriage has been called off, and I have found a balance in my life that I did not know could be possible.",
+        mood: 'happy',
       },
       {
         character: 'etta',
@@ -232,9 +247,9 @@ const relationshipScenes: Record<string, Scene> = {
         nextSceneId: 'winter-etta-happy'
       },
       {
-        text: "I care about you deeply, Etta. Let's take things one step at a time.",
-        affectionChanges: { etta: 1 },
-        nextSceneId: 'winter-etta-hopeful'
+        text: "I care about you deeply, Etta, but is the timing right for us now? You're jumping out of one relationship into another.",
+        affectionChanges: { etta: -2 },
+        nextSceneId: 'winter-etta-noncommit'
       }
     ]
   },
@@ -244,13 +259,18 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'etta',
-        text: "You... love me? Despite all my flaws and obsessions and family baggage?",
+        text: "Are you sure? Despite all my flaws and obsessions and family baggage?",
         mood: 'surprised',
       },
       {
+        character: 'maven',
+        text: "Of course I am sure! No one means more to me.",
+        mood: "laughing",
+      }
+      {
         character: 'etta',
-        text: "Meeting my father will be... interesting. But I think he'll see what I see in you. How you've helped me become stronger.",
-        mood: 'thoughtful',
+        text: "My father was able to see what I see in you. How you've helped me become stronger in ways I didn't know I lacked it before.",
+        mood: 'happy',
       },
       {
         character: 'etta',
@@ -259,34 +279,34 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "Let's get through this review together. Whatever comes next, we'll face it as a team.",
+        text: "After resolving things with my father and getting through the first annual review, nothing else intimidates me now. Whatever comes next, we'll face it together.",
         mood: 'happy',
       }
     ],
     nextSceneId: 'winter-review-preparation',
   },
-  'winter-etta-hopeful': {
-    id: 'winter-etta-hopeful',
+  'winter-etta-noncommit': {
+    id: 'winter-etta-noncommit',
     background: 'winter-transition',
     dialogue: [
       {
         character: 'etta',
         text: "That's... a logical approach. Taking things step by step.",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "I'm grateful to you for helping me learn how to stand more confidently on my own.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: "I still want you to meet my father. He needs to see that I've found my own path, with people who value me for who I am.",
-        mood: 'determined',
-      },
-      {
-        character: 'etta',
-        text: "Thank you for being honest with me, Maven. I appreciate your care and consideration.",
+        text: "I'm free now to choose my path and who I want to spend my life with. If you think we need more time, I can be patient.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: "For now, we should focus on the upcoming review. We can revisit this conversation afterwards.",
+        text: "For now, we can focus on what's in front of us. We can revisit this conversation when you feel the time is right.",
         mood: 'happy',
       }
     ],
