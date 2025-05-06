@@ -13,7 +13,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "The team gathers to discuss plans for the Winter Games & Gala. There's a sense of change in the air, as each person reflects on their personal growth over the seasons.",
+        text: "The team gathers to discuss plans for the Winter Gala & Games. There's a sense of change in the air, as each person reflects on their personal growth over the seasons.",
       },
       {
         character: 'etta',
@@ -188,7 +188,7 @@ const winterPlanningScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'senara',
-        text: "I've been developing a new platform for the Winter Games & Gala. Something to give voice to those who usually go unheard.",
+        text: "I've been developing a new platform for the Winter Gala & Games. Something to give voice to those who usually go unheard.",
         mood: 'thoughtful',
       },
       {
@@ -244,7 +244,7 @@ const winterPlanningScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: "The day of the Winter Games & Gala arrives. Stonewich is transformed, streets glittering with lights and decorations.",
+        text: "The day of the Winter Gala & Games arrives. Stonewich is transformed, streets glittering with lights and decorations.",
       },
       {
         character: 'maven',
