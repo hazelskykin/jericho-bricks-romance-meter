@@ -12,11 +12,11 @@ const winterIntroScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "The Winter Games & Gala is the crown jewel of Stonewich's seasonal festivals, drawing visitors from neighboring cities.",
+        text: "The Winter Gala & Games is the crown jewel of Stonewich's seasonal festivals, drawing visitors from neighboring cities.",
       },
       {
         character: 'xavier',
-        text: "Winter in Stonewich really is something special. The Games & Gala transforms the entire city.",
+        text: "Winter in Stonewich really is something special. The Gala & Games transforms the entire city.",
         mood: 'happy',
       },
       {
