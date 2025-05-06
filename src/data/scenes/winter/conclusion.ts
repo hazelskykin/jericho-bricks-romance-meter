@@ -104,6 +104,7 @@ const winterConclusionScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'winter-annual-review'
+   },
   
   // Annual Review Scene
   'winter-annual-review': {
