@@ -4,23 +4,34 @@ import { Scene } from '@/types/game';
 const happyEndingScenes: Record<string, Scene> = {
   'happy-ending-xavier': {
     id: 'happy-ending-xavier',
-    background: 'stonewich-sunset',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
-        text: "Xavier and I have grown closer than I ever imagined. His kindness and technical brilliance complement each other perfectly.",
+        text: "Xavier, we have grown closer than I ever imagined. Your desire to connect people and improve society has deeply resonated with me. Your kindness and dedication have endeared him to me.",
         mood: 'happy',
       },
       {
         character: 'xavier',
-        text: "Maven, I've been thinking about our future. Now that we know we're staying in Stonewich...",
+        text: "That makes me so happy to hear you say that. I feel we have only grown closer this past year we've been together.",
+        mood: 'happy',
+      },
+      
+      {
+        character: 'xavier',
+        text: "Maven, I've been thinking about our future...",
         mood: 'happy',
       },
       {
         character: 'xavier',
-        text: "I'd like to take our relationship to the next level. Move in together, maybe?",
+        text: "I'd like to take our relationship to the next level. Share a secure home router, maybe?",
         mood: 'happy',
       },
+      {
+        character: 'maven',
+        text: "Is that your way of asking if we should move in together?",
+        mood: 'laughing',
+      }
       {
         character: 'maven',
         text: "I'd love that, Xavier. With you, I've found a home both in Stonewich and in my heart.",
@@ -44,11 +55,11 @@ const happyEndingScenes: Record<string, Scene> = {
 
   'happy-ending-navarre': {
     id: 'happy-ending-navarre',
-    background: 'stonewich-sunset',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
-        text: "Navarre and I have built something I never expected - a relationship based on mutual respect and genuine connection.",
+        text: "Navarre, you and I have built something I never expected - a relationship based on mutual respect and genuine connection.",
         mood: 'happy',
       },
       {
@@ -63,12 +74,41 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "And you know mine. Here's to building our future together in Stonewich.",
+        text: "You were so confident when we first met. I wasn't sure I'd be able to even talk to you. Your charm helped me past that initial hurdle.",
         mood: 'happy',
       },
       {
+        character: 'navarre',
+        text: "Few can resist!",
+        mood: 'laughing',
+      },
+      {
+        character: 'maven',
+        text: "I didn't fall for your charm, as impressive as that is. You have a beautiful soul, filled with kindness and warmth. Tease me all you like, but I can't imagine life without you now.",
+        mood: 'laughing',
+      },
+      {
+        character: 'navarre',
+        text: "You're making me blush. I can't imagine a life without you either, Maven. But you know what I can imagine for us together?",
+        mood: 'embarrassed',
+      },
+      {
         character: 'narrator',
-        text: "Navarre and Maven create a vibrant life together, combining his networking skills and her adaptability.",
+        text: "Navarre moves close to you, pulling you into his embrace, and leans to whisper quietly in your ear.",
+      },
+      {
+        character: 'navarre',
+        text: "A home together. A family. A future of shared joys.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Yes, please. That's what I want too.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'narrator',
+        text: "Navarre and Maven create a vibrant life together, filled with laughter and heartfelt connections with family and friends.",
       },
       {
         character: 'narrator',
@@ -76,7 +116,7 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "With Maven, Navarre finds the one connection that matters most, and together they make Stonewich truly feel like home.",
+        text: "With Maven, Navarre treasures the one connection that matters most, and together they make Stonewich truly feel like home.",
       }
     ],
     nextSceneId: 'versa-epilogue-check',
@@ -84,32 +124,62 @@ const happyEndingScenes: Record<string, Scene> = {
 
   'happy-ending-etta': {
     id: 'happy-ending-etta',
-    background: 'stonewich-sunset',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
-        text: "Etta and I have found a balance together that I never thought possible. She's taught me ambition, and I've taught her to breathe.",
+        text: "Etta, we have found a balance together that I never thought possible.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: "I spoke with my father yesterday, Maven. I told him about us, about my decision to stay in Stonewich.",
-        mood: 'neutral',
-      },
+        text: "Me too, Maven. I feel the same. I am still as driven as ever, but now I feel whole as a person without the pressure of my work or family as my identity.",
+        mood: 'happy',
+      }
       {
         character: 'maven',
-        text: "How did he take it?",
-        mood: 'concerned',
+        text: "Speaking of your family, your father spoke to me yesterday and asked me about my intentions toward his daughter.",
+        mood: 'laughing',
       },
       {
         character: 'etta',
-        text: "Better than expected. He said he's never heard me sound so... content. He wants to meet you.",
+        text: "Oh, no! He didn't?! What did you say?",
+        mood: 'surprised',
+      },
+      {
+        character: 'maven',
+        text: "I asked him if he received his invitation to the reception yet. Should I regret those words?",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "Oh my god! Really?! Of course you shouldn't regret them. I can't believe it! I'm so happy!",
+        mood: 'laughing',
+      },
+      {
+        character: 'maven',
+        text: "I'm surprised you never told him that we had eloped this past year.",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "You know why. I wanted something just for us, but hearing you offer a reception to my father...",
         mood: 'happy',
       },
       {
         character: 'maven',
-        text: "I'd like that. And Etta? I'm proud of you for making your own choices.",
+        text: "I know. I'm glad you're happy about it, even if it's another event to plan.",
+        mood: 'confident',
+      },
+      {
+        character: 'etta',
+        text: "You're right! There's so much to do!",
         mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "You should talk to your father first. I think he had some plans of his own in mind now that he finally gets to celebrate his daughter's happiness.",
+        mood: 'laughing',
       },
       {
         character: 'narrator',
@@ -133,32 +203,61 @@ const happyEndingScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: "Senara and I have discovered something beautiful together. Our relationship defies analysis but feels absolutely right.",
+        text: "Senara, I feel we have discovered something beautiful together. Our relationship defies analysis but feels absolutely right.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "Maven, I've been contemplating the statistical improbability of finding someone who understands me as you do.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "The odds were indeed astronomical. Yet here we are, defying probability.",
+        text: "Maven, thank you. I feel the same, although I feel like I am the only one who gets these physical craving sensations when you're not close by, if we aren't touching.",
         mood: 'happy',
       },
       {
         character: 'maven',
-        text: "Some things can't be calculated, Senara. Like how much I love you.",
+        text: "That question may remain a mystery.",
+        mood: 'laughing',
+      },
+      {
+        character: 'senara',
+        text: "If by that you mean that we can always be together, then for this one question, I'm content with a mystery.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "I find that I'm perfectly content with that inexplicability.",
+        text: "Every day feels like I love you more than I thought possible, but I have been studying something quite old from a new perspective lately.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "What has stirred your intellectual curiousity this time?",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "My current topic is researching the modern context for marital traditions and nuptial rituals.",
         mood: 'happy',
       },
       {
         character: 'narrator',
-        text: "Senara and Maven build an unconventional but deeply fulfilling life together in Stonewich.",
+        text: "Senara solemnly gets down on one knee and holds up a beautiful diamond ring out to you, in a traditional expression of devoted love."
+      }
+      {
+        character: 'senara',
+        text: "Maven, will you consent to marry me, to be my wife, to live out our days together weathering happiness and strife as one?",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Yes! Senara, you have my heart, my love, my life.",
+        mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "Thank you, Maven. I don't know if you remember, but one of the first topics we discussed together was the value of traditions. I wanted to mark what we share with the honor of tradition and suitable ritual.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "Senara and Maven build an unconventional but deeply fulfilling life together in Stonewich, infused by the mysticism of tradition and the boundless edge of future's possibility.",
       },
       {
         character: 'narrator',
@@ -166,7 +265,7 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Together, they create a home where both logic and emotion are valued, where understanding comes in many forms.",
+        text: "Together, they create a home where understanding comes in many forms.",
       }
     ],
     nextSceneId: 'versa-epilogue-check',
