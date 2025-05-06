@@ -175,7 +175,7 @@ const winterConclusionScenes: Record<string, Scene> = {
         text: "Thank you for your input. I'll take your preferences into consideration. The final decision will be announced shortly.",
       }
     ],
-    nextSceneId: 'winter-conclusion',
+    nextSceneId: 'winter-relationship',
   },
 
   'winter-conclusion': {
