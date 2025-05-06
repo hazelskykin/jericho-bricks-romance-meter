@@ -186,5 +186,5 @@ const winterActivityScenes: Record<string, Scene> = {
     nextSceneId: 'winter-festival-activities'
   }
 };
-//when winter-festival-activities are complete or skipped, the scene should transition to 
+//when winter-festival-activities are complete or skipped, the scene should transition to winter-festivities-completion
 export default winterActivityScenes;
