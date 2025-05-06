@@ -13,29 +13,38 @@ const autumnConclusionScenes: Record<string, Scene> = {
         text: "Back at Cybaton headquarters, the team is once again ready to present, anxiously hoping their autumn results will have a better reception with Dr. Voss.",
       },
       {
+        character: 'maven',
+        text: "Dr. Voss, we considered your feedback carefully, and we'd like to discuss that with you after our operational review of the festival.",
+        mood: 'neutral',
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss: Alright, let's start with that then.",
+      },
+      {
         character: 'etta',
-        text: "Dr. Voss, despite the unusual heatwave, the Summer Songs & Sips festival garnered higher attendance than the last few years. All stated objectives were met or exceeded.",
-        mood: 'happy',
+        text: "All stated objectives were met or exceeded. New metrics were implemented that assess the extent of social connectivity, focused on relationships and interactions. Thanks to Senara for his insight.",
+        mood: 'neutral',
       },
       {
         character: 'xavier',
-        text: "The new environmental cooling drones created a zone of relief against the heat in the rest of the city. There's room to expand their use with greater scale.",
-        mood: 'happy',
+        text: "Systems performed flawlessly for the festival. Technology features that enabled inclusivity for all attendees were especially well received, boosting attendance. Thanks to Etta for her suggestions on underrepresented populations at festivals.",
+        mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "Despite competitive attempts at undermining our reputation, local musicians and tourism related businesses have reported great results from the festival and a commitment to future engagements.",
-        mood: 'happy',
+        text: "Artisans, fans and businesses alike drew inspiration from the experience. Thanks to Xavier's technology upgrades, accessibility to craft mastery became instantly achievable.",
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "Linguistic competency skills among the general public improved by 17% on average from festival activities, and higher results of 61% were achieved among performers.",
+        text: "A higher degree of social harmony was achieved as measured by reduced crime of 43%, elevated productivity levels of 61%, and economic confidence boost of a staggering 79%. Thanks to Nevarre for his personal magnetism that inspired the community and beyond in his friendly challenge.",
         mood: 'neutral',
       },
       {
         character: 'maven',
-        text: "Everyone at the event seemed to be having fun and relaxing.",
-        mood: 'happy',
+        text: "As you can see for yourself, Dr. Voss, the results were not achieved from outstanding individual talents but as a team.",
+        mood: 'neutral',
       },
       {
         character: 'narrator',
@@ -47,20 +56,15 @@ const autumnConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Dr. Voss is a commanding presence with silver-streaked hair and piercing eyes that seem to evaluate everything.",
-        mood: 'neutral',
+        text: "Dr. Voss speaks with a pleased but cautious tone, each word precisely chosen.",
       },
       {
         character: 'narrator',
-        text: "Dr. Voss speaks with a measured tone, each word precisely chosen.",
+        text: "\"The collaborations you've shown in the autumn season are impressive, and they start to address critical issues facing Stonewich, methodically and thoughtfully.\"",
       },
       {
         character: 'narrator',
-        text: "\"Each of you has demonstrated excellence in your respective domains again this past Summer season.\"",
-      },
-      {
-        character: 'narrator',
-        text: "\"Perhaps that's all you can achieve, all you are looking to achieve, although I believe there's potential for more.\"",
+        text: "\"Don't lose this momentum as I believe there's potential for more.\"",
       },
       {
         character: 'narrator',
@@ -68,23 +72,15 @@ const autumnConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "\"At the end of spring I left you with what may have seemed like vague feedback. Let me be more explicit now.\"",
+        text: "\"What I said at the end of summer may have seemed harsh to you given the evidence of success earned.\"",
       },
       {
         character: 'narrator',
-        text: "\"Look at the city below the surface. Social metrics like marriages and families are on the decline. Even if more people attend the festival, it has become more of an individual experience.\"",
+        text: "\"However, the stakes are too high to be complacent. Cybaton needs you. Stonewich needs you. Your best efforts are still ahead of you.\"",
       },
       {
         character: 'narrator',
-        text: "\"Cybaton has done an impressive job managing the city, but competitive services are gaining traction there for siloed operations.\"",
-      },
-      {
-        character: 'narrator',
-        text: "\"Cybaton's efforts are being scrutinized to downgrade its involvement as fewer services overall are required as more citizens are able to use self-service utilities for things that the municipality managed.\"",
-      },
-      {
-        character: 'narrator',
-        text: "\"What this implies is that while you are achieving results, the city overall is stagnating or slowly breaking apart at critical junctures. Discuss this amongst yourselves and have a response ready at the next seasonal report.\"",
+        text: "\"Don't let familiarity and routine dull your hunger to excel for your own sakes and for those who are counting on you. Let Winter be your showcase.\"",
       },
       {
         character: 'narrator',
@@ -92,124 +88,76 @@ const autumnConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "As the team files out, uncertainty and foreboding settle on their shoulders. What they had generally dismissed as empty motivational words have now taken on clearer shape and focus.",
+        text: "Relief and a renewed sense of purpose fills your heart. You can tell the others on the team feel similarly.",
       }
     ],
     nextSceneId: 'summer-conclusion-fallout',
   },
   
-  'summer-conclusion-fallout': {
-    id: 'summer-conclusion-fallout',
+  'autumn-conclusion-fallout': {
+    id: 'autumn-conclusion-fallout',
     background: 'cybaton-shuttle',
     dialogue: [
       {
         character: 'narrator',
-        text: "The air in the shuttle was very different on the way back to Stonewich. Where there had been jubiliation and accomplishment on the way to the meeting, the fallout afterward was contemplative and gloomy.",
-      },
-      {
-        character: 'maven',
-        text: "Let's talk about what Dr. Voss said. The tension is too thick to breathe in here, so let's clear the air and talk it over.",
-      },
-      {
-        character: 'etta',
-        text: "Fine. I'm angry. We are meeting the objectives stated for the task, but she's measuring us against a different standard altogether. Marriage and family statistics? Where did that come from?",
-        mood: 'angry',      
-      },
-      {
-        character: 'navarre',
-        text: "I thought the competitor issues were just from Morgan's efforts. Is Cybaton really losing ground?",
-        mood: 'sad',
+        text: "The shuttle ride back to Stonewich feels comforting after the recent report.",
       },
       {
         character: 'xavier',
-        text: "I thought my efforts at automating systems were helping the people of Stonewich. Did I unintentionally destabilize central control functions when I distributed micro systems for people to control for themselves?",
-        mood: 'sad',
+        text: "That was the best response we've received from Dr. Voss, or was I dreaming?",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "She was definitely more receptive this time. What a relief!",
+        mood: 'happy',      
       },
       {
         character: 'senara',
-        text: "There are only speculative simulations for situations where the social fabric frays as Dr. Voss described. This is a new phase of societal development, unique due to technology enabled sufficiency.",
+        text: "What we did differently this time made a big impact beyond Stonewich.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "Let's give credit where it's due. It was thanks to Maven's insights that we got on the right path.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "I didn't do much though. You're giving me too much credit.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'etta',
+        text: "No, it is well deserved. Thanks for your efforts, Maven.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "Dr. Voss seemed to think we could do something more. I wonder what?",
+        mood: 'neutral',
+      },
+      {
+        character: 'senara',
+        text: "One logical extension would be to cross-collaborate in more ways.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "That's one, but maybe we should try to scale this concept beyond our team.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "Let's give it some thought before we meet for the planning session.",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "You think about the responses each of your team members gave for a moment before offering an opinion of your own.",
-      },
-      {
-        character: 'maven',
-        text: "I think I see what Dr. Voss is trying to point out to us. I didn't really understand it when she was talking, but hearing how you all responded just now makes it clearer to  me.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'etta',
-        text: "Well, spit it out. Is there a master plan somewhere with more topline metrics we're supposed to focus on?",
-        mood: 'neutral',
-      },
-      {
-        character: 'xavier',
-        text: "I haven't seen any master architecture plans or integration reuqirements that would govern the implementation of the new systems I've been building though.",
-        mood: 'neutral',
-      },
-      {
-        character: 'senara',
-        text: "Xavier, Etta was likely expressing exasperation via a rhetorical question, not an actual inquiry. We have been privy to any city plans, architectures, and negotations involving Stonewich.",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "Senara is well informed, as expected. The situation and feedback are not necessarily in concrete terms.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "Yes and no. I do think there's data and indications of what Dr. Voss was talking about. She wouldn't just say all that on unfounded speculation.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "However, we are not looking at the whole picture together as a team. Instead, each of us are focused on one aspect.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "We should try to align our efforts with a vision.",
-        mood: 'neutral',
-      },
-      {
-        character: 'etta',
-        text: "When you say it like that, I feel like it's more motivational than practical. We are already coordinating efforts efficiently",
-        mood: 'neutral',
-      },
-      {
-        character: 'senara',
-        text: "Maven, if you feel you are able to see a pattern that the rest of us do not, then perhaps you should take a more direct role in the next season.",
-        mood: 'neutral',
-      },
-      {
-        character: 'xavier',
-        text: "That's a great idea! Maven has shown she brings good perspective to projects.",
-        mood: 'neutral',
-      },
-      {
-        character: 'navarre',
-        text: "There's only so much time in a day, however, so she won't be free to help everyone out like she did before.",
-        mood: 'neutral',
-      },
-      {
-        character: 'etta',
-        text: "If it means that we can finally get recognition from Dr. Voss for our results, let's give it a try.",
-        mood: 'neutral',
-      },
-      {
-        character: 'maven',
-        text: "Alright, I'll consider carefully how I can proceed from here for the team to have the impact Dr. Voss is looking for.",
-        mood: 'neutral',
-      },
-      {
-        character: 'narrator',
-        text: "The transport comes into view of Stonewich as the conversation winds down. You wonder if you can really make the impact that your team has entrusted to you.",
+        text: "The transport comes into view of Stonewich as the conversation winds down. You wonder if your results from Autumn were a fluke or offered a solid foundation to build upon.",
       },
     ],
-    nextSceneId: 'summer-conclusion',
+    nextSceneId: 'autumn-conclusion',
   },  
   
   'autumn-conclusion': {
