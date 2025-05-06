@@ -215,16 +215,16 @@ const winterPlanningScenes: Record<string, Scene> = {
         character: 'senara',
         text: "May I?",
         mood: 'embarrassed',
-      }
+      },
       {
         character: 'narrator',
         text: "Senara brings his hand up to yours with slow hesitation, watching for your reaction as he gently wraps his fingers with yours in the barest of touches.",
-      }
+      },
       {
         character: 'maven',
         text: "Yes, please.",
         mood: 'embarrassed',
-      }
+      },
     ],
     nextSceneId: 'winter-festival-intro'
   },
