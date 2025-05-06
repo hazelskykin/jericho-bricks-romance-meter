@@ -47,15 +47,15 @@ const winterConclusionScenes: Record<string, Scene> = {
         text: "The team gathers for their final seasonal report to Dr. Voss. There's tension in the air - this evaluation will determine their future with Cybaton.",
       },
       {
-        character: 'drvoss',
-        text: "Your team has shown remarkable growth over the course of this year. The Winter Games & Gala was a resounding success.",
+        character: 'narrator',
+        text: "Dr. Voss: Your team has shown remarkable growth over the course of this year. The Winter Games & Gala was a resounding success.",
       },
       {
-        character: 'drvoss',
+        character: 'narrator',
         text: "The metrics show unprecedented efficiency, public satisfaction, and technological innovation.",
       },
       {
-        character: 'drvoss',
+        character: 'narrator',
         text: "What's more impressive is how you've each developed individually and as a cohesive unit.",
       },
       {
@@ -64,7 +64,7 @@ const winterConclusionScenes: Record<string, Scene> = {
         mood: 'grateful',
       },
       {
-        character: 'drvoss',
+        character: 'narrator',
         text: "Indeed. And now it's time to discuss your future assignments with Cybaton.",
       }
     ],
