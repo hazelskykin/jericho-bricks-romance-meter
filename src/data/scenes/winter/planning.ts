@@ -25,28 +25,18 @@ const winterPlanningScenes: Record<string, Scene> = {
     choices: [
       {
         text: "Continue",
-        nextSceneId: "winter-planning-character"
+        nextSceneId: 'winter-planning-route'
       }
     ]
   },
-  'winter-planning-character': {
-    id: 'winter-planning-character',
-    background: 'stonewich-office',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "As the meeting continues, you find yourself working closely with someone who has become particularly important to you.",
-      }
-    ],
-    nextSceneId: 'winter-planning-route'
-  },
+
   'winter-planning-route': {
     id: 'winter-planning-route',
     background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',
-        text: "This scene will route to the appropriate character's winter planning scene based on your romantic interest.",
+        text: "You find yourself naturally working with the one person who you have become closest to.",
       }
     ],
     // This is a placeholder scene that will immediately route to the character-specific scene
@@ -151,32 +141,32 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'navarre',
         text: "It is, but... there's something I need to address. The fans keep speculating about my love life.",
-        mood: 'concerned',
+        mood: 'sad',
       },
       {
         character: 'maven',
         text: "I've seen some of the comments. Does it bother you?",
-        mood: 'curious',
+        mood: 'neutral',
       },
       {
         character: 'navarre',
         text: "What bothers me is that they might make you think this is just another flirtation for me. It's not.",
-        mood: 'serious',
+        mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "For the Winter Gala, I want to dedicate a special broadcast. To show everyone that what we have is real and lasting.",
-        mood: 'sincere',
+        text: "For the Winter Gala, I want to dedicate a special broadcast that shows real people with honest relationships and what makes them last. I'd like you to appear on the show with me.",
+        mood: 'happy',
       },
       {
         character: 'maven',
         text: "Navarre... you don't have to prove anything to me.",
-        mood: 'touched',
+        mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "I know. But I want to. I'm tired of being seen as just the charming influencer. I want to be seen as someone capable of real commitment. Someone worthy of you.",
-        mood: 'determined',
+        text: "I'm tired of being seen as just the charming influencer and want to encourage others to express themselves more authentically like I've been learning to do, with you. I want to be seen as someone capable of real commitment. Someone worthy of you.",
+        mood: 'sad',
       }
     ],
     nextSceneId: 'winter-festival-intro'
