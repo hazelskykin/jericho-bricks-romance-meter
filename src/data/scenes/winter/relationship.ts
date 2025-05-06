@@ -350,20 +350,20 @@ const relationshipScenes: Record<string, Scene> = {
       }
       {
         character: 'senara',
-        text: "My conclusion, after thorough analysis, is that I've developed passionate feelings for you. What most would call love.",
+        text: "My conclusion, after thorough analysis, is that I've developed passionate feelings for you. A near certainty of love.",
         mood: "happy"     
       }
     ],
     choices: [
       {
-        text: "I love you too, Senara. Your mind and heart are equally beautiful to me.",
+        text: "Perhaps we should test that conclusion with additional stimuli?",
         affectionChanges: { senara: 2 },
         nextSceneId: 'winter-senara-happy'
       },
       {
-        text: "I care about you deeply, Senara. Let's explore these feelings together.",
-        affectionChanges: { senara: 1 },
-        nextSceneId: 'winter-senara-hopeful'
+        text: "I reciprocate your feelings, Senara, but I'm not ready to embrace the natural conclusion such feelings generally manifest.",
+        affectionChanges: { senara: -2 },
+        nextSceneId: 'winter-senara-noncommit'
       }
     ]
   },
@@ -373,12 +373,12 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'senara',
-        text: "You... love me too? I am not sure how to characterize this emotive effusion.",
+        text: "What are you suggesting?",
         mood: 'surprised',
       },
       {
-        character: 'senara',
-        text: "The advisory group has taught me so much about expressing myself, finding my voice. But you were the first to truly hear me.",
+        character: 'maven',
+        text: "First, verbal affirmation stimulus. Senara, I love you too.",
         mood: 'happy',
       },
       {
@@ -387,15 +387,45 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'laughing',
       },
       {
+        character: 'maven',
+        text: "That response seems to support validation of your conclusion. How about one more test?",
+        mood: 'happy',
+      }
+      {
+        character: 'maven',
+        text: "Let's test a physical stiumlus...",
+        mood: 'embarrassed',
+      }
+      {
+        character: 'narrator',
+        text: "You lean forward and give the lightest, gentlest kiss to Senara on his cheek.",
+        mood: 'embarrassed',
+      }
+      {
         character: 'senara',
-        text: "Whatever the review brings, knowing that you share my feelings gives me a sense of peace I've never known before.",
+        text: "...",
+        mood: 'embarrassed',
+      }
+      {
+        character: 'maven',
+        text: "I have hoped for this for a long time. I love you, Senara, passionately and fully with all my heart with a certainty that's beyond measure.",
+        mood: 'happy',
+      }
+      {
+        character: 'senara',
+        text: "Forgive me, but I must borrow another's words as my own are deficit here, yet another experience new to me,",
         mood: 'laughing',
+      }
+      {
+        character: 'senara',
+        text: "..it is an ever-fixèd mark, That looks on tempests and is never shaken...if this be error and upon me proved, I never writ, nor no man ever loved.",
+        mood: "happy",
       }
     ],
     nextSceneId: 'winter-review-preparation',
   },
-  'winter-senara-hopeful': {
-    id: 'winter-senara-hopeful',
+  'winter-senara-noncommit': {
+    id: 'winter-senara-noncommit',
     background: 'stonewich-office',
     dialogue: [
       {
@@ -405,202 +435,31 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "I would still like you to meet the advisory group. They've helped me find my voice, much as you have.",
-        mood: 'thoughtful',
+        text: "I have taken my findings one step farther. I developed and trained an algorithm that helps others navigate such complex emotions.",
+        mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "Thank you for your honesty, Maven. I value that greatly.",
+        text: "I have released it to the Cybaton Oracle as Persephone, an AI diviner that relates guidance for seasons of emotions, the bright and the dark.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "You found a way to share that you're comfortable with? That sounds like it'll be helpful to so many.",
+        mood: 'happy',
+      }
+      {
+        character: 'senara',
+        text: "Yes, I'm grateful to you. Your perspective has changed my own so much.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "For now, we should prepare for the review. But I look forward to our continued exploration of these feelings.",
+        text: "If our current state is the capacity you are comfortable in being with me, I am content.",
         mood: 'happy',
       }
     ],
     nextSceneId: 'winter-review-preparation',
-  },
-
-  // Annual Review Preparation
-  'winter-review-preparation': {
-    id: 'winter-review-preparation',
-    background: 'stonewich-office',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "The annual review is tomorrow. It's hard to believe our year in Stonewich is coming to an end.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'xavier',
-        text: "We've accomplished so much together. The systems we've implemented have significantly improved city operations.",
-        mood: 'happy',
-      },
-      {
-        character: 'etta',
-        text: "Year-end operations are well under way as well as the festival plans.",
-        mood: 'happy',
-      },
-      {
-        character: 'navarre',
-        text: "We've built real relationships here. They are the envy of our competitors and other communities alike.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "The connective web between people and technology has strengthened considerably in our year here. While most change is subtle, people have adapted readily vastly accelerating the impact.",
-        mood: 'neutral',
-      }
-    ],
-    nextSceneId: 'winter-annual-review',
-  },
-
-  // Annual Review Scene
-  'winter-annual-review': {
-    id: 'winter-annual-review',
-    background: 'cybaton-meeting-room',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "Dr. Voss: Good morning, team. It's time for your annual review and future assignments.",
-      },
-      {
-        character: 'narrator',
-        text: "The results now speak for themselves. Other cities are clamoring for the innovations in tech, process, and engagement that you spearheaded this year.",
-      },
-      {
-        character: 'narrator',
-        text: "Competitive bids have started to decrease and rapidly replaced by collaborative partnership offers.",
-      },
-      {
-        character: 'narrator',
-        text: "These results speak well of you both as individual talents and even more so as a collective team. Your place with Cybaton is assured.",
-      },
-      {
-        character: 'narrator',
-        text: "Frankly, the results have been... surprising. The team's performance has exceeded our projections by a significant margin.",
-      }
-    ],
-    nextSceneId: 'winter-future-assignments',
-  },
-
-  // Future Assignments Scene
-  'winter-future-assignments': {
-    id: 'winter-future-assignments',
-    background: 'cybaton-meeting-room',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "Now, for your future assignments. Cybaton has several options for your team.",
-      },
-      {
-        character: 'narrator',
-        text: "Option one: You remain together as a team and continue your work in Stonewich. The city has requested to extend your contract.",
-      },
-      {
-        character: 'narrator',
-        text: "Option two: The team is disbanded, and each of you is assigned to different projects where your individual skills are needed.",
-      },
-      {
-        character: 'narrator',
-        text: "Option three: You remain together as a team but are reassigned to a new city that could benefit from your collaborative approach.",
-      },
-      {
-        character: 'narrator',
-        text: "The decision will be based on company needs, but I'd like to hear your preferences.",
-      }
-    ],
-    choices: [
-      {
-        text: "I'd like to stay in Stonewich. We've built something special here.",
-        affectionChanges: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
-        nextSceneId: 'winter-team-responses'
-      },
-      {
-        text: "I believe our team works well together. We should stay together, wherever we're needed.",
-        affectionChanges: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
-        nextSceneId: 'winter-team-responses'
-      },
-      {
-        text: "I trust Cybaton to place us where we can be most effective.",
-        nextSceneId: 'winter-team-responses'
-      }
-    ]
-  },
-
-  'winter-team-responses': {
-    id: 'winter-team-responses',
-    background: 'cybaton-meeting-room',
-    dialogue: [
-      {
-        character: 'xavier',
-        text: "I believe we've only scratched the surface of what we can accomplish in Stonewich. I'd prefer to stay and continue our work here.",
-        mood: 'happy',
-      },
-      {
-        character: 'navarre',
-        text: "The connections we've built in Stonewich are valuable. But ultimately, I want us to stay together as a team, wherever that may be.",
-        mood: 'happy',
-      },
-      {
-        character: 'etta',
-        text: "Keeping the team together makes the most sense. We've developed effective collaborative methods.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "Our team's unique dynamics would be beneficial in any setting, but there's value in the continuity of remaining in Stonewich.",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
-        text: "Thank you for your input. I'll take your preferences into consideration. The final decision will be announced shortly.",
-      }
-    ],
-    nextSceneId: 'winter-conclusion',
-  },
-
-  'winter-conclusion': {
-    id: 'winter-conclusion',
-    background: 'cybaton-meeting-room',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "Dr. Voss: After reviewing all factors, I've made a decision regarding your team's future.",
-      },
-      {
-        character: 'narrator',
-        text: "Given your exceptional performance and the positive feedback from Stonewich, your team will remain together and continue your assignment there.",
-      },
-      {
-        character: 'narrator',
-        text: "As for the 'Versa' role experiment, a conclusion has not yet been reached. We will discuss that separately at another time. Maven, for now, you will continue as a permanent member of the team.",
-      },
-      {
-        character: 'narrator',
-        text: "Congratulations to all of you. Your work this year has set a new standard for Cybaton's city management teams.",
-      },
-      {
-        character: 'maven',
-        text: "Thank you, Dr. Voss. We're honored to continue our work in Stonewich.",
-        mood: 'grateful',
-      }
-    ],
-    nextSceneId: 'winter-epilogue-check',
-  },
-
-  'winter-epilogue-check': {
-    id: 'winter-epilogue-check',
-    background: 'cybaton-meeting-room',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "As Dr. Voss leaves the room, I catch the eye of my teammates. This next year in Stonewich promises to be even more exciting than the last.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'epilogue-intro',
   },
 };
 
