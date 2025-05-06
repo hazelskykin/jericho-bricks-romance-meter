@@ -1,3 +1,7 @@
+import { Scene } from '../../../types/game';
+
+const teamFutureScenes: Record<string, Scene> = {
+
 // game-end-team-futures, follows relationship-confession scenes
 
 'winter-conclusion': {
@@ -112,4 +116,5 @@
       {
         text: "Look toward the future",
         nextSceneId: "epilogue-route"
-      }
+      },
+}
