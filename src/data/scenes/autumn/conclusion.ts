@@ -47,11 +47,11 @@ const autumnConclusionScenes: Record<string, Scene> = {
         text: "The team meets with Dr. Voss to discuss the autumn festival's outcomes and prepare for winter.",
       },
       {
-        character: 'drvoss',
-        text: "Your performance this season has been exemplary. The festival metrics show significant improvements across all categories.",
+        character: 'narrator',
+        text: "Dr. Voss: Your performance this season has been exemplary. The festival metrics show significant improvements across all categories.",
       },
       {
-        character: 'drvoss',
+        character: 'narrator',
         text: "With winter approaching, you'll face your final and most challenging season. The Winter Games & Gala is Stonewich's premier event.",
       },
       {
@@ -60,11 +60,11 @@ const autumnConclusionScenes: Record<string, Scene> = {
         mood: 'confident',
       },
       {
-        character: 'drvoss',
+        character: 'narrator',
         text: "Indeed. I've observed considerable growth in all of you. Personal development is as important as professional achievements in this program.",
       },
       {
-        character: 'drvoss',
+        character: 'narrator',
         text: "Keep this momentum going into winter. It will determine your final evaluations and future assignments with Cybaton.",
       }
     ],
