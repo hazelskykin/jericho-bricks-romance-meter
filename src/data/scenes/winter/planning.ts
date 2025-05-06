@@ -65,7 +65,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "After autumn, I realized how much people need these connections. I want to help others find what we found together.",
-        mood: 'sincere',
+        mood: 'happy',
       },
       {
         character: 'maven',
@@ -75,7 +75,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "With your support, I feel like I can do this. I'm not just the tech guy anymore - I'm someone who can help bring people together.",
-        mood: 'grateful',
+        mood: 'happy',
       }
     ],
     nextSceneId: 'winter-festival-intro'
@@ -88,32 +88,32 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'etta',
         text: "I reached out to my father yesterday. About the arranged marriage situation.",
-        mood: 'nervous',
+        mood: 'neutral',
       },
       {
         character: 'maven',
         text: "That must have been difficult. How did it go?",
-        mood: 'concerned',
+        mood: 'sad',
       },
       {
         character: 'etta',
         text: "Better than expected. I was direct about my feelings, about what I want for my future... and about us.",
-        mood: 'vulnerable',
+        mood: 'sad',
       },
       {
         character: 'etta',
         text: "He was surprised, but he listened. I proposed that his company could still partner with Cybaton without the marriage requirement.",
-        mood: 'determined',
+        mood: 'neutral',
       },
       {
         character: 'maven',
         text: "That's a huge step, Etta. I'm proud of you for standing up for yourself.",
-        mood: 'proud',
+        mood: 'confident',
       },
       {
         character: 'etta',
         text: "For the Winter Gala, he's agreed to come and discuss terms. I want to show him that I can be successful on my own terms.",
-        mood: 'determined',
+        mood: 'neutral',
       },
       {
         character: 'etta',
@@ -174,59 +174,61 @@ const winterPlanningScenes: Record<string, Scene> = {
   // Senara's winter planning scene
   'winter-senara-planning': {
     id: 'winter-senara-planning',
-    background: 'cybaton-library',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'senara',
-        text: "I've been developing a new platform for the Winter Gala & Games. Something to give voice to those who usually go unheard.",
-        mood: 'thoughtful',
+        text: "I find myself distracted from the planning efforts required for the festival.",
+        mood: 'sad',
       },
       {
         character: 'maven',
-        text: "That sounds perfect for you. What inspired this?",
-        mood: 'curious',
-      },
-      {
-        character: 'senara',
-        text: "You did, in part. Seeing you accept me for who I am... it made me want to create spaces where others feel that same acceptance.",
-        mood: 'sincere',
-      },
-      {
-        character: 'senara',
-        text: "I've spent too much of my life in silence, watching from the shadows. Now I want to help others step into the light.",
-        mood: 'determined',
-      },
-      {
-        character: 'maven',
-        text: "I've never heard you speak so passionately about something before.",
+        text: "Oh? Is something troubling you?",
         mood: 'surprised',
       },
       {
         character: 'senara',
-        text: "I'm trying to be more assertive with my feelings. Starting with how I feel about you.",
-        mood: 'vulnerable',
+        text: "You, in part. I mean, you are the root cause of the flood of emotions I'm now experiencing that have caused me to be distracted.",
+        mood: 'happy',
       },
       {
         character: 'senara',
-        text: "This project isn't just about technology. It's about connection, understanding, and giving everyone a chance to be heard.",
-        mood: 'determined',
+        text: "I've spent too much of my life in silence, with moderated logical reactions as were expected of me. Now I feel like I know what the heights and lows of human emotion are for the first time.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "What's different now?",
+        mood: 'surprised',
+      },
+      {
+        character: 'senara',
+        text: "First, I think I was subconsciously regulating my thoughts and feelings to avoid further scrutiny from those watching over my development. But after declining the interface sessions, a floodgate opened in my mind.",
+        mood: 'sad',
+      },
+      {
+        character: 'senara',
+        text: "And, I'm trying to be more assertive with my feelings. Starting with how I feel about you.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "May I?",
+        mood: 'embarrassed',
       }
-    ],
-    nextSceneId: 'winter-festival-intro'
-  },
-  // Character-specific planning router
-  'winter-character-specific-planning': {
-    id: 'winter-character-specific-planning',
-    background: 'stonewich-office',
-    dialogue: [
       {
         character: 'narrator',
-        text: "Routing to character-specific winter planning scene...",
+        text: "Senara brings his hand up to yours with slow hesitation, watching for your reaction as he gently wraps his fingers with yours in the barest of touches.",
+      }
+      {
+        character: 'maven',
+        text: "Yes, please.",
+        mood: 'embarrassed',
       }
     ],
-    // This scene exists only to route to the appropriate character's scene
     nextSceneId: 'winter-festival-intro'
   },
+
   // Winter festival introduction
   'winter-festival-intro': {
     id: 'winter-festival-intro',
@@ -242,14 +244,14 @@ const winterPlanningScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
-        character: 'xavier',
-        text: "The systems are all running smoothly. Even with the increased load, we're handling it perfectly.",
-        mood: 'proud',
+        character: 'etta',
+        text: "All the arrangements have been made, and the teams are executing smoothly.",
+        mood: 'happy',
       },
       {
         character: 'senara',
         text: "Let's make this a night to remember.",
-        mood: 'determined',
+        mood: 'happy',
       }
     ],
     nextSceneId: 'winter-festival-activities'
