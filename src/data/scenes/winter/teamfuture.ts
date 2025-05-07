@@ -41,7 +41,7 @@ const teamFutureScenes: Record<string, Scene> = {
         mood: 'neutral',
       }
     ],
-    nextSceneId: 'epilogue-intro',
+    nextSceneId: 'winter-to-epilogue',
   }
 };
 
