@@ -72,11 +72,11 @@ const autumnConclusionScenes: Record<string, Scene> = {
   },
   'autumn-conclusion': {
     id: 'autumn-conclusion',
-    background: 'stonewich-cafe',
+    background: 'cybaton-shuttle',
     dialogue: [
       {
         character: 'narrator',
-        text: "After the meeting with Dr. Voss, the team gathers at a café to unwind and reflect on their journey so far.",
+        text: "After the meeting with Dr. Voss, the team debriefs on the shuttle back to Stonewich and reflects on their journey so far.",
       },
       {
         character: 'navarre',
