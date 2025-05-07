@@ -138,7 +138,7 @@ const GameInterface: React.FC = () => {
   }
   
   // Handle special scenes like character selection for autumn season - focused on the romantic interest
-  if (gameState.currentScene.includes('autumn-character-selection')) {
+  if (gameState.currentScene.includes('autumn-relationship-development')) {
     if (gameState.currentLoveInterest) {
       return (
         <CharacterSelectionScene 
