@@ -487,7 +487,7 @@ const characterVisitScenes: Record<string, Scene> = {
         nextSceneId: 'summer-visit-senara-technical',
       },
       {
-        text: "Tell me more about these neural enhancements. How do they affect your sense of self?",
+        text: "Tell me more about these neural enhancements. How do they affect how you experience the world?",
         affectionChanges: { senara: 1 },
         nextSceneId: 'summer-visit-senara-personal',
       },
@@ -542,7 +542,7 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "I'm interested in you as a person. That includes understanding how you experience the world.",
+        text: "I'm interested in you as a person. That includes understanding how your perception of our shared reality may differ.",
         mood: 'neutral',
       },
       {
