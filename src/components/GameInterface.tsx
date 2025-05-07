@@ -180,7 +180,7 @@ if (gameState.currentScene === 'autumn-relationship-development') {
     if (gameState.currentLoveInterest) {
       handleSceneTransition(`winter-confession-${gameState.currentLoveInterest}`);
     } else {
-      handleSceneTransition('winter-festival-activities');
+      handleSceneTransition('team-future-meeting');
     }
     return null;
   }
