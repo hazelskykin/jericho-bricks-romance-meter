@@ -12,7 +12,7 @@ const MainContent: React.FC = () => {
       transition={{ duration: 1 }}
     >
       <p className="text-sm text-white/80 mb-6 text-right max-w-md">
-        Navigate relationships and technology in the city of Stonewich as part of Cybaton's elite administrative team.
+        Cybaton is recruiting you for its elite administrative team; achieve love and success in a year.
       </p>
 
       {/* Character Chibi Preview - Right-aligned */}
