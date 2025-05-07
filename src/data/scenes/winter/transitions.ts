@@ -29,7 +29,7 @@ const winterTransitions: Record<string, Scene> = {
         text: "With the winter festival behind you, it's time to reflect on everything you've achieved and decide what comes next.",
       }
     ],
-    nextSceneId: 'epilogue-route',
+    nextSceneId: 'epilogue-intro',
   },
 };
 
