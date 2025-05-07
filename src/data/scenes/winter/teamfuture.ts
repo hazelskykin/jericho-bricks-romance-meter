@@ -1,20 +1,19 @@
+
 import { Scene } from '../../../types/game';
 
 const teamFutureScenes: Record<string, Scene> = {
-
-// game-end-team-futures, follows relationship-confession scenes
-
-'team-future-meeting': {
+  // game-end-team-futures, follows relationship-confession scenes
+  'team-future-meeting': {
     id: 'team-future-meeting',
     background: 'cybaton-meeting-room',
     dialogue: [
-        {
-            character: 'narrator',
-            text: "The air is thick with anticipation. The cool, collected demeanor your team members have usually composed betrays small hints of stress."
-        }
-        {
-            character: 'narrator',
-            text: "Dr. Voss: Thank you all for coming, and thank you once again for your hard work this past year. Our faith in you as individuals and as a team has been validated beyond expectations.",
+      {
+        character: 'narrator',
+        text: "The air is thick with anticipation. The cool, collected demeanor your team members have usually composed betrays small hints of stress."
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss: Thank you all for coming, and thank you once again for your hard work this past year. Our faith in you as individuals and as a team has been validated beyond expectations.",
       },
       {
         character: 'narrator',
@@ -27,7 +26,7 @@ const teamFutureScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "As for the 'Versa' role experiment, a conclusion has not yet been reached. We will discuss that separately at another time.",
-      },
+      }
     ],
     nextSceneId: 'winter-epilogue-check',
   },
@@ -43,8 +42,7 @@ const teamFutureScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'epilogue-intro',
-  },
-],
+  }
 };
 
 export default teamFutureScenes;

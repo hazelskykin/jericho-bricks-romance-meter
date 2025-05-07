@@ -1,17 +1,22 @@
 
-import { Scene } from '../../../types/game';
-import introScenes from './intro';
-import planningScenes from './planning';
-import activitiesScenes from './activities';
+import { Scene } from '@/types/game';
+import winterIntroScenes from './intro';
+import winterPlanningScenes from './planning';
+import winterActivitiesScenes from './activities';
+import winterConclusionScenes from './conclusion';
 import relationshipScenes from './relationship';
-import conclusionScenes from './conclusion';
+import winterTransitionScenes from './transition';
+import teamFutureScenes from './teamfuture';
 
-const winter: Record<string, Scene> = {
-  ...introScenes,
-  ...planningScenes,
-  ...activitiesScenes,
+// Combine all winter-related scenes
+const winterScenes: Record<string, Scene> = {
+  ...winterIntroScenes,
+  ...winterPlanningScenes,
+  ...winterActivitiesScenes,
+  ...winterConclusionScenes,
   ...relationshipScenes,
-  ...conclusionScenes,
+  ...winterTransitionScenes,
+  ...teamFutureScenes,
 };
 
-export default winter;
+export default winterScenes;

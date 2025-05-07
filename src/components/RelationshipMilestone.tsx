@@ -13,8 +13,12 @@ interface RelationshipMilestoneProps {
   level: string;
 }
 
+/**
+ * This component has been disabled as requested by the user.
+ * No toast notifications will be shown for relationship milestones.
+ */
 export const showRelationshipMilestone = ({ characterId, milestoneText, level }: RelationshipMilestoneProps) => {
-  // All toast notifications have been disabled as requested
+  // All toast notifications have been disabled as requested by the user
   return;
 };
 

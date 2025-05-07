@@ -135,7 +135,7 @@ const happyEndingScenes: Record<string, Scene> = {
         character: 'etta',
         text: "Me too, Maven. I feel the same. I am still as driven as ever, but now I feel whole as a person without the pressure of my work or family as my identity.",
         mood: 'happy',
-      }
+      },
       {
         character: 'maven',
         text: "Speaking of your family, your father spoke to me yesterday and asked me about my intentions toward his daughter.",
@@ -239,7 +239,7 @@ const happyEndingScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "Senara solemnly gets down on one knee and holds up a beautiful diamond ring out to you, in a traditional expression of devoted love."
-      }
+      },
       {
         character: 'senara',
         text: "Maven, will you consent to marry me, to be my wife, to live out our days together weathering happiness and strife as one?",

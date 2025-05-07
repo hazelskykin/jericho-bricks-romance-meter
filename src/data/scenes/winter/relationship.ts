@@ -270,7 +270,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "Of course I am sure! No one means more to me.",
         mood: "laughing",
-      }
+      },
       {
         character: 'etta',
         text: "My father was able to see what I see in you. How you've helped me become stronger in ways I didn't know I lacked it before.",
@@ -346,12 +346,12 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "Then I'm curious to hear your findings as you have no doubt been thorough.",
         mood: 'laughing',
-      }
+      },
       {
         character: 'senara',
         text: "I must preface my findings by saying this isn't a subject I have expertise in. But I know what I feel is real and significant.",
         mood: 'happy',
-      }
+      },
       {
         character: 'senara',
         text: "My conclusion, after thorough analysis, is that I've developed passionate feelings for you. A near certainty of love.",
@@ -394,32 +394,32 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "That response seems to support validation of your conclusion. How about one more test?",
         mood: 'happy',
-      }
+      },
       {
         character: 'maven',
         text: "Let's test a physical stiumlus...",
         mood: 'embarrassed',
-      }
+      },
       {
         character: 'narrator',
         text: "You lean forward and give the lightest, gentlest kiss to Senara on his cheek.",
         mood: 'embarrassed',
-      }
+      },
       {
         character: 'senara',
         text: "...",
         mood: 'embarrassed',
-      }
+      },
       {
         character: 'maven',
         text: "I have hoped for this for a long time. I love you, Senara, passionately and fully with all my heart with a certainty that's beyond measure.",
         mood: 'happy',
-      }
+      },
       {
         character: 'senara',
         text: "Forgive me, but I must borrow another's words as my own are deficit here, yet another experience new to me,",
         mood: 'laughing',
-      }
+      },
       {
         character: 'senara',
         text: "..it is an ever-fixèd mark, That looks on tempests and is never shaken...if this be error and upon me proved, I never writ, nor no man ever loved.",
@@ -451,7 +451,7 @@ const relationshipScenes: Record<string, Scene> = {
         character: 'maven',
         text: "You found a way to share that you're comfortable with? That sounds like it'll be helpful to so many.",
         mood: 'happy',
-      }
+      },
       {
         character: 'senara',
         text: "Yes, I'm grateful to you. Your perspective has changed my own so much.",

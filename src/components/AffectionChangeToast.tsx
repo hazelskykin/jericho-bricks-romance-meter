@@ -10,7 +10,11 @@ interface AffectionChangeProps {
   previousLevel: string;
 }
 
+/**
+ * This component has been disabled as requested by the user.
+ * No toast notifications will be shown for affection changes.
+ */
 export const showAffectionChange = ({ characterId, changeAmount, newLevel, previousLevel }: AffectionChangeProps) => {
-  // All toast notifications have been disabled as requested
+  // All toast notifications have been disabled as requested by the user
   return;
 };
