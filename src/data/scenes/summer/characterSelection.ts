@@ -3,7 +3,7 @@ const generateCharacterSelectionScenes = (): Record<string, Scene> => {
   const sceneMap: Record<string, Scene> = {};
 
   const generateSceneId = (visited: CharacterId[]): string => {
-    if (visited.length === 0) return 'summer-character-selection';
+    if (visited.length === 0) return 'summer-visit-character';
     const suffix = visited.map(c => (characterOrder.indexOf(c) + 1).toString()).join('');
     return `summer-character-selection-${suffix}`;
   };
