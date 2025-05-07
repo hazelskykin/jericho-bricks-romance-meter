@@ -165,7 +165,7 @@ if (gameState.currentScene === 'autumn-relationship-development') {
           scenePrefix="winter"
           title="Winter Romance"
           description="As winter blankets Stonewich, the festive season acts as a catalyst for a close relationship to change."
-          completionSceneId={`winter-${gameState.currentLoveInterest}-confession`}
+          completionSceneId={`winter-confession-${gameState.currentLoveInterest}`}
         />
       );
     } else {
