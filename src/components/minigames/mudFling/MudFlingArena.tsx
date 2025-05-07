@@ -1,91 +1,89 @@
 
 import React from 'react';
-import { CharacterId } from '@/types/game';
+import { Character, MudBall } from './types';
 import MudCharacter from './MudCharacter';
-import { Position, MudBall, Character } from './types';
+import MudFlingFountain from './MudFlingFountain';
 
-export interface MudFlingArenaProps {
+interface MudFlingArenaProps {
   mudBalls: MudBall[];
   characters: Character[];
   selectedMudBall: string | null;
   fountainIntensity: 'low' | 'medium' | 'high';
-  characterColors: Record<string, any>;
-  onMudBallClick: (ballId: string) => void;
-  onGameAreaClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  characterColors: Record<string, { color: string }>;
+  onMudBallClick: (id: string) => void;
+  onGameAreaClick: (x: number, y: number) => void;
 }
 
-// Create a forwardRef component
-const MudFlingArena = React.forwardRef<HTMLDivElement, MudFlingArenaProps>(
-  ({
-    mudBalls,
-    characters,
-    selectedMudBall,
-    fountainIntensity,
-    characterColors,
-    onMudBallClick,
-    onGameAreaClick
-  }, ref) => {
-    return (
-      <div 
-        ref={ref} 
-        onClick={onGameAreaClick}
-        className="relative w-[600px] h-[400px] bg-cover border-2 border-dashed border-amber-800 mx-auto my-5 overflow-hidden"
-        style={{ backgroundImage: "url('/assets/backgrounds/stonewich-cityscape.jpg')" }}
-      >
-        <div className={`
-          absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-          w-20 h-20 rounded-full border-2 border-[saddlebrown] 
-          flex items-center justify-center text-white font-bold text-shadow
-          ${fountainIntensity === 'low' ? 'bg-[rgba(101,67,33,0.5)]' : 
-            fountainIntensity === 'medium' ? 'bg-[rgba(101,67,33,0.7)]' : 
-            'bg-[rgba(101,67,33,0.9)]'}
-        `}>
-          <div className={`
-            absolute inset-0 rounded-full overflow-hidden
-            ${fountainIntensity === 'low' ? 'animate-pulse' : 
-              fountainIntensity === 'medium' ? 'animate-pulse' : 
-              'animate-bounce'}
-          `}>
-            <div className="h-full w-full bg-brown-400/30"></div>
-          </div>
-          <span className="z-10">Fountain</span>
-        </div>
-        
-        {mudBalls.map(ball => (
-          <div
-            key={ball.id}
-            className={`absolute w-[30px] h-[30px] cursor-pointer transition-transform hover:scale-110 ${
-              selectedMudBall === ball.id ? 'ring-2 ring-yellow-400' : ''
-            } ${ball.isFlying ? 'animate-none' : 'animate-bounce'}`}
-            style={{ 
-              left: ball.position.x, 
-              top: ball.position.y,
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: 'saddlebrown',
-              borderRadius: '50%'
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onMudBallClick(ball.id);
-            }}
-          />
-        ))}
-        
-        {characters.map(character => (
-          <MudCharacter
-            key={character.id}
-            id={character.id}
-            position={character.position}
-            isHit={character.isHit}
-            team={character.team}
-            borderColor={characterColors[character.id]?.color || 'white'}
-          />
-        ))}
-      </div>
-    );
-  }
-);
+const MudFlingArena: React.FC<MudFlingArenaProps> = ({
+  mudBalls,
+  characters,
+  selectedMudBall,
+  fountainIntensity,
+  characterColors,
+  onMudBallClick,
+  onGameAreaClick
+}) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    onGameAreaClick(x, y);
+  };
 
-MudFlingArena.displayName = 'MudFlingArena';
+  return (
+    <div 
+      className="relative w-full h-[400px] border-2 border-amber-600/30 rounded-lg overflow-hidden"
+      onClick={handleClick}
+      style={{
+        backgroundImage: 'url(/assets/backgrounds/summer-transition.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        cursor: selectedMudBall ? 'crosshair' : 'default'
+      }}
+    >
+      {/* Central mud fountain */}
+      <MudFlingFountain 
+        position={{ x: 300, y: 200 }} 
+        intensity={fountainIntensity} 
+      />
+      
+      {/* Display characters */}
+      {characters.map((character) => (
+        <MudCharacter
+          key={character.id}
+          character={character}
+          characterColors={characterColors}
+        />
+      ))}
+      
+      {/* Display mud balls */}
+      {mudBalls.map((mudBall) => (
+        <div
+          key={mudBall.id}
+          className={`absolute w-6 h-6 rounded-full bg-amber-800 border border-amber-600 shadow-md ${
+            selectedMudBall === mudBall.id ? 'ring-2 ring-yellow-400 scale-125' : ''
+          }`}
+          style={{
+            left: `${mudBall.position.x - 12}px`,
+            top: `${mudBall.position.y - 12}px`,
+            cursor: 'pointer',
+            zIndex: selectedMudBall === mudBall.id ? 10 : 5,
+            transform: `scale(${mudBall.size / 20})`,
+            opacity: mudBall.flying ? 0.8 : 1
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onMudBallClick(mudBall.id);
+          }}
+        />
+      ))}
+      
+      {/* Extra mud puddles for decoration */}
+      <div className="absolute bottom-10 right-20 w-16 h-6 bg-amber-900/70 rounded-full"></div>
+      <div className="absolute bottom-20 left-30 w-12 h-4 bg-amber-900/70 rounded-full"></div>
+      <div className="absolute top-40 left-10 w-14 h-5 bg-amber-900/70 rounded-full"></div>
+    </div>
+  );
+};
 
 export default MudFlingArena;

@@ -5,59 +5,83 @@ import { HiddenItem } from '@/hooks/useBloomWithAViewGame';
 
 interface BloomWithAViewSceneProps {
   hiddenItems: HiddenItem[];
-  clickPosition: {x: number, y: number} | null;
+  clickPosition: { x: number, y: number } | null;
   showHint: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  backgroundImage?: string;
 }
 
 const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
   hiddenItems,
   clickPosition,
   showHint,
-  onClick
+  onClick,
+  backgroundImage = 'summer-transition'
 }) => {
-  const itemSize = 40; // Size of the clickable area
-  
   return (
     <div 
-      className="relative w-full h-[300px] bg-[url('/assets/backgrounds/stonewich-cityscape.jpg')] bg-cover bg-center rounded-lg cursor-pointer overflow-hidden"
+      className="relative w-full h-[400px] rounded-lg border-2 border-purple-600/50 overflow-hidden cursor-pointer"
       onClick={onClick}
+      style={{
+        backgroundImage: `url(/assets/backgrounds/${backgroundImage}.jpg)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
     >
-      {/* Item hotspots (invisible unless hint is active) */}
-      {hiddenItems.map(item => (
-        <motion.div 
-          key={item.id}
-          className={`absolute rounded-full ${item.found ? 'bg-green-500/30' : 'bg-transparent'}`}
-          style={{ 
-            left: item.position.x - itemSize/2, 
-            top: item.position.y - itemSize/2,
-            width: itemSize,
-            height: itemSize
-          }}
-          animate={{ 
-            scale: showHint && !item.found ? [1, 1.5, 1] : 1,
-            opacity: showHint && !item.found ? [0, 0.7, 0] : item.found ? 0.5 : 0
-          }}
-          transition={{ 
-            repeat: showHint && !item.found ? Infinity : 0,
-            duration: 1
-          }}
-        />
+      {/* Visual markers for hints */}
+      {hiddenItems.map((item) => (
+        item.highlighted && showHint && (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="absolute w-12 h-12 rounded-full border-2 border-dashed border-yellow-400 bg-yellow-400/20"
+            style={{
+              left: item.position.x - 24,
+              top: item.position.y - 24,
+              zIndex: 5
+            }}
+          />
+        )
       ))}
       
-      {/* Click feedback animation */}
+      {/* Display found items markers */}
+      {hiddenItems.map((item) => (
+        item.found && (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="absolute w-8 h-8 rounded-full bg-green-500 flex items-center justify-center"
+            style={{
+              left: item.position.x - 16,
+              top: item.position.y - 16,
+              zIndex: 10
+            }}
+          >
+            <span className="text-white text-xs">✓</span>
+          </motion.div>
+        )
+      ))}
+      
+      {/* Click feedback */}
       {clickPosition && (
-        <motion.div 
-          className="absolute w-10 h-10 rounded-full border-2 border-white"
-          style={{ 
-            left: clickPosition.x - 20, 
-            top: clickPosition.y - 20 
-          }}
-          initial={{ scale: 0.5, opacity: 1 }}
-          animate={{ scale: 2, opacity: 0 }}
+        <motion.div
+          initial={{ opacity: 0.8, scale: 0.5 }}
+          animate={{ opacity: 0, scale: 2 }}
           transition={{ duration: 0.5 }}
+          className="absolute w-8 h-8 rounded-full bg-white/50 pointer-events-none"
+          style={{
+            left: clickPosition.x - 16,
+            top: clickPosition.y - 16,
+            zIndex: 20
+          }}
         />
       )}
+      
+      {/* Decoration items to make the game scene more interesting */}
+      <div className="absolute bottom-4 right-4 w-16 h-16 bg-contain bg-no-repeat" 
+        style={{ backgroundImage: 'url(/assets/characters/maven-chibi.png)' }} />
     </div>
   );
 };

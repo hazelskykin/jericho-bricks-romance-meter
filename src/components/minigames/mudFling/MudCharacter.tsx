@@ -1,54 +1,69 @@
 
 import React from 'react';
-import { CharacterId } from '@/types/game';
-import { Position } from './types';
+import { motion } from 'framer-motion';
+import { Character } from './types';
 
 interface MudCharacterProps {
-  id: CharacterId;
-  position: Position;
-  isHit: boolean;
-  team: 'team1' | 'team2';
-  borderColor: string;
+  character: Character;
+  characterColors: Record<string, { color: string }>;
 }
 
-const MudCharacter: React.FC<MudCharacterProps> = ({
-  id,
-  position,
-  isHit,
-  team,
-  borderColor
-}) => {
+const MudCharacter: React.FC<MudCharacterProps> = ({ character, characterColors }) => {
+  const characterColor = characterColors[character.id]?.color || '#888888';
+  
+  // Determine which character chibi image to use
+  const getCharacterImage = (id: string) => {
+    return `/assets/characters/${id}-chibi.png`;
+  };
+
   return (
-    <div 
-      className="absolute"
-      style={{ 
-        left: position.x, 
-        top: position.y,
-        transform: 'translate(-50%, -50%)'
+    <motion.div
+      className={`absolute ${character.isHit ? 'opacity-50' : 'opacity-100'}`}
+      style={{
+        left: character.position.x - 20,
+        top: character.position.y - 20,
+        zIndex: 10
       }}
+      animate={{
+        x: character.isHit ? [0, -5, 5, -5, 0] : 0
+      }}
+      transition={{ duration: 0.5 }}
     >
-      <div className={`relative ${isHit ? 'animate-pulse' : ''}`}>
-        <img
-          src={`/img/character-${isHit ? 'surprised' : 'neutral'}.png`}
-          alt={id}
-          style={{ 
-            borderColor: borderColor || 'white'
-          }}
-          className={`
-            w-[50px] h-[50px] rounded-full border-2
-            ${team === 'team1' ? 'ring-2 ring-blue-400' : 'ring-2 ring-red-400'}
-          `}
+      {/* Character body */}
+      <div
+        className="relative w-16 h-16 flex items-center justify-center"
+        style={{ filter: character.isHit ? 'grayscale(50%)' : 'none' }}
+      >
+        {/* Character image */}
+        <div 
+          className="absolute w-full h-full bg-contain bg-no-repeat bg-center"
+          style={{ backgroundImage: `url(${getCharacterImage(character.id)})` }}
         />
-        {isHit && (
-          <div className="absolute inset-0 bg-brown-500/30 rounded-full flex items-center justify-center">
-            <span className="text-xs font-bold text-white">SPLAT!</span>
+        
+        {/* Team indicator */}
+        <div 
+          className="absolute top-0 right-0 w-4 h-4 rounded-full" 
+          style={{ 
+            backgroundColor: character.team === 'team1' ? '#4CC2FF' : '#FF5E5B',
+            border: '1px solid white'
+          }}
+        />
+        
+        {/* Character is hit indicator */}
+        {character.isHit && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-amber-800/50 w-12 h-12 rounded-full animate-ping"></div>
           </div>
         )}
       </div>
-      <div className="mt-1 text-center text-xs font-bold text-white bg-black/50 rounded px-1">
-        {id.charAt(0).toUpperCase() + id.slice(1)}
+      
+      {/* Character name */}
+      <div 
+        className="absolute -bottom-6 left-0 right-0 text-center text-xs font-medium bg-black/50 text-white rounded px-1"
+      >
+        {character.id}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -53,6 +53,18 @@ const GameInterface: React.FC = () => {
     return <AboutScreen />;
   }
   
+  // If a minigame is active, show it with priority
+  if (activeMinigame) {
+    console.log(`Showing active minigame: ${activeMinigame}`);
+    return (
+      <MinigameHandler 
+        activeMinigame={activeMinigame}
+        completeMinigame={completeMinigame}
+        exitMinigame={exitMinigame}
+      />
+    );
+  }
+  
   // Handle special scenes like character selection for spring season
   if (gameState.currentScene.includes('spring-character-selection')) {
     // Extract suffix from scene ID to identify which characters have been visited
@@ -327,18 +339,6 @@ const GameInterface: React.FC = () => {
         title="Winter Gala & Games Festival"
         description="The winter festival is underway! Choose which activities you'd like to experience."
         completionSceneId="winter-festival-completion"
-      />
-    );
-  }
-  
-  // If a minigame is active, show it
-  if (activeMinigame) {
-    console.log(`Showing active minigame: ${activeMinigame}`);
-    return (
-      <MinigameHandler 
-        activeMinigame={activeMinigame}
-        completeMinigame={completeMinigame}
-        exitMinigame={exitMinigame}
       />
     );
   }

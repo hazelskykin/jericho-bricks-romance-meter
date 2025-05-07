@@ -11,9 +11,10 @@ export interface HiddenItem {
     x: number;
     y: number;
   };
+  highlighted?: boolean; // New property for hint highlighting
 }
 
-export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
+export function useBloomWithAViewGame(onComplete: (success: boolean) => void, onExit: () => void) {
   // Game config
   const gameDuration = 60; // seconds
   
@@ -23,31 +24,31 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
       id: 'item-1',
       name: 'Rare Orchid',
       found: false,
-      position: { x: 100, y: 200 }
+      position: { x: 380, y: 220 }
     },
     {
       id: 'item-2',
       name: 'Garden Gnome',
       found: false,
-      position: { x: 500, y: 150 }
+      position: { x: 500, y: 350 }
     },
     {
       id: 'item-3',
       name: 'Butterfly',
       found: false,
-      position: { x: 300, y: 100 }
+      position: { x: 200, y: 180 }
     },
     {
       id: 'item-4',
       name: 'Vintage Watering Can',
       found: false,
-      position: { x: 200, y: 300 }
+      position: { x: 620, y: 300 }
     },
     {
       id: 'item-5',
       name: 'Stone Sculpture',
       found: false,
-      position: { x: 600, y: 250 }
+      position: { x: 100, y: 250 }
     }
   ]);
   
@@ -59,6 +60,8 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
   
   // Handle clicks on the garden scene
   const handleSceneClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (gameComplete) return;
+    
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
@@ -67,14 +70,16 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
     soundManager.play('item-click');
     
     // Check if click is near any hidden items
-    const itemSize = 40; // Size of the clickable area
+    const itemSize = 60; // Increase clickable area size
     hiddenItems.forEach(item => {
+      if (item.found) return; // Skip already found items
+      
       const distance = Math.sqrt(
         Math.pow(x - item.position.x, 2) + 
         Math.pow(y - item.position.y, 2)
       );
       
-      if (distance < itemSize/2 && !item.found) {
+      if (distance < itemSize/2) {
         // Found an item!
         setHiddenItems(prev => 
           prev.map(i => i.id === item.id ? { ...i, found: true } : i)
@@ -112,11 +117,14 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
       // Time's up, end the game
       setGameComplete(true);
       soundManager.play('game-lose');
+      toast.error("Time's up!");
       setTimeout(() => {
         onComplete(false);
       }, 2000);
       return;
     }
+    
+    if (gameComplete) return;
     
     const timer = setTimeout(() => {
       setTimeRemaining(prev => prev - 1);
@@ -132,23 +140,59 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
     if (allFound && !gameComplete) {
       setGameComplete(true);
       soundManager.play('game-win');
+      toast.success("You found all the hidden items!");
       setTimeout(() => {
         onComplete(true);
       }, 2000);
     }
   }, [hiddenItems, gameComplete, onComplete]);
   
-  // Handle hint button click
+  // Handle hint button click - improved to highlight an unfound item
   const handleHintClick = () => {
-    if (hintCooldown > 0) return;
+    if (hintCooldown > 0 || gameComplete) return;
+    
+    // Find unfound items
+    const unfoundItems = hiddenItems.filter(item => !item.found);
+    if (unfoundItems.length === 0) return;
+    
+    // Select a random unfound item to highlight
+    const randomIndex = Math.floor(Math.random() * unfoundItems.length);
+    const itemToHighlight = unfoundItems[randomIndex];
+    
+    setHiddenItems(prev => 
+      prev.map(item => 
+        item.id === itemToHighlight.id 
+          ? { ...item, highlighted: true }
+          : item
+      )
+    );
     
     setShowHint(true);
     setHintCooldown(10); // 10 second cooldown
     soundManager.play('hint-activate');
     
+    toast.info(`Hint: Look for the ${itemToHighlight.name}!`);
+    
+    // Remove highlight after 3 seconds
     setTimeout(() => {
       setShowHint(false);
+      setHiddenItems(prev => 
+        prev.map(item => ({...item, highlighted: false}))
+      );
     }, 3000);
+  };
+  
+  // Handle exit button properly
+  const handleExit = () => {
+    if (gameComplete) {
+      // Game is already complete, so just exit
+      onExit();
+    } else {
+      // Game is not complete, ask for confirmation
+      if (window.confirm("Are you sure you want to exit? Your progress will be lost.")) {
+        onExit();
+      }
+    }
   };
 
   return {
@@ -159,6 +203,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void) {
     gameComplete,
     timeRemaining,
     handleSceneClick,
-    handleHintClick
+    handleHintClick,
+    handleExit
   };
 }

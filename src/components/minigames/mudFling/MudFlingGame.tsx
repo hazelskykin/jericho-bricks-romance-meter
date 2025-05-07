@@ -7,6 +7,8 @@ import GameStatusMessage from '../common/GameStatusMessage';
 import { Character, Position } from './types';
 import { useMudFlingGame } from '@/hooks/useMudFlingGame';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { useGame } from '@/context/GameContext';
 
 interface MudFlingGameProps {
   onComplete: (success: boolean) => void;
@@ -14,6 +16,7 @@ interface MudFlingGameProps {
 }
 
 const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
+  const { gameState } = useGame();
   const {
     timeRemaining,
     fountainIntensity,
@@ -23,9 +26,18 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
     team1Score,
     team2Score,
     gameEnded,
+    initialized,
     handleMudBallClick,
-    handleGameAreaClick
-  } = useMudFlingGame(onComplete);
+    handleGameAreaClick,
+    initializeCharacters,
+    handleExit
+  } = useMudFlingGame(onComplete, onExit);
+  
+  // Initialize characters once when component mounts
+  useEffect(() => {
+    // Initialize characters with game state character data
+    initializeCharacters(gameState.characters);
+  }, []);
   
   // Determine the winner based on team scores
   const isPlayerWinner = team1Score > team2Score;
@@ -33,12 +45,29 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
   // This variable can be set to false when the game is under construction
   const isGameReady = true;
   
+  // If characters aren't initialized yet, show loading
+  if (!initialized) {
+    return (
+      <MinigameContainer
+        title="Mud Fling"
+        instructions="Loading the game..."
+        onComplete={onComplete}
+        onExit={onExit}
+      >
+        <div className="flex flex-col items-center justify-center p-8 h-full">
+          <Loader2 className="h-16 w-16 animate-spin text-[#9b87f5] mb-4" />
+          <p className="text-white text-lg">Preparing mud fight...</p>
+        </div>
+      </MinigameContainer>
+    );
+  }
+  
   return (
     <MinigameContainer
       title="Mud Fling"
       instructions="Select a mud ball and then click where you want to throw it. Hit the opposing team to score points!"
       onComplete={onComplete}
-      onExit={onExit}
+      onExit={handleExit}
     >
       <div className="flex flex-col items-center">
         {isGameReady ? (

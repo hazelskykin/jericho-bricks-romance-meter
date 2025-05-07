@@ -1,5 +1,4 @@
-
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { GameState, CharacterId } from '@/types/game';
 import { soundManager } from '@/utils/soundEffects';
 
@@ -35,6 +34,15 @@ export function useGameMinigames(
   const [returnSceneAfterMinigame, setReturnSceneAfterMinigame] = useState<string>('');
   const [pendingMinigame, setPendingMinigame] = useState<MinigameType | null>(null);
   
+  // Use refs to track state updates for debugging
+  const activeMinigameRef = useRef<MinigameType | null>(null);
+  const isProcessingRef = useRef<boolean>(false);
+  
+  // Keep the ref in sync with the state
+  useEffect(() => {
+    activeMinigameRef.current = activeMinigame;
+  }, [activeMinigame]);
+  
   // Debug log current state whenever minigame state changes
   useEffect(() => {
     console.log(`Minigame state updated - activeMinigame: ${activeMinigame}, returnScene: ${returnSceneAfterMinigame}`);
@@ -42,10 +50,20 @@ export function useGameMinigames(
   
   // Effect to handle pending minigame requests
   useEffect(() => {
-    if (pendingMinigame && !activeMinigame) {
+    if (pendingMinigame && !activeMinigame && !isProcessingRef.current) {
       console.log(`Processing pending minigame request: ${pendingMinigame}`);
-      setActiveMinigame(pendingMinigame);
-      setPendingMinigame(null);
+      isProcessingRef.current = true;
+      
+      // Use setTimeout to ensure React has finished processing previous state updates
+      setTimeout(() => {
+        setActiveMinigame(pendingMinigame);
+        setPendingMinigame(null);
+        
+        // Reset processing flag after a delay to allow state to update
+        setTimeout(() => {
+          isProcessingRef.current = false;
+        }, 100);
+      }, 100);
     }
   }, [pendingMinigame, activeMinigame]);
   
@@ -59,11 +77,14 @@ export function useGameMinigames(
     setReturnSceneAfterMinigame(currentReturnScene);
     
     // Check if we already have an active minigame
-    if (activeMinigame) {
-      console.log(`Already have active minigame: ${activeMinigame}, queueing new request for: ${minigameType}`);
+    if (activeMinigameRef.current || isProcessingRef.current) {
+      console.log(`Already have active minigame: ${activeMinigameRef.current}, queueing new request for: ${minigameType}`);
       setPendingMinigame(minigameType);
       return;
     }
+    
+    // Set processing flag
+    isProcessingRef.current = true;
     
     // Set active minigame 
     console.log(`Setting active minigame to: ${minigameType}`);
@@ -71,12 +92,19 @@ export function useGameMinigames(
     
     // Additional debug log to track flow
     setTimeout(() => {
-      console.log(`Minigame should now be active: ${minigameType}`);
-      if (!activeMinigame) {
-        console.warn("Minigame state not updated as expected");
+      console.log(`Minigame should now be active: ${minigameType}, actual state: ${activeMinigameRef.current}`);
+      
+      // Check if the state was actually updated
+      if (activeMinigameRef.current !== minigameType) {
+        console.warn("Minigame state not updated as expected - forcing update");
+        // Force update as a fallback
+        setActiveMinigame(minigameType);
       }
-    }, 700);
-  }, [gameState.currentScene, activeMinigame]);
+      
+      // Reset processing flag
+      isProcessingRef.current = false;
+    }, 300);
+  }, [gameState.currentScene]);
   
   const completeMinigame = useCallback((success: boolean) => {
     console.log(`Completing minigame: ${activeMinigame}, success: ${success}, return scene: ${returnSceneAfterMinigame}`);
@@ -153,27 +181,26 @@ export function useGameMinigames(
           break;
       }
       
-      // Apply affection changes
-      const updatedCharacters = { ...gameState.characters };
-      
-      Object.entries(affectionChanges).forEach(([charId, change]) => {
-        if (updatedCharacters[charId]) {
-          const currentAffection = updatedCharacters[charId].affection;
-          const newAffection = currentAffection + change;
-          
-          updatedCharacters[charId] = {
-            ...updatedCharacters[charId],
-            affection: newAffection
-          };
-          
-          // Toast notifications have been removed
-        }
-      });
-      
-      setGameState(prev => ({
-        ...prev,
-        characters: updatedCharacters
-      }));
+      // Apply affection changes if any
+      if (Object.keys(affectionChanges).length > 0) {
+        // Create a safe copy of characters
+        const updatedCharacters = JSON.parse(JSON.stringify(gameState.characters));
+        
+        // Apply each change safely
+        Object.entries(affectionChanges).forEach(([charId, change]) => {
+          const characterId = charId as CharacterId;
+          if (updatedCharacters[characterId]) {
+            const currentAffection = updatedCharacters[characterId].affection || 0;
+            updatedCharacters[characterId].affection = currentAffection + change;
+          }
+        });
+        
+        // Update game state with new character affection values
+        setGameState(prev => ({
+          ...prev,
+          characters: updatedCharacters
+        }));
+      }
     } else if (activeMinigame === 'lookingSigns') {
       // Special case: failing the Looking for Signs minigame has a significant negative effect
       const currentLoveInterest = gameState.currentLoveInterest;
@@ -239,8 +266,12 @@ export function useGameMinigames(
     const completedMinigame = activeMinigame;
     const savedReturnScene = returnSceneAfterMinigame;
     
+    // Set processing flag
+    isProcessingRef.current = true;
+    
     // Clear states immediately to prevent re-renders with stale data
     setActiveMinigame(null);
+    activeMinigameRef.current = null;
     setReturnSceneAfterMinigame('');
     
     // Navigate to the next scene with a delay to ensure state changes are processed
@@ -255,7 +286,7 @@ export function useGameMinigames(
         } else {
           console.error('No next scene ID or return scene available after minigame completion');
           
-          // Try to determine season from current minigame to select appropriate fallback
+          // Use a default fallback based on the minigame type
           if (completedMinigame?.includes('spring')) {
             handleSceneTransition('spring-festival-midway');
           } else if (completedMinigame?.includes('summer')) {
@@ -269,8 +300,13 @@ export function useGameMinigames(
             handleSceneTransition('spring-festival-activities');
           }
         }
+        
+        // Reset processing flag
+        isProcessingRef.current = false;
       } catch (error) {
         console.error("Error during scene transition after minigame:", error);
+        // Reset processing flag even on error
+        isProcessingRef.current = false;
         // Emergency fallback
         handleSceneTransition('start');
       }
@@ -291,19 +327,25 @@ export function useGameMinigames(
       }, 300);
     }, 500);
     
-  }, [activeMinigame, gameState.characters, gameState.currentLoveInterest, returnSceneAfterMinigame, handleSceneTransition, pendingMinigame, startMinigame]);
+  }, [activeMinigame, gameState.characters, returnSceneAfterMinigame, handleSceneTransition, pendingMinigame, startMinigame]);
   
   const exitMinigame = useCallback(() => {
     console.log(`Exiting minigame, returning to: ${returnSceneAfterMinigame}`);
     
     // Clear minigame state
     const savedReturnScene = returnSceneAfterMinigame;
+    
+    // Set processing flag
+    isProcessingRef.current = true;
+    
+    // Clear states
     setActiveMinigame(null);
+    activeMinigameRef.current = null;
     setReturnSceneAfterMinigame('');
     
     // Return to the previous scene if we have one
-    if (savedReturnScene) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (savedReturnScene) {
         console.log(`Now navigating back to scene: ${savedReturnScene}`);
         try {
           handleSceneTransition(savedReturnScene);
@@ -312,12 +354,10 @@ export function useGameMinigames(
           // Emergency fallback
           handleSceneTransition('start');
         }
-      }, 300);
-    } else {
-      console.error('No return scene available after minigame exit');
-      // Try to determine the current season to find an appropriate scene
-      const currentSeason = gameState.currentSeason;
-      setTimeout(() => {
+      } else {
+        console.error('No return scene available after minigame exit');
+        // Try to determine the current season to find an appropriate scene
+        const currentSeason = gameState.currentSeason;
         if (currentSeason === 'spring') {
           handleSceneTransition('spring-festival-activities');
         } else if (currentSeason === 'summer') {
@@ -329,8 +369,11 @@ export function useGameMinigames(
         } else {
           handleSceneTransition('start');
         }
-      }, 300);
-    }
+      }
+      
+      // Reset processing flag
+      isProcessingRef.current = false;
+    }, 300);
   }, [returnSceneAfterMinigame, handleSceneTransition, gameState.currentSeason]);
 
   return {

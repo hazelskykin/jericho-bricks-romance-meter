@@ -26,40 +26,44 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
           return;
         }
         
-        // Check file extension and try with png if jpeg fails
-        const tryImageWithFallback = (path: string, tryPng: boolean = false): void => {
-          const img = new Image();
+        // Image extensions to try (in order of preference)
+        const extensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+        
+        // Extract base path without extension
+        const basePath = imagePath.includes('.')
+          ? imagePath.substring(0, imagePath.lastIndexOf('.'))
+          : imagePath;
+        
+        // Function to try loading with different extensions
+        const tryWithExtensions = (index: number): void => {
+          if (index >= extensions.length) {
+            console.warn(`Failed to load image after trying all extensions: ${imagePath}`);
+            resolve(false);
+            return;
+          }
           
+          const fullPath = `${basePath}.${extensions[index]}`;
+          console.log(`Trying to load image: ${fullPath}`);
+          
+          const img = new Image();
           img.onload = () => resolve(true);
           img.onerror = () => {
-            if (tryPng && path.toLowerCase().endsWith('.jpeg')) {
-              // If jpeg fails, try png
-              const pngPath = path.substring(0, path.length - 5) + '.png';
-              console.log(`Trying fallback image: ${pngPath}`);
-              
-              const pngImg = new Image();
-              pngImg.onload = () => resolve(true);
-              pngImg.onerror = () => resolve(false);
-              pngImg.src = pngPath;
-            } else if (tryPng && path.toLowerCase().endsWith('.jpg')) {
-              // If jpg fails, try png
-              const pngPath = path.substring(0, path.length - 4) + '.png';
-              console.log(`Trying fallback image: ${pngPath}`);
-              
-              const pngImg = new Image();
-              pngImg.onload = () => resolve(true);
-              pngImg.onerror = () => resolve(false);
-              pngImg.src = pngPath;
-            } else {
-              // No more fallbacks
-              resolve(false);
-            }
+            console.warn(`Failed to load image with ${extensions[index]}: ${fullPath}`);
+            // Try next extension
+            tryWithExtensions(index + 1);
           };
-          
-          img.src = path;
+          img.src = fullPath;
         };
         
-        tryImageWithFallback(imagePath, true);
+        // Start with original path first
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => {
+          console.warn(`Failed to load image with original path: ${imagePath}`);
+          // Try with different extensions
+          tryWithExtensions(0);
+        };
+        img.src = imagePath;
       });
     };
 
@@ -108,6 +112,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
           }
           loadedAssets++;
           setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+          return true; // Always return success for Promise.all
         });
         
         await Promise.all(chibiPromises);
@@ -136,9 +141,10 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
             if (!success) {
               failedAssets.push(neutralExpression.image);
             }
-            loadedAssets++;
-            setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
           }
+          loadedAssets++;
+          setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+          return true; // Always return success for Promise.all
         });
         
         await Promise.all(neutralExpressionsPromises);
@@ -153,14 +159,13 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
           const moodExpressionsPromises = characterIds.map(async id => {
             const expression = characterExpressions[id]?.[mood];
             if (expression) {
-              const success = await preloadImage(expression.image);
-              if (!success) {
-                failedAssets.push(expression.image);
-              }
-              // Still increment asset count even if the image failed to load
-              loadedAssets++;
-              setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+              await preloadImage(expression.image);
+              // Intentionally not tracking failures for non-critical assets
             }
+            // Still increment asset count
+            loadedAssets++;
+            setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+            return true; // Always return success for Promise.all
           });
           
           await Promise.all(moodExpressionsPromises);

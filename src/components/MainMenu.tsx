@@ -11,7 +11,7 @@ interface MainMenuProps {
   onAbout: () => void;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
+const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
   return (
     <div className="flex flex-col items-end justify-start min-h-screen relative overflow-hidden">
       {/* Background */}
@@ -22,19 +22,19 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
         {/* Title */}
         <GameTitle />
         
+        {/* Main Content - right-aligned */}
+        <div className="flex flex-1 justify-end px-4 w-full">
+          <MainContent />
+        </div>
+        
         {/* Main Button - right-aligned */}
-        <div className="flex justify-end my-6 z-30 pr-10">
+        <div className="flex justify-end my-6 z-30 pr-10 w-full">
           <Button 
             onClick={onNewGame} 
             className="px-12 py-4 bg-primary text-white text-xl rounded-md shadow-lg hover:bg-primary/90 transform transition-all hover:scale-105"
           >
             New Game
           </Button>
-        </div>
-        
-        {/* Content container - right-aligned */}
-        <div className="flex flex-1 justify-end px-4">
-          <MainContent />
         </div>
       </div>
       
