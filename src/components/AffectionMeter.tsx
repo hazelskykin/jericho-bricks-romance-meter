@@ -20,8 +20,21 @@ const AffectionMeter: React.FC<AffectionMeterProps> = ({ character, isOpen }) =>
     return 'Romantic';
   };
   
-  // Hearts to display
-  const heartsToShow = Math.max(0, Math.min(5, Math.floor(character.affection / 2) + 2));
+  // Hearts to display - align with level thresholds
+  const getHeartsToShow = () => {
+    const level = getLevel();
+    switch(level) {
+      case 'Hostile': return 0;
+      case 'Cold': return 1;
+      case 'Neutral': return 2;
+      case 'Friendly': return 3;
+      case 'Close': return 4;
+      case 'Romantic': return 5;
+      default: return 2; // Default to Neutral
+    }
+  };
+  
+  const heartsToShow = getHeartsToShow();
   
   // Class for level label
   const getLevelClass = () => {

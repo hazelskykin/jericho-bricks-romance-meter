@@ -43,6 +43,20 @@ const springMinigameScenes: Record<string, Scene> = {
     nextSceneId: 'spring-brooms-away-start',
   },
   
+  // Scene that triggers the Brooms Away minigame
+  'spring-brooms-away-start': {
+    id: 'spring-brooms-away-start',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "You prepare to coordinate the cleanup effort using Xavier's drone interface.",
+      },
+    ],
+    // This scene will trigger the minigame via the GameSceneObserver
+    nextSceneId: 'spring-brooms-away-complete',
+  },
+  
   // Scene after completing Brooms Away
   'spring-brooms-away-complete': {
     id: 'spring-brooms-away-complete',
@@ -114,6 +128,20 @@ const springMinigameScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'spring-bloom-view-start',
+  },
+  
+  // Scene that triggers the Bloom With A View minigame
+  'spring-bloom-view-start': {
+    id: 'spring-bloom-view-start',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "You begin searching for the gardening supplies needed for the community planting.",
+      },
+    ],
+    // This scene will trigger the minigame via the GameSceneObserver
+    nextSceneId: 'spring-bloom-view-complete',
   },
   
   // Scene after completing Bloom With A View
@@ -188,6 +216,20 @@ const springMinigameScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'spring-mud-fling-start',
+  },
+  
+  // Scene that triggers the Mud Fling minigame
+  'spring-mud-fling-start': {
+    id: 'spring-mud-fling-start',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "You step into the mud pit arena, ready for a messy but fun competition.",
+      },
+    ],
+    // This scene will trigger the minigame via the GameSceneObserver
+    nextSceneId: 'spring-mud-fling-complete',
   },
   
   // Scene after completing Mud Fling

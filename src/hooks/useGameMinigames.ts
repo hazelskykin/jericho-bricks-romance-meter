@@ -1,12 +1,7 @@
 
-// Only updating a section of this large file where the showAffectionChange calls are
-// We need to incorporate proper level checks
-
 import { useState, useCallback, useEffect } from 'react';
 import { GameState, CharacterId } from '@/types/game';
-import { showAffectionChange } from '@/components/AffectionChangeToast';
 import { soundManager } from '@/utils/soundEffects';
-import { toast } from '@/components/ui/use-toast';
 
 // Add minigame types including autumn and winter minigames
 export type MinigameType = 
@@ -58,13 +53,6 @@ export function useGameMinigames(
   const startMinigame = useCallback((minigameType: MinigameType) => {
     console.log(`useGameMinigames: Starting minigame: ${minigameType} from scene: ${gameState.currentScene}`);
     
-    // Show a toast notification when starting a minigame
-    toast({
-      title: "Loading Minigame",
-      description: `Preparing ${minigameType} minigame...`,
-      duration: 3000,
-    });
-    
     // Store current scene for returning after minigame
     const currentReturnScene = gameState.currentScene;
     console.log(`Setting return scene to: ${currentReturnScene}`);
@@ -81,7 +69,7 @@ export function useGameMinigames(
     console.log(`Setting active minigame to: ${minigameType}`);
     setActiveMinigame(minigameType);
     
-    // Additional debug toast to track flow
+    // Additional debug log to track flow
     setTimeout(() => {
       console.log(`Minigame should now be active: ${minigameType}`);
       if (!activeMinigame) {
@@ -177,20 +165,8 @@ export function useGameMinigames(
             ...updatedCharacters[charId],
             affection: newAffection
           };
-
-          // Get levels for toast
-          const previousLevel = getAffectionLevel(currentAffection);
-          const newLevel = getAffectionLevel(newAffection);
-
-          // Show toast only if level changes
-          if (change > 0 && previousLevel !== newLevel) {
-            showAffectionChange({
-              characterId: charId as CharacterId,
-              changeAmount: change,
-              previousLevel,
-              newLevel
-            });
-          }
+          
+          // Toast notifications have been removed
         }
       });
       
@@ -205,9 +181,6 @@ export function useGameMinigames(
         const currentAffection = gameState.characters[currentLoveInterest].affection;
         const newAffection = Math.max(0, currentAffection - 2);
         
-        const previousLevel = getAffectionLevel(currentAffection);
-        const newLevel = getAffectionLevel(newAffection);
-        
         const updatedCharacters = { ...gameState.characters };
         updatedCharacters[currentLoveInterest] = {
           ...updatedCharacters[currentLoveInterest],
@@ -219,15 +192,7 @@ export function useGameMinigames(
           characters: updatedCharacters
         }));
         
-        // Show negative affection change toast only if level changed
-        if (previousLevel !== newLevel) {
-          showAffectionChange({
-            characterId: currentLoveInterest,
-            changeAmount: -2,
-            previousLevel,
-            newLevel
-          });
-        }
+        // Toast notifications have been removed
       }
     }
     
@@ -269,13 +234,6 @@ export function useGameMinigames(
     }
     
     console.log(`Transitioning to next scene after minigame: ${nextSceneId || "using fallback"}`);
-    
-    // Show a toast notification when completing a minigame
-    toast({
-      title: success ? "Minigame Completed" : "Minigame Ended",
-      description: success ? "Great job!" : "Better luck next time!",
-      duration: 3000,
-    });
     
     // Store values for later use (after state reset)
     const completedMinigame = activeMinigame;
@@ -337,13 +295,6 @@ export function useGameMinigames(
   
   const exitMinigame = useCallback(() => {
     console.log(`Exiting minigame, returning to: ${returnSceneAfterMinigame}`);
-    
-    // Show toast for exiting
-    toast({
-      title: "Exiting Minigame",
-      description: "Returning to the festival...",
-      duration: 2000,
-    });
     
     // Clear minigame state
     const savedReturnScene = returnSceneAfterMinigame;

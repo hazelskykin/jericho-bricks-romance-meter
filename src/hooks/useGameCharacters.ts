@@ -1,7 +1,6 @@
 
 import { useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
-import { showAffectionChange } from '@/components/AffectionChangeToast';
 
 // Helper to determine affection level based on value
 const getAffectionLevel = (value: number): string => {
@@ -25,9 +24,6 @@ export function useGameCharacters(
     const currentAffection = gameState.characters[characterId].affection;
     const newAffection = currentAffection + changeAmount;
     
-    const previousLevel = getAffectionLevel(currentAffection);
-    const newLevel = getAffectionLevel(newAffection);
-    
     setGameState(prev => {
       const updatedCharacters = { ...prev.characters };
       updatedCharacters[characterId] = {
@@ -41,13 +37,7 @@ export function useGameCharacters(
       };
     });
     
-    // Only show notification if level changed (handled inside the function)
-    showAffectionChange({
-      characterId,
-      changeAmount,
-      previousLevel,
-      newLevel
-    });
+    // Toast notifications have been removed
   }, [gameState.characters]);
 
   return {

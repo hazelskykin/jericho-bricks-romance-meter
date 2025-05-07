@@ -2,7 +2,6 @@
 import { useState, useCallback } from 'react';
 import { GameState, Scene, DialogueChoice } from '@/types/game';
 import scenes from '@/data/scenes';
-import { showAffectionChange } from '@/components/AffectionChangeToast';
 
 // Helper function to determine affection level
 const getAffectionLevel = (affection: number): string => {
@@ -90,25 +89,15 @@ export function useGameScenes(
       Object.entries(choice.affectionChanges).forEach(([charId, change]) => {
         if (updatedCharacters[charId]) {
           const previousAffection = updatedCharacters[charId].affection;
-          const previousLevel = getAffectionLevel(previousAffection);
           
           const newAffection = previousAffection + change;
-          const newLevel = getAffectionLevel(newAffection);
           
           updatedCharacters[charId] = {
             ...updatedCharacters[charId],
             affection: newAffection
           };
 
-          // Show toast only if affection level changed
-          if (newLevel !== previousLevel) {
-            showAffectionChange({
-              characterId: charId as any,
-              changeAmount: change,
-              previousLevel,
-              newLevel
-            });
-          }
+          // Removed toast notifications
         }
       });
       

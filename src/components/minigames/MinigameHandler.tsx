@@ -9,7 +9,6 @@ import WhatsOnTapGame from './whatsOnTap/WhatsOnTapGame';
 import { Button } from '@/components/ui/button';
 import MinigameContainer from './MinigameContainer';
 import { Loader2 } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
 
 interface MinigameHandlerProps {
   activeMinigame: string;
@@ -47,14 +46,6 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     const timer = setTimeout(() => {
       console.log(`MinigameHandler: Finished loading ${activeMinigame}`);
       setIsLoading(false);
-      
-      // Show notification that minigame is ready
-      toast({
-        title: "Minigame Ready",
-        description: `${activeMinigame} is ready to play!`,
-        duration: 2000,
-      });
-      
     }, 1000);
     
     return () => {

@@ -1,3 +1,4 @@
+
 import { Scene } from '../../../types/game';
 
 const summerMinigameScenes: Record<string, Scene> = {
@@ -41,52 +42,57 @@ const summerMinigameScenes: Record<string, Scene> = {
     nextSceneId: 'summer-whats-on-tap-complete',
   },
   
-  // Old minigame scenes - keeping for compatibility but they'll be replaced by the proper games
-  'summer-music-game-intro': {
-    id: 'summer-music-game-intro',
+  // Minigame completion scenes
+  'summer-serenade-complete': {
+    id: 'summer-serenade-complete',
     background: 'stonewich-cityscape',
     dialogue: [
       {
+        character: 'narrator',
+        text: "Your musical performance comes to an end, drawing applause from the crowd.",
+      },
+      {
         character: 'xavier',
-        text: "Music is a big part of the Summer Songs & Sips festival. We have special interactive exhibits planned.",
+        text: "That was impressive! Your musical intuition really comes through.",
+        mood: 'happy',
+      },
+    ],
+    nextSceneId: 'summer-festival-midway',
+  },
+  
+  'summer-spoken-word-complete': {
+    id: 'summer-spoken-word-complete',
+    background: 'city-cafe',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "As you finish your poem, the audience snaps their fingers in appreciation.",
+      },
+      {
+        character: 'senara',
+        text: "Your words carry authentic emotion. Quite effective at conveying personal truth.",
+        mood: 'neutral',
+      },
+    ],
+    nextSceneId: 'summer-festival-midway',
+  },
+  
+  'summer-whats-on-tap-complete': {
+    id: 'summer-whats-on-tap-complete',
+    background: 'city-cafe',
+    dialogue: [
+      {
+        character: 'navarre',
+        text: "You have a surprising knack for bartending! The customers loved your service.",
         mood: 'happy',
       },
       {
         character: 'maven',
-        text: "I'm curious to see how technology and music come together in these exhibits.",
+        text: "I enjoyed connecting with people. There's something special about facilitating those moments of enjoyment.",
         mood: 'happy',
       },
     ],
-    nextSceneId: 'summer-serenade-intro',
-  },
-  
-  'summer-music-game-start': {
-    id: 'summer-music-game-start',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "You approach the interactive music exhibit, ready to test your skills.",
-      },
-    ],
-    nextSceneId: 'summer-serenade-start',
-  },
-  
-  'summer-music-game-complete': {
-    id: 'summer-music-game-complete',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "You enjoyed the interactive music experience at the festival.",
-      },
-      {
-        character: 'xavier',
-        text: "That was impressive! Your musical intuition really shines through.",
-        mood: 'happy',
-      },
-    ],
-    nextSceneId: 'summer-serenade-complete',
+    nextSceneId: 'summer-festival-midway',
   },
   
   // Additional summer activities
@@ -113,39 +119,32 @@ const summerMinigameScenes: Record<string, Scene> = {
     nextSceneId: 'summer-whats-on-tap-intro',
   },
   
-  'summer-wine-tasting-game': {
-    id: 'summer-wine-tasting-game',
-    background: 'city-cafe',
+  // Common midway point after any minigame
+  'summer-festival-midway': {
+    id: 'summer-festival-midway',
+    background: 'stonewich-cityscape',
     dialogue: [
       {
         character: 'narrator',
-        text: "Under Navarre's guidance, you learn to distinguish different wine varieties and their unique characteristics.",
-      },
-    ],
-    nextSceneId: 'summer-whats-on-tap-start',
-  },
-  
-  'summer-wine-tasting-complete': {
-    id: 'summer-wine-tasting-complete',
-    background: 'city-cafe',
-    dialogue: [
-      {
-        character: 'navarre',
-        text: "You have a surprisingly refined palate! I'm impressed.",
-        mood: 'happy',
+        text: "The Summer Songs & Sips festival continues in full swing around you.",
       },
       {
         character: 'maven',
-        text: "I think I'm starting to appreciate the subtleties. It's fascinating how much history and tradition goes into each glass.",
+        text: "The festival has such a different energy than the spring one. It feels more relaxed yet vibrant.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "Music has this way of bringing people together that's different from other activities.",
         mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "Exactly! When people connect over shared experiences like this, it creates lasting memories and relationships.",
+        text: "And people are definitely connecting! I've already made some promising contacts for future Stonewich promotions.",
         mood: 'happy',
       },
     ],
-    nextSceneId: 'summer-whats-on-tap-complete',
+    nextSceneId: 'summer-festival-activities',
   },
   
   'summer-conclusion-meeting': {
