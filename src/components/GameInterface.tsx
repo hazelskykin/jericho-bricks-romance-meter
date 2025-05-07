@@ -146,7 +146,7 @@ if (gameState.currentScene === 'autumn-relationship-development') {
         scenePrefix="autumn"
         title="Autumn Romance"
         description="As autumn arrives in Stonewich, you imagine how you might deepen your connection with someone special to you."
-        completionSceneId={`autumn-${gameState.currentLoveInterest}-path`}
+        completionSceneId={`autumn-${gameState.currentLoveInterest}`}
       />
     );
   } else {
@@ -157,15 +157,15 @@ if (gameState.currentScene === 'autumn-relationship-development') {
 
 
   // Handle special scenes like character selection for winter season - focused on the romantic interest
-  if (gameState.currentScene.includes('winter-character-selection')) {
+  if (gameState.currentScene === 'winter-planning-character') {
     if (gameState.currentLoveInterest) {
       return (
         <CharacterSelectionScene 
           availableCharacters={[gameState.currentLoveInterest]} 
-          scenePrefix="winter"
+          scenePrefix="winter-planning-"
           title="Winter Romance"
           description="As winter blankets Stonewich, the festive season acts as a catalyst for a close relationship to change."
-          completionSceneId={`winter-confession-${gameState.currentLoveInterest}`}
+          completionSceneId={`winter-planning-${gameState.currentLoveInterest}`}
         />
       );
     } else {
@@ -176,9 +176,9 @@ if (gameState.currentScene === 'autumn-relationship-development') {
   }
   
   // Handle character-specific confession scenes in winter
-  if (gameState.currentScene === 'winter-character-confession') {
+  if (gameState.currentScene === 'winter-confession-character') {
     if (gameState.currentLoveInterest) {
-      handleSceneTransition(`winter-${gameState.currentLoveInterest}-confession`);
+      handleSceneTransition(`winter-confession-${gameState.currentLoveInterest}`);
     } else {
       handleSceneTransition('winter-festival-activities');
     }
