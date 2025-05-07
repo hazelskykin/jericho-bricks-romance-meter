@@ -23,7 +23,7 @@ const getCharacterSelectionScene = (visitedCharacters: CharacterId[]): Scene => 
     : '';
   
   return {
-    id: `spring-character-selection${suffix}`,
+    id: `spring-visit${suffix}`,
     background: 'stonewich-cityscape',
     dialogue: [
       {
