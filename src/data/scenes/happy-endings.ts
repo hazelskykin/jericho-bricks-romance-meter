@@ -24,7 +24,7 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I'd like to take our relationship to the next level. Share a secure home network, maybe?",
+        text: "I'd like to take our relationship to the next level. Share a secure home network, maybe? Eliminate redundant storage needs?",
         mood: 'happy',
       },
       {
@@ -38,8 +38,28 @@ const happyEndingScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
+        character: 'xavier',
+        text: "I'm still working on being more direct. It'll be easier for me to practice Near Field Communications with you in my proximity, but you'll need to be really close for that to work.",
+        mood: 'laughing',
+      },
+      {
+        character: 'maven',
+        text: "That sounds doable. How close do I need to be?",
+        mood: 'laughing',
+      },
+      {
+        character: 'xavier',
+        text: "ahhh, within 4 centimeters.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'maven',
+        text: "...like this?",
+        mood: 'embarrassed',
+      },
+      {
         character: 'narrator',
-        text: "Xavier and Maven build a life together in Stonewich, combining their talents to improve both the city and themselves.",
+        text: "Xavier and Maven build a life together in Stonewich, full of humor, happiness, and harmony.",
       },
       {
         character: 'narrator',
@@ -98,12 +118,17 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "A home together. A family. A future of shared joys.",
+        text: "A family. A home together. A future of shared joys.",
         mood: 'happy',
       },
       {
         character: 'maven',
         text: "Yes, please. That's what I want too.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'navarre',
+        text: "As you wish. Shall we get started then?",
         mood: 'embarrassed',
       },
       {
@@ -174,7 +199,11 @@ const happyEndingScenes: Record<string, Scene> = {
       {
         character: 'etta',
         text: "You're right! There's so much to do!",
-        mood: 'happy',
+        mood: 'laughing',
+      },
+      {
+        character: 'narrator',
+        text: "You lean in and affectionately tousle her perfectly braided hair earning a quick smack from Etta.",
       },
       {
         character: 'maven',
@@ -223,7 +252,7 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Every day feels like I love you more than I thought possible, but I have been studying something quite old from a new perspective lately.",
+        text: "Every day feels like I love you more than I thought possible. It's led me to study something quite old from a new perspective lately.",
         mood: 'happy',
       },
       {
@@ -233,7 +262,7 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "My current topic is researching the modern context for marital traditions and nuptial rituals.",
+        text: "My current topic is researching the modern context for marital traditions and nuptial rituals. I'd like you to assess if I have the mechanics correct.",
         mood: 'happy',
       },
       {
@@ -252,7 +281,7 @@ const happyEndingScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Thank you, Maven. I don't know if you remember, but one of the first topics we discussed together was the value of traditions. I wanted to mark what we share with the honor of tradition and suitable ritual.",
+        text: "Thank you, Maven. I don't know if you remember, but one of the first topics we discussed together was the value of traditions. I'm glad we could experience something like this for ourselves.",
         mood: 'happy',
       },
       {
