@@ -21,8 +21,8 @@ const relationshipScenes: Record<string, Scene> = {
   },
 
   // Xavier's confession
-  'winter-xavier-confession': {
-    id: 'winter-xavier-confession',
+  'winter-confession-xavier': {
+    id: 'winter-confession-xavier',
     background: 'winter-transition',
     dialogue: [
       {
@@ -50,17 +50,17 @@ const relationshipScenes: Record<string, Scene> = {
       {
         text: "I love you too, Xavier. You've shown me what it means to care deeply about others.",
         affectionChanges: { xavier: 2 },
-        nextSceneId: 'winter-xavier-happy'
+        nextSceneId: 'winter-happy-xavier'
       },
       {
         text: "I care about you deeply, Xavier, but I'm not ready for anything more right now.",
         affectionChanges: { xavier: -2 },
-        nextSceneId: 'winter-xavier-noncommit'
+        nextSceneId: 'winter-noncommit-xavier'
       }
     ]
   },
-  'winter-xavier-happy': {
-    id: 'winter-xavier-happy',
+  'winter-happy-xavier': {
+    id: 'winter-happy-xavier',
     background: 'winter-transition',
     dialogue: [
       {
@@ -86,8 +86,8 @@ const relationshipScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'team-future-meeting',
   },
-  'winter-xavier-noncommit': {
-    id: 'winter-xavier-noncommit',
+  'winter-noncommit-xavier': {
+    id: 'winter-noncommit-xavier',
     background: 'winter-transition',
     dialogue: [
       {
@@ -110,8 +110,8 @@ const relationshipScenes: Record<string, Scene> = {
   },
 
   // Navarre's confession
-  'winter-navarre-confession': {
-    id: 'winter-navarre-confession',
+  'winter-confession-navarre': {
+    id: 'winter-confession-navarre',
     background: 'city-cafe',
     dialogue: [
       {
@@ -149,17 +149,17 @@ const relationshipScenes: Record<string, Scene> = {
       {
         text: "I love you too, Navarre. You've shown me there's more to life than just following a predetermined path.",
         affectionChanges: { navarre: 2 },
-        nextSceneId: 'winter-navarre-happy'
+        nextSceneId: 'winter-happy-navarre'
       },
       {
         text: "I care about you deeply, Navarre, but I'm not sure I'm ready yet for anything more.",
         affectionChanges: { navarre: -2 },
-        nextSceneId: 'winter-navarre-noncommit'
+        nextSceneId: 'winter-noncommit-navarre'
       }
     ]
   },
-  'winter-navarre-happy': {
-    id: 'winter-navarre-happy',
+  'winter-happy-navarre': {
+    id: 'winter-happy-navarre',
     background: 'city-cafe',
     dialogue: [
       {
@@ -185,8 +185,8 @@ const relationshipScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'team-future-meeting',
   },
-  'winter-navarre-noncommit': {
-    id: 'winter-navarre-noncommit',
+  'winter-noncommit-navarre': {
+    id: 'winter-noncommit-navarre',
     background: 'city-cafe',
     dialogue: [
       {
@@ -209,8 +209,8 @@ const relationshipScenes: Record<string, Scene> = {
   },
 
   // Etta's confession
-  'winter-etta-confession': {
-    id: 'winter-etta-confession',
+  'winter-confession-etta': {
+    id: 'winter-confession-etta',
     background: 'winter-transition',
     dialogue: [
       {
@@ -248,17 +248,17 @@ const relationshipScenes: Record<string, Scene> = {
       {
         text: "I love you too, Etta. You don't have to be perfect with me. Just be yourself.",
         affectionChanges: { etta: 2 },
-        nextSceneId: 'winter-etta-happy'
+        nextSceneId: 'winter-happy-etta'
       },
       {
         text: "I care about you deeply, Etta, but is the timing right for us now? You're jumping out of one relationship into another.",
         affectionChanges: { etta: -2 },
-        nextSceneId: 'winter-etta-noncommit'
+        nextSceneId: 'winter-noncommit-etta'
       }
     ]
   },
-  'winter-etta-happy': {
-    id: 'winter-etta-happy',
+  'winter-happy-etta': {
+    id: 'winter-happy-etta',
     background: 'winter-transition',
     dialogue: [
       {
@@ -289,8 +289,8 @@ const relationshipScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'team-future-meeting',
   },
-  'winter-etta-noncommit': {
-    id: 'winter-etta-noncommit',
+  'winter-noncommit-etta': {
+    id: 'winter-noncommit-etta',
     background: 'winter-transition',
     dialogue: [
       {
@@ -318,8 +318,8 @@ const relationshipScenes: Record<string, Scene> = {
   },
 
   // Senara's confession
-  'winter-senara-confession': {
-    id: 'winter-senara-confession',
+  'winter-confession-senara': {
+    id: 'winter-confession-senara',
     background: 'stonewich-office',
     dialogue: [
       {
@@ -362,17 +362,17 @@ const relationshipScenes: Record<string, Scene> = {
       {
         text: "Perhaps we should test that conclusion with additional stimuli?",
         affectionChanges: { senara: 2 },
-        nextSceneId: 'winter-senara-happy'
+        nextSceneId: 'winter-happy-senara'
       },
       {
         text: "I reciprocate your feelings, Senara, but I'm not ready to embrace the natural conclusion such feelings generally manifest.",
         affectionChanges: { senara: -2 },
-        nextSceneId: 'winter-senara-noncommit'
+        nextSceneId: 'winter-noncommit-senara'
       }
     ]
   },
-  'winter-senara-happy': {
-    id: 'winter-senara-happy',
+  'winter-happy-senara': {
+    id: 'winter-happy-senara',
     background: 'stonewich-office',
     dialogue: [
       {
@@ -428,8 +428,8 @@ const relationshipScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'team-future-meeting',
   },
-  'winter-senara-noncommit': {
-    id: 'winter-senara-noncommit',
+  'winter-noncommit-senara': {
+    id: 'winter-noncommit-senara',
     background: 'stonewich-office',
     dialogue: [
       {
