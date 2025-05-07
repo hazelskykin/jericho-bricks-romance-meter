@@ -25,13 +25,13 @@ const winterPlanningScenes: Record<string, Scene> = {
     choices: [
       {
         text: "Continue",
-        nextSceneId: 'winter-planning-route'
+        nextSceneId: 'winter-planning-character'
       }
     ]
   },
 
-  'winter-planning-route': {
-    id: 'winter-planning-route',
+  'winter-planning-character': {
+    id: 'winter-planning-character',
     background: 'stonewich-office',
     dialogue: [
       {
@@ -40,11 +40,11 @@ const winterPlanningScenes: Record<string, Scene> = {
       }
     ],
     // This is a placeholder scene that will immediately route to the character-specific scene
-    nextSceneId: 'winter-character-specific-planning'
+    nextSceneId: 'winter-planning-character'
   },
   // Xavier's winter planning scene
-  'winter-xavier-planning': {
-    id: 'winter-xavier-planning',
+  'winter-planning-xavier': {
+    id: 'winter-planning-xavier',
     background: 'cybaton-lab',
     dialogue: [
       {
@@ -81,8 +81,8 @@ const winterPlanningScenes: Record<string, Scene> = {
     nextSceneId: 'winter-festival-intro'
   },
   // Etta's winter planning scene
-  'winter-etta-planning': {
-    id: 'winter-etta-planning',
+  'winter-planning-etta': {
+    id: 'winter-planning-etta',
     background: 'cybaton-office',
     dialogue: [
       {
@@ -124,8 +124,8 @@ const winterPlanningScenes: Record<string, Scene> = {
     nextSceneId: 'winter-festival-intro'
   },
   // Navarre's winter planning scene
-  'winter-navarre-planning': {
-    id: 'winter-navarre-planning',
+  'winter-planning-navarre': {
+    id: 'winter-planning-navarre',
     background: 'stonewich-cafe',
     dialogue: [
       {
@@ -172,8 +172,8 @@ const winterPlanningScenes: Record<string, Scene> = {
     nextSceneId: 'winter-festival-intro'
   },
   // Senara's winter planning scene
-  'winter-senara-planning': {
-    id: 'winter-senara-planning',
+  'winter-planning-senara': {
+    id: 'winter-planning-senara',
     background: 'stonewich-office',
     dialogue: [
       {
