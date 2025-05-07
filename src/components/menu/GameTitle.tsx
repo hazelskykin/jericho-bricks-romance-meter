@@ -9,7 +9,7 @@ const GameTitle: React.FC = () => {
       animate={{ scale: [1, 1.02, 1] }}
       transition={{ repeat: Infinity, duration: 3 }}
     >
-      Jericho Bricks
+      Versa
     </motion.h1>
   );
 };
