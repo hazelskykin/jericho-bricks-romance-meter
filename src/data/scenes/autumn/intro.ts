@@ -105,7 +105,7 @@ const introScenes: Record<string, Scene> = {
       //all possible scenes are written in relationship.ts for selection
       //after the relationship-development arc, then the festival should kick off with autumn-festival-introduction
     ],
-    nextSceneId: 'autumn-festival-introduction',
+    nextSceneId: 'autumn-${gameState.currentLoveInterest}-path',
   },
 
   'autumn-festival-introduction': {
