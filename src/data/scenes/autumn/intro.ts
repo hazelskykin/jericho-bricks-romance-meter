@@ -108,6 +108,14 @@ const introScenes: Record<string, Scene> = {
     nextSceneId: autumn-${gameState.currentLoveInterest}-path,
   },
 
+  'autumn-character-path': {
+  id: 'autumn-character-path',
+  background: 'stonewich-cityscape',
+  dialogue: [], // or minimal
+  nextSceneId: null // handled via dynamic route handler
+}
+
+
   'autumn-festival-introduction': {
     id: 'autumn-festival-introduction',
     background: 'stonewich-cityscape',
