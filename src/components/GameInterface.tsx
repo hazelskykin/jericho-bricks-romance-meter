@@ -138,23 +138,23 @@ const GameInterface: React.FC = () => {
   }
   
   // Handle special scenes like character selection for autumn season - focused on the romantic interest
-  if (gameState.currentScene.includes('autumn-relationship-development')) {
-    if (gameState.currentLoveInterest) {
-      return (
-        <CharacterSelectionScene 
-          availableCharacters={[gameState.currentLoveInterest]} 
-          scenePrefix="autumn"
-          title="Autumn Romance"
-          description="As autumn arrives in Stonewich, you imagine how you might deepen your connection with someone special to you."
-          completionSceneId={`autumn-${gameState.currentLoveInterest}-path`}
-        />
-      );
-    } else {
-      // Fallback if no love interest is selected
-      handleSceneTransition('autumn-festival-introduction');
-      return null;
-    }
+if (gameState.currentScene === 'autumn-relationship-development') {
+  if (gameState.currentLoveInterest) {
+    return (
+      <CharacterSelectionScene 
+        availableCharacters={[gameState.currentLoveInterest]} 
+        scenePrefix="autumn"
+        title="Autumn Romance"
+        description="As autumn arrives in Stonewich, you imagine how you might deepen your connection with someone special to you."
+        completionSceneId={`autumn-${gameState.currentLoveInterest}-path`}
+      />
+    );
+  } else {
+    handleSceneTransition('autumn-festival-introduction');
+    return null;
   }
+}
+
 
   // Handle special scenes like character selection for winter season - focused on the romantic interest
   if (gameState.currentScene.includes('winter-character-selection')) {
