@@ -9,6 +9,7 @@ type SoundEffect = {
 class SoundManager {
   private sounds: Record<string, HTMLAudioElement> = {};
   private muted: boolean = false;
+  private loadErrors: Record<string, boolean> = {};
 
   constructor() {
     // Initialize with empty sounds
@@ -26,22 +27,40 @@ class SoundManager {
 
   preloadSounds(effects: SoundEffect[]): void {
     effects.forEach(effect => {
-      const audio = new Audio(effect.src);
-      audio.volume = effect.volume ?? 0.5; // Default volume 50%
-      this.sounds[effect.id] = audio;
+      try {
+        const audio = new Audio();
+        
+        // Add error handling for the load event
+        audio.onerror = () => {
+          console.warn(`Could not load sound: ${effect.src}`);
+          this.loadErrors[effect.id] = true;
+        };
+        
+        audio.volume = effect.volume ?? 0.5; // Default volume 50%
+        audio.src = effect.src;
+        this.sounds[effect.id] = audio;
+      } catch (e) {
+        console.warn(`Error initializing sound ${effect.id}:`, e);
+        this.loadErrors[effect.id] = true;
+      }
     });
   }
 
   play(soundId: string): void {
-    if (this.muted || !this.sounds[soundId]) return;
+    if (this.muted || !this.sounds[soundId] || this.loadErrors[soundId]) return;
     
     try {
       const sound = this.sounds[soundId];
       // Reset the audio to beginning in case it's already playing
       sound.currentTime = 0;
-      sound.play().catch(e => console.warn(`Failed to play sound ${soundId}:`, e));
+      sound.play().catch(e => {
+        // Mark sound as having an error if it fails to play
+        this.loadErrors[soundId] = true;
+        console.warn(`Failed to play sound ${soundId}:`, e);
+      });
     } catch (e) {
       console.warn(`Error playing sound ${soundId}:`, e);
+      this.loadErrors[soundId] = true;
     }
   }
 

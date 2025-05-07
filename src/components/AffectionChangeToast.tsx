@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Heart } from 'lucide-react';
 import { CharacterId } from '@/types/game';
 
 interface AffectionChangeProps {
@@ -15,6 +14,10 @@ interface AffectionChangeProps {
  * No toast notifications will be shown for affection changes.
  */
 export const showAffectionChange = ({ characterId, changeAmount, newLevel, previousLevel }: AffectionChangeProps) => {
-  // All toast notifications have been disabled as requested by the user
+  // Toast notifications are completely disabled
   return;
 };
+
+// Export an empty component to maintain API compatibility, but it doesn't render anything
+const AffectionChangeToast: React.FC = () => null;
+export default AffectionChangeToast;

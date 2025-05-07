@@ -27,12 +27,12 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         }
         
         const img = new Image();
-        img.src = imagePath;
         img.onload = () => resolve(true);
         img.onerror = () => {
-          console.error(`Failed to preload image: ${imagePath}`);
+          // Don't log errors for missing images, just resolve with false
           resolve(false);
         };
+        img.src = imagePath;
       });
     };
 
@@ -116,7 +116,8 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
           const moodExpressionsPromises = characterIds.map(id => {
             const expression = characterExpressions[id]?.[mood];
             if (expression) {
-              return preloadImage(expression.image).then(() => {
+              return preloadImage(expression.image).then((success) => {
+                // Still increment asset count even if the image failed to load
                 loadedAssets++;
                 setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
               });
@@ -130,7 +131,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         setLoadingMessage('Finalizing game setup...');
         setAssetsReady(true);
       } catch (error) {
-        console.error("Error preloading assets:", error);
+        console.warn("Error preloading assets, continuing anyway:", error);
         // Still set ready even if some assets failed to load
         // The components will handle fallbacks
         setAssetsReady(true);

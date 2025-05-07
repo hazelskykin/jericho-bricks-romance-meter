@@ -13,17 +13,17 @@ interface MainMenuProps {
 
 const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen relative overflow-hidden">
+    <div className="flex flex-col items-end justify-start min-h-screen relative overflow-hidden">
       {/* Background */}
       <MenuBackground backgroundId="wall-tiles" />
       
       {/* Content */}
-      <div className="relative w-full h-full z-20 flex flex-col">
+      <div className="relative w-full h-full z-20 flex flex-col items-end">
         {/* Title */}
         <GameTitle />
         
         {/* Main Button */}
-        <div className="flex justify-center my-6 z-30">
+        <div className="flex justify-end my-6 z-30 pr-10">
           <Button 
             onClick={onNewGame} 
             className="px-12 py-4 bg-primary text-white text-xl rounded-md shadow-lg hover:bg-primary/90 transform transition-all hover:scale-105"
@@ -32,8 +32,8 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
           </Button>
         </div>
         
-        {/* Content container - now positioned below the button */}
-        <div className="flex flex-1 justify-center px-4">
+        {/* Content container - now positioned below the button and right-aligned */}
+        <div className="flex flex-1 justify-end px-4">
           <MainContent />
         </div>
       </div>

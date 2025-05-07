@@ -5,8 +5,8 @@ import winterPlanningScenes from './planning';
 import winterActivitiesScenes from './activities';
 import winterConclusionScenes from './conclusion';
 import relationshipScenes from './relationship';
-import winterTransitionScenes from './transition';
 import teamFutureScenes from './teamfuture';
+import winterTransitions from './transitions';
 
 // Combine all winter-related scenes
 const winterScenes: Record<string, Scene> = {
@@ -15,8 +15,8 @@ const winterScenes: Record<string, Scene> = {
   ...winterActivitiesScenes,
   ...winterConclusionScenes,
   ...relationshipScenes,
-  ...winterTransitionScenes,
   ...teamFutureScenes,
+  ...winterTransitions,
 };
 
 export default winterScenes;
