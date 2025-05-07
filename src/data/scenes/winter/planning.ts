@@ -30,18 +30,18 @@ const winterPlanningScenes: Record<string, Scene> = {
     ]
   },
 
-  'winter-planning-character': {
-    id: 'winter-planning-character',
-    background: 'stonewich-office',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "You find yourself naturally working with the one person who you have become closest to.",
-      }
-    ],
-    // This is a placeholder scene that will immediately route to the character-specific scene
-    nextSceneId: 'winter-planning-character'
-  },
+'winter-planning-character': {
+  id: 'winter-planning-character',
+  background: 'stonewich-office',
+  dialogue: [
+    {
+      character: 'narrator',
+      text: "You find yourself naturally working with the one person who you have become closest to.",
+    }
+  ],
+  nextSceneId: null // ❗️This allows your game engine to handle dynamic routing
+},
+
   // Xavier's winter planning scene
   'winter-planning-xavier': {
     id: 'winter-planning-xavier',
