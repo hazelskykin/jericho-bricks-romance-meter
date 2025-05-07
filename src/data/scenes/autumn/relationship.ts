@@ -3,8 +3,8 @@ import { Scene } from '@/types/game';
 
 const relationshipScenes: Record<string, Scene> = {
   // Xavier's autumn route
-  'autumn-xavier-path': {
-    id: 'autumn-xavier-path',
+  'autumn-xavier': {
+    id: 'autumn-xavier',
     background: 'stonewich-office',
     dialogue: [
       {
@@ -161,8 +161,8 @@ const relationshipScenes: Record<string, Scene> = {
   },
 
   // Navarre's autumn route
-  'autumn-navarre-path': {
-    id: 'autumn-navarre-path',
+  'autumn-navarre': {
+    id: 'autumn-navarre',
     background: 'autumn-transition',
     dialogue: [
       {
@@ -335,8 +335,8 @@ const relationshipScenes: Record<string, Scene> = {
   },
 
   // Etta's autumn route
-  'autumn-etta-path': {
-    id: 'autumn-etta-path',
+  'autumn-etta': {
+    id: 'autumn-etta',
     background: 'stonewich-workstation',
     dialogue: [
       {
@@ -508,8 +508,8 @@ const relationshipScenes: Record<string, Scene> = {
   },
 
   // Senara's autumn route
-  'autumn-senara-path': {
-    id: 'autumn-senara-path',
+  'autumn-senara': {
+    id: 'autumn-senara',
     background: 'cybaton-library',
     dialogue: [
       {
