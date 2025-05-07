@@ -138,47 +138,35 @@ const GameInterface: React.FC = () => {
   }
   
   // Handle special scenes like character selection for autumn season - focused on the romantic interest
-if (gameState.currentScene === 'autumn-relationship-development') {
-  if (gameState.currentLoveInterest) {
-    return (
-      <CharacterSelectionScene 
-        availableCharacters={[gameState.currentLoveInterest]} 
-        scenePrefix="autumn"
-        title="Autumn Romance"
-        description="As autumn arrives in Stonewich, you imagine how you might deepen your connection with someone special to you."
-        completionSceneId={`autumn-${gameState.currentLoveInterest}`}
-      />
-    );
+if (gameState.currentScene === 'autumn-character-path') {
+  const characterId = gameState.currentLoveInterest;
+  if (characterId) {
+    handleSceneTransition(`autumn-${characterId}-path`);
+    return null;
   } else {
-    handleSceneTransition('autumn-festival-introduction');
+    handleSceneTransition('autumn-festival-introduction'); // fallback
     return null;
   }
 }
 
-
   // Handle special scenes like character selection for winter season - focused on the romantic interest
-  if (gameState.currentScene === 'winter-planning-character') {
-    if (gameState.currentLoveInterest) {
-      return (
-        <CharacterSelectionScene 
-          availableCharacters={[gameState.currentLoveInterest]} 
-          scenePrefix="winter-planning-"
-          title="Winter Romance"
-          description="As winter blankets Stonewich, the festive season acts as a catalyst for a close relationship to change."
-          completionSceneId={`winter-planning-${gameState.currentLoveInterest}`}
-        />
-      );
-    } else {
-      // Fallback if no love interest is selected
-      handleSceneTransition('winter-festival-introduction');
-      return null;
-    }
+if (gameState.currentScene === 'winter-planning-character') {
+  const characterId = gameState.currentLoveInterest;
+  if (characterId) {
+    handleSceneTransition(`winter-planning-${characterId}`);
+    return null;
+  } else {
+    handleSceneTransition('winter-festival-intro'); // fallback
+    return null;
   }
+}
   
   // Handle character-specific confession scenes in winter
   if (gameState.currentScene === 'winter-confession-character') {
-    if (gameState.currentLoveInterest) {
-      handleSceneTransition(`winter-confession-${gameState.currentLoveInterest}`);
+    const characterId = gameState.currentLoveInterest;
+    if (characterId) {
+    handleSceneTransition(`winter-confession-${characterId}`);
+    return null;
     } else {
       handleSceneTransition('team-future-meeting');
     }
