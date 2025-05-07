@@ -105,12 +105,12 @@ const introScenes: Record<string, Scene> = {
       //all possible scenes are written in relationship.ts for selection
       //after the relationship-development arc, then the festival should kick off with autumn-festival-introduction
     ],
-    nextSceneId: 'autumn-character-path',
+    nextSceneId: 'autumn-character',
 
   },
 
-  'autumn-character-path': {
-  id: 'autumn-character-path',
+  'autumn-character': {
+  id: 'autumn-character',
   background: 'stonewich-cityscape',
   dialogue: [], // or minimal
   nextSceneId: null // handled via dynamic route handler
