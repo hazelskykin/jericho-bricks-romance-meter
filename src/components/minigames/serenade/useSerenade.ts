@@ -70,8 +70,8 @@ export function useSerenade(onComplete: (success: boolean) => void) {
 
   useEffect(() => {
     if (selectedSong && gameStage === 'playing') {
-      // Generate 20 beats at random positions
-      const newBeats = Array.from({ length: 20 }, () => 
+      // Generate 20 beats at random positions - ensure we have at least one beat
+      const newBeats = Array.from({ length: Math.max(20, 1) }, () => 
         Math.floor(Math.random() * 100)
       ).sort((a, b) => a - b);
       setBeats(newBeats);
@@ -82,6 +82,9 @@ export function useSerenade(onComplete: (success: boolean) => void) {
       // Start the beat generation
       gameLoopRef.current = setInterval(() => {
         setCurrentBeatIndex(prev => {
+          // Safety check for empty beats array
+          if (beats.length === 0) return 0;
+          
           if (prev >= beats.length - 1) {
             clearInterval(gameLoopRef.current!);
             return prev;
@@ -104,6 +107,18 @@ export function useSerenade(onComplete: (success: boolean) => void) {
 
   const handleTap = () => {
     if (gameStage !== 'playing') return;
+    
+    // Safety check to make sure beats array is not empty and the index is valid
+    if (beats.length === 0 || currentBeatIndex >= beats.length) {
+      // Fall back to a default beat position if the array is empty
+      const defaultPosition = 50;
+      setScore(prev => Math.min(maxScore, prev + 5)); // Small score for tapping anyway
+      setPlayerTaps(prev => [...prev, defaultPosition]);
+      setFeedbackText('Tap!');
+      setShowFeedback(true);
+      setTimeout(() => setShowFeedback(false), 500);
+      return;
+    }
     
     const currentBeat = beats[currentBeatIndex];
     const currentPosition = (timeRemaining % 3) * 100 / 3;

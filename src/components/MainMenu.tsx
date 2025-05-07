@@ -22,7 +22,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
         {/* Title */}
         <GameTitle />
         
-        {/* Main Button */}
+        {/* Main Button - right-aligned */}
         <div className="flex justify-end my-6 z-30 pr-10">
           <Button 
             onClick={onNewGame} 
@@ -32,7 +32,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame }) => {
           </Button>
         </div>
         
-        {/* Content container - now positioned below the button and right-aligned */}
+        {/* Content container - right-aligned */}
         <div className="flex flex-1 justify-end px-4">
           <MainContent />
         </div>

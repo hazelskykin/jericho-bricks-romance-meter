@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { MudBall, Character, Position } from './types';
 import { CharacterId } from '@/types/game';
-import { toast } from 'sonner';
 import { soundManager } from '@/utils/soundEffects';
 
 export function useMudBalls(
@@ -49,7 +48,11 @@ export function useMudBalls(
           if (newProgress >= 1) {
             // Ball reached destination, check for hits
             const targetTeam = ball.target;
-            const targetCharacters = characters.filter(char => char.team === targetTeam && !char.isHit);
+            
+            // Safety check: make sure we have characters and they match the target team
+            const targetCharacters = characters.filter(char => 
+              char.team === targetTeam && !char.isHit
+            );
             
             if (targetCharacters.length > 0) {
               // Check if ball hit any character

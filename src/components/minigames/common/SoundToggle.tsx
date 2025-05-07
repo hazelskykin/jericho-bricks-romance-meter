@@ -7,16 +7,23 @@ import { useState, useEffect } from 'react';
 
 export function SoundToggle() {
   const [muted, setMuted] = useState(false);
+  const [audioAvailable, setAudioAvailable] = useState(true);
   
   // Initialize state from sound manager
   useEffect(() => {
     setMuted(soundManager.isMuted());
+    setAudioAvailable(soundManager.isAudioAvailable());
   }, []);
   
   const handleToggle = () => {
     const newMutedState = soundManager.toggleMute();
     setMuted(newMutedState);
   };
+  
+  // If audio is not available at all, don't show the toggle
+  if (!audioAvailable) {
+    return null;
+  }
   
   return (
     <Button

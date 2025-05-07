@@ -127,9 +127,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   
   // Render the appropriate minigame based on activeMinigame
   try {
-    console.log(`Attempting to render minigame component: ${activeMinigame}`);
-    
-    // Guaranteed fallback in case switch statement doesn't match
+    // Safe guard against undefined activeMinigame
     if (!activeMinigame) {
       console.warn("No active minigame specified, showing fallback UI");
       return <PlaceholderMinigame title="Unknown Minigame" />;
@@ -139,46 +137,34 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     switch (activeMinigame) {
       // Spring minigames
       case 'broomsAway':
-        console.log('Rendering BroomsAwayGame');
         return <BroomsAwayGame onComplete={completeMinigame} onExit={exitMinigame} />;
       case 'mudFling':
-        console.log('Rendering MudFlingGame');
         return <MudFlingGame onComplete={completeMinigame} onExit={exitMinigame} />;
       case 'bloomWithAView':
-        console.log('Rendering BloomWithAViewGame');
         return <BloomWithAViewGame onComplete={completeMinigame} onExit={exitMinigame} />;
       
       // Summer minigames
       case 'serenade':
-        console.log('Rendering SerenadeGame');
         return <SerenadeGame onComplete={completeMinigame} onExit={exitMinigame} />;
       case 'spokenWord':
-        console.log('Rendering SpokenWordGame');
         return <SpokenWordGame onComplete={completeMinigame} onExit={exitMinigame} />;
       case 'whatsOnTap':
-        console.log('Rendering WhatsOnTapGame');
         return <WhatsOnTapGame onComplete={completeMinigame} onExit={exitMinigame} />;
       
       // Autumn minigames (placeholders)
       case 'tourGuide':
-        console.log('Rendering Tour Guide placeholder');
         return <PlaceholderMinigame title="Tour Guide" />;
       case 'crafter':
-        console.log('Rendering Crafter placeholder');
         return <PlaceholderMinigame title="Crafter" />;
       case 'memoriesDate':
-        console.log('Rendering Memories Date placeholder');
         return <PlaceholderMinigame title="Making Memories Date" />;
       
       // Winter minigames (placeholders)
       case 'charityAuction':
-        console.log('Rendering Charity Auction placeholder');
         return <PlaceholderMinigame title="Charity Auction" />;
       case 'galaDance':
-        console.log('Rendering Gala Dance placeholder');
         return <PlaceholderMinigame title="Gala Dance" />;
       case 'lookingSigns':
-        console.log('Rendering Looking for Signs placeholder');
         return <PlaceholderMinigame title="Looking for Signs" />;
       
       default:

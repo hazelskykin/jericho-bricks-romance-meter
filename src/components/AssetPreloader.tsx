@@ -26,13 +26,40 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
           return;
         }
         
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => {
-          // Don't log errors for missing images, just resolve with false
-          resolve(false);
+        // Check file extension and try with png if jpeg fails
+        const tryImageWithFallback = (path: string, tryPng: boolean = false): void => {
+          const img = new Image();
+          
+          img.onload = () => resolve(true);
+          img.onerror = () => {
+            if (tryPng && path.toLowerCase().endsWith('.jpeg')) {
+              // If jpeg fails, try png
+              const pngPath = path.substring(0, path.length - 5) + '.png';
+              console.log(`Trying fallback image: ${pngPath}`);
+              
+              const pngImg = new Image();
+              pngImg.onload = () => resolve(true);
+              pngImg.onerror = () => resolve(false);
+              pngImg.src = pngPath;
+            } else if (tryPng && path.toLowerCase().endsWith('.jpg')) {
+              // If jpg fails, try png
+              const pngPath = path.substring(0, path.length - 4) + '.png';
+              console.log(`Trying fallback image: ${pngPath}`);
+              
+              const pngImg = new Image();
+              pngImg.onload = () => resolve(true);
+              pngImg.onerror = () => resolve(false);
+              pngImg.src = pngPath;
+            } else {
+              // No more fallbacks
+              resolve(false);
+            }
+          };
+          
+          img.src = path;
         };
-        img.src = imagePath;
+        
+        tryImageWithFallback(imagePath, true);
       });
     };
 
@@ -54,6 +81,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         const totalAssets = totalBackgrounds + totalExpressions + totalChibis;
         
         let loadedAssets = 0;
+        const failedAssets: string[] = [];
         
         // Priority 1: Immediately load wall-tiles for main menu and any critical backgrounds
         setLoadingMessage('Loading interface backgrounds...');
@@ -62,7 +90,10 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         for (const bgId of criticalBackgrounds) {
           const bg = backgrounds[bgId];
           if (bg) {
-            await preloadImage(bg.image);
+            const success = await preloadImage(bg.image);
+            if (!success) {
+              failedAssets.push(bg.image);
+            }
             loadedAssets++;
             setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
           }
@@ -70,11 +101,13 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         
         // Priority 2: Load character chibis for main menu
         setLoadingMessage('Loading character chibis...');
-        const chibiPromises = Object.values(characterChibis).map(chibi => {
-          return preloadImage(chibi.image).then(() => {
-            loadedAssets++;
-            setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
-          });
+        const chibiPromises = Object.values(characterChibis).map(async chibi => {
+          const success = await preloadImage(chibi.image);
+          if (!success) {
+            failedAssets.push(chibi.image);
+          }
+          loadedAssets++;
+          setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
         });
         
         await Promise.all(chibiPromises);
@@ -86,22 +119,26 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         );
         
         for (const bg of remainingBackgrounds) {
-          await preloadImage(bg.image);
+          const success = await preloadImage(bg.image);
+          if (!success) {
+            failedAssets.push(bg.image);
+          }
           loadedAssets++;
           setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
         }
         
         // Priority 4: Neutral character expressions first
         setLoadingMessage('Loading character portraits...');
-        const neutralExpressionsPromises = characterIds.map(id => {
+        const neutralExpressionsPromises = characterIds.map(async id => {
           const neutralExpression = characterExpressions[id]?.neutral;
           if (neutralExpression) {
-            return preloadImage(neutralExpression.image).then(() => {
-              loadedAssets++;
-              setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
-            });
+            const success = await preloadImage(neutralExpression.image);
+            if (!success) {
+              failedAssets.push(neutralExpression.image);
+            }
+            loadedAssets++;
+            setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
           }
-          return Promise.resolve();
         });
         
         await Promise.all(neutralExpressionsPromises);
@@ -113,19 +150,24 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
         
         // Process moods in batches for better resource management
         for (const mood of moodTypes) {
-          const moodExpressionsPromises = characterIds.map(id => {
+          const moodExpressionsPromises = characterIds.map(async id => {
             const expression = characterExpressions[id]?.[mood];
             if (expression) {
-              return preloadImage(expression.image).then((success) => {
-                // Still increment asset count even if the image failed to load
-                loadedAssets++;
-                setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
-              });
+              const success = await preloadImage(expression.image);
+              if (!success) {
+                failedAssets.push(expression.image);
+              }
+              // Still increment asset count even if the image failed to load
+              loadedAssets++;
+              setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
             }
-            return Promise.resolve();
           });
           
           await Promise.all(moodExpressionsPromises);
+        }
+
+        if (failedAssets.length > 0) {
+          console.warn(`Failed to load ${failedAssets.length} assets. Game will use fallbacks.`);
         }
 
         setLoadingMessage('Finalizing game setup...');
