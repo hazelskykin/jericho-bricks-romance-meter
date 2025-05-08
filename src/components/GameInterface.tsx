@@ -62,7 +62,7 @@ const GameInterface: React.FC = () => {
   }
 
   const seasonalCharacterSelection = (season: 'spring' | 'summer') => {
-    const suffix = gameState.currentScene.replace(`${season}-character-selection`, '');
+    const suffix = gameState.currentScene.replace(`${season}-character`, '');
     const visitedChars: CharacterId[] = [];
     if (suffix.includes('1')) visitedChars.push('xavier');
     if (suffix.includes('2')) visitedChars.push('navarre');
