@@ -28,9 +28,9 @@ const GameInterface: React.FC = () => {
       handleSceneTransition(routeToEpilogue(currentScene));
     } else if (currentScene === 'happy-ending-character' && currentLoveInterest) {
       handleSceneTransition(`happy-ending-${currentLoveInterest}`);
-    } else if (['autumn-character-path', 'winter-planning-character', 'winter-confession-character'].includes(currentScene)) {
+    } else if (['autumn-character', 'winter-planning-character', 'winter-confession-character'].includes(currentScene)) {
       const fallbackMap: Record<string, string> = {
-        'autumn-character-path': 'autumn-festival-introduction',
+        'autumn-character': 'autumn-festival-introduction',
         'winter-planning-character': 'winter-festival-intro',
         'winter-confession-character': 'team-future-meeting'
       };
