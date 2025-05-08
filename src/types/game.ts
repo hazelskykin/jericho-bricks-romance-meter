@@ -83,3 +83,11 @@ export interface CharacterExpression {
   image: string;
   description: string;
 }
+
+// Add ChibiImageData interface
+export interface ChibiImageData {
+  id: CharacterId;
+  image: string;
+  description: string;
+  width?: string;
+}

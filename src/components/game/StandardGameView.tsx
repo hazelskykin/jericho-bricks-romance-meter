@@ -10,12 +10,13 @@ import { Loader2 } from 'lucide-react';
 import ExpandableMenu from '../ExpandableMenu';
 
 const StandardGameView: React.FC = () => {
-  const { gameState, handleDialogueClick, handleChoiceClick } = useGame();
+  const { gameState, handleDialogueClick, handleChoiceClick, handleSceneTransition, handleNewGame, handleAbout, replayCurrentScene } = useGame();
   const [showHistory, setShowHistory] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
   const viewRef = useRef<HTMLDivElement>(null);
 
-  const { currentScene: sceneId, currentDialogueIndex, displayedChoices, dialogueHistory, scenes } = gameState;
+  const { currentScene: sceneId, currentDialogueIndex, displayedChoices, dialogHistory, scenes } = gameState;
 
   // Get the current scene and dialogue
   const scene = scenes[sceneId];
@@ -30,6 +31,14 @@ const StandardGameView: React.FC = () => {
     
     return () => clearTimeout(timer);
   }, [scene]);
+
+  const handleGameClick = () => {
+    setActiveView('game');
+  };
+
+  const handleTesterClick = () => {
+    setActiveView('tester');
+  };
   
   // Loading state
   if (!scene || !loaded) {
@@ -42,6 +51,8 @@ const StandardGameView: React.FC = () => {
 
   // Get the character's mood from current dialogue
   const characterMood = currentDialogue?.mood || 'neutral';
+  // Get the character ID from current dialogue
+  const characterId = currentDialogue?.character;
 
   return (
     <div ref={viewRef} className="relative h-screen w-full overflow-hidden">
@@ -49,11 +60,11 @@ const StandardGameView: React.FC = () => {
       <BackgroundScene backgroundId={scene.background} />
       
       {/* Character Portrait */}
-      {currentDialogue && currentDialogue.character !== 'narrator' && (
+      {currentDialogue && characterId && characterId !== 'narrator' && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="character-portrait-container">
             <CharacterPortrait 
-              character={currentDialogue.character}
+              characterId={characterId}
               mood={characterMood}
               isActive={true}
             />
@@ -62,13 +73,20 @@ const StandardGameView: React.FC = () => {
       )}
       
       {/* Dialog History Button */}
-      <ExpandableMenu />
+      <ExpandableMenu 
+        onGameClick={handleGameClick}
+        onTesterClick={handleTesterClick}
+        activeView={activeView}
+      />
       
       {/* Dialog History Overlay */}
       {showHistory && (
         <DialogHistory
-          history={dialogueHistory}
+          dialogHistory={dialogHistory}
           onClose={() => setShowHistory(false)}
+          onOpenChange={() => setShowHistory(false)}
+          open={showHistory}
+          onReplayScene={replayCurrentScene}
         />
       )}
       
@@ -78,11 +96,12 @@ const StandardGameView: React.FC = () => {
           <ChoiceMenu 
             choices={displayedChoices} 
             onChoiceSelected={handleChoiceClick}
+            isActive={true}
           />
         ) : (
           <DialogueBox
-            dialogue={currentDialogue}
-            onClick={handleDialogueClick}
+            dialogueLine={currentDialogue}
+            onAdvance={handleDialogueClick}
           />
         )}
       </div>

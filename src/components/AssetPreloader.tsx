@@ -54,7 +54,10 @@ export const AssetPreloader = ({ onComplete, priorityOnly = false }: AssetPreloa
       // Add remaining character expressions
       Object.values(characterExpressions).flat().forEach(expression => {
         if (!PRIORITY_ASSETS.characters.includes(expression.id)) {
-          imagesToLoad.push(expression.src);
+          // Fix: Extract the src property from the expression object
+          if (expression && typeof expression === 'object' && 'src' in expression) {
+            imagesToLoad.push(expression.src);
+          }
         }
       });
     }
