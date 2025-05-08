@@ -71,7 +71,7 @@ const springIntroScenes: Record<string, Scene> = {
         mood: 'neutral',
       },
     ],
-    nextSceneId: 'spring-character-selection',
+       nextSceneId: 'spring-selection',
   },
 };
 
