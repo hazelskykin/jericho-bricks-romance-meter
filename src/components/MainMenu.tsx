@@ -18,6 +18,23 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
     handleSceneTransition(sceneId);
   };
 
+  const devJumpTargets = [
+    { id: 'spring-intro', label: 'Spring Intro' },
+    { id: 'spring-selection', label: 'Spring Character Select' },
+    { id: 'spring-festival-planning', label: 'Spring Festival Planning' },
+    { id: 'summer-intro', label: 'Summer Intro' },
+    { id: 'summer-selection', label: 'Summer Character Select' },
+    { id: 'summer-planning', label: 'Summer Festival Planning' },
+    { id: 'autumn-intro', label: 'Autumn Intro' },
+    { id: 'autumn-character-path', label: 'Autumn Romance Path' },
+    { id: 'autumn-festival-introduction', label: 'Autumn Festival' },
+    { id: 'winter-intro', label: 'Winter Intro' },
+    { id: 'winter-planning', label: 'Winter Festival Planning' },
+    { id: 'winter-planning-character', label: 'Winter Romance Path' },
+    { id: 'winter-festival-intro', label: 'Winter Festival' },
+    { id: 'epilogue-route', label: 'Epilogue' }
+  ];
+
   return (
     <div className="flex flex-col items-end justify-start min-h-screen relative overflow-hidden">
       {/* Background */}
@@ -56,16 +73,12 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
             {showDevMenu && (
               <div className="mt-2 bg-black/80 p-4 rounded shadow max-w-xs space-y-2">
                 <p className="text-white text-sm font-semibold">Jump to Scene:</p>
-                <div className="flex flex-col space-y-1">
-                  <Button onClick={() => handleJump('spring-intro')} className="text-xs">Spring Intro</Button>
-                  <Button onClick={() => handleJump('spring-character-selection')} className="text-xs">Spring Character Select</Button>
-                  <Button onClick={() => handleJump('spring-festival-planning')} className="text-xs">Spring Festival Planning</Button>
-                  <Button onClick={() => handleJump('summer-intro')} className="text-xs">Summer Intro</Button>
-                  <Button onClick={() => handleJump('summer-character-selection')} className="text-xs">Summer Character Select</Button>
-                  <Button onClick={() => handleJump('summer-planning')} className="text-xs">Summer Festival Planning</Button>
-                  <Button onClick={() => handleJump('autumn-intro')} className="text-xs">Autumn Intro</Button>
-                  <Button onClick={() => handleJump('winter-intro')} className="text-xs">Winter Intro</Button>
-                  <Button onClick={() => handleJump('epilogue-route')} className="text-xs">Epilogue</Button>
+                <div className="flex flex-col space-y-1 max-h-64 overflow-y-auto pr-1">
+                  {devJumpTargets.map(({ id, label }) => (
+                    <Button key={id} onClick={() => handleJump(id)} className="text-xs whitespace-nowrap">
+                      {label}
+                    </Button>
+                  ))}
                 </div>
               </div>
             )}
@@ -82,3 +95,4 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
 };
 
 export default MainMenu;
+
