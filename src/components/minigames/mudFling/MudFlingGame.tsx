@@ -4,7 +4,6 @@ import MinigameContainer from '../MinigameContainer';
 import MudFlingArena from './MudFlingArena';
 import MudFlingControls from './MudFlingControls';
 import GameStatusMessage from '../common/GameStatusMessage';
-import { Character, Position } from './types';
 import { useMudFlingGame } from '@/hooks/useMudFlingGame';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
@@ -62,6 +61,14 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
     );
   }
   
+  // Handle game area click event by converting from mouse event to x,y coordinates
+  const handleArenaClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    handleGameAreaClick(x, y);
+  };
+  
   return (
     <MinigameContainer
       title="Mud Fling"
@@ -92,7 +99,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
                 'senara': { color: '#9C89FF' }
               }}
               onMudBallClick={handleMudBallClick}
-              onGameAreaClick={handleGameAreaClick}
+              onGameAreaClick={handleArenaClick}
             />
             
             {gameEnded && (

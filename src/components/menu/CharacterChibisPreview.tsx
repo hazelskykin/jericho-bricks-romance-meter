@@ -1,54 +1,93 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import characterChibis from '@/data/characterChibis';
-import characters from '@/data/characters';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import React, { useEffect, useState } from 'react';
+import { CharacterId, ChibiImageData } from '@/types/game';
 
-const CharacterChibisPreview: React.FC = () => {
+interface CharacterChibisPreviewProps {
+  characterChibis: Record<CharacterId, ChibiImageData>;
+  loadingComplete: boolean;
+}
+
+const CharacterChibisPreview: React.FC<CharacterChibisPreviewProps> = ({ characterChibis, loadingComplete }) => {
+  const [activeCharacterIds, setActiveCharacterIds] = useState<CharacterId[]>([]);
+  
+  useEffect(() => {
+    if (loadingComplete) {
+      // Stagger character appearances
+      const timeouts: NodeJS.Timeout[] = [];
+      const characters: CharacterId[] = ['maven', 'xavier', 'navarre', 'etta', 'senara'];
+      
+      characters.forEach((id, index) => {
+        const timeout = setTimeout(() => {
+          setActiveCharacterIds(prev => [...prev, id]);
+        }, index * 300); // 300ms delay between each character
+        
+        timeouts.push(timeout);
+      });
+      
+      return () => {
+        timeouts.forEach(timeout => clearTimeout(timeout));
+      };
+    }
+  }, [loadingComplete]);
+  
   return (
-    <div className="flex justify-center gap-1 mb-6 max-w-md">
-      {Object.values(characters).map((char) => {
-        const chibiData = characterChibis[char.id];
+    <div className="relative h-[220px] w-[500px]">
+      {Object.entries(characterChibis).map(([id, data]) => {
+        const isActive = activeCharacterIds.includes(id as CharacterId);
+        const characterId = id as CharacterId;
         
         return (
-          <motion.div 
-            key={char.id}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 + Math.random() * 0.5 }}
-            whileHover={{ y: -5, scale: 1.05 }}
+          <div 
+            key={id}
+            className={`absolute transition-all duration-500 ease-out ${getPositionClass(characterId)} ${
+              isActive 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-10'
+            }`}
+            style={{ transitionDelay: isActive ? `${getCharacterIndex(characterId) * 0.2}s` : '0s' }}
           >
-            {chibiData?.image ? (
-              <Avatar 
-                className="w-14 h-14 border-2 rounded-xl"
-                style={{ 
-                  borderColor: char.color,
-                  boxShadow: `0 0 10px ${char.color}50`,
-                  backgroundColor: `${char.color}30`,
-                }}
-              >
-                <AvatarFallback
-                  style={{ 
-                    backgroundColor: char.color + '60',
-                    color: 'white',
-                  }}
-                  className="rounded-xl"
-                >
-                  {char.name.substring(0, 2)}
-                </AvatarFallback>
-                <AvatarImage 
-                  src={chibiData.image} 
-                  alt={char.name}
-                  className="rounded-xl"
-                />
-              </Avatar>
-            ) : null}
-          </motion.div>
+            <img 
+              src={data.image} 
+              alt={`${id} chibi`} 
+              className="h-auto drop-shadow-lg"
+              style={{ width: data.width || '100px' }}
+            />
+          </div>
         );
       })}
     </div>
   );
+};
+
+// Helper function to get character position class
+const getPositionClass = (characterId: CharacterId): string => {
+  switch (characterId) {
+    case 'maven':
+      return 'left-[50%] bottom-0 transform -translate-x-1/2 z-30';
+    case 'xavier':
+      return 'left-[15%] bottom-0 transform -translate-x-1/2 z-20';
+    case 'navarre':
+      return 'left-[30%] bottom-0 transform -translate-x-1/2 z-20';
+    case 'etta':
+      return 'left-[70%] bottom-0 transform -translate-x-1/2 z-20';
+    case 'senara':
+      return 'left-[85%] bottom-0 transform -translate-x-1/2 z-20';
+    default:
+      return 'left-0 bottom-0';
+  }
+};
+
+// Helper function to get character index for animation delay
+const getCharacterIndex = (characterId: CharacterId): number => {
+  const indices: Record<CharacterId, number> = {
+    'maven': 0,
+    'xavier': 1,
+    'navarre': 2,
+    'etta': 3,
+    'senara': 4
+  };
+  
+  return indices[characterId] || 0;
 };
 
 export default CharacterChibisPreview;

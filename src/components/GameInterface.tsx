@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
@@ -20,6 +21,8 @@ const GameInterface: React.FC = () => {
     exitMinigame,
     handleSceneTransition
   } = useGame();
+  
+  const [loadingComplete, setLoadingComplete] = useState(true); // Default to true for asset loading
 
   const { routeToEpilogue } = useEpilogueChecker(gameState, setGameState => setGameState);
   const [showDevMenu, setShowDevMenu] = useState(false);
@@ -46,7 +49,7 @@ const GameInterface: React.FC = () => {
   }, [gameState.currentScene, gameState.currentLoveInterest, handleSceneTransition, routeToEpilogue]);
 
   const seasonalCharacterSelection = (season: 'spring' | 'summer') => {
-    const suffix = gameState.currentScene.replace(`${season}-character`, '');
+    const suffix = gameState.currentScene.replace(`${season}-character-selection`, '');
     const visitedChars: CharacterId[] = [];
     if (suffix.includes('1')) visitedChars.push('xavier');
     if (suffix.includes('2')) visitedChars.push('navarre');
@@ -95,10 +98,10 @@ const GameInterface: React.FC = () => {
 
   const devJumpTargets = [
     { id: 'spring-intro', label: 'Spring Intro' },
-    { id: 'spring-selection', label: 'Spring Character Select' },
+    { id: 'spring-character-selection', label: 'Spring Character Select' },
     { id: 'spring-festival-planning', label: 'Spring Festival Planning' },
     { id: 'summer-intro', label: 'Summer Intro' },
-    { id: 'summer-selection', label: 'Summer Character Select' },
+    { id: 'summer-character-selection', label: 'Summer Character Select' },
     { id: 'summer-planning', label: 'Summer Festival Planning' },
     { id: 'autumn-intro', label: 'Autumn Intro' },
     { id: 'autumn-character-path', label: 'Autumn Romance Path' },
@@ -138,7 +141,7 @@ const GameInterface: React.FC = () => {
   if (gameState.currentScene === 'start') {
     return (
       <>
-        <MainMenu onNewGame={handleNewGame} onAbout={handleAbout} />
+        <MainMenu onNewGame={handleNewGame} onAbout={handleAbout} loadingComplete={loadingComplete} />
         <DevMenu />
       </>
     );
@@ -188,4 +191,3 @@ const GameInterface: React.FC = () => {
 };
 
 export default React.memo(GameInterface);
-

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import MenuBackground from './menu/MenuBackground';
 import MainContent from './menu/MainContent';
 import { Toaster } from 'sonner';
@@ -7,7 +7,7 @@ import { Toaster } from 'sonner';
 interface MainMenuProps {
   onNewGame: () => void;
   loadingComplete: boolean;
-  onAbout: () => void;
+  onAbout?: () => void;
 }
 
 const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, loadingComplete, onAbout }) => {
@@ -19,7 +19,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, loadingComplete, onAbout
       <MenuBackground />
       
       {/* Main Content */}
-      <MainContent onNewGame={onNewGame} loadingComplete={loadingComplete} />
+      <MainContent onNewGame={onNewGame} loadingComplete={loadingComplete} onAbout={onAbout} />
     </div>
   );
 };

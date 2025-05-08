@@ -5,13 +5,15 @@ import MenuButtons from './MenuButtons';
 import CharacterChibisPreview from './CharacterChibisPreview';
 import characterChibis from '../../data/characterChibis';
 import { Toaster } from 'sonner';
+import { CharacterId, ChibiImageData } from '@/types/game';
 
 interface MainContentProps {
   onNewGame: () => void;
   loadingComplete: boolean;
+  onAbout?: () => void;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete }) => {
+const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, onAbout }) => {
   const [charactersLoaded, setCharactersLoaded] = useState(false);
   
   // Manage character animation states
@@ -39,22 +41,15 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete })
         <div className="flex-1 flex justify-center items-end mb-8 md:mb-0 mt-4 md:mt-0">
           <div className={`transition-all duration-700 ${charactersLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <CharacterChibisPreview
-              characters={characterChibis}
+              characterChibis={characterChibis}
               loadingComplete={loadingComplete}
             />
           </div>
         </div>
         
-        {/* Menu Buttons - Using div with direct button */}
+        {/* Menu Buttons */}
         <div className="flex-1 flex flex-col justify-center">
-          <div className="space-y-4">
-            <button
-              onClick={onNewGame}
-              className="w-full bg-[#9b87f5] hover:bg-[#7E69AB] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-lg"
-            >
-              New Game
-            </button>
-          </div>
+          <MenuButtons onNewGame={onNewGame} onAbout={onAbout} />
         </div>
       </div>
     </div>

@@ -58,7 +58,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   if (isLoading) {
     return (
       <MinigameContainer
-        title={`Loading ${activeMinigame}`}
+        title={`Loading ${activeMinigame || "Minigame"}`}
         instructions="Please wait while the game loads..."
         onComplete={completeMinigame}
         onExit={exitMinigame}
@@ -72,7 +72,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   }
   
   // If there was a loading error, show error UI
-  if (loadError) {
+  if (loadError || !activeMinigame) {
     return (
       <MinigameContainer
         title="Error Loading Minigame"
@@ -82,7 +82,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
       >
         <div className="flex flex-col items-center justify-center p-8 h-full">
           <div className="mb-8 text-lg text-center text-red-500">
-            <p>{loadError}</p>
+            <p>{loadError || "Unknown error loading minigame"}</p>
           </div>
           <div className="flex gap-4">
             <Button onClick={() => window.location.reload()} className="bg-purple-600 hover:bg-purple-700">
@@ -127,12 +127,6 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   
   // Render the appropriate minigame based on activeMinigame
   try {
-    // Safe guard against undefined activeMinigame
-    if (!activeMinigame) {
-      console.warn("No active minigame specified, showing fallback UI");
-      return <PlaceholderMinigame title="Unknown Minigame" />;
-    }
-    
     // Use explicit type check to avoid issues with string comparison
     switch (activeMinigame) {
       // Spring minigames

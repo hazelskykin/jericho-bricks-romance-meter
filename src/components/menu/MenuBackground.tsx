@@ -1,31 +1,30 @@
 
 import React from 'react';
-import backgrounds from '@/data/backgrounds';
 
-interface MenuBackgroundProps {
-  backgroundId: string;
-}
-
-const MenuBackground: React.FC<MenuBackgroundProps> = ({ backgroundId = 'wall-tiles' }) => {
-  const bgData = backgrounds[backgroundId];
-  
+const MenuBackground: React.FC = () => {
   return (
-    <>
-      {/* Background image with pattern */}
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Dark gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1A1F2C]/70 to-[#0D0D14]/90 z-10" />
+      
+      {/* Background image */}
       <div 
         className="absolute inset-0 bg-cover bg-center z-0"
-        style={{ backgroundImage: `url(${bgData.image})` }}
+        style={{ 
+          backgroundImage: 'url(/assets/backgrounds/cybaton-office.jpg)',
+          filter: 'blur(3px) brightness(0.6)'
+        }}
       />
       
-      {/* Gradient overlay to enhance readability */}
-      <div 
-        className="absolute inset-0 z-5" 
-        style={{ background: bgData.gradient || 'linear-gradient(to bottom, rgba(26, 31, 44, 0.3), rgba(42, 30, 78, 0.6))' }}
-      />
+      {/* Animated particles/stars effect */}
+      <div className="absolute inset-0 z-20 opacity-40">
+        <div className="stars-bg"></div>
+      </div>
       
-      {/* Additional stylized overlay for depth */}
-      <div className="absolute inset-0 z-10 bg-black/30 backdrop-blur-[1px]"></div>
-    </>
+      {/* Purple glow effects */}
+      <div className="absolute bottom-[-50%] left-[-25%] w-[150%] h-[150%] rounded-full bg-[#9b87f5]/10 blur-[100px] z-5" />
+      <div className="absolute top-[-50%] right-[-25%] w-[150%] h-[150%] rounded-full bg-[#7E69AB]/10 blur-[100px] z-5" />
+    </div>
   );
 };
 

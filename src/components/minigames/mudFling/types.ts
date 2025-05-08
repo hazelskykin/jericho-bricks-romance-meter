@@ -1,6 +1,4 @@
 
-import { CharacterId } from '@/types/game';
-
 export interface Position {
   x: number;
   y: number;
@@ -9,18 +7,19 @@ export interface Position {
 export interface MudBall {
   id: string;
   position: Position;
-  owner: 'player' | CharacterId | null;
-  target?: 'team1' | 'team2';
+  team: 'team1' | 'team2';
   isFlying: boolean;
-  flightPath?: {
-    start: Position;
-    end: Position;
-    progress: number;
+  targetPosition?: Position;
+  velocity?: {
+    x: number;
+    y: number;
   };
+  size: number; // Add size property
+  flying: boolean; // Add flying alias for isFlying for backward compatibility
 }
 
 export interface Character {
-  id: CharacterId;
+  id: string;
   position: Position;
   team: 'team1' | 'team2';
   isHit: boolean;

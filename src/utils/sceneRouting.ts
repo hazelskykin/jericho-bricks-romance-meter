@@ -4,12 +4,12 @@ import { toast } from 'sonner';
 // Scene mapping for transitions
 const sceneMapping: Record<string, string> = {
   // Spring scenes
-  'spring-character-selection': 'spring-selection',
+  'spring-character-selection': 'spring-character-selection',
   'spring-festival-planning': 'spring-planning',
   'spring-character-path': 'spring-character-visit',
   
   // Summer scenes
-  'summer-character-selection': 'summer-selection',
+  'summer-character-selection': 'summer-character-selection',
   'summer-festival-planning': 'summer-planning',
   'summer-character-path': 'summer-character-visit',
   
