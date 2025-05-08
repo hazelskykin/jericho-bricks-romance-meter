@@ -3,15 +3,15 @@ import React, { useState, useEffect } from 'react';
 import GameTitle from './GameTitle';
 import MenuButtons from './MenuButtons';
 import CharacterChibisPreview from './CharacterChibisPreview';
-import { characterChibis } from '../../data/characterChibis';
+import characterChibis from '../../data/characterChibis';
 import { Toaster } from 'sonner';
 
 interface MainContentProps {
-  onStartGame: () => void;
+  onNewGame: () => void;
   loadingComplete: boolean;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ onStartGame, loadingComplete }) => {
+const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete }) => {
   const [charactersLoaded, setCharactersLoaded] = useState(false);
   
   // Manage character animation states
@@ -45,9 +45,16 @@ const MainContent: React.FC<MainContentProps> = ({ onStartGame, loadingComplete 
           </div>
         </div>
         
-        {/* Menu Buttons */}
+        {/* Menu Buttons - Using div with direct button */}
         <div className="flex-1 flex flex-col justify-center">
-          <MenuButtons onStartGame={onStartGame} />
+          <div className="space-y-4">
+            <button
+              onClick={onNewGame}
+              className="w-full bg-[#9b87f5] hover:bg-[#7E69AB] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-lg"
+            >
+              New Game
+            </button>
+          </div>
         </div>
       </div>
     </div>

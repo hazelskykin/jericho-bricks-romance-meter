@@ -13,7 +13,7 @@ import happyEndings from './happy-endings';
 import mainMenu from './mainMenu';
 
 // Merge all scenes into one collection
-const scenes: Record<string, Scene> = {
+export const allScenes: Record<string, Scene> = {
   ...mainMenu,
   ...prologue,
   ...spring,
@@ -25,4 +25,4 @@ const scenes: Record<string, Scene> = {
   ...happyEndings,
 };
 
-export default scenes;
+export default allScenes;

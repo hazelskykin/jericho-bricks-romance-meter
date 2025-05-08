@@ -1,48 +1,27 @@
-import React, { useState } from 'react';
+
+import React from 'react';
 import MenuBackground from './menu/MenuBackground';
-import GameTitle from './menu/GameTitle';
 import MainContent from './menu/MainContent';
-import { Button } from "./ui/button";
+import { Toaster } from 'sonner';
 
 interface MainMenuProps {
   onNewGame: () => void;
+  loadingComplete: boolean;
   onAbout: () => void;
 }
 
-const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, onAbout }) => {
+const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, loadingComplete, onAbout }) => {
   return (
-    <div className="flex flex-col items-end justify-start min-h-screen relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden">
+      <Toaster position="top-right" />
+      
       {/* Background */}
-      <MenuBackground backgroundId="wall-tiles" />
-
-      {/* Content */}
-      <div className="relative w-full h-full z-20 flex flex-col items-end">
-        {/* Title */}
-        <GameTitle />
-
-        {/* Main Content - right-aligned */}
-        <div className="flex flex-1 justify-end px-4 w-full">
-          <MainContent />
-        </div>
-
-        {/* Main Button - right-aligned */}
-        <div className="flex justify-end my-6 z-30 pr-10 w-full">
-          <Button 
-            onClick={onNewGame} 
-            className="px-12 py-4 bg-primary text-white text-xl rounded-md shadow-lg hover:bg-primary/90 transform transition-all hover:scale-105"
-          >
-            New Game
-          </Button>
-        </div>
-      </div>
-
-      {/* Version info */}
-      <div className="absolute bottom-4 right-4 text-xs text-white/50 z-20">
-        Demo Version 0.1
-      </div>
+      <MenuBackground />
+      
+      {/* Main Content */}
+      <MainContent onNewGame={onNewGame} loadingComplete={loadingComplete} />
     </div>
   );
 };
 
 export default MainMenu;
-

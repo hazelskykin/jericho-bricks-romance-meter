@@ -7,6 +7,7 @@ import { GameProvider } from '../context/GameContext';
 import AssetPreloader from './AssetPreloader';
 import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
+import { MinigameType } from '@/hooks/useGameMinigames';
 
 const Game: React.FC = () => {
   const [showMainMenu, setShowMainMenu] = useState(true);
@@ -63,23 +64,19 @@ const Game: React.FC = () => {
       
       {showMainMenu ? (
         <MainMenu 
-          onStartGame={handleStartGame} 
+          onNewGame={handleStartGame} 
           loadingComplete={loadingComplete}
+          onAbout={() => {}}
         />
       ) : (
-        <GameInterface
-          scene={currentScene}
-          sceneId={currentSceneId}
-          previousSceneId={previousSceneId}
-          onTransitionToScene={transitionToScene}
-          onResetGame={handleResetGame}
-          loading={loading}
-          transitionEffect={transitionEffect}
-          setTransitionEffect={setTransitionEffect}
-        />
+        <GameInterface />
       )}
       
-      <MinigameHandler />
+      <MinigameHandler 
+        activeMinigame={null} 
+        completeMinigame={() => {}} 
+        exitMinigame={() => {}}
+      />
       
       {/* Dev Scene Jumper - always available */}
       <DevSceneJumper 

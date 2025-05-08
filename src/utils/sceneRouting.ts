@@ -64,3 +64,13 @@ export const handleSceneError = (sceneId: string): string | null => {
   toast.error(`Scene "${sceneId}" not found and no fallback exists`);
   return null;
 };
+
+/**
+ * Generate scene ID for character-specific scenes
+ */
+export const getCharacterSceneId = (scenePrefix: string, characterId: string): string => {
+  // Map the scene prefix and character ID to a scene ID pattern
+  const sceneId = `${scenePrefix}-${characterId}`;
+  console.log(`Generated character scene ID: ${sceneId}`);
+  return sceneId;
+};

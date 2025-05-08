@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { backgrounds } from '../data/backgrounds';
-import { characterExpressions } from '../data/characterExpressions';
+import backgrounds from '../data/backgrounds';
+import characterExpressions from '../data/characterExpressions';
 import { toast } from 'sonner';
+import { BackgroundAsset } from '@/types/game';
 
 interface AssetPreloaderProps {
   onComplete: () => void;
@@ -28,8 +29,8 @@ export const AssetPreloader = ({ onComplete, priorityOnly = false }: AssetPreloa
     
     // Add priority background images
     PRIORITY_ASSETS.backgrounds.forEach(bgKey => {
-      const bg = backgrounds.find(b => b.id === bgKey);
-      if (bg) imagesToLoad.push(bg.src);
+      const bg = Object.entries(backgrounds).find(([id]) => id === bgKey);
+      if (bg) imagesToLoad.push(bg[1].image);
     });
     
     // Add priority character images
@@ -44,9 +45,9 @@ export const AssetPreloader = ({ onComplete, priorityOnly = false }: AssetPreloa
     // If not priority only, add all other assets
     if (!priorityOnly) {
       // Add remaining background images
-      backgrounds.forEach(bg => {
-        if (!PRIORITY_ASSETS.backgrounds.includes(bg.id)) {
-          imagesToLoad.push(bg.src);
+      Object.entries(backgrounds).forEach(([id, bg]) => {
+        if (!PRIORITY_ASSETS.backgrounds.includes(id)) {
+          imagesToLoad.push(bg.image);
         }
       });
       

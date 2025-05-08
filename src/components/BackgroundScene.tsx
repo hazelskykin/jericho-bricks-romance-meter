@@ -1,45 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { getImageCache } from '../utils/imageCache';
+import backgrounds from '../data/backgrounds';
 
 interface BackgroundSceneProps {
-  src: string;
-  alt: string;
+  src?: string;
+  backgroundId?: string;
+  alt?: string;
   className?: string;
   transitionDuration?: number;
 }
 
 const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   src,
-  alt,
+  backgroundId,
+  alt = 'Background scene',
   className = '',
   transitionDuration = 500,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState<string>(src);
+  const [currentSrc, setCurrentSrc] = useState<string>('');
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
   const [isFading, setIsFading] = useState(false);
   
   const imageCache = getImageCache();
+  
+  // Get actual source based on either direct src or backgroundId
+  useEffect(() => {
+    if (backgroundId && backgrounds[backgroundId]) {
+      setCurrentSrc(backgrounds[backgroundId].image);
+    } else if (src) {
+      setCurrentSrc(src);
+    }
+  }, [backgroundId, src]);
 
   useEffect(() => {
-    if (src !== currentSrc) {
-      setPrevSrc(currentSrc);
-      setCurrentSrc(src);
+    if (!currentSrc) return;
+    
+    // Check if image is in cache
+    const isCached = imageCache.has(currentSrc);
+    
+    if (isCached) {
+      // If image is cached, set loaded immediately
+      setIsLoaded(true);
+    } else {
+      // Otherwise, load the image
+      setIsLoaded(false);
+      const img = new Image();
+      img.onload = () => setIsLoaded(true);
+      img.src = currentSrc;
+    }
+  }, [currentSrc, imageCache]);
+
+  useEffect(() => {
+    if (prevSrc !== null && prevSrc !== currentSrc) {
       setIsFading(true);
-      
-      // Check if image is in cache
-      const isCached = imageCache.has(src);
-      
-      if (isCached) {
-        // If image is cached, set loaded immediately
-        setIsLoaded(true);
-      } else {
-        // Otherwise, load the image
-        setIsLoaded(false);
-        const img = new Image();
-        img.onload = () => setIsLoaded(true);
-        img.src = src;
-      }
       
       const timer = setTimeout(() => {
         setIsFading(false);
@@ -48,11 +62,20 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       return () => clearTimeout(timer);
     }
-  }, [src, currentSrc, transitionDuration]);
+  }, [prevSrc, currentSrc, transitionDuration]);
+
+  // When src changes, set previous src for transition
+  useEffect(() => {
+    if (currentSrc && currentSrc !== prevSrc) {
+      setPrevSrc(prevSrc || currentSrc);
+    }
+  }, [currentSrc]);
+
+  if (!currentSrc) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {prevSrc && (
+      {prevSrc && prevSrc !== currentSrc && (
         <img
           src={prevSrc}
           alt={alt}
