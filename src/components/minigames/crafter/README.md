@@ -1,0 +1,1 @@
+placeholder for autumn crafter game; this is a crafting mechanic where materials are provided and can be selected to arrange on a canvas to create a work of art that will be saved in memory to be given as a gift to the love interest as part of the festival completion scene.
