@@ -2,8 +2,8 @@ import { Scene } from '../../../types/game';
 
 const springFestivalScenes: Record<string, Scene> = {
   // Festival planning scene after all character visits
-  'spring-festival-planning': {
-    id: 'spring-festival-planning',
+  'spring-planning': {
+    id: 'spring-planning',
     background: 'stonewich-office',
     dialogue: [
       {
