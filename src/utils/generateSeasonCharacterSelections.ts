@@ -9,16 +9,12 @@ export const generateSeasonCharacterSelections = (
 ): Record<string, Scene> => {
   const sceneMap: Record<string, Scene> = {};
 
-  // Generate suffix like -1, -12, -123 for sceneId
   const generateSceneId = (visited: CharacterId[]): string => {
-    if (visited.length === 0) return `${season}-character-selection`;
-    const suffix = visited
-      .map(c => (characters.indexOf(c) + 1).toString())
-      .join('');
-    return `${season}-character-selection-${suffix}`;
+    if (visited.length === 0) return `${season}-selection`;
+    const suffix = visited.sort().join('-');
+    return `${season}-${suffix}`;
   };
 
-  // Generate a Scene object for a given visited character combo
   const getScene = (visited: CharacterId[]): Scene => ({
     id: generateSceneId(visited),
     background: 'stonewich-cityscape',
@@ -26,18 +22,16 @@ export const generateSeasonCharacterSelections = (
       {
         character: 'narrator',
         text: visited.length > 0 ? followupText : openingText,
-      }
+      },
     ],
   });
 
-  // Generate all subsets of characters (powerset)
   const powerSet = (arr: CharacterId[]): CharacterId[][] =>
     arr.reduce<CharacterId[][]>(
       (acc, val) => acc.concat(acc.map(set => [...set, val])),
       [[]]
     );
 
-  // Build all scene variants
   for (const visitedCombo of powerSet(characters)) {
     sceneMap[generateSceneId(visitedCombo)] = getScene(visitedCombo);
   }
