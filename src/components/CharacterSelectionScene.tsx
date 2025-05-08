@@ -6,7 +6,6 @@ import characters from '@/data/characters';
 import { CharacterId } from '@/types/game';
 import { Button } from './ui/button';
 import { getCharacterSceneId } from '@/utils/sceneRouting';
-import { getCharacterSceneId } from '@/utils/generateSeasonCharacterSelections';
 
 
 interface CharacterSelectionProps {
