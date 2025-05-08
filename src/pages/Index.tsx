@@ -1,11 +1,21 @@
 
-import React from 'react';
-import Game from '@/components/Game';
+import React, { useState, useEffect } from 'react';
+import Game from '../components/Game';
+import AssetPreloader from '../components/AssetPreloader';
 
-const Index = () => {
+const Index: React.FC = () => {
+  const [priorityAssetsLoaded, setPriorityAssetsLoaded] = useState(false);
+  
   return (
-    <div className="min-h-screen">
-      <Game />
+    <div className="w-full h-screen bg-black">
+      {!priorityAssetsLoaded ? (
+        <AssetPreloader 
+          onComplete={() => setPriorityAssetsLoaded(true)}
+          priorityOnly={true}
+        />
+      ) : (
+        <Game />
+      )}
     </div>
   );
 };

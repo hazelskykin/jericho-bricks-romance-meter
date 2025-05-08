@@ -1,25 +1,56 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import GameTitle from './GameTitle';
+import MenuButtons from './MenuButtons';
 import CharacterChibisPreview from './CharacterChibisPreview';
+import { characterChibis } from '../../data/characterChibis';
+import { Toaster } from 'sonner';
 
-const MainContent: React.FC = () => {
+interface MainContentProps {
+  onStartGame: () => void;
+  loadingComplete: boolean;
+}
+
+const MainContent: React.FC<MainContentProps> = ({ onStartGame, loadingComplete }) => {
+  const [charactersLoaded, setCharactersLoaded] = useState(false);
+  
+  // Manage character animation states
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCharactersLoaded(true);
+    }, 500); // Short delay to allow smooth animation
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <motion.div 
-      className="w-full max-w-lg flex flex-col items-end"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-    >
-      <p className="text-sm text-white/80 mb-6 text-right max-w-md">
-        Cybaton is recruiting you for its elite administrative team; achieve love and success in a year.
-      </p>
-
-      {/* Character Chibi Preview - Right-aligned */}
-      <div className="text-right">
-        <CharacterChibisPreview />
+    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+      {/* Notification system */}
+      <Toaster position="top-right" richColors />
+      
+      {/* Game Title */}
+      <div className="flex flex-col items-center mb-6 animate-fade-in">
+        <GameTitle />
       </div>
-    </motion.div>
+      
+      {/* Main Content */}
+      <div className="flex flex-col md:flex-row w-full max-w-7xl px-4 gap-8">
+        {/* Character Chibis */}
+        <div className="flex-1 flex justify-center items-end mb-8 md:mb-0 mt-4 md:mt-0">
+          <div className={`transition-all duration-700 ${charactersLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <CharacterChibisPreview
+              characters={characterChibis}
+              loadingComplete={loadingComplete}
+            />
+          </div>
+        </div>
+        
+        {/* Menu Buttons */}
+        <div className="flex-1 flex flex-col justify-center">
+          <MenuButtons onStartGame={onStartGame} />
+        </div>
+      </div>
+    </div>
   );
 };
 

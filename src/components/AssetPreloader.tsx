@@ -1,198 +1,141 @@
 
 import React, { useState, useEffect } from 'react';
-import backgrounds from '@/data/backgrounds';
-import characterExpressions from '@/data/characterExpressions';
-import characterChibis from '@/data/characterChibis';
-import AssetLoading from './AssetLoading';
-import { CharacterId } from '@/types/game';
+import { backgrounds } from '../data/backgrounds';
+import { characterExpressions } from '../data/characterExpressions';
+import { toast } from 'sonner';
 
 interface AssetPreloaderProps {
-  children: React.ReactNode;
+  onComplete: () => void;
+  priorityOnly?: boolean;
 }
 
-const AssetPreloader: React.FC<AssetPreloaderProps> = ({ children }) => {
-  const [assetsReady, setAssetsReady] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('Loading game assets...');
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  
-  // Preload all game assets more efficiently
+// Define which assets should be loaded first
+const PRIORITY_ASSETS = {
+  backgrounds: ['stonewich-cityscape', 'cybaton-office', 'cybaton-lobby'],
+  characters: ['maven-neutral', 'xavier-neutral', 'navarre-neutral', 'etta-neutral', 'senara-neutral']
+};
+
+export const AssetPreloader = ({ onComplete, priorityOnly = false }: AssetPreloaderProps) => {
+  const [loaded, setLoaded] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+
+  // Create a cache to store loaded images
+  const imageCache = React.useRef<Map<string, HTMLImageElement>>(new Map());
+
   useEffect(() => {
-    // Helper function to preload an image and track progress
-    const preloadImage = (imagePath: string): Promise<boolean> => {
-      return new Promise((resolve) => {
-        // Skip if no image path
-        if (!imagePath) {
-          resolve(true);
-          return;
+    const imagesToLoad: string[] = [];
+    
+    // Add priority background images
+    PRIORITY_ASSETS.backgrounds.forEach(bgKey => {
+      const bg = backgrounds.find(b => b.id === bgKey);
+      if (bg) imagesToLoad.push(bg.src);
+    });
+    
+    // Add priority character images
+    PRIORITY_ASSETS.characters.forEach(charKey => {
+      const char = Object.values(characterExpressions)
+        .flat()
+        .find(expression => expression.id === charKey);
+      
+      if (char) imagesToLoad.push(char.src);
+    });
+
+    // If not priority only, add all other assets
+    if (!priorityOnly) {
+      // Add remaining background images
+      backgrounds.forEach(bg => {
+        if (!PRIORITY_ASSETS.backgrounds.includes(bg.id)) {
+          imagesToLoad.push(bg.src);
         }
-        
-        // Image extensions to try (in order of preference)
-        const extensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
-        
-        // Extract base path without extension
-        const basePath = imagePath.includes('.')
-          ? imagePath.substring(0, imagePath.lastIndexOf('.'))
-          : imagePath;
-        
-        // Function to try loading with different extensions
-        const tryWithExtensions = (index: number): void => {
-          if (index >= extensions.length) {
-            console.warn(`Failed to load image after trying all extensions: ${imagePath}`);
-            resolve(false);
-            return;
-          }
-          
-          const fullPath = `${basePath}.${extensions[index]}`;
-          console.log(`Trying to load image: ${fullPath}`);
-          
-          const img = new Image();
-          img.onload = () => resolve(true);
-          img.onerror = () => {
-            console.warn(`Failed to load image with ${extensions[index]}: ${fullPath}`);
-            // Try next extension
-            tryWithExtensions(index + 1);
-          };
-          img.src = fullPath;
-        };
-        
-        // Start with original path first
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => {
-          console.warn(`Failed to load image with original path: ${imagePath}`);
-          // Try with different extensions
-          tryWithExtensions(0);
-        };
-        img.src = imagePath;
       });
-    };
+      
+      // Add remaining character expressions
+      Object.values(characterExpressions).flat().forEach(expression => {
+        if (!PRIORITY_ASSETS.characters.includes(expression.id)) {
+          imagesToLoad.push(expression.src);
+        }
+      });
+    }
 
-    const preloadAssets = async () => {
-      try {
-        // Calculate total assets to preload
-        const totalBackgrounds = Object.values(backgrounds).length;
-        const characterIds = Object.keys(characterExpressions) as CharacterId[];
-        let totalExpressions = 0;
+    setTotal(imagesToLoad.length);
+    
+    // Create a function to load images in batches
+    const loadImagesBatch = (urls: string[], batchSize: number = 5) => {
+      let completed = 0;
+      
+      const loadBatch = (startIndex: number) => {
+        const endIndex = Math.min(startIndex + batchSize, urls.length);
+        const currentBatch = urls.slice(startIndex, endIndex);
         
-        characterIds.forEach(id => {
-          const expressions = characterExpressions[id];
-          if (expressions) {
-            totalExpressions += Object.values(expressions).length;
-          }
-        });
-        
-        const totalChibis = Object.values(characterChibis).length;
-        const totalAssets = totalBackgrounds + totalExpressions + totalChibis;
-        
-        let loadedAssets = 0;
-        const failedAssets: string[] = [];
-        
-        // Priority 1: Immediately load wall-tiles for main menu and any critical backgrounds
-        setLoadingMessage('Loading interface backgrounds...');
-        const criticalBackgrounds = ['wall-tiles'];
-        
-        for (const bgId of criticalBackgrounds) {
-          const bg = backgrounds[bgId];
-          if (bg) {
-            const success = await preloadImage(bg.image);
-            if (!success) {
-              failedAssets.push(bg.image);
+        Promise.all(
+          currentBatch.map(url => {
+            // Check if image is already in cache
+            if (imageCache.current.has(url)) {
+              return Promise.resolve();
             }
-            loadedAssets++;
-            setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
+            
+            return new Promise<void>((resolve, reject) => {
+              const img = new Image();
+              img.onload = () => {
+                imageCache.current.set(url, img);
+                setLoaded(prev => prev + 1);
+                resolve();
+              };
+              img.onerror = () => {
+                console.error(`Failed to load image: ${url}`);
+                reject(new Error(`Failed to load image: ${url}`));
+              };
+              img.src = url;
+            });
+          })
+        )
+        .then(() => {
+          completed += currentBatch.length;
+          if (completed < urls.length) {
+            loadBatch(endIndex);
+          } else {
+            console.log('All images loaded successfully!');
+            onComplete();
           }
-        }
-        
-        // Priority 2: Load character chibis for main menu
-        setLoadingMessage('Loading character chibis...');
-        const chibiPromises = Object.values(characterChibis).map(async chibi => {
-          const success = await preloadImage(chibi.image);
-          if (!success) {
-            failedAssets.push(chibi.image);
-          }
-          loadedAssets++;
-          setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
-          return true; // Always return success for Promise.all
+        })
+        .catch(err => {
+          console.error('Error loading images:', err);
+          setError('Failed to load some assets. Please refresh the page.');
+          toast.error('Failed to load some assets');
         });
-        
-        await Promise.all(chibiPromises);
-        
-        // Priority 3: Load remaining backgrounds
-        setLoadingMessage('Loading background scenes...');
-        const remainingBackgrounds = Object.values(backgrounds).filter(
-          bg => !criticalBackgrounds.includes(bg.id)
-        );
-        
-        for (const bg of remainingBackgrounds) {
-          const success = await preloadImage(bg.image);
-          if (!success) {
-            failedAssets.push(bg.image);
-          }
-          loadedAssets++;
-          setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
-        }
-        
-        // Priority 4: Neutral character expressions first
-        setLoadingMessage('Loading character portraits...');
-        const neutralExpressionsPromises = characterIds.map(async id => {
-          const neutralExpression = characterExpressions[id]?.neutral;
-          if (neutralExpression) {
-            const success = await preloadImage(neutralExpression.image);
-            if (!success) {
-              failedAssets.push(neutralExpression.image);
-            }
-          }
-          loadedAssets++;
-          setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
-          return true; // Always return success for Promise.all
-        });
-        
-        await Promise.all(neutralExpressionsPromises);
-        
-        // Priority 5: Remaining character expressions in batches
-        const moodTypes: (keyof typeof characterExpressions[CharacterId])[] = [
-          'happy', 'sad', 'angry', 'surprised', 'laughing', 'shocked', 'embarrassed', 'thoughtful', 'confident'
-        ];
-        
-        // Process moods in batches for better resource management
-        for (const mood of moodTypes) {
-          const moodExpressionsPromises = characterIds.map(async id => {
-            const expression = characterExpressions[id]?.[mood];
-            if (expression) {
-              await preloadImage(expression.image);
-              // Intentionally not tracking failures for non-critical assets
-            }
-            // Still increment asset count
-            loadedAssets++;
-            setLoadingProgress(Math.floor((loadedAssets / totalAssets) * 100));
-            return true; // Always return success for Promise.all
-          });
-          
-          await Promise.all(moodExpressionsPromises);
-        }
-
-        if (failedAssets.length > 0) {
-          console.warn(`Failed to load ${failedAssets.length} assets. Game will use fallbacks.`);
-        }
-
-        setLoadingMessage('Finalizing game setup...');
-        setAssetsReady(true);
-      } catch (error) {
-        console.warn("Error preloading assets, continuing anyway:", error);
-        // Still set ready even if some assets failed to load
-        // The components will handle fallbacks
-        setAssetsReady(true);
-      }
+      };
+      
+      loadBatch(0);
     };
     
-    preloadAssets();
-  }, []);
+    loadImagesBatch(imagesToLoad);
+  }, [onComplete, priorityOnly]);
 
-  if (!assetsReady) {
-    return <AssetLoading message={loadingMessage} progress={loadingProgress} />;
+  // Make the cache accessible globally
+  if (typeof window !== 'undefined') {
+    (window as any).gameImageCache = imageCache.current;
   }
 
-  return <>{children}</>;
+  return (
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-dark-purple bg-opacity-90 z-50">
+      <div className="text-white text-2xl mb-4">Loading Game Assets</div>
+      <div className="w-64 h-2 bg-gray-700 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-gradient-to-r from-primary-purple to-bright-purple transition-all duration-300 ease-out"
+          style={{ width: `${total > 0 ? (loaded / total) * 100 : 0}%` }}
+        />
+      </div>
+      <div className="text-white mt-2">
+        {loaded} / {total} assets loaded
+      </div>
+      {error && (
+        <div className="text-red-500 mt-4">
+          {error}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default AssetPreloader;

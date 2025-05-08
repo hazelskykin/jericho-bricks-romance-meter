@@ -1,126 +1,87 @@
 
-import { useState, useCallback } from 'react';
-import { GameState, Scene, DialogueChoice } from '@/types/game';
-import scenes from '@/data/scenes';
+import { useState, useCallback, useEffect } from 'react';
+import { allScenes } from '../data/scenes';
+import { toast } from 'sonner';
+import { mapSceneId, handleSceneError } from '../utils/sceneRouting';
 
-// Helper function to determine affection level
-const getAffectionLevel = (affection: number): string => {
-  if (affection <= -5) return 'Hostile';
-  if (affection <= -1) return 'Cold';
-  if (affection <= 2) return 'Neutral';
-  if (affection <= 5) return 'Friendly';
-  if (affection <= 10) return 'Close';
-  return 'Romantic';
-};
+interface UseGameScenesProps {
+  initialScene?: string;
+}
 
-export function useGameScenes(
-  gameState: GameState,
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>
-) {
-  const currentScene: Scene | undefined = scenes[gameState.currentScene];
-  const currentLine = currentScene?.dialogue[gameState.dialogueIndex];
+const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
+  const [currentSceneId, setCurrentSceneId] = useState<string>(initialScene);
+  const [previousSceneId, setPreviousSceneId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [transitionEffect, setTransitionEffect] = useState<string | null>(null);
+
+  // Get the current scene data
+  const currentScene = allScenes[currentSceneId];
   
-  // Handle dialogue advancement
-  const handleContinue = useCallback(() => {
-    if (!currentScene) {
-      console.error(`Cannot continue: Current scene ${gameState.currentScene} not found`);
-      return;
-    }
-    
-    console.log(`Continue pressed in scene [${gameState.currentScene}], dialogue index: ${gameState.dialogueIndex}, total dialogue: ${currentScene.dialogue.length}`);
-    
-    if (gameState.dialogueIndex < currentScene.dialogue.length - 1) {
-      // More dialogue in this scene
-      setGameState(prev => ({
-        ...prev,
-        dialogueIndex: prev.dialogueIndex + 1
-      }));
-    } else {
-      // End of dialogue for this scene
-      if (currentScene.choices) {
-        // Show choices
-        console.log(`Showing choices for scene [${gameState.currentScene}]`);
-        setGameState(prev => ({ ...prev, showChoices: true }));
-      } else if (currentScene.nextSceneId) {
-        // Move to next scene
-        console.log(`End of dialogue reached, moving to next scene: ${currentScene.nextSceneId}`);
-        handleSceneTransition(currentScene.nextSceneId);
+  // Transition to a new scene with error handling
+  const transitionToScene = useCallback(
+    (sceneId: string, effect?: string) => {
+      setLoading(true);
+      console.log(`Attempting to transition from scene [${currentSceneId}] to [${sceneId}]`);
+      
+      // Map scene ID if needed
+      const mappedSceneId = mapSceneId(sceneId);
+      
+      // Check if scene exists
+      if (allScenes[mappedSceneId]) {
+        setPreviousSceneId(currentSceneId);
+        setCurrentSceneId(mappedSceneId);
+        
+        if (effect) {
+          setTransitionEffect(effect);
+        }
+        
+        console.log(`Scene transition complete, now at [${mappedSceneId}]`);
       } else {
-        console.warn(`Scene [${gameState.currentScene}] has no choices or nextSceneId, cannot progress`);
+        // Try to handle the error with a fallback
+        const fallbackScene = handleSceneError(mappedSceneId);
+        
+        if (fallbackScene && allScenes[fallbackScene]) {
+          setPreviousSceneId(currentSceneId);
+          setCurrentSceneId(fallbackScene);
+        }
+      }
+      
+      setLoading(false);
+    },
+    [currentSceneId]
+  );
+  
+  // Handle special scene transitions
+  useEffect(() => {
+    if (currentSceneId.includes('special-transition')) {
+      const specialEffect = currentSceneId.split(':')[1];
+      const targetScene = currentSceneId.split(':')[2];
+      
+      console.log(`Special scene detected: ${targetScene}`);
+      
+      if (specialEffect && targetScene) {
+        setTransitionEffect(specialEffect);
+        
+        // Wait for transition effect to complete
+        const timer = setTimeout(() => {
+          transitionToScene(targetScene);
+          setTransitionEffect(null);
+        }, 1500); // Adjust timing based on your transition duration
+        
+        return () => clearTimeout(timer);
       }
     }
-  }, [currentScene, gameState.dialogueIndex, gameState.currentScene]);
-
-  // Enhanced scene transition with logging and error handling
-  const handleSceneTransition = useCallback((nextSceneId: string) => {
-    console.log(`Attempting to transition from scene [${gameState.currentScene}] to [${nextSceneId}]`);
-    
-    // Check if the target scene exists
-    if (!scenes[nextSceneId]) {
-      console.error(`Scene transition failed: Target scene [${nextSceneId}] not found!`);
-      return;
-    }
-    
-    // Special handling for season transitions
-    if (nextSceneId === 'season-transition-spring' || 
-        nextSceneId === 'spring-intro' ||
-        nextSceneId === 'departure-morning' ||
-        nextSceneId === 'intro') {
-      console.log(`Special scene detected: ${nextSceneId}`);
-    }
-    
-    setGameState(prev => ({
-      ...prev,
-      currentScene: nextSceneId,
-      dialogueIndex: 0,
-      showChoices: false,
-      sceneHistory: [...prev.sceneHistory, prev.currentScene]
-    }));
-    
-    console.log(`Scene transition complete, now at [${nextSceneId}]`);
-  }, [gameState.currentScene]);
-
-  // Handle choice selection with improved affection change notification
-  const handleChoiceSelected = useCallback((choice: DialogueChoice) => {
-    // Apply affection changes
-    if (choice.affectionChanges) {
-      const updatedCharacters = { ...gameState.characters };
-      
-      Object.entries(choice.affectionChanges).forEach(([charId, change]) => {
-        if (updatedCharacters[charId]) {
-          const previousAffection = updatedCharacters[charId].affection;
-          
-          const newAffection = previousAffection + change;
-          
-          updatedCharacters[charId] = {
-            ...updatedCharacters[charId],
-            affection: newAffection
-          };
-
-          // Removed toast notifications
-        }
-      });
-      
-      setGameState(prev => ({
-        ...prev,
-        characters: updatedCharacters
-      }));
-    }
-
-    // Move to next scene
-    if (choice.nextSceneId) {
-      console.log(`Choice selected, transitioning to: ${choice.nextSceneId}`);
-      handleSceneTransition(choice.nextSceneId);
-    } else {
-      console.warn('Choice selected has no nextSceneId, cannot progress');
-    }
-  }, [gameState.characters, handleSceneTransition]);
+  }, [currentSceneId, transitionToScene]);
 
   return {
     currentScene,
-    currentLine,
-    handleContinue,
-    handleChoiceSelected,
-    handleSceneTransition
+    currentSceneId,
+    previousSceneId,
+    transitionToScene,
+    loading,
+    transitionEffect,
+    setTransitionEffect,
   };
-}
+};
+
+export default useGameScenes;

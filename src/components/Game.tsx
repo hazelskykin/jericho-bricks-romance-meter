@@ -1,25 +1,104 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import AssetPreloader from './AssetPreloader';
+import React, { useState, useEffect } from 'react';
 import GameInterface from './GameInterface';
-import GameSceneObserver from './GameSceneObserver';
+import MainMenu from './MainMenu';
+import MinigameHandler from './minigames/MinigameHandler';
+import { GameProvider } from '../context/GameContext';
+import AssetPreloader from './AssetPreloader';
+import DevSceneJumper from './DevSceneJumper';
+import useGameScenes from '../hooks/useGameScenes';
 
 const Game: React.FC = () => {
-  console.log('Game component rendered');
+  const [showMainMenu, setShowMainMenu] = useState(true);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
+  const [priorityAssetsLoaded, setPriorityAssetsLoaded] = useState(false);
+  const [loadingComplete, setLoadingComplete] = useState(false);
   
+  // Initialize game scenes
+  const {
+    currentSceneId,
+    transitionToScene,
+    currentScene,
+    previousSceneId,
+    loading,
+    transitionEffect,
+    setTransitionEffect
+  } = useGameScenes();
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('Game component rendered');
+  }, []);
+
+  // Handle game start
+  const handleStartGame = () => {
+    setShowMainMenu(false);
+    transitionToScene('prologue-intro');
+  };
+
+  // Handle game reset
+  const handleResetGame = () => {
+    setShowMainMenu(true);
+    transitionToScene('start');
+  };
+
+  // Show loading screen first, then show priority assets, then show main menu
+  if (!priorityAssetsLoaded) {
+    return (
+      <AssetPreloader 
+        onComplete={() => setPriorityAssetsLoaded(true)}
+        priorityOnly={true}
+      />
+    );
+  }
+
+  // Return the appropriate view
   return (
-    <motion.div 
-      className="min-h-screen overflow-hidden relative"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <AssetPreloader>
-        <GameInterface />
-        <GameSceneObserver />
-      </AssetPreloader>
-    </motion.div>
+    <GameProvider>
+      {!assetsLoaded && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-dark-purple bg-opacity-75 text-white text-xs p-1">
+          Loading remaining assets in background...
+        </div>
+      )}
+      
+      {showMainMenu ? (
+        <MainMenu 
+          onStartGame={handleStartGame} 
+          loadingComplete={loadingComplete}
+        />
+      ) : (
+        <GameInterface
+          scene={currentScene}
+          sceneId={currentSceneId}
+          previousSceneId={previousSceneId}
+          onTransitionToScene={transitionToScene}
+          onResetGame={handleResetGame}
+          loading={loading}
+          transitionEffect={transitionEffect}
+          setTransitionEffect={setTransitionEffect}
+        />
+      )}
+      
+      <MinigameHandler />
+      
+      {/* Dev Scene Jumper - always available */}
+      <DevSceneJumper 
+        onSceneSelect={transitionToScene}
+        currentSceneId={currentSceneId}
+      />
+      
+      {/* Load remaining assets in background */}
+      {!assetsLoaded && (
+        <div className="hidden">
+          <AssetPreloader 
+            onComplete={() => {
+              setAssetsLoaded(true);
+              setLoadingComplete(true);
+            }}
+          />
+        </div>
+      )}
+    </GameProvider>
   );
 };
 
