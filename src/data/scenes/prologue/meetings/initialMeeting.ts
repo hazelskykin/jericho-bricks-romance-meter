@@ -38,17 +38,17 @@ const initialMeetingScenes: Record<string, Scene> = {
     choices: [
       {
         text: '"Hi, I\'m Maven. I\'m excited to work with you all."',
-        affectionChanges: { xavier: 1, navarre: 1, etta: 0, senara: 0 },
+        affectionChanges: { xavier: 0.5, navarre: 1, etta: 0.5, senara: 0 },
         nextSceneId: 'team-meeting-response-friendly',
       },
       {
         text: '"Maven Gray. I\'m not sure why I\'m here either, but I\'ll do my best."',
-        affectionChanges: { xavier: 1, navarre: 0, etta: -1, senara: 1 },
+        affectionChanges: { xavier: 1, navarre: 0, etta: 0, senara: 0.5 },
         nextSceneId: 'team-meeting-response-honest',
       },
       {
         text: '"Maven. My assessment results were... unconventional. That\'s probably why I\'m the fifth wheel."',
-        affectionChanges: { xavier: 0, navarre: -1, etta: -1, senara: 1 },
+        affectionChanges: { xavier: -0.5, navarre: -1, etta: -1, senara: 1 },
         nextSceneId: 'team-meeting-response-self-deprecating',
       },
     ],
@@ -60,7 +60,7 @@ const initialMeetingScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'xavier',
-        text: 'Great to have you, Maven! Five minds are better than four, right?',
+        text: 'Five minds are better than four, right?',
         mood: 'happy',
       },
       {
@@ -80,7 +80,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "Navarre Ellis? The media darling?",
+        text: "Wait...did you say your name was Navarre Ellis? The media darling?",
         mood: 'surprised',
       },
       {
@@ -124,11 +124,16 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. Etta must be the Diva.",
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta had to be the Diva.",
       },
       {
         character: 'narrator',
-        text: "The uncertainty around your role feels like it may trigger a panic attack. You automatically start to focus on your breathing to help calm down.",
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You wonder if you have time to start a calming ritual on your bionic or if breathing is enough to help calm down.",
+      },
+      {
+        character: 'navarre',
+        text: "Just relax! You're part of the team now.",
+        mood: 'laughing',
       },
     ],
     nextSceneId: 'briefing',
@@ -160,7 +165,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "Wait...Navarre Ellis? The media darling?",
+        text: "Wait...did you say your name was Navarre Ellis? The media darling?",
         mood: 'surprised',
       },
       {
@@ -204,11 +209,16 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. Etta must be the Diva.",
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta had to be the Diva.",
       },
       {
         character: 'narrator',
-        text: "The uncertainty around your role feels like it may trigger a panic attack. You automatically start to focus on your breathing to help calm down.",
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You wonder if you have time to start a calming ritual on your bionic or if breathing is enough to help calm down.",
+      },
+      {
+        character: 'xavier',
+        text: "Oh! Is that one of the new bionic harmonizers? I modified mine so that it'll cycle depending on biometrics without the need for a trigger. I can help you with that sometime, if you want.",
+        mood: 'happy',
       },
     ],
     nextSceneId: 'briefing',
@@ -225,12 +235,12 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "Come on, Etta. Every team has unique dynamics. I'm sure Maven brings valuable perspective.",
+        text: "Come on, Etta. Every team has unique dynamics. I'm sure Maven brings a valuable perspective.",
         mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: 'Unconventional can be good! Keeps things interesting.',
+        text: "Unconventional isn't always bad. Keeps things interesting.",
         mood: 'neutral',
       },
       {
@@ -238,10 +248,9 @@ const initialMeetingScenes: Record<string, Scene> = {
         text: 'Inconclusive results often indicate complex thinking patterns. That could be beneficial.',
         mood: 'neutral',
       },
-      
       {
         character: 'etta',
-        text: "Wait...Navarre Ellis? The media darling?",
+        text: "Wait...did you say your name was Navarre Ellis? The media darling?",
         mood: 'surprised',
       },
       {
@@ -285,11 +294,16 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. Etta must be the Diva.",
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta had to be the Diva.",
       },
       {
         character: 'narrator',
-        text: "The uncertainty around your role feels like it may trigger a panic attack. You automatically start to focus on your breathing to help calm down.",
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You wonder if you have time to start a calming ritual on your bionic or if breathing is enough to help calm down.",
+      },
+      {
+        character: 'senara',
+        text: "Dr. Voss will be here in a moment...",
+        mood: 'neutral',
       },
     ],
     nextSceneId: 'briefing',
