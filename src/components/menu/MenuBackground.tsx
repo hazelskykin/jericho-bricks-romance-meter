@@ -11,7 +11,7 @@ const MenuBackground: React.FC = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ 
-          backgroundImage: 'url(/assets/backgrounds/cybaton-office.jpg)',
+          backgroundImage: 'url(/assets/backgrounds/cybaton-lobby.jpg)',
           filter: 'blur(3px) brightness(0.6)'
         }}
       />
