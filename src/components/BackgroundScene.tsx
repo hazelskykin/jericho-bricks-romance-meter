@@ -1,6 +1,8 @@
+
 import React, { useEffect, useState } from 'react';
 import { getImageCache } from '../utils/imageCache';
 import backgrounds from '../data/backgrounds';
+import { getAssetSource } from '@/utils/assetManager';
 
 interface BackgroundSceneProps {
   src?: string;

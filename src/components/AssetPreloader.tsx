@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import backgrounds from '../data/backgrounds';
 import characterExpressions from '../data/characterExpressions';
 import { toast } from 'sonner';
+import { assetManager, getAssetSource } from '@/utils/assetManager';
 import { BackgroundAsset } from '@/types/game';
 
 interface AssetPreloaderProps {
@@ -21,9 +22,6 @@ export const AssetPreloader = ({ onComplete, priorityOnly = false }: AssetPreloa
   const [total, setTotal] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  // Create a cache to store loaded images
-  const imageCache = React.useRef<Map<string, HTMLImageElement>>(new Map());
-
   useEffect(() => {
     const imagesToLoad: string[] = [];
     
@@ -39,7 +37,11 @@ export const AssetPreloader = ({ onComplete, priorityOnly = false }: AssetPreloa
         .flat()
         .find(expression => expression.id === charKey);
       
-      if (char) imagesToLoad.push(char.src);
+      if (char) {
+        // Extract source using our new utility
+        const src = getAssetSource(char);
+        if (src) imagesToLoad.push(src);
+      }
     });
 
     // If not priority only, add all other assets
@@ -54,72 +56,32 @@ export const AssetPreloader = ({ onComplete, priorityOnly = false }: AssetPreloa
       // Add remaining character expressions
       Object.values(characterExpressions).flat().forEach(expression => {
         if (!PRIORITY_ASSETS.characters.includes(expression.id)) {
-          // Fix: Extract the src property from the expression object
-          if (expression && typeof expression === 'object' && 'src' in expression) {
-            imagesToLoad.push(expression.src);
-          }
+          const src = getAssetSource(expression);
+          if (src) imagesToLoad.push(src);
         }
       });
     }
 
     setTotal(imagesToLoad.length);
     
-    // Create a function to load images in batches
-    const loadImagesBatch = (urls: string[], batchSize: number = 5) => {
-      let completed = 0;
-      
-      const loadBatch = (startIndex: number) => {
-        const endIndex = Math.min(startIndex + batchSize, urls.length);
-        const currentBatch = urls.slice(startIndex, endIndex);
-        
-        Promise.all(
-          currentBatch.map(url => {
-            // Check if image is already in cache
-            if (imageCache.current.has(url)) {
-              return Promise.resolve();
-            }
-            
-            return new Promise<void>((resolve, reject) => {
-              const img = new Image();
-              img.onload = () => {
-                imageCache.current.set(url, img);
-                setLoaded(prev => prev + 1);
-                resolve();
-              };
-              img.onerror = () => {
-                console.error(`Failed to load image: ${url}`);
-                reject(new Error(`Failed to load image: ${url}`));
-              };
-              img.src = url;
-            });
-          })
-        )
-        .then(() => {
-          completed += currentBatch.length;
-          if (completed < urls.length) {
-            loadBatch(endIndex);
-          } else {
-            console.log('All images loaded successfully!');
-            onComplete();
-          }
-        })
-        .catch(err => {
-          console.error('Error loading images:', err);
-          setError('Failed to load some assets. Please refresh the page.');
-          toast.error('Failed to load some assets');
-        });
-      };
-      
-      loadBatch(0);
-    };
+    // Use asset manager to handle the loading
+    assetManager.preloadAssets(
+      imagesToLoad,
+      (loadedCount, totalCount) => {
+        setLoaded(loadedCount);
+      }
+    ).then(() => {
+      console.log('All images loaded successfully!');
+      // Make the cache accessible globally
+      assetManager.exposeToWindow();
+      onComplete();
+    }).catch(err => {
+      console.error('Error loading images:', err);
+      setError('Failed to load some assets. Please refresh the page.');
+      toast.error('Failed to load some assets');
+    });
     
-    loadImagesBatch(imagesToLoad);
   }, [onComplete, priorityOnly]);
-
-  // Make the cache accessible globally
-  if (typeof window !== 'undefined') {
-    (window as any).gameImageCache = imageCache.current;
-  }
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-dark-purple bg-opacity-90 z-50">

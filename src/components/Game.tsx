@@ -7,7 +7,6 @@ import { GameProvider } from '../context/GameContext';
 import AssetPreloader from './AssetPreloader';
 import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
-import { MinigameType } from '@/hooks/useGameMinigames';
 
 const Game: React.FC = () => {
   const [showMainMenu, setShowMainMenu] = useState(true);

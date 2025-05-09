@@ -17,19 +17,30 @@ interface DialogHistoryProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onReplayScene: () => void;
+  dialogHistory?: DialogueLine[];
+  onClose?: () => void;
 }
 
 const DialogHistory: React.FC<DialogHistoryProps> = ({ 
   open, 
   onOpenChange,
-  onReplayScene 
+  onReplayScene,
+  dialogHistory: externalDialogHistory,
+  onClose
 }) => {
-  const { currentScene, gameState } = useGame();
+  const { gameState } = useGame();
   
-  // Get all dialogue lines up to the current point
-  const currentDialogue: DialogueLine[] = 
-    currentScene?.dialogue.slice(0, gameState.dialogueIndex + 1) || [];
+  // Use external dialogHistory if provided, otherwise use from gameState
+  const dialogHistory = externalDialogHistory || 
+    (gameState?.currentScene && gameState?.dialogueIndex !== undefined ? 
+      gameState.scenes[gameState.currentScene]?.dialogue.slice(0, gameState.dialogueIndex + 1) : 
+      []);
   
+  const handleClose = () => {
+    if (onClose) onClose();
+    onOpenChange(false);
+  };
+
   const handleReplay = () => {
     onReplayScene();
     onOpenChange(false); // Close the dialog after starting replay
@@ -37,7 +48,7 @@ const DialogHistory: React.FC<DialogHistoryProps> = ({
 
   const getCharacterName = (characterId?: string) => {
     if (!characterId || characterId === 'narrator') return 'Narrator';
-    const character = gameState.characters[characterId];
+    const character = gameState?.characters[characterId];
     return character?.name || characterId;
   };
 
@@ -52,8 +63,8 @@ const DialogHistory: React.FC<DialogHistoryProps> = ({
         </DialogHeader>
         
         <ScrollArea className="h-[300px] rounded-md border border-[#9b87f5]/20 p-4">
-          {currentDialogue.length > 0 ? (
-            currentDialogue.map((line, index) => (
+          {dialogHistory && dialogHistory.length > 0 ? (
+            dialogHistory.map((line, index) => (
               <div key={index} className="mb-4">
                 <p className="font-semibold text-[#9b87f5]">
                   {getCharacterName(line.character)}:
@@ -69,7 +80,7 @@ const DialogHistory: React.FC<DialogHistoryProps> = ({
         <DialogFooter className="flex flex-col sm:flex-row gap-2">
           <Button 
             variant="outline" 
-            onClick={() => onOpenChange(false)}
+            onClick={handleClose}
             className="border-[#9b87f5]/30 text-white hover:bg-[#9b87f5]/20"
           >
             Close

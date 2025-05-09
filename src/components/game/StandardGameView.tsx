@@ -8,6 +8,7 @@ import CharacterPortrait from '../CharacterPortrait';
 import DialogHistory from '../DialogHistory';
 import { Loader2 } from 'lucide-react';
 import ExpandableMenu from '../ExpandableMenu';
+import { DialogueLine } from '@/types/game';
 
 const StandardGameView: React.FC = () => {
   const { gameState, handleDialogueClick, handleChoiceClick, handleSceneTransition, handleNewGame, handleAbout, replayCurrentScene } = useGame();
@@ -16,11 +17,13 @@ const StandardGameView: React.FC = () => {
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
   const viewRef = useRef<HTMLDivElement>(null);
 
-  const { currentScene: sceneId, currentDialogueIndex, displayedChoices, dialogHistory, scenes } = gameState;
-
-  // Get the current scene and dialogue
-  const scene = scenes[sceneId];
-  const currentDialogue = scene?.dialogue[currentDialogueIndex];
+  const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
+  
+  // Get all the necessary state data from game context
+  const scene = gameState?.scenes?.[sceneId];
+  const currentDialogue = scene?.dialogue?.[dialogueIndex];
+  const dialogHistory = scene?.dialogue?.slice(0, dialogueIndex + 1) || [];
+  const displayedChoices = showChoices ? scene?.choices || [] : [];
   
   // Simplified loading mechanism
   useEffect(() => {

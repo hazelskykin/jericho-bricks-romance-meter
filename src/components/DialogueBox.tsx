@@ -7,35 +7,49 @@ import { Button } from '@/components/ui/button';
 import characters, { maven } from '@/data/characters';
 
 interface DialogueBoxProps {
-  line: DialogueLine;
-  onContinue: () => void;
-  isActive: boolean;
+  line?: DialogueLine;
+  onContinue?: () => void;
+  isActive?: boolean;
+  dialogueLine?: DialogueLine;
+  onAdvance?: () => void;
 }
 
-const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive }) => {
+const DialogueBox: React.FC<DialogueBoxProps> = ({ 
+  line, 
+  dialogueLine,
+  onContinue, 
+  onAdvance,
+  isActive = true 
+}) => {
+  // Use either line or dialogueLine prop (for backward compatibility)
+  const currentLine = dialogueLine || line;
+  const handleAdvance = onAdvance || onContinue || (() => {});
+  
+  if (!currentLine) return null;
+  
   // Get character data to display the correct color
   const getCharacterData = () => {
-    if (!line.character || line.character === 'narrator') {
+    if (!currentLine.character || currentLine.character === 'narrator') {
       return null;
     }
     
-    if (line.character === 'maven') {
+    if (currentLine.character === 'maven') {
       return maven;
     }
     
-    return characters[line.character];
+    return characters[currentLine.character];
   };
   
   const characterData = getCharacterData();
   
   // Determine character name display
   const displayName = () => {
-    if (line.character === 'narrator') {
+    if (currentLine.character === 'narrator') {
       return 'Narrator';
-    } else if (line.character === 'maven') {
+    } else if (currentLine.character === 'maven') {
       return 'Maven (You)';
-    } else if (line.character) {
-      return characters[line.character]?.name || '';
+    } else if (currentLine.character) {
+      return characters[currentLine.character]?.name || '';
     }
     return '';
   };
@@ -49,7 +63,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          key={line.text.substring(0, 20)}
+          key={currentLine.text.substring(0, 20)}
           style={{
             borderLeft: characterData ? `4px solid ${characterData.color}` : undefined,
             borderBottom: characterData ? `1px solid ${characterData.color}30` : undefined,
@@ -57,7 +71,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
           }}
         >
           <div className="flex items-center justify-between mb-3">
-            {line.character && (
+            {currentLine.character && (
               <div 
                 className="font-medium text-lg"
                 style={{ color: characterData?.color || 'white' }}
@@ -68,12 +82,12 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ line, onContinue, isActive })
           </div>
           
           <p className="text-lg text-white/90 leading-relaxed">
-            {line.text}
+            {currentLine.text}
           </p>
           
           <div className="mt-4 flex justify-end">
             <Button 
-              onClick={onContinue} 
+              onClick={handleAdvance} 
               className="text-sm bg-cyberpunk-dark hover:bg-cyberpunk-secondary border border-cyberpunk-primary/30"
               style={{
                 borderColor: characterData ? `${characterData.color}50` : undefined,

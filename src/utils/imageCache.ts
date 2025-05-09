@@ -1,8 +1,9 @@
 
+import { assetManager } from './assetManager';
+
 /**
  * Image cache utility for faster access to preloaded images
  */
-
 interface ImageCache {
   get: (src: string) => HTMLImageElement | undefined;
   has: (src: string) => boolean;
@@ -15,12 +16,11 @@ export const getImageCache = (): ImageCache => {
       has: () => false
     };
   }
-
-  const cache = (window as any).gameImageCache || new Map();
   
+  // Use assetManager internally
   return {
-    get: (src: string) => cache.get(src),
-    has: (src: string) => cache.has(src)
+    get: (src: string) => assetManager.getAsset(src),
+    has: (src: string) => assetManager.hasAsset(src)
   };
 };
 
