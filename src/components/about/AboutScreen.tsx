@@ -12,9 +12,9 @@ const AboutScreen: React.FC = () => {
       <BackgroundScene backgroundId="cybaton-office" />
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="max-w-lg bg-black/70 rounded-lg p-8 m-4 backdrop-blur-sm">
-          <h1 className="text-2xl font-bold mb-4 text-white">About Jericho Bricks</h1>
+          <h1 className="text-2xl font-bold mb-4 text-white">About Versa</h1>
           <p className="text-gray-200 mb-3">
-            Jericho Bricks is a visual novel where you play as Maven, a new recruit in the Cybaton city administration program.
+            Versa is a visual novel where you play as Maven, a new recruit in the Cybaton city administration program.
           </p>
           <p className="text-gray-200 mb-3">
             Your choices will affect your relationships with your teammates, each of whom is a potential romance option.
