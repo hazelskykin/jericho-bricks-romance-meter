@@ -32,13 +32,6 @@ export function useWinterSeasonHandlers(
       currentSeason: 'winter'
     }));
     
-    // Show toast notification
-    toast({
-      title: "Winter Begins",
-      description: "The final season of your year in Stonewich has arrived.",
-      duration: 5000,
-    });
-    
     // Check if we have a current love interest
     if (gameState.currentLoveInterest) {
       const characterId = gameState.currentLoveInterest;
