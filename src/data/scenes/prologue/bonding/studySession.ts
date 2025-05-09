@@ -17,7 +17,7 @@ const studySessionScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "I've already compiled notes on their primary systems. We should focus on integration points and maintenance history.",
+        text: "I've already compiled notes on their primary systems. We should focus on integration points and forecasted bottlenecks.",
         mood: 'neutral',
       },
       {
@@ -27,16 +27,16 @@ const studySessionScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "Politics are crucial too. Stonewich has a strong community council that we'll need to work with.",
+        text: "Politics are crucial too. Stonewich has a strong community council and thriving commerce leadership that we'll need to work with.",
         mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: 'The team works late into the evening, analyzing Stonewich\'s systems and history. You develop a deeper understanding of the city and its needs.',
+        text: "The team works late into the evening, analyzing Stonewich's systems and history. You develop a deeper understanding of the city and its needs, thanks mostly to Senara who seemed to know everything about Stonewich.",
       },
       {
         character: 'narrator',
-        text: 'By the time you leave, you feel well-prepared for tomorrow\'s departure, and you notice approving glances from both Etta and Senara.',
+        text: "By the time you leave, you feel well-prepared for tomorrow's departure, and you notice approving glances from Etta.',
       }
     ],
     nextSceneId: 'departure-lobby', // Updated to go to the lobby scene first
