@@ -59,12 +59,12 @@ const briefingScenes: Record<string, Scene> = {
     choices: [
       {
         text: 'Suggest going out for coffee as a team',
-        affectionChanges: { xavier: 1, navarre: 2, etta: -1, senara: 0 },
+        affectionChanges: { xavier: 0.5, navarre: 2, etta: -1, senara: -0.5 },
         nextSceneId: 'coffee-shop',
       },
       {
         text: 'Propose reviewing the Stonewich files together',
-        affectionChanges: { xavier: 0, navarre: -1, etta: 2, senara: 1 },
+        affectionChanges: { xavier: 0, navarre: -1, etta: 2, senara: 0 },
         nextSceneId: 'study-session',
       },
       {
