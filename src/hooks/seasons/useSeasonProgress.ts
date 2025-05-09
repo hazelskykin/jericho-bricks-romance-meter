@@ -24,13 +24,6 @@ export function useSeasonProgress(handleSeasonTransition: (newSeason: string) =>
       handleSeasonTransition('epilogue');
     }
     
-    // Check for prologue ending that should transition to spring
-    if (sceneId === 'departure-morning') {
-      console.log('Prologue ending detected, transitioning to spring transition scene');
-      // This will trigger the spring transition scene
-      handleSeasonTransition('spring');
-    }
-    
     // Handle season transition scenes
     if (sceneId === 'season-transition-spring') {
       console.log('Season transition scene detected: spring');
