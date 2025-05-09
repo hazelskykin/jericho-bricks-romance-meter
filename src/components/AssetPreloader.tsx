@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { assetManager } from '../utils/assetManager';
 import charactersData from '../data/characters';
@@ -56,7 +57,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
             
             // Type check for string path
             if (typeof expressionSrc === 'string') {
-              await assetManager.loadAsset(expressionSrc);
+              await assetManager.preloadAssets([expressionSrc]);
               loaded++;
               updateProgress(loaded + errorCount);
             }
@@ -79,16 +80,14 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
       let loaded = 0;
       let errored = 0;
       
-      for (const key of backgroundKeys) {
-        try {
-          await assetManager.loadAsset(backgrounds[key].image);
-          loaded++;
-          updateProgress(loaded + errorCount);
-        } catch (err) {
-          console.error(`Error loading background ${key}:`, err);
-          errored++;
-          setErrorCount(prev => prev + 1);
-        }
+      try {
+        const backgroundPaths = backgroundKeys.map(key => backgrounds[key].image);
+        await assetManager.preloadAssets(backgroundPaths);
+        loaded = backgroundPaths.length;
+      } catch (err) {
+        console.error(`Error loading backgrounds:`, err);
+        errored++;
+        setErrorCount(prev => prev + 1);
       }
       
       console.log(`Loaded ${loaded} background images, ${errored} errors`);
@@ -101,16 +100,14 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
       let loaded = 0;
       let errored = 0;
       
-      for (const asset of minigameAssets) {
-        try {
-          await assetManager.loadAsset(asset.path);
-          loaded++;
-          updateProgress(loaded + errorCount);
-        } catch (err) {
-          console.error(`Error loading minigame asset ${asset.id}:`, err);
-          errored++;
-          setErrorCount(prev => prev + 1);
-        }
+      try {
+        const assetPaths = minigameAssets.map(asset => asset.path);
+        await assetManager.preloadAssets(assetPaths);
+        loaded = assetPaths.length;
+      } catch (err) {
+        console.error(`Error loading minigame assets:`, err);
+        errored++;
+        setErrorCount(prev => prev + 1);
       }
       
       console.log(`Loaded ${loaded} minigame assets, ${errored} errors`);
@@ -121,11 +118,13 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
       console.log('Loading priority assets...');
       try {
         // Load specific priority assets
-        await assetManager.loadAsset('/assets/ui/jericho-logo.png');
-        await assetManager.loadAsset('/assets/backgrounds/stonewich-cityscape.png');
-        await assetManager.loadAsset('/assets/characters/etta/etta-neutral.png');
-        await assetManager.loadAsset('/assets/characters/maven/maven-neutral.png');
-        await assetManager.loadAsset('/assets/characters/navarre/navarre-happy.png');
+        await assetManager.preloadAssets([
+          '/assets/ui/jericho-logo.png',
+          '/assets/backgrounds/stonewich-cityscape.png',
+          '/assets/characters/etta/etta-neutral.png',
+          '/assets/characters/maven/maven-neutral.png',
+          '/assets/characters/navarre/navarre-happy.png'
+        ]);
         
         updateProgress(5);
         console.log('Priority assets loaded successfully.');

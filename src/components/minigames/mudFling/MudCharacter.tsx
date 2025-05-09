@@ -1,69 +1,84 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Character } from './types';
+import { CharacterId } from '@/types/game';
 
 interface MudCharacterProps {
-  character: Character;
-  characterColors: Record<string, { color: string }>;
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  isPlayer: boolean;
+  isMuddy: boolean;
 }
 
-const MudCharacter: React.FC<MudCharacterProps> = ({ character, characterColors }) => {
-  const characterColor = characterColors[character.id]?.color || '#888888';
-  
-  // Determine which character chibi image to use
-  const getCharacterImage = (id: string) => {
-    return `/assets/characters/${id}-chibi.png`;
+const MudCharacter: React.FC<MudCharacterProps> = ({
+  id,
+  x,
+  y,
+  width,
+  height,
+  isPlayer,
+  isMuddy
+}) => {
+  // Map character ID to character-specific styling
+  const getCharacterColor = () => {
+    switch (id) {
+      case 'maven':
+        return 'border-teal-400';
+      case 'xavier':
+        return 'border-blue-400';
+      case 'navarre':
+        return 'border-orange-400';
+      case 'etta':
+        return 'border-red-400';
+      case 'senara':
+        return 'border-purple-400';
+      default:
+        return 'border-gray-400';
+    }
+  };
+
+  // Get character image path based on id
+  const getCharacterImage = () => {
+    const characterId = id as CharacterId;
+    // Use chibi versions of characters
+    return `/assets/characters/${characterId}/${characterId}-chibi${isMuddy ? '' : '-neutral'}.png`;
   };
 
   return (
-    <motion.div
-      className={`absolute ${character.isHit ? 'opacity-50' : 'opacity-100'}`}
+    <div
+      className={`absolute ${isPlayer ? 'z-20' : 'z-10'} ${
+        isMuddy ? 'mud-splatter' : ''
+      }`}
       style={{
-        left: character.position.x - 20,
-        top: character.position.y - 20,
-        zIndex: 10
+        left: `${x}px`,
+        top: `${y}px`,
+        width: `${width}px`,
+        height: `${height}px`,
+        transform: 'translate(-50%, -50%)'
       }}
-      animate={{
-        x: character.isHit ? [0, -5, 5, -5, 0] : 0
-      }}
-      transition={{ duration: 0.5 }}
     >
-      {/* Character body */}
       <div
-        className="relative w-16 h-16 flex items-center justify-center"
-        style={{ filter: character.isHit ? 'grayscale(50%)' : 'none' }}
+        className={`relative w-full h-full border-b-4 ${getCharacterColor()}`}
       >
-        {/* Character image */}
-        <div 
-          className="absolute w-full h-full bg-contain bg-no-repeat bg-center"
-          style={{ backgroundImage: `url(${getCharacterImage(character.id)})` }}
+        <img
+          src={getCharacterImage()}
+          alt={`Character ${id}`}
+          className="w-full h-full object-contain"
         />
         
-        {/* Team indicator */}
-        <div 
-          className="absolute top-0 right-0 w-4 h-4 rounded-full" 
-          style={{ 
-            backgroundColor: character.team === 'team1' ? '#4CC2FF' : '#FF5E5B',
-            border: '1px solid white'
-          }}
-        />
+        {/* Show mud splatter effect when hit */}
+        {isMuddy && (
+          <div className="absolute inset-0 bg-[url('/assets/minigrames/spring/mudFling/splashEffects_victoryEffect.png')] bg-cover opacity-70" />
+        )}
         
-        {/* Character is hit indicator */}
-        {character.isHit && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-amber-800/50 w-12 h-12 rounded-full animate-ping"></div>
-          </div>
+        {/* Highlight for player character */}
+        {isPlayer && (
+          <div className="absolute -inset-1 border-2 border-white rounded-full opacity-30" />
         )}
       </div>
-      
-      {/* Character name */}
-      <div 
-        className="absolute -bottom-6 left-0 right-0 text-center text-xs font-medium bg-black/50 text-white rounded px-1"
-      >
-        {character.id}
-      </div>
-    </motion.div>
+    </div>
   );
 };
 

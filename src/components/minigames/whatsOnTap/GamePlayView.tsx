@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Beer, CupSoda } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DrinkOrder, DrinkPour, DrinkType, LEMONADE_OPTIONS, SELTZER_FLAVORS } from './useWhatsOnTap';
+import { Progress } from '@/components/ui/progress';
+import { Beer, CupSoda, Clock } from 'lucide-react';
+import { DrinkOrder, DrinkPour, DrinkType } from '../whatsOnTap/useWhatsOnTap';
+import { soundManager } from '@/utils/soundEffects';
 
 interface GamePlayViewProps {
   orders: DrinkOrder[];
@@ -28,136 +29,185 @@ const GamePlayView: React.FC<GamePlayViewProps> = ({
   onStartPour,
   onStopPour
 }) => {
+  // Handle start pouring with sound effect
+  const handleStartPour = (type: DrinkType, modifier?: string) => {
+    soundManager.playSFX('pour-start');
+    onStartPour(type, modifier);
+  };
+  
+  // Handle stop pouring with sound effect
+  const handleStopPour = () => {
+    soundManager.playSFX('pour-stop');
+    onStopPour();
+  };
+  
   return (
-    <div className="w-full">
-      {/* Game stats */}
-      <div className="flex justify-between mb-4">
-        <div className="text-lg">Time: {timeRemaining}s</div>
-        <div className="text-lg">Score: {score}</div>
-        <div className="text-lg">Orders Filled: {ordersFulfilled}</div>
-      </div>
-      
-      {/* Orders queue */}
-      <div className="grid grid-cols-1 gap-3 mb-6">
-        {orders.map(order => (
-          <motion.div
-            key={order.id}
-            className={`p-3 rounded-lg border ${order.isCompleted ? 'border-green-500 bg-green-900/20' : 'border-gray-700'}`}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <span className="font-medium">{order.customerName}:</span>{' '}
-                {order.type === 'beer' ? 'Beer' : 
-                 order.type === 'lemonade' ? `Lemonade (${order.modifier})` :
-                 `${order.modifier} Seltzer`}
-              </div>
-              {order.isCompleted && (
-                <span className="text-green-400">✓ Completed</span>
-              )}
-            </div>
-          </motion.div>
-        ))}
+    <div className="w-full h-full flex flex-col">
+      {/* Top bar with score and time */}
+      <div className="flex justify-between items-center mb-4 p-2 bg-gray-800 rounded">
+        <div className="flex items-center">
+          <span className="text-amber-400 font-bold">Score: {score}</span>
+          <span className="ml-4 text-gray-400">Orders: {ordersFulfilled}</span>
+        </div>
         
-        {orders.length === 0 && (
-          <div className="text-center text-gray-400 py-4">
-            No pending orders. New customers arriving soon!
-          </div>
-        )}
+        <div className="flex items-center">
+          <Clock className="text-red-400 mr-2" />
+          <Progress value={(timeRemaining / 60) * 100} className="w-32" />
+          <span className="ml-2 text-white">{timeRemaining}s</span>
+        </div>
       </div>
       
-      {/* Pour visualization */}
-      {currentPour && (
-        <div className="mb-6">
-          <div className="bg-gray-800 rounded-lg h-32 w-full relative overflow-hidden">
-            <div
-              className={`absolute bottom-0 left-0 right-0 transition-all duration-100`}
-              style={{ 
-                height: `${pourProgress}%`,
-                backgroundColor: 
-                  currentPour.type === 'beer' ? '#F59E0B' : 
-                  currentPour.type === 'lemonade' ? '#FBBF24' : 
-                  '#EC4899'
-              }}
-            />
-            
-            {currentPour.type === 'beer' && pourProgress > 80 && (
+      {/* Orders and Pouring Area */}
+      <div className="flex flex-grow">
+        {/* Orders List */}
+        <div className="w-1/3 pr-2">
+          <h3 className="text-lg font-semibold mb-2">Orders</h3>
+          
+          <div className="space-y-2 max-h-80 overflow-y-auto">
+            {orders.map(order => (
               <div 
-                className="absolute left-0 right-0 bg-white/80"
-                style={{ 
-                  bottom: `${pourProgress}%`, 
-                  height: `${Math.min(30, pourProgress - 70)}%` 
-                }}
-              />
+                key={order.id}
+                className={`p-2 border rounded ${order.isCompleted ? 'bg-green-900/20 border-green-700' : 'bg-gray-800 border-gray-700'}`}
+              >
+                <div className="flex items-center">
+                  {order.type === 'beer' && <Beer className="text-amber-400 mr-2" />}
+                  {order.type === 'lemonade' && <CupSoda className="text-yellow-300 mr-2" />}
+                  {order.type === 'seltzer' && <CupSoda className="text-pink-400 mr-2" />}
+                  
+                  <span className="font-medium">{order.customerName}</span>
+                </div>
+                
+                <div className="text-sm">
+                  {order.type.charAt(0).toUpperCase() + order.type.slice(1)}
+                  {order.modifier && ` (${order.modifier})`}
+                </div>
+                
+                {order.isCompleted && <div className="text-green-400 text-sm mt-1">Completed!</div>}
+              </div>
+            ))}
+            
+            {orders.length === 0 && (
+              <div className="text-gray-500 p-4 text-center">No orders yet!</div>
+            )}
+          </div>
+        </div>
+        
+        {/* Pouring Area */}
+        <div className="w-2/3 pl-2 flex flex-col items-center">
+          <div className="relative mb-4 w-full h-60 bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center">
+            {currentPour ? (
+              <>
+                <div className="text-center">
+                  <div className="mb-2">
+                    {currentPour.type === 'beer' && <Beer size={48} className="text-amber-400 mx-auto" />}
+                    {currentPour.type === 'lemonade' && <CupSoda size={48} className="text-yellow-300 mx-auto" />}
+                    {currentPour.type === 'seltzer' && <CupSoda size={48} className="text-pink-400 mx-auto" />}
+                  </div>
+                  
+                  <div className="text-lg">
+                    {currentPour.type.charAt(0).toUpperCase() + currentPour.type.slice(1)}
+                    {currentPour.modifier && ` (${currentPour.modifier})`}
+                  </div>
+                  
+                  <div className="w-48 h-4 bg-gray-700 rounded-full mt-4 relative overflow-hidden">
+                    <div 
+                      className="h-full transition-all duration-100 rounded-full"
+                      style={{
+                        width: `${pourProgress}%`,
+                        background: currentPour.type === 'beer' 
+                          ? 'linear-gradient(to right, #fbbf24, #d97706)' 
+                          : currentPour.type === 'lemonade'
+                          ? 'linear-gradient(to right, #fcd34d, #fbbf24)'
+                          : 'linear-gradient(to right, #f472b6, #db2777)'
+                      }}
+                    />
+                  </div>
+                  
+                  <div className="mt-4">
+                    {isPouringActive ? (
+                      <Button 
+                        className="bg-red-500 hover:bg-red-600"
+                        onClick={handleStopPour}
+                      >
+                        Stop Pouring
+                      </Button>
+                    ) : (
+                      <div className="text-gray-300">
+                        {currentPour.quality ? `Pour Quality: ${currentPour.quality}%` : 'Click a drink below to start pouring'}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-gray-500">
+                Select a drink below to start pouring
+              </div>
             )}
           </div>
           
-          <div className="mt-2 text-center">
-            Pouring: {currentPour.type === 'beer' ? 'Beer' : 
-                     currentPour.type === 'lemonade' ? `Lemonade` : 
-                     `${currentPour.modifier} Seltzer`}
-          </div>
-        </div>
-      )}
-      
-      {/* Taps control */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="flex flex-col items-center">
-          <Button
-            className="w-full h-16 bg-amber-600 hover:bg-amber-700 mb-2"
-            onMouseDown={() => onStartPour('beer')}
-            onMouseUp={onStopPour}
-            onTouchStart={() => onStartPour('beer')}
-            onTouchEnd={onStopPour}
-            disabled={isPouringActive && currentPour?.type !== 'beer'}
-          >
-            <Beer className="mr-2" /> Beer
-          </Button>
-          
-          <div className="text-xs text-gray-400">Pour to 90%</div>
-        </div>
-        
-        <div className="flex flex-col items-center">
-          <div className="grid grid-cols-3 gap-1 w-full mb-2">
-            {LEMONADE_OPTIONS.map(option => (
-              <Button
-                key={option}
-                className="h-16 bg-yellow-600 hover:bg-yellow-700"
-                onMouseDown={() => onStartPour('lemonade', option)}
-                onMouseUp={onStopPour}
-                onTouchStart={() => onStartPour('lemonade', option)}
-                onTouchEnd={onStopPour}
-                disabled={isPouringActive && (currentPour?.type !== 'lemonade' || currentPour?.modifier !== option)}
-                title={option}
+          <div className="grid grid-cols-3 gap-4 w-full">
+            <Button 
+              className="h-20 bg-amber-700 hover:bg-amber-800 flex flex-col items-center justify-center"
+              onClick={() => !isPouringActive && handleStartPour('beer')}
+              disabled={isPouringActive}
+            >
+              <Beer size={24} />
+              <span className="mt-1">Beer</span>
+            </Button>
+            
+            <div className="space-y-2">
+              <Button 
+                className="w-full h-5 bg-yellow-600 hover:bg-yellow-700 text-xs"
+                onClick={() => !isPouringActive && handleStartPour('lemonade', 'No Ice')}
+                disabled={isPouringActive}
               >
-                <CupSoda className="mr-1" />
-                <span className="text-xs">{option}</span>
+                Lemonade (No Ice)
               </Button>
-            ))}
-          </div>
-          <div className="text-xs text-gray-400">Lemonade options</div>
-        </div>
-        
-        <div className="flex flex-col items-center">
-          <div className="grid grid-cols-3 gap-1 w-full mb-2">
-            {SELTZER_FLAVORS.slice(0, 3).map(flavor => (
-              <Button
-                key={flavor}
-                className="h-16 bg-pink-600 hover:bg-pink-700"
-                onMouseDown={() => onStartPour('seltzer', flavor)}
-                onMouseUp={onStopPour}
-                onTouchStart={() => onStartPour('seltzer', flavor)}
-                onTouchEnd={onStopPour}
-                disabled={isPouringActive && (currentPour?.type !== 'seltzer' || currentPour?.modifier !== flavor)}
+              
+              <Button 
+                className="w-full h-5 bg-yellow-600 hover:bg-yellow-700 text-xs"
+                onClick={() => !isPouringActive && handleStartPour('lemonade', 'Light Ice')}
+                disabled={isPouringActive}
               >
-                <CupSoda className="mr-1" />
-                <span className="text-xs">{flavor}</span>
+                Lemonade (Light Ice)
               </Button>
-            ))}
+              
+              <Button 
+                className="w-full h-5 bg-yellow-600 hover:bg-yellow-700 text-xs"
+                onClick={() => !isPouringActive && handleStartPour('lemonade', 'Extra Ice')}
+                disabled={isPouringActive}
+              >
+                Lemonade (Extra Ice)
+              </Button>
+            </div>
+            
+            <div className="space-y-2">
+              <Button 
+                className="w-full h-5 bg-pink-600 hover:bg-pink-700 text-xs"
+                onClick={() => !isPouringActive && handleStartPour('seltzer', 'Cherry')}
+                disabled={isPouringActive}
+              >
+                Cherry Seltzer
+              </Button>
+              
+              <Button 
+                className="w-full h-5 bg-pink-600 hover:bg-pink-700 text-xs"
+                onClick={() => !isPouringActive && handleStartPour('seltzer', 'Lime')}
+                disabled={isPouringActive}
+              >
+                Lime Seltzer
+              </Button>
+              
+              <Button 
+                className="w-full h-5 bg-pink-600 hover:bg-pink-700 text-xs"
+                onClick={() => !isPouringActive && handleStartPour('seltzer', 'Berry')}
+                disabled={isPouringActive}
+              >
+                Berry Seltzer
+              </Button>
+            </div>
           </div>
-          <div className="text-xs text-gray-400">Seltzer flavors</div>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import GameInterface from './GameInterface';
 import MainMenu from './MainMenu';
@@ -7,12 +8,14 @@ import AssetPreloader from './AssetPreloader';
 import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
 import { MinigameType } from '@/types/minigames';
+import { initializeGameSounds, soundManager } from '@/utils/soundEffects';
 
 const Game: React.FC = () => {
   const [showMainMenu, setShowMainMenu] = useState(true);
   const [assetsLoaded, setAssetsLoaded] = useState(false);
   const [priorityAssetsLoaded, setPriorityAssetsLoaded] = useState(false);
   const [loadingComplete, setLoadingComplete] = useState(false);
+  const [soundInitialized, setSoundInitialized] = useState(false);
   
   // Initialize game scenes
   const {
@@ -30,14 +33,29 @@ const Game: React.FC = () => {
     console.log('Game component rendered');
   }, []);
 
+  // Initialize sound system when component mounts
+  useEffect(() => {
+    if (!soundInitialized) {
+      initializeGameSounds();
+      setSoundInitialized(true);
+      console.log('Sound system initialized');
+    }
+  }, [soundInitialized]);
+
   // Handle game start
   const handleStartGame = () => {
+    // Play UI click sound
+    soundManager.playSFX('ui-click');
+    
     setShowMainMenu(false);
     transitionToScene('prologue-intro');
   };
 
   // Handle game reset
   const handleResetGame = () => {
+    // Play UI click sound
+    soundManager.playSFX('ui-click');
+    
     setShowMainMenu(true);
     transitionToScene('start');
   };

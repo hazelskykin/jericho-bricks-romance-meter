@@ -1,6 +1,28 @@
+
 import React, { useRef, useEffect } from 'react';
-import { CharacterPosition, MudBall, Player } from './types';
+import type { MudBall } from '@/hooks/useMudFlingGame';
 import MudCharacter from './MudCharacter';
+
+interface CharacterPosition {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  isMuddy: boolean;
+}
+
+interface Player {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  speed: number;
+  energy: number;
+  isMuddy: boolean;
+  isAtFountain: boolean;
+}
 
 interface MudFlingArenaProps {
   onAreaClick: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -38,7 +60,11 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
       {characters.map((char, index) => (
         <MudCharacter
           key={`character-${index}`}
-          position={char}
+          id={char.id}
+          x={char.x}
+          y={char.y}
+          width={char.width}
+          height={char.height}
           isPlayer={char.id === playerCharacter.id}
           isMuddy={char.isMuddy}
         />
@@ -50,8 +76,8 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
           key={`mud-ball-${index}`}
           className="absolute w-6 h-6 bg-[url('/assets/minigrames/spring/mudFling/mudball_sprites.png')] bg-cover rounded-full"
           style={{
-            left: `${ball.x}px`,
-            top: `${ball.y}px`,
+            left: `${ball.position.x}px`,
+            top: `${ball.position.y}px`,
             transform: 'translate(-50%, -50%)'
           }}
         />

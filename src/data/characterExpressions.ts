@@ -1,6 +1,6 @@
 
 import { CharacterId } from '@/types/game';
-import { CharacterExpression, AllCharacterExpressions } from '@/types/expressions';
+import { CharacterExpression, AllCharacterExpressions, MoodType } from '@/types/expressions';
 
 // Import individual character expressions
 import mavenExpressions from './expressions/maven';
@@ -20,5 +20,19 @@ const characterExpressions: AllCharacterExpressions = {
   etta: ettaExpressions,
   senara: senaraExpressions
 };
+
+// Helper function to get all expressions for a character
+export function getCharacterExpressions(characterId: CharacterId): CharacterExpression[] {
+  return characterExpressions[characterId] || [];
+}
+
+// Helper function to get a specific expression by mood
+export function getCharacterExpressionByMood(
+  characterId: CharacterId, 
+  mood: MoodType
+): CharacterExpression | undefined {
+  const expressions = characterExpressions[characterId] || [];
+  return expressions.find(e => e.mood === mood);
+}
 
 export default characterExpressions;
