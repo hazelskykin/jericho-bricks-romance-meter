@@ -17,7 +17,7 @@ const rdTourScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "Sure, why not? Maybe there's something shiny I can convince the higher-ups to let us deploy.",
+        text: "Sure, why not? Staying informed of the latest trends in any field can be helpful.",
         mood: 'neutral',
       },
       {
@@ -50,7 +50,7 @@ const rdTourScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'By the end of the tour, you feel more excited about the possibilities in Stonewich, and you\'ve definitely strengthened your connection with Xavier.',
+        text: "By the end of the tour, you feel more excited about the possibilities in Stonewich, and you've definitely strengthened your connection with Xavier.",
       }
     ],
     nextSceneId: 'departure-lobby', // Updated to go to the lobby scene first
