@@ -35,13 +35,6 @@ export function useAutumnSeasonHandlers(
         milestoneText: "Your relationship has deepened. A more intimate bond may be possible.",
         level: "Autumn Romance"
       });
-      
-      // Show toast notification
-      toast({
-        title: "Autumn Begins",
-        description: `Your connection with ${topCharacter[1].name} has grown stronger than your other relationships.`,
-        duration: 5000,
-      });
 
       console.log('Transitioning to Autumn season with love interest:', charId);
     } else {
@@ -52,12 +45,6 @@ export function useAutumnSeasonHandlers(
         ...prev,
         currentSeason: 'autumn'
       }));
-      
-      toast({
-        title: "Autumn Begins",
-        description: "You haven't formed a strong enough connection with any team member yet.",
-        duration: 5000,
-      });
     }
   }, [gameState.characters, gameState.viableRoutes, setGameState]);
 
