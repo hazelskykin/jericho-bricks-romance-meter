@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import DialogueBox from '../DialogueBox';
@@ -69,7 +68,7 @@ const StandardGameView: React.FC = () => {
             <CharacterPortrait 
               characterId={characterId}
               mood={characterMood}
-              isActive={true}
+              animate={true}
             />
           </div>
         </div>

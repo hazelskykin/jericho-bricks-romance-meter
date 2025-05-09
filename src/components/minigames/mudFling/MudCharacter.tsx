@@ -42,8 +42,9 @@ const MudCharacter: React.FC<MudCharacterProps> = ({
   // Get character image path based on id
   const getCharacterImage = () => {
     const characterId = id as CharacterId;
-    // Use chibi versions of characters
-    return `/assets/characters/${characterId}/${characterId}-chibi${isMuddy ? '' : '-neutral'}.png`;
+    // Use chibi-neutral versions of characters when not muddy
+    // Use regular chibi versions when muddy
+    return `/assets/characters/${characterId}-chibi${isMuddy ? '' : '-neutral'}.png`;
   };
 
   return (

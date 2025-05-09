@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Volume2, VolumeX, Music, Music2Off } from 'lucide-react';
+import { Volume2, VolumeX, Music, MicOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { soundManager } from '@/utils/soundEffects';
 import { useState, useEffect } from 'react';
@@ -92,7 +92,7 @@ export function SoundToggle({ showMusicToggle = true, compact = false }: SoundTo
                 className="rounded-full w-8 h-8"
                 onClick={handleMusicToggle}
               >
-                {musicMuted ? <Music2Off className="h-4 w-4" /> : <Music className="h-4 w-4" />}
+                {musicMuted ? <MicOff className="h-4 w-4" /> : <Music className="h-4 w-4" />}
               </Button>
             </TooltipTrigger>
             <TooltipContent>

@@ -53,7 +53,8 @@ const MudFlingFountain: React.FC<MudFlingFountainProps> = ({
         ))}
       </div>
       
-      <style jsx>{`
+      <style>
+        {`
         @keyframes mudParticle1 {
           0% { transform: translate(-50%, -50%); opacity: 0; }
           20% { opacity: 1; }
@@ -75,7 +76,8 @@ const MudFlingFountain: React.FC<MudFlingFountainProps> = ({
         .animate-pulse-fast {
           animation: pulse 1.5s infinite;
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };

@@ -1,12 +1,13 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { CharacterId } from '../types/game';
-import { getCharacterExpressionByMood } from '../data/characterExpressions';
+import { getCharacterExpressionByMood, MoodType } from '../data/characterExpressions';
 import { getImageCache } from '../utils/imageCache';
 import { CharacterExpression } from '@/types/expressions';
 
 interface CharacterPortraitProps {
   characterId: CharacterId;
-  mood?: string;
+  mood?: MoodType;
   className?: string;
   animate?: boolean;
   onLoad?: () => void;
@@ -32,7 +33,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
     if (characterId && mood) {
       try {
         // Get character expression data
-        const expressionData = getCharacterExpressionByMood(characterId, mood);
+        const expressionData = getCharacterExpressionByMood(characterId, mood as MoodType);
         setCharacterExpression(expressionData);
         
         // Check if image is in cache

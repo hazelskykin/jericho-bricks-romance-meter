@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import { CharacterId, ChibiImageData } from '@/types/game';
+import { CharacterId } from '@/types/game';
+import { ChibiImageData } from '@/data/characterChibis';
 
 interface CharacterChibisPreviewProps {
   characterChibis: Record<CharacterId, ChibiImageData>;
@@ -47,7 +48,7 @@ const CharacterChibisPreview: React.FC<CharacterChibisPreviewProps> = ({ charact
             style={{ transitionDelay: isActive ? `${getCharacterIndex(characterId) * 0.2}s` : '0s' }}
           >
             <img 
-              src={data.image} 
+              src={data.neutralImage || data.image} // Prefer neutral image if available
               alt={`${id} chibi`} 
               className="h-auto drop-shadow-lg"
               style={{ width: data.width || '100px' }}

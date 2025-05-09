@@ -67,6 +67,17 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
     isAtFountain: false
   };
 
+  // Handle click on the game area - create a wrapper to transform mouse event to coordinates
+  const handleAreaClick = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // Get click coordinates relative to the target element
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    
+    // Pass coordinates to the game logic
+    handleGameAreaClick(x, y);
+  }, [handleGameAreaClick]);
+
   // Handle key presses for game controls
   const handleKeyDown = (event: React.KeyboardEvent) => {
     // Space to throw selected mud ball
@@ -101,7 +112,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
         
         <div className="flex-grow relative overflow-hidden">
           <MudFlingArena 
-            onAreaClick={handleGameAreaClick} 
+            onAreaClick={handleAreaClick} 
             onKeyDown={handleKeyDown} 
             characters={characterPositions}
             mudBalls={mudBalls}

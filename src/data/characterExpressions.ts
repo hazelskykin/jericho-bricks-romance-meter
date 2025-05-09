@@ -23,7 +23,9 @@ const characterExpressions: AllCharacterExpressions = {
 
 // Helper function to get all expressions for a character
 export function getCharacterExpressions(characterId: CharacterId): CharacterExpression[] {
-  return characterExpressions[characterId] || [];
+  return Array.isArray(characterExpressions[characterId]) 
+    ? characterExpressions[characterId] 
+    : [];
 }
 
 // Helper function to get a specific expression by mood
@@ -32,7 +34,11 @@ export function getCharacterExpressionByMood(
   mood: MoodType
 ): CharacterExpression | undefined {
   const expressions = characterExpressions[characterId] || [];
-  return expressions.find(e => e.mood === mood);
+  
+  if (Array.isArray(expressions)) {
+    return expressions.find(e => e.mood === mood);
+  }
+  return undefined;
 }
 
 export default characterExpressions;

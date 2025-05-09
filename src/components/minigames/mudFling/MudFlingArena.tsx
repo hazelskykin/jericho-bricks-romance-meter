@@ -1,35 +1,31 @@
-
 import React, { useRef, useEffect } from 'react';
-import type { MudBall } from '@/hooks/useMudFlingGame';
 import MudCharacter from './MudCharacter';
-
-interface CharacterPosition {
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  isMuddy: boolean;
-}
-
-interface Player {
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  speed: number;
-  energy: number;
-  isMuddy: boolean;
-  isAtFountain: boolean;
-}
+import MudBallSprite from './MudBallSprite';
+import { Character, MudBall } from '@/hooks/useMudFlingGame';
 
 interface MudFlingArenaProps {
-  onAreaClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onAreaClick: (x: number, y: number) => void;
   onKeyDown: (event: React.KeyboardEvent) => void;
-  characters: CharacterPosition[];
+  characters: {
+    id: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    isMuddy: boolean;
+  }[];
   mudBalls: MudBall[];
-  playerCharacter: Player;
+  playerCharacter: {
+    id: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    speed: number;
+    energy: number;
+    isMuddy: boolean;
+    isAtFountain: boolean;
+  };
 }
 
 const MudFlingArena: React.FC<MudFlingArenaProps> = ({
@@ -41,6 +37,7 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
 }) => {
   const arenaRef = useRef<HTMLDivElement>(null);
 
+  // Focus the arena on mount
   useEffect(() => {
     if (arenaRef.current) {
       arenaRef.current.focus();
@@ -48,38 +45,35 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
   }, []);
 
   return (
-    <div 
-      className="w-full h-full bg-[url('/assets/minigrames/spring/mudFling/A_digital_illustration_in_chibi-style_anime_featur.png')] 
-                 bg-cover bg-center relative focus:outline-none cursor-crosshair"
+    <div
       ref={arenaRef}
-      onClick={onAreaClick}
-      onKeyDown={onKeyDown}
+      className="relative w-full h-full bg-green-800 outline-none"
       tabIndex={0}
+      onClick={(e) => onAreaClick(e.clientX, e.clientY)}
+      onKeyDown={onKeyDown}
     >
-      {/* Render characters */}
-      {characters.map((char, index) => (
+      {/* Mud Characters */}
+      {characters.map((character) => (
         <MudCharacter
-          key={`character-${index}`}
-          id={char.id}
-          x={char.x}
-          y={char.y}
-          width={char.width}
-          height={char.height}
-          isPlayer={char.id === playerCharacter.id}
-          isMuddy={char.isMuddy}
+          key={character.id}
+          id={character.id}
+          x={character.x}
+          y={character.y}
+          width={60}
+          height={90}
+          isPlayer={character.id === playerCharacter.id}
+          isMuddy={character.isMuddy}
         />
       ))}
-
-      {/* Render mud balls */}
-      {mudBalls.map((ball, index) => (
-        <div
-          key={`mud-ball-${index}`}
-          className="absolute w-6 h-6 bg-[url('/assets/minigrames/spring/mudFling/mudball_sprites.png')] bg-cover rounded-full"
-          style={{
-            left: `${ball.position.x}px`,
-            top: `${ball.position.y}px`,
-            transform: 'translate(-50%, -50%)'
-          }}
+      
+      {/* Mud Balls */}
+      {mudBalls.map((mudBall) => (
+        <MudBallSprite
+          key={mudBall.id}
+          x={mudBall.position.x}
+          y={mudBall.position.y}
+          size={15}
+          direction={mudBall.direction}
         />
       ))}
     </div>
