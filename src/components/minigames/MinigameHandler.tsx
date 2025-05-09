@@ -9,9 +9,10 @@ import WhatsOnTapGame from './whatsOnTap/WhatsOnTapGame';
 import { Button } from '@/components/ui/button';
 import MinigameContainer from './MinigameContainer';
 import { Loader2 } from 'lucide-react';
+import { MinigameType } from '@/types/minigames';
 
 interface MinigameHandlerProps {
-  activeMinigame: string;
+  activeMinigame: MinigameType | null;
   completeMinigame: (success: boolean) => void;
   exitMinigame: () => void;
 }

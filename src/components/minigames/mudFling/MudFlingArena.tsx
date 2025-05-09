@@ -1,87 +1,61 @@
-
-import React from 'react';
-import { Character, MudBall } from './types';
+import React, { useRef, useEffect } from 'react';
+import { CharacterPosition, MudBall, Player } from './types';
 import MudCharacter from './MudCharacter';
-import MudFlingFountain from './MudFlingFountain';
 
 interface MudFlingArenaProps {
+  onAreaClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onKeyDown: (event: React.KeyboardEvent) => void;
+  characters: CharacterPosition[];
   mudBalls: MudBall[];
-  characters: Character[];
-  selectedMudBall: string | null;
-  fountainIntensity: 'low' | 'medium' | 'high';
-  characterColors: Record<string, { color: string }>;
-  onMudBallClick: (id: string) => void;
-  onGameAreaClick: (x: number, y: number) => void;
+  playerCharacter: Player;
 }
 
 const MudFlingArena: React.FC<MudFlingArenaProps> = ({
-  mudBalls,
+  onAreaClick,
+  onKeyDown,
   characters,
-  selectedMudBall,
-  fountainIntensity,
-  characterColors,
-  onMudBallClick,
-  onGameAreaClick
+  mudBalls,
+  playerCharacter
 }) => {
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    onGameAreaClick(x, y);
-  };
+  const arenaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (arenaRef.current) {
+      arenaRef.current.focus();
+    }
+  }, []);
 
   return (
     <div 
-      className="relative w-full h-[400px] border-2 border-amber-600/30 rounded-lg overflow-hidden"
-      onClick={handleClick}
-      style={{
-        backgroundImage: 'url(/assets/backgrounds/summer-transition.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        cursor: selectedMudBall ? 'crosshair' : 'default'
-      }}
+      className="w-full h-full bg-[url('/assets/minigrames/spring/mudFling/A_digital_illustration_in_chibi-style_anime_featur.png')] 
+                 bg-cover bg-center relative focus:outline-none cursor-crosshair"
+      ref={arenaRef}
+      onClick={onAreaClick}
+      onKeyDown={onKeyDown}
+      tabIndex={0}
     >
-      {/* Central mud fountain */}
-      <MudFlingFountain 
-        position={{ x: 300, y: 200 }} 
-        intensity={fountainIntensity} 
-      />
-      
-      {/* Display characters */}
-      {characters.map((character) => (
+      {/* Render characters */}
+      {characters.map((char, index) => (
         <MudCharacter
-          key={character.id}
-          character={character}
-          characterColors={characterColors}
+          key={`character-${index}`}
+          position={char}
+          isPlayer={char.id === playerCharacter.id}
+          isMuddy={char.isMuddy}
         />
       ))}
-      
-      {/* Display mud balls */}
-      {mudBalls.map((mudBall) => (
+
+      {/* Render mud balls */}
+      {mudBalls.map((ball, index) => (
         <div
-          key={mudBall.id}
-          className={`absolute w-6 h-6 rounded-full bg-amber-800 border border-amber-600 shadow-md ${
-            selectedMudBall === mudBall.id ? 'ring-2 ring-yellow-400 scale-125' : ''
-          }`}
+          key={`mud-ball-${index}`}
+          className="absolute w-6 h-6 bg-[url('/assets/minigrames/spring/mudFling/mudball_sprites.png')] bg-cover rounded-full"
           style={{
-            left: `${mudBall.position.x - 12}px`,
-            top: `${mudBall.position.y - 12}px`,
-            cursor: 'pointer',
-            zIndex: selectedMudBall === mudBall.id ? 10 : 5,
-            transform: `scale(${mudBall.size / 20})`,
-            opacity: mudBall.flying ? 0.8 : 1
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onMudBallClick(mudBall.id);
+            left: `${ball.x}px`,
+            top: `${ball.y}px`,
+            transform: 'translate(-50%, -50%)'
           }}
         />
       ))}
-      
-      {/* Extra mud puddles for decoration */}
-      <div className="absolute bottom-10 right-20 w-16 h-6 bg-amber-900/70 rounded-full"></div>
-      <div className="absolute bottom-20 left-30 w-12 h-4 bg-amber-900/70 rounded-full"></div>
-      <div className="absolute top-40 left-10 w-14 h-5 bg-amber-900/70 rounded-full"></div>
     </div>
   );
 };

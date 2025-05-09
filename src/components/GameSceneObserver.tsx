@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import SeasonTransition from './SeasonTransition';
+import { MinigameType } from '@/types/minigames';
 
 /**
  * Game scene observer component to handle minigame transitions and season changes
@@ -14,7 +15,7 @@ const GameSceneObserver = () => {
     const currentScene = gameState.currentScene;
     
     // Check specific minigame trigger scenes - these MUST match the scene IDs in data files
-    const minigameMappings = {
+    const minigameMappings: Record<string, MinigameType> = {
       // Spring minigames
       'spring-brooms-away-start': 'broomsAway',
       'spring-mud-fling-start': 'mudFling',
