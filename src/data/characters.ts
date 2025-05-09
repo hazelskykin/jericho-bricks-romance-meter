@@ -6,7 +6,7 @@ export const characters: Record<string, Character> = {
     id: 'xavier',
     name: 'Xavier',
     role: 'Solvitor',
-    description: 'The emotional and technological bedrock of the team.',
+    description: 'The engineering and technological bedrock of the team.',
     affection: 0,
     avatar: '/assets/characters/xavier-neutral.png',
     color: '#4CC2FF',
@@ -36,11 +36,11 @@ export const characters: Record<string, Character> = {
     id: 'senara',
     name: 'Senara',
     role: 'Gnarus',
-    description: 'The enigmatic intellectual, standoffish but trusted for integrity.',
+    description: 'The enigmatic intellectual, a philosopher that bridges knowledge with inquiry.',
     affection: 0,
     avatar: '/assets/characters/senara-neutral.png',
     color: '#9C89FF',
-    temperament: 'Intellectual, Analytical, Reserved',
+    temperament: 'Intellectual, Reserved, Curious',
   },
 };
 
