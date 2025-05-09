@@ -16,7 +16,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Team Stonewich, I see you\'re all here on time. Excellent start."',
+        text: "Dr. Voss: Team Stonewich, I see you're all here on time. Excellent start.",
       },
       {
         character: 'etta',
@@ -53,15 +53,15 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "An interesting mix of personalities. That\'s why you were selected. Your Cybaton transport is waiting outside."',
+        text: "Dr. Voss: An interesting mix of personalities. That's why you were selected. Your Cybaton transport is waiting outside.",
       },
       {
         character: 'narrator',
-        text: 'Your team picks up their luggage and follows Dr. Voss through the automatic doors to the waiting vehicle.',
+        text: 'Your team picks up their luggage and follows Dr. Voss through the automatic doors to the waiting shuttle.',
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "I\'ll be monitoring your progress remotely. Monthly reports are expected. Good luck."',
+        text: "Dr. Voss: I'll be monitoring your progress remotely. Quarterly reports are expected in-person. Good luck.",
       },
       {
         character: 'narrator',
@@ -100,7 +100,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: 'The data. Cities generate fascinating patterns that few get to analyze at this level of access.',
+        text: 'Cities generate fascinating patterns that few get to analyze at this level of access.',
         mood: 'neutral',
       },
       {
@@ -123,8 +123,13 @@ const departureScenes: Record<string, Scene> = {
 
   'departure-morning': {
     id: 'departure-morning',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-shuttle',
     dialogue: [
+      {
+        character: 'xavier',
+        text: "Oh, hey! Look out the window. We're almost there.",
+        mood: 'neutral',
+      },
       {
         character: 'senara',
         text: 'Arriving in a new city is always fascinating. So much potential waiting to be unlocked.',
