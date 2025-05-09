@@ -27,7 +27,7 @@ const coffeeShopScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Tea for me. But I did bring some Stonewich materials we could review while we're here.",
+        text: "Tea for me.",
         mood: 'neutral',
       },
       {
@@ -41,7 +41,7 @@ const coffeeShopScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'By the end of the evening, you feel more connected to the team and ready for tomorrow\'s departure.',
+        text: "By the end of the evening, you feel more connected to the team and ready for tomorrow's departure. You feel Navarre's smile has gotten friendlier when you look his way.",
       }
     ],
     nextSceneId: 'departure-lobby', // Updated to go to the lobby scene first
