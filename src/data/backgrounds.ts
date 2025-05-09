@@ -49,10 +49,10 @@ const backgrounds: Record<string, BackgroundAsset> = {
     description: 'Grand entrance with a mix of modern architecture and traditional craftsmanship.',
     gradient: 'linear-gradient(to bottom, rgba(31, 34, 53, 0.1), rgba(47, 34, 69, 0.2))'
   },
-  'stonewich-shuttle-interior': {
-  id: 'stonewich-shuttle-interior',
+  'cybaton-shuttle': {
+  id: 'cybaton-shuttle',
   name: 'Shuttle Interior',
-  image: '/assets/backgrounds/stonewich-shuttle-interior.jpg',
+  image: '/assets/backgrounds/cybaton-shuttle.jpg',
   description: 'Comfortable interior of a low-flying commuter shuttle with inward-facing cushioned seats, steampunk details, and soft cyberpunk lighting designed for mid-journey conversation.',
   gradient: 'linear-gradient(to bottom, rgba(50, 60, 110, 0.2), rgba(30, 40, 80, 0.35))'
   },
