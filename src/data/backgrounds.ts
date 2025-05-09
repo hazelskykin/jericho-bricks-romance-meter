@@ -49,12 +49,12 @@ const backgrounds: Record<string, BackgroundAsset> = {
     description: 'Grand entrance with a mix of modern architecture and traditional craftsmanship.',
     gradient: 'linear-gradient(to bottom, rgba(31, 34, 53, 0.1), rgba(47, 34, 69, 0.2))'
   },
-  'cybaton-shuttle': {
-    id: 'cybaton-shuttle',
-    name: 'Cybaton Shuttle',
-    image: '/assets/backgrounds/cybaton-shuttle.jpg',
-    description: 'Sleek transport pod for traveling between cities, featuring panoramic windows and comfortable seating.',
-    gradient: 'linear-gradient(to bottom, rgba(29, 33, 58, 0.1), rgba(45, 38, 72, 0.2))'
+  'stonewich-shuttle-interior': {
+  id: 'stonewich-shuttle-interior',
+  name: 'Shuttle Interior',
+  image: '/assets/backgrounds/stonewich-shuttle-interior.jpg',
+  description: 'Comfortable interior of a low-flying commuter shuttle with inward-facing cushioned seats, steampunk details, and soft cyberpunk lighting designed for mid-journey conversation.',
+  gradient: 'linear-gradient(to bottom, rgba(50, 60, 110, 0.2), rgba(30, 40, 80, 0.35))'
   },
   'city-cafe': {
     id: 'city-cafe',
@@ -63,12 +63,19 @@ const backgrounds: Record<string, BackgroundAsset> = {
     description: 'Cozy interior with wooden furniture and subtle tech integration alongside traditional cooking methods.',
     gradient: 'linear-gradient(to bottom, rgba(37, 37, 37, 0.1), rgba(53, 41, 69, 0.2))'
   },
+  'stonewich-shuttle': {
+  id: 'stonewich-shuttle',
+  name: 'Stonewich Shuttle Arrival',
+  image: '/assets/backgrounds/stonewich-shuttle.jpg',
+  description: 'View of Stonewich from a low-flying commuter shuttle as it descends into the city, capturing skyways and layered rooftops below.',
+  gradient: 'linear-gradient(to bottom, rgba(90, 120, 140, 0.15), rgba(60, 70, 100, 0.35))'
+},
   'stonewich-cityscape': {
     id: 'stonewich-cityscape',
     name: 'Stonewich Cityscape',
     image: '/assets/backgrounds/stonewich-cityscape.jpg',
     description: 'Mixture of futuristic buildings and preserved historical architecture with modern transportation systems.',
-    gradient: 'linear-gradient(to bottom, rgba(42, 42, 64, 0.1), rgba(74, 42, 80, 0.2))'
+    gradient: 'linear-gradient(to bottom, rgba(60, 80, 130, 0.15), rgba(100, 120, 160, 0.3))'
   },
   'stonewich-office': {
     id: 'stonewich-office',
