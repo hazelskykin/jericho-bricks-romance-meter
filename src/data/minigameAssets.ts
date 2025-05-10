@@ -893,4 +893,4 @@ export const minigameAssets: MinigameAsset[] = [
 ]
 };
 
-export MinigameAssets
+export default MinigameAssets;
