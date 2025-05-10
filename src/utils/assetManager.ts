@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 // Define types for assets
@@ -177,6 +176,15 @@ class AssetManager {
       
       // Use the potentially fixed path
       img.src = fixedPath;
+      
+      // Add a timeout to prevent hanging
+      setTimeout(() => {
+        if (!this.cache.loaded.has(src) && !this.cache.failed.has(src)) {
+          console.warn(`Image load timeout for: ${fixedPath}`);
+          this.cache.failed.add(src);
+          this.useFallbackImage(src, resolve);
+        }
+      }, 10000); // 10 second timeout
     });
   }
   
@@ -218,10 +226,14 @@ class AssetManager {
 
   /**
    * Fix paths with capitalization issues
+   * Enhanced to handle null/undefined values safely
    */
   private fixPath(src: string): string {
     // Safety check for null or undefined
-    if (!src) return '';
+    if (!src) {
+      console.warn('Empty or undefined asset path provided');
+      return ''; // Return empty string instead of trying to work with undefined
+    }
     
     // Fix locaton-icons typo if it exists
     if (src.includes('/locaton-icons.png')) {
@@ -236,6 +248,11 @@ class AssetManager {
     // Handle specific files that might have different names
     if (src.includes('/splashEffects_victoryEffect.png')) {
       return src.replace('/splashEffects_victoryEffect.png', '/splashVictory.png');
+    }
+    
+    // Handle cases where paths might be pointing to the wrong directory
+    if (src.startsWith('/assets/minigrames/')) {
+      return src.replace('/assets/minigrames/', '/assets/minigames/');
     }
     
     return src;

@@ -1,7 +1,27 @@
 
 import { CharacterId } from './game';
 
-export type CharacterMood = 'happy' | 'neutral' | 'sad' | 'angry' | 'surprised' | 'thoughtful' | 'flirty' | 'worried';
+export type CharacterMood = 
+  | 'happy' 
+  | 'neutral' 
+  | 'sad' 
+  | 'angry' 
+  | 'surprised' 
+  | 'thoughtful' 
+  | 'flirty' 
+  | 'worried'
+  | 'laughing'
+  | 'shocked'
+  | 'embarrassed'
+  | 'confident'
+  | 'determined'
+  | 'curious'
+  | 'nervous'
+  | 'concerned'
+  | 'reflective'
+  | 'pleased'
+  | 'proud';
+  
 export type MoodType = CharacterMood | 'normal';
 
 export interface CharacterExpression {
@@ -17,3 +37,13 @@ export interface CharacterExpressionDictionary {
 }
 
 export type CharacterExpressionKey = string;
+
+// Add CharacterExpressionSet interface for individual character expression files
+export interface CharacterExpressionSet {
+  [key: string]: CharacterExpression;
+}
+
+// Add AllCharacterExpressions interface for combined character expressions
+export interface AllCharacterExpressions {
+  [characterId: string]: CharacterExpression[];
+}

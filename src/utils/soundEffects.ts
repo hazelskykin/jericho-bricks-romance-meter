@@ -1,4 +1,3 @@
-
 // Sound utility for managing game sound effects
 import { SoundCategory, SoundEffect } from '@/types/assets';
 
@@ -10,6 +9,8 @@ class SoundManager {
   private loadErrors: Record<string, boolean> = {};
   private audioAvailable: boolean = true;
   private errorCount: number = 0;
+  private maxErrorRetries: number = 2; // Limit retries to prevent infinite loops
+  private loadingPromises: Map<string, Promise<HTMLAudioElement>> = new Map();
   private masterVolume: number = 1.0;
   private sfxVolume: number = 0.7;
   private musicVolume: number = 0.5;
@@ -87,8 +88,21 @@ class SoundManager {
       return;
     }
 
-    effects.forEach(effect => {
+    // Use a subset of effects to prevent overwhelming the browser
+    const priorityEffects = effects.slice(0, 10); // Only load the first 10 initially
+    
+    console.log(`Preloading ${priorityEffects.length} sound effects`);
+
+    priorityEffects.forEach(effect => {
       try {
+        // Skip if already failed multiple times to avoid infinite loops
+        if (this.loadErrors[effect.id] >= this.maxErrorRetries) {
+          console.warn(`Skipping sound ${effect.id} - exceeded max retry attempts`);
+          this.replaceSoundWithSilence(effect.id, effect.category === 'music');
+          return;
+        }
+        
+        // Create new audio element for this sound
         const audio = new Audio();
         
         // Fix common audio paths issues
@@ -97,16 +111,15 @@ class SoundManager {
         // Add error handling for the load event
         audio.onerror = (e) => {
           console.warn(`Could not load sound: ${fixedSrc}`);
-          this.loadErrors[effect.id] = true;
+          this.loadErrors[effect.id] = (this.loadErrors[effect.id] || 0) + 1;
           this.errorCount++;
           
-          // Try fallback if provided
-          if (effect.fallbackSrc) {
+          // Try fallback if provided and hasn't exceeded retry limit
+          if (effect.fallbackSrc && this.loadErrors[effect.id] < this.maxErrorRetries) {
             console.log(`Trying fallback sound: ${effect.fallbackSrc}`);
             audio.src = effect.fallbackSrc;
-          } else if (this.silenceAudio) {
-            // If no fallback provided, use silence
-            // This ensures we still have an audio element that can be played without errors
+          } else {
+            // If no fallback provided or exceeded retries, use silence
             this.replaceSoundWithSilence(effect.id, effect.category === 'music');
           }
           
@@ -118,20 +131,6 @@ class SoundManager {
           }
         };
 
-        // Add event listeners to improve error handling
-        audio.addEventListener('error', () => {
-          console.warn(`Error event triggered for sound: ${fixedSrc}`);
-          this.loadErrors[effect.id] = true;
-          this.errorCount++;
-          
-          // Dispatch event to notify components
-          if (typeof window !== 'undefined') {
-            window.dispatchEvent(new CustomEvent('sound-error', { 
-              detail: { id: effect.id, src: fixedSrc } 
-            }));
-          }
-        }, false);
-        
         // Set volume based on category
         if (effect.category === 'music') {
           audio.volume = (effect.volume ?? 1.0) * this.musicVolume * this.masterVolume;
@@ -142,17 +141,88 @@ class SoundManager {
           this.sounds[effect.id] = audio;
         }
         
+        // Use the potentially fixed path
         audio.src = fixedSrc;
-        audio.preload = 'auto'; // Explicitly set preload
-        audio.load(); // Explicitly start loading the audio
+        
+        // Only try to preload if we haven't exceeded retry limit
+        if (!this.loadErrors[effect.id] || this.loadErrors[effect.id] < this.maxErrorRetries) {
+          audio.preload = 'auto'; // Explicitly set preload
+          
+          // Use a timeout to prevent hanging
+          setTimeout(() => {
+            try {
+              audio.load(); // Explicitly start loading the audio
+            } catch (err) {
+              console.warn(`Error loading audio ${effect.id}:`, err);
+              this.replaceSoundWithSilence(effect.id, effect.category === 'music');
+            }
+          }, 100); // Small delay to prevent all loading at once
+        }
       } catch (e) {
         console.warn(`Error initializing sound ${effect.id}:`, e);
-        this.loadErrors[effect.id] = true;
+        this.loadErrors[effect.id] = this.maxErrorRetries; // Mark as failed
         this.errorCount++;
         // Create silent audio as fallback
         this.replaceSoundWithSilence(effect.id, effect.category === 'music');
       }
     });
+    
+    // Load remaining effects after a delay
+    if (effects.length > priorityEffects.length) {
+      setTimeout(() => {
+        const remainingEffects = effects.slice(10);
+        console.log(`Loading remaining ${remainingEffects.length} sound effects in background`);
+        this.preloadSoundsInBackground(remainingEffects);
+      }, 5000); // 5 second delay before loading remaining sounds
+    }
+  }
+  
+  // Load sounds in background without blocking
+  private preloadSoundsInBackground(effects: SoundEffect[]): void {
+    // Process in smaller batches to prevent overwhelming browser
+    const processBatch = (startIndex: number, batchSize: number) => {
+      const endIndex = Math.min(startIndex + batchSize, effects.length);
+      const batch = effects.slice(startIndex, endIndex);
+      
+      batch.forEach(effect => {
+        // Skip if already failed
+        if (this.loadErrors[effect.id] >= this.maxErrorRetries) return;
+        
+        try {
+          const audio = new Audio();
+          const fixedSrc = this.fixAudioPath(effect.src);
+          
+          audio.onerror = () => {
+            this.loadErrors[effect.id] = (this.loadErrors[effect.id] || 0) + 1;
+            this.replaceSoundWithSilence(effect.id, effect.category === 'music');
+          };
+          
+          // Set appropriate volume
+          if (effect.category === 'music') {
+            audio.volume = (effect.volume ?? 1.0) * this.musicVolume * this.masterVolume;
+            audio.loop = effect.loop ?? false;
+            this.music[effect.id] = audio;
+          } else {
+            audio.volume = (effect.volume ?? 0.7) * this.sfxVolume * this.masterVolume;
+            this.sounds[effect.id] = audio;
+          }
+          
+          audio.src = fixedSrc;
+          audio.preload = 'auto';
+          audio.load();
+        } catch (e) {
+          this.replaceSoundWithSilence(effect.id, effect.category === 'music');
+        }
+      });
+      
+      // Process next batch if any remain
+      if (endIndex < effects.length) {
+        setTimeout(() => processBatch(endIndex, batchSize), 1000);
+      }
+    };
+    
+    // Start processing in batches of 5
+    processBatch(0, 5);
   }
   
   // Replace a failed sound with silence
@@ -216,7 +286,10 @@ class SoundManager {
           
           // Only mark as error if it's not a user interaction issue
           if (error.name !== 'NotAllowedError') {
-            this.loadErrors[soundId] = true;
+            // Don't increment error count to avoid infinite loops
+            if (!this.loadErrors[soundId]) {
+              this.loadErrors[soundId] = 1;
+            }
             
             // Dispatch event to notify components
             if (typeof window !== 'undefined') {
@@ -229,12 +302,20 @@ class SoundManager {
       }
     } catch (e) {
       console.warn(`Error playing sound ${soundId}:`, e);
-      this.loadErrors[soundId] = true;
+      if (!this.loadErrors[soundId]) {
+        this.loadErrors[soundId] = 1;
+      }
     }
   }
   
   // Play a sound effect with specified category
   playSFX(soundId: string): void {
+    // Check if sound exists first to prevent errors
+    if (!this.sounds[soundId]) {
+      console.warn(`Sound "${soundId}" not found - using silent fallback`);
+      this.replaceSoundWithSilence(soundId);
+      return;
+    }
     this.play(soundId);
   }
   
@@ -433,7 +514,7 @@ if (typeof window !== 'undefined') {
   (window as any).soundManager = soundManager;
 }
 
-// Preload all game sounds
+// Preload all game sounds - modified to prevent infinite loading loops
 export function initializeGameSounds(): void {
   // Only attempt to preload if audio is available
   if (!soundManager.isAudioAvailable()) {
@@ -443,17 +524,22 @@ export function initializeGameSounds(): void {
 
   console.log('Initializing game sound system...');
   
-  // Game sound effects - using silent fallbacks for now since the audio files aren't loading properly
+  // Silent fallback that works across all browsers
   const silentFallback = 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=';
   
-  const gameSounds: SoundEffect[] = [
-    // UI Sounds with fallbacks
+  // Group sounds by priority - UI sounds first as they're essential
+  const prioritySounds: SoundEffect[] = [
+    // UI Sounds with fallbacks - these are most critical
     { id: 'ui-click', src: '/audio/buttonPress.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
     { id: 'ui-hover', src: '/audio/softPop.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.2 },
     { id: 'ui-notification', src: '/audio/chime.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.5 },
     { id: 'ui-success', src: '/audio/bellchime.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.5 },
     { id: 'ui-error', src: '/audio/buzz.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
-    
+    { id: 'click', src: '/audio/buttonPress.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
+    { id: 'error', src: '/audio/buzz.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 }
+  ];
+  
+  const nonPrioritySounds: SoundEffect[] = [
     // Minigame: Mud Fling sounds
     { id: 'mud-select', src: '/audio/itemPickup.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.4 },
     { id: 'mud-throw', src: '/audio/whoosh.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.6 },
@@ -480,12 +566,18 @@ export function initializeGameSounds(): void {
     { id: 'game-win', src: '/audio/fanfare.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.7 },
     { id: 'game-lose', src: '/audio/missWhoosh.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.7 },
     { id: 'score-up', src: '/audio/bellding.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
-    { id: 'click', src: '/audio/buttonPress.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
-    { id: 'win', src: '/audio/fanfare.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.7 },
-    { id: 'error', src: '/audio/buzz.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 }
+    { id: 'win', src: '/audio/fanfare.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.7 }
   ];
   
-  soundManager.preloadSounds(gameSounds);
+  // First load priority sounds only
+  soundManager.preloadSounds(prioritySounds);
+  
+  // Load non-priority sounds after a delay
+  setTimeout(() => {
+    console.log('Loading non-priority sounds...');
+    soundManager.preloadSounds(nonPrioritySounds);
+  }, 3000);
+  
   soundManager.exposeToWindow();
   console.log('Sound system initialized');
 }
@@ -493,7 +585,11 @@ export function initializeGameSounds(): void {
 // Hook to play sounds related to UI interactions
 export function useUISound() {
   const playUISound = (soundId: string) => {
-    soundManager.playSFX(soundId);
+    try {
+      soundManager.playSFX(soundId);
+    } catch (error) {
+      console.warn(`Could not play UI sound: ${soundId}`);
+    }
   };
   
   return {

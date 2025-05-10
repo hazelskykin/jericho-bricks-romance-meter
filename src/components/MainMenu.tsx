@@ -16,11 +16,12 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, loadingComplete, onAbout
   const handleNewGameClick = useCallback(() => {
     console.log("New Game button clicked");
     
-    // Try to play a sound when clicked
+    // Try to play a sound when clicked, but don't block if it fails
     try {
       soundManager.playSFX('ui-click');
     } catch (error) {
       console.warn('Failed to play button click sound:', error);
+      // Continue with game start even if sound fails
     }
     
     toast.success("Starting new game...");
@@ -34,11 +35,12 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, loadingComplete, onAbout
   const handleAboutClick = useCallback(() => {
     console.log("About button clicked");
     
-    // Try to play a sound when clicked
+    // Try to play a sound when clicked, but don't block if it fails
     try {
       soundManager.playSFX('ui-click');
     } catch (error) {
       console.warn('Failed to play button click sound:', error);
+      // Continue with about navigation even if sound fails
     }
     
     if (onAbout) {

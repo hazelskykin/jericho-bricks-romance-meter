@@ -4,6 +4,9 @@ import { assetManager, getAssetSource } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
 import backgrounds from '@/data/backgrounds';
 import minigameAssets from '@/data/minigameAssets';
+import { BackgroundAsset } from '@/types/assets';
+import { CharacterExpression } from '@/types/expressions';
+import { MinigameAsset } from '@/types/assets';
 
 interface AssetPreloaderProps {
   onComplete: () => void;
@@ -29,18 +32,19 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
 
   // Extract list of character expression image paths
   const characterPaths = Object.values(characterExpressions)
-    .filter(expr => !priorityOnly || (expr.priority === true))
-    .map(expr => expr.image);
+    .flat()
+    .filter(expr => !priorityOnly || (expr as CharacterExpression).priority === true)
+    .map(expr => (expr as CharacterExpression).image);
   
   // Extract list of background image paths
   const backgroundPaths = Object.values(backgrounds)
-    .filter(bg => !priorityOnly || (bg.priority === true))
-    .map(bg => bg.image);
+    .filter(bg => !priorityOnly || (bg as BackgroundAsset).priority === true)
+    .map(bg => (bg as BackgroundAsset).image);
   
   // Extract minigame asset paths
   const minigameAssetPaths = Object.values(minigameAssets)
-    .filter(asset => !priorityOnly || (asset.priority === true))
-    .map(asset => asset.src);
+    .filter(asset => !priorityOnly || (asset as MinigameAsset).priority === true)
+    .map(asset => (asset as MinigameAsset).src);
 
   useEffect(() => {
     // Store total counts

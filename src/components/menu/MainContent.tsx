@@ -11,8 +11,6 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, onAbout }) => {
-  // No state needed for characters since we've removed that animation
-  
   return (
     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
       {/* Notification system */}
