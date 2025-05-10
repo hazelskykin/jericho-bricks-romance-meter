@@ -1,0 +1,1 @@
+Looking for Signs: Visual clue sprites, scene backgrounds
