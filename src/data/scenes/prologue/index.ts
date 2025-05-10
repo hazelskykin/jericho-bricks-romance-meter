@@ -10,7 +10,12 @@ const prologue: Record<string, Scene> = {
   ...teamMeetingScenes,
   ...departureScenes,
   ...bonding,
-  'prologue-intro': introScenes['intro'], // Add explicit mapping for prologue-intro
+  'prologue-intro': introScenes['intro'], // Map the prologue-intro explicitly to intro
+  'intro': introScenes['intro'], // Make sure intro is directly accessible
+  'team-meeting': teamMeetingScenes['team-meeting'] // Make sure team-meeting is directly accessible
 };
+
+// Debug logging to help track scene availability
+console.log('Available prologue scenes:', Object.keys(prologue));
 
 export default prologue;

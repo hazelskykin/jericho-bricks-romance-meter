@@ -42,14 +42,17 @@ const CharacterChibisPreview: React.FC<CharacterChibisPreviewProps> = ({
     }
   };
 
+  // Filter out Maven as requested and take only the other characters
+  const filteredChibis = Object.values(characterChibis).filter(chibi => chibi.id !== 'maven');
+
   return (
     <motion.div 
-      className="flex items-end space-x-2"
+      className="grid grid-cols-2 gap-2"
       variants={containerVariants}
       initial="hidden"
       animate={loadingComplete ? "visible" : "hidden"}
     >
-      {Object.values(characterChibis).map((chibi) => (
+      {filteredChibis.map((chibi) => (
         <motion.div 
           key={chibi.id} 
           className="relative"
@@ -62,7 +65,7 @@ const CharacterChibisPreview: React.FC<CharacterChibisPreviewProps> = ({
           />
           
           <img
-            src={showNeutral ? chibi.neutralImage : chibi.image}
+            src={showNeutral && 'neutralImage' in chibi ? chibi.neutralImage : chibi.image}
             alt={chibi.description}
             width={chibi.width || "100px"}
             height="auto"

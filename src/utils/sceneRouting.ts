@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 const sceneMapping: Record<string, string> = {
   // Prologue scenes
   'prologue-intro': 'intro',
+  'team-meeting': 'team-meeting',
   
   // Spring scenes
   'spring-character-selection': 'spring-character-selection',

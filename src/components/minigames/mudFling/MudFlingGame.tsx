@@ -1,130 +1,189 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import MinigameContainer from '../MinigameContainer';
 import MudFlingArena from './MudFlingArena';
 import MudFlingControls from './MudFlingControls';
-import MudFlingFountain from './MudFlingFountain';
-import { useMudFlingGame } from '@/hooks/useMudFlingGame';
-import { Character, MudBall } from '@/hooks/useMudFlingGame';
+import GameStatusMessage from '../common/GameStatusMessage';
+import SoundToggle from '../common/SoundToggle';
+import { useMudBalls } from './useMudBalls';
+import { useCharacterAI } from './useCharacterAI';
+import { MudCharacterPosition, MudGameStatus } from './types';
 import { soundManager } from '@/utils/soundEffects';
+import { Button } from '@/components/ui/button';
 
 interface MudFlingGameProps {
-  onComplete: (success: boolean) => void;
+  onComplete: (score: number) => void;
   onExit: () => void;
 }
 
 const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
+  const [gameStatus, setGameStatus] = useState<MudGameStatus>('ready');
+  const [countdown, setCountdown] = useState<number>(3);
+  const [score, setScore] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(60);
+  const [muted, setMuted] = useState<boolean>(false);
+  
+  const playerPosition = useRef<MudCharacterPosition>({ x: 150, y: 380 });
+  const opponentPosition = useRef<MudCharacterPosition>({ x: 450, y: 380 });
+  
+  // Initialize mudball system
   const {
-    timeRemaining,
-    fountainIntensity,
-    mudBalls,
-    characters,
-    selectedMudBall,
-    team1Score,
-    team2Score,
-    gameEnded,
-    initialized,
-    handleMudBallClick,
-    handleGameAreaClick,
-    initializeCharacters,
-    handleExit
-  } = useMudFlingGame(onComplete, onExit);
-
-  // Initialize the game when component mounts
-  useEffect(() => {
-    // Initialize game characters (could be based on player's relationship with characters)
-    initializeCharacters();
-    
-    // Play background music
-    soundManager.playMusic('game-background', 0.3, true);
-    
-    return () => {
-      // Cleanup on unmount
-      soundManager.stopMusic('game-background');
-    };
-  }, [initializeCharacters]);
-
-  // Convert Character objects to CharacterPosition objects for MudFlingArena
-  const characterPositions = characters.map(char => ({
-    id: char.id,
-    x: char.position.x,
-    y: char.position.y,
-    width: 60,
-    height: 90,
-    isMuddy: char.isHit
-  }));
-
-  // Configure player character for MudFlingArena
-  const playerCharacter = {
-    id: 'maven',
-    x: characters.find(c => c.id === 'maven')?.position.x || 250,
-    y: characters.find(c => c.id === 'maven')?.position.y || 300,
-    width: 60,
-    height: 90,
-    speed: 0,
-    energy: 100,
-    isMuddy: characters.find(c => c.id === 'maven')?.isHit || false,
-    isAtFountain: false
-  };
-
-  // Handle click on the game area - create a wrapper to transform mouse event to coordinates
-  const handleAreaClick = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // Get click coordinates relative to the target element
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    
-    // Pass coordinates to the game logic
-    handleGameAreaClick(x, y);
-  }, [handleGameAreaClick]);
-
-  // Handle key presses for game controls
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    // Space to throw selected mud ball
-    if (event.key === ' ' && selectedMudBall) {
-      const mavenChar = characters.find(c => c.id === 'maven');
-      if (mavenChar) {
-        const target = {
-          x: mavenChar.position.x + 100, // Throw in front of maven
-          y: mavenChar.position.y - 100  // Throw upward
-        };
-        handleGameAreaClick(target.x, target.y);
+    playerMudballs,
+    opponentMudballs,
+    throwMudball,
+    updateMudballs,
+    resetMudballs
+  } = useMudBalls();
+  
+  // Initialize opponent AI
+  const { updateOpponent } = useCharacterAI({
+    playerPosition,
+    opponentPosition,
+    throwMudball: (x, y) => {
+      if (gameStatus === 'playing') {
+        throwMudball('opponent', opponentPosition.current.x, opponentPosition.current.y, x, y);
+        if (!muted) soundManager.playSFX('mud-throw');
       }
     }
-  };
+  });
+
+  // Game logic
+  useEffect(() => {
+    let gameLoop: number | null = null;
+    let countdownTimer: number | null = null;
+    let gameTimer: number | null = null;
+
+    const startCountdown = () => {
+      setGameStatus('countdown');
+      setCountdown(3);
+      
+      countdownTimer = window.setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdownTimer!);
+            startGame();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    };
+
+    const startGame = () => {
+      setGameStatus('playing');
+      resetMudballs();
+      setScore(0);
+      setTimeLeft(60);
+      
+      // Game timer
+      gameTimer = window.setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            endGame();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      
+      // Game loop
+      gameLoop = window.setInterval(() => {
+        updateMudballs(
+          playerPosition.current,
+          opponentPosition.current,
+          (hit) => {
+            if (hit === 'player') {
+              // Player was hit
+              setScore(prev => Math.max(0, prev - 5));
+              if (!muted) soundManager.playSFX('mud-hit');
+            } else {
+              // Opponent was hit
+              setScore(prev => prev + 10);
+              if (!muted) soundManager.playSFX('mud-hit');
+            }
+          }
+        );
+        
+        updateOpponent();
+      }, 1000 / 60); // 60 FPS
+    };
+
+    const endGame = () => {
+      setGameStatus('ended');
+      clearInterval(gameLoop!);
+      clearInterval(gameTimer!);
+      // Submit final score
+      onComplete(score);
+    };
+
+    // Start game when component mounts
+    startCountdown();
+
+    return () => {
+      // Cleanup timers
+      if (gameLoop) clearInterval(gameLoop);
+      if (countdownTimer) clearInterval(countdownTimer);
+      if (gameTimer) clearInterval(gameTimer);
+    };
+  }, [muted, onComplete, updateMudballs, updateOpponent, resetMudballs, score]);
+
+  // Handle player movement and mud throwing
+  const handlePlayerMove = useCallback((x: number, y: number) => {
+    if (gameStatus === 'playing') {
+      playerPosition.current = { x, y };
+    }
+  }, [gameStatus]);
+
+  const handlePlayerThrow = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (gameStatus === 'playing') {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      throwMudball('player', playerPosition.current.x, playerPosition.current.y, x, y);
+      if (!muted) soundManager.playSFX('mud-throw');
+    }
+  }, [gameStatus, muted, throwMudball]);
+
+  const toggleMute = useCallback(() => {
+    setMuted(prev => !prev);
+  }, []);
 
   return (
-    <MinigameContainer
-      title="Mud Fling Challenge"
-      instructions="Click mud balls to select them, then click on the game area to throw! Hit your opponents while avoiding their throws."
-      onComplete={() => onComplete(team1Score > team2Score)}
-      onExit={handleExit}
-    >
-      <div className="flex flex-col h-full">
-        <div className="mb-4">
-          <MudFlingControls 
-            timeRemaining={timeRemaining}
-            team1Score={team1Score}
-            team2Score={team2Score}
-            selectedBall={selectedMudBall}
-          />
+    <div className="mud-fling-game flex flex-col items-center">
+      <div className="relative mb-4 flex justify-between w-full max-w-3xl px-4">
+        <div>
+          <span className="text-white font-bold">Score: {score}</span>
+          <span className="ml-4 text-white font-bold">Time: {timeLeft}s</span>
         </div>
-        
-        <div className="flex-grow relative overflow-hidden">
-          <MudFlingArena 
-            onAreaClick={handleAreaClick} 
-            onKeyDown={handleKeyDown} 
-            characters={characterPositions}
-            mudBalls={mudBalls}
-            playerCharacter={playerCharacter}
-          />
-          
-          <MudFlingFountain 
-            fountainIntensity={fountainIntensity} 
-          />
-        </div>
+        <SoundToggle muted={muted} toggleMute={toggleMute} />
       </div>
-    </MinigameContainer>
+
+      {gameStatus === 'countdown' && (
+        <GameStatusMessage message={`Game starting in ${countdown}...`} />
+      )}
+      
+      {gameStatus === 'ended' && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-30 bg-black bg-opacity-70">
+          <h2 className="text-white text-2xl mb-4">Game Over!</h2>
+          <p className="text-white mb-4">Final Score: {score}</p>
+          <div className="flex space-x-4">
+            <Button onClick={() => onComplete(score)}>Continue</Button>
+            <Button variant="outline" onClick={onExit}>Exit</Button>
+          </div>
+        </div>
+      )}
+
+      <MudFlingArena 
+        playerPosition={playerPosition.current}
+        opponentPosition={opponentPosition.current}
+        playerMudballs={playerMudballs}
+        opponentMudballs={opponentMudballs}
+        onPlayerMove={handlePlayerMove}
+        onArenaClick={handlePlayerThrow}
+      />
+
+      <MudFlingControls />
+    </div>
   );
 };
 

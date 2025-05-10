@@ -139,8 +139,9 @@ class AssetManager {
         return;
       }
 
-      // Fix path if it's a minigame path with wrong casing
-      const fixedPath = this.fixMinigamePath(src);
+      // We only need to handle path with typo for location-icons.png and
+      // fix path capitalization issues
+      const fixedPath = this.fixPath(src);
 
       // Load new image
       const img = new Image();
@@ -195,26 +196,20 @@ class AssetManager {
   }
 
   /**
-   * Fix paths with wrong casing (common issue with minigame paths)
+   * Fix paths with capitalization issues
    */
-  private fixMinigamePath(src: string): string {
-    // Handle common path issues
-    if (src.includes('/minigrames/')) {
-      // Fix the incorrect path folder name
-      return src.replace('/minigrames/', '/minigames/');
-    }
-    
-    if (src.includes('/minigames/spring/bloomwithAView/')) {
-      // Fix the incorrect folder capitalization
-      return src.replace('/minigames/spring/bloomwithAView/', '/minigames/spring/bloomWithAView/');
-    }
-    
+  private fixPath(src: string): string {
     // Fix locaton-icons typo if it exists
     if (src.includes('/locaton-icons.png')) {
       return src.replace('/locaton-icons.png', '/location-icons.png');
     }
     
-    // Handle specific files that might have different names in public vs reference
+    // Fix BloomWithAView capitalization
+    if (src.includes('/spring/bloomwithAView/')) {
+      return src.replace('/spring/bloomwithAView/', '/spring/bloomWithAView/');
+    }
+    
+    // Handle specific files that might have different names
     if (src.includes('/splashEffects_victoryEffect.png')) {
       return src.replace('/splashEffects_victoryEffect.png', '/splashVictory.png');
     }

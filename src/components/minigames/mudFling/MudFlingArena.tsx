@@ -1,79 +1,88 @@
-import React, { useRef, useEffect } from 'react';
+
+import React, { useRef } from 'react';
+import { MudBall } from './useMudBalls';
 import MudCharacter from './MudCharacter';
 import MudBallSprite from './MudBallSprite';
-import { Character, MudBall } from '@/hooks/useMudFlingGame';
+import MudFlingFountain from './MudFlingFountain';
 
 interface MudFlingArenaProps {
-  onAreaClick: (x: number, y: number) => void;
-  onKeyDown: (event: React.KeyboardEvent) => void;
-  characters: {
-    id: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    isMuddy: boolean;
-  }[];
-  mudBalls: MudBall[];
-  playerCharacter: {
-    id: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    speed: number;
-    energy: number;
-    isMuddy: boolean;
-    isAtFountain: boolean;
-  };
+  playerPosition: { x: number, y: number };
+  opponentPosition: { x: number, y: number };
+  playerMudballs: MudBall[];
+  opponentMudballs: MudBall[];
+  onPlayerMove: (x: number, y: number) => void;
+  onArenaClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
+const ARENA_WIDTH = 600;
+const ARENA_HEIGHT = 450;
+
 const MudFlingArena: React.FC<MudFlingArenaProps> = ({
-  onAreaClick,
-  onKeyDown,
-  characters,
-  mudBalls,
-  playerCharacter
+  playerPosition,
+  opponentPosition,
+  playerMudballs,
+  opponentMudballs,
+  onPlayerMove,
+  onArenaClick
 }) => {
   const arenaRef = useRef<HTMLDivElement>(null);
-
-  // Focus the arena on mount
-  useEffect(() => {
-    if (arenaRef.current) {
-      arenaRef.current.focus();
-    }
-  }, []);
+  
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!arenaRef.current) return;
+    
+    const rect = arenaRef.current.getBoundingClientRect();
+    const x = Math.max(50, Math.min(ARENA_WIDTH / 2 - 50, e.clientX - rect.left));
+    const y = Math.max(50, Math.min(ARENA_HEIGHT - 50, e.clientY - rect.top));
+    
+    onPlayerMove(x, y);
+  };
 
   return (
-    <div
+    <div 
       ref={arenaRef}
-      className="relative w-full h-full bg-green-800 outline-none"
-      tabIndex={0}
-      onClick={(e) => onAreaClick(e.clientX, e.clientY)}
-      onKeyDown={onKeyDown}
+      className="relative w-[600px] h-[450px] bg-cover bg-center border-4 border-brown-600 overflow-hidden"
+      style={{ backgroundImage: "url('/assets/minigames/spring/mudFling/mud-arena.png')" }}
+      onMouseMove={handleMouseMove}
+      onClick={onArenaClick}
     >
-      {/* Mud Characters */}
-      {characters.map((character) => (
-        <MudCharacter
-          key={character.id}
-          id={character.id}
-          x={character.x}
-          y={character.y}
-          width={60}
-          height={90}
-          isPlayer={character.id === playerCharacter.id}
-          isMuddy={character.isMuddy}
+      {/* Fountain in the center */}
+      <MudFlingFountain />
+      
+      {/* Player Character */}
+      <MudCharacter 
+        x={playerPosition.x}
+        y={playerPosition.y}
+        isPlayer={true}
+      />
+      
+      {/* Opponent Character */}
+      <MudCharacter 
+        x={opponentPosition.x}
+        y={opponentPosition.y}
+        isPlayer={false}
+      />
+      
+      {/* Player's Mudballs */}
+      {playerMudballs.map((ball, index) => (
+        <MudBallSprite
+          key={`player-ball-${index}`}
+          x={ball.x}
+          y={ball.y}
+          type="player"
+          state={ball.state}
+          angle={ball.angle || 0}
         />
       ))}
       
-      {/* Mud Balls */}
-      {mudBalls.map((mudBall) => (
+      {/* Opponent's Mudballs */}
+      {opponentMudballs.map((ball, index) => (
         <MudBallSprite
-          key={mudBall.id}
-          x={mudBall.position.x}
-          y={mudBall.position.y}
-          size={15}
-          direction={mudBall.direction}
+          key={`opponent-ball-${index}`}
+          x={ball.x}
+          y={ball.y}
+          type="opponent"
+          state={ball.state}
+          angle={ball.angle || 0}
         />
       ))}
     </div>

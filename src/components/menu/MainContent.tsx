@@ -30,16 +30,16 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, o
       {/* Notification system */}
       <Toaster position="top-right" richColors />
       
-      {/* Main Content - Now positioned on the right */}
-      <div className="flex flex-col md:flex-row w-full max-w-7xl px-4 gap-8 justify-end">
-        <div className="w-full md:w-1/2 flex flex-col items-end">
+      {/* Main Content - Positioned on the right */}
+      <div className="flex flex-col md:flex-row w-full max-w-7xl px-4 justify-end">
+        <div className="w-full md:w-1/3 flex flex-col items-end pr-8">
           {/* Game Title */}
           <div className="flex flex-col items-end mb-6 animate-fade-in">
             <GameTitle />
           </div>
           
-          {/* Character Chibis */}
-          <div className={`w-full flex justify-end items-end mb-8 md:mb-0 mt-4 md:mt-0 transition-all duration-700 ${charactersLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {/* Character Chibis in 2x2 Grid */}
+          <div className={`w-full flex justify-end items-end mb-8 md:mb-8 mt-4 md:mt-0 transition-all duration-700 ${charactersLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <CharacterChibisPreview
               characterChibis={characterChibis}
               loadingComplete={loadingComplete}

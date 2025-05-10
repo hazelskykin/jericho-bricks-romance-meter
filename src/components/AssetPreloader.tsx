@@ -1,12 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
-import { assetManager } from '../utils/assetManager';
-import charactersData from '../data/characters';
-import { getCharacterExpressions } from '../data/characterExpressions';
-import backgrounds from '../data/backgrounds';
-import { minigameAssets } from '../data/minigameAssets';
-import { toast } from 'sonner';
-import { CharacterExpression } from '@/types/expressions';
+import { assetManager } from '@/utils/assetManager';
+import characterExpressions from '@/data/characterExpressions';
+import backgrounds from '@/data/backgrounds';
+import minigameAssets from '@/data/minigameAssets';
 
 interface AssetPreloaderProps {
   onComplete: () => void;
@@ -14,201 +11,122 @@ interface AssetPreloaderProps {
 }
 
 const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnly = false }) => {
-  const [backgroundsLoaded, setBackgroundsLoaded] = useState(false);
-  const [charactersLoaded, setCharactersLoaded] = useState(false);
-  const [minigameAssetsLoaded, setMinigameAssetsLoaded] = useState(false);
-  const [errorCount, setErrorCount] = useState(0);
-  const [totalAssets, setTotalAssets] = useState(0);
-  const [assetsLoaded, setAssetsLoaded] = useState(0);
+  const [loadingCharacters, setLoadingCharacters] = useState(true);
+  const [loadingBackgrounds, setLoadingBackgrounds] = useState(true);
+  const [loadingMinigameAssets, setLoadingMinigameAssets] = useState(true);
   
-  const updateProgress = (loaded: number) => {
-    setAssetsLoaded(loaded);
-  };
+  const [loadedCharacters, setLoadedCharacters] = useState(0);
+  const [loadedBackgrounds, setLoadedBackgrounds] = useState(0);
+  const [loadedMinigameAssets, setLoadedMinigameAssets] = useState(0);
+  
+  const [characterErrors, setCharacterErrors] = useState(0);
+  const [backgroundErrors, setBackgroundErrors] = useState(0);
+  const [minigameErrors, setMinigameErrors] = useState(0);
+  
+  const [totalCharacters, setTotalCharacters] = useState(0);
+  const [totalBackgrounds, setTotalBackgrounds] = useState(0);
+  const [totalMinigameAssets, setTotalMinigameAssets] = useState(0);
+
+  // Extract list of character expression image paths
+  const characterPaths = Object.values(characterExpressions)
+    .filter(expr => priorityOnly ? expr.priority : true)
+    .map(expr => expr.image);
+  
+  // Extract list of background image paths
+  const backgroundPaths = Object.values(backgrounds)
+    .filter(bg => priorityOnly ? bg.priority : true)
+    .map(bg => bg.image);
+  
+  // Extract minigame asset paths
+  const minigameAssetPaths = Object.values(minigameAssets)
+    .filter(asset => priorityOnly ? asset.priority : true)
+    .map(asset => asset.src);
 
   useEffect(() => {
-    let total = 0;
-    if (!priorityOnly) {
-      total += Object.keys(backgrounds).length;
-      total += Object.keys(charactersData).length * 5; // Approximate expressions per character
-      
-      // Count only required minigame assets for more accurate progress
-      total += minigameAssets.filter(asset => asset.required).length;
-    } else {
-      // Count only priority assets
-      total = 5; // Example: Adjust based on actual priority assets
-    }
-    setTotalAssets(total);
-  }, [priorityOnly]);
-
-  useEffect(() => {
-    const loadCharacterImages = async () => {
-      console.log('Loading character images...');
-      
-      const charactersToLoad = Object.values(charactersData);
-      let loaded = 0;
-      let errored = 0;
-      
-      for (const character of charactersToLoad) {
-        try {
-          // Get all expressions for this character
-          const characterExpressions = getCharacterExpressions(character.id);
-          
-          // Load each expression
-          for (const expression of characterExpressions) {
-            const expressionSrc = expression.image;
-            
-            // Type check for string path
-            if (typeof expressionSrc === 'string') {
-              await assetManager.preloadAssets([expressionSrc], (loadedCount) => {
-                // Update progress internally
-              });
-              loaded++;
-              updateProgress(loaded + errorCount);
-            }
-          }
-        } catch (err) {
-          console.error(`Error loading character ${character.id}:`, err);
-          errored++;
-          setErrorCount(prev => prev + 1);
-        }
-      }
-      
-      console.log(`Loaded ${loaded} character images, ${errored} errors`);
-      setCharactersLoaded(true);
-    };
+    // Store total counts
+    setTotalCharacters(characterPaths.length);
+    setTotalBackgrounds(backgroundPaths.length);
+    setTotalMinigameAssets(minigameAssetPaths.length);
     
-    const loadBackgroundImages = async () => {
-      console.log('Loading background images...');
-      
-      const backgroundKeys = Object.keys(backgrounds);
-      let loaded = 0;
-      let errored = 0;
-      
-      try {
-        const backgroundPaths = backgroundKeys.map(key => backgrounds[key].image);
-        await assetManager.preloadAssets(backgroundPaths, (loadedCount) => {
-          // Update progress internally
-        });
-        loaded = backgroundPaths.length;
-        updateProgress(prevLoaded => prevLoaded + loaded);
-      } catch (err) {
-        console.error(`Error loading backgrounds:`, err);
-        errored++;
-        setErrorCount(prev => prev + 1);
-      }
-      
-      console.log(`Loaded ${loaded} background images, ${errored} errors`);
-      setBackgroundsLoaded(true);
-    };
-    
-    const loadMinigameAssets = async () => {
-      console.log('Loading minigame assets...');
-      
-      // Only load required assets for a better user experience
-      const requiredAssets = minigameAssets.filter(asset => asset.required);
-      let loaded = 0;
-      let errored = 0;
-      
-      try {
-        const assetPaths = requiredAssets.map(asset => asset.path);
-        await assetManager.preloadAssets(assetPaths, (loadedCount) => {
-          loaded = loadedCount;
-          updateProgress(prevLoaded => prevLoaded + loaded);
-        });
-      } catch (err) {
-        console.error(`Error loading minigame assets:`, err);
-        errored++;
-        setErrorCount(prev => prev + 1);
-      }
-      
-      console.log(`Loaded ${loaded} minigame assets, ${errored} errors`);
-      setMinigameAssetsLoaded(true);
-    };
-
-    const loadPriorityAssets = async () => {
-      console.log('Loading priority assets...');
-      try {
-        // Load specific priority assets
-        await assetManager.preloadAssets([
-          '/assets/ui/jericho-logo.png',
-          '/assets/backgrounds/stonewich-cityscape.png',
-          '/assets/characters/etta/etta-neutral.png',
-          '/assets/characters/maven/maven-neutral.png',
-          '/assets/characters/navarre/navarre-happy.png'
-        ], (loadedCount) => {
-          updateProgress(loadedCount);
-        });
-        
-        console.log('Priority assets loaded successfully.');
-      } catch (error) {
-        console.error('Error loading priority assets:', error);
-        setErrorCount(prev => prev + 1);
-      }
-      
-      // Mark priority assets as loaded regardless of outcome
-      setBackgroundsLoaded(true);
-      setCharactersLoaded(true);
-      setMinigameAssetsLoaded(true);
-    };
-    
-    // Load assets based on priority
-    if (priorityOnly) {
-      loadPriorityAssets();
-    } else {
-      // Load all assets
-      Promise.all([
-        loadCharacterImages(),
-        loadBackgroundImages(),
-        loadMinigameAssets()
-      ]).then(() => {
-        console.log('All assets loaded.');
+    // Load character expressions
+    if (characterPaths.length > 0) {
+      assetManager.preloadAssets(characterPaths, (loaded, total) => {
+        // Use a function to set the state to ensure we're updating based on the latest state
+        setLoadedCharacters(loaded);
+      }).then(() => {
+        const stats = assetManager.getStats();
+        const errors = characterPaths.filter(path => assetManager.didAssetFail(path)).length;
+        setCharacterErrors(errors);
+        console.log(`Loaded ${characterPaths.length - errors} character expressions, ${errors} errors`);
+        setLoadingCharacters(false);
       });
+    } else {
+      setLoadingCharacters(false);
     }
-  }, [priorityOnly]);
+    
+    // Load backgrounds
+    if (backgroundPaths.length > 0) {
+      assetManager.preloadAssets(backgroundPaths, (loaded, total) => {
+        // Use a function to set the state to ensure we're updating based on the latest state
+        setLoadedBackgrounds(loaded);
+      }).then(() => {
+        const errors = backgroundPaths.filter(path => assetManager.didAssetFail(path)).length;
+        setBackgroundErrors(errors);
+        console.log(`Loaded ${backgroundPaths.length - errors} background images, ${errors} errors`);
+        setLoadingBackgrounds(false);
+      });
+    } else {
+      setLoadingBackgrounds(false);
+    }
+    
+    // Load minigame assets
+    if (minigameAssetPaths.length > 0) {
+      assetManager.preloadAssets(minigameAssetPaths, (loaded, total) => {
+        // Use a function to set the state to ensure we're updating based on the latest state
+        setLoadedMinigameAssets(loaded);
+      }).then(() => {
+        const errors = minigameAssetPaths.filter(path => assetManager.didAssetFail(path)).length;
+        setMinigameErrors(errors);
+        console.log(`Loaded ${minigameAssetPaths.length - errors} minigame assets, ${errors} errors`);
+        setLoadingMinigameAssets(false);
+      });
+    } else {
+      setLoadingMinigameAssets(false);
+    }
+  }, [characterPaths, backgroundPaths, minigameAssetPaths]);
 
+  // Check if all assets are loaded
   useEffect(() => {
-    // Check if all required assets are loaded
-    if (backgroundsLoaded && charactersLoaded && minigameAssetsLoaded) {
-      if (errorCount > 0) {
-        // Only show an error toast if there are a significant number of errors
-        if (errorCount > 5) {
-          toast.error(`Some assets failed to load (${errorCount} errors). Fallbacks will be used.`, {
-            duration: 5000
-          });
-        } else {
-          // For fewer errors, just log them
-          console.warn(`${errorCount} assets failed to load. Fallbacks will be used.`);
-        }
-      }
-      
-      // Delay the onComplete callback to ensure assets are fully ready
-      setTimeout(() => {
-        onComplete();
-      }, 500);
+    if (!loadingCharacters && !loadingBackgrounds && !loadingMinigameAssets) {
+      console.log('All assets loaded.');
+      onComplete();
     }
-  }, [backgroundsLoaded, charactersLoaded, minigameAssetsLoaded, errorCount, onComplete]);
+  }, [loadingCharacters, loadingBackgrounds, loadingMinigameAssets, onComplete]);
 
-  const progress = totalAssets > 0 ? (assetsLoaded / totalAssets) * 100 : 0;
+  // Calculate overall progress
+  const totalAssets = totalCharacters + totalBackgrounds + totalMinigameAssets;
+  const loadedAssets = loadedCharacters + loadedBackgrounds + loadedMinigameAssets;
+  const progress = totalAssets > 0 ? Math.min(100, Math.round((loadedAssets / totalAssets) * 100)) : 100;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-dark-purple">
-      <div className="text-white text-lg mb-4">
-        Loading Game Assets...
-      </div>
-      <div className="w-64 h-4 bg-gray-300 rounded-full">
-        <div
-          className="h-full bg-purple-600 rounded-full transition-all duration-500"
-          style={{ width: `${Math.min(progress, 100)}%` }}
-        ></div>
-      </div>
-      <div className="text-white text-sm mt-2">
-        {assetsLoaded} / {totalAssets} Assets Loaded ({Math.min(progress, 100).toFixed(0)}%)
-      </div>
-      {errorCount > 0 && (
-        <div className="text-amber-400 text-sm mt-2">
-          {errorCount} assets couldn't be loaded. Fallbacks will be used where possible.
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#1A1F2C] z-50 text-white">
+      <div className="w-64 mb-8">
+        <div className="text-center mb-2 text-lg">Loading Game Assets</div>
+        <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
         </div>
-      )}
+        <div className="text-center mt-2 text-sm text-gray-300">{progress}%</div>
+      </div>
+      
+      <div className="text-xs text-gray-400 max-w-md text-center px-4">
+        {loadingCharacters && `Loading character expressions (${loadedCharacters}/${totalCharacters})...`}
+        {loadingBackgrounds && `Loading backgrounds (${loadedBackgrounds}/${totalBackgrounds})...`}
+        {loadingMinigameAssets && `Loading minigame assets (${loadedMinigameAssets}/${totalMinigameAssets})...`}
+        {!loadingCharacters && !loadingBackgrounds && !loadingMinigameAssets && 'All assets loaded!'}
+      </div>
     </div>
   );
 };

@@ -32,8 +32,11 @@ const Game: React.FC = () => {
   
   // Debug logging
   useEffect(() => {
-    console.log('Game component rendered');
-  }, []);
+    console.log('Game component rendered, current scene:', currentSceneId);
+    if (!currentScene) {
+      console.error('Current scene is undefined for sceneId:', currentSceneId);
+    }
+  }, [currentSceneId, currentScene]);
 
   // Initialize sound system when component mounts
   useEffect(() => {
@@ -50,21 +53,30 @@ const Game: React.FC = () => {
 
   // Handle game start
   const handleStartGame = () => {
-    try {
-      // Try to play UI click sound
-      soundManager.playSFX('ui-click');
-    } catch (error) {
-      console.warn('Could not play sound effect:', error);
-    }
-    
-    setShowMainMenu(false);
+    console.log('Starting new game');
     
     try {
-      // First try intro (which is the mapped version of prologue-intro)
-      transitionToScene('intro');
+      // Try to play UI click sound, but don't block if it fails
+      try {
+        soundManager.playSFX('ui-click');
+      } catch (error) {
+        console.warn('Could not play sound effect:', error);
+      }
+      
+      setShowMainMenu(false);
+      
+      // First try with explicit prologue-intro scene id
+      transitionToScene('prologue-intro');
     } catch (error) {
       console.error('Failed to transition to intro scene:', error);
       toast.error('Failed to start game. Please try again.');
+      
+      // Fallback to direct 'intro' if prologue-intro fails
+      try {
+        transitionToScene('intro');
+      } catch (innerError) {
+        console.error('Fallback transition also failed:', innerError);
+      }
     }
   };
 
@@ -104,7 +116,7 @@ const Game: React.FC = () => {
         <MainMenu 
           onNewGame={handleStartGame} 
           loadingComplete={loadingComplete}
-          onAbout={() => {}}
+          onAbout={() => transitionToScene('about')}
         />
       ) : (
         <GameInterface />
