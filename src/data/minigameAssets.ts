@@ -376,6 +376,36 @@ export const minigameAssets: MinigameAsset[] = [
   
   // Summer - Spoken Word
   {
+    id: 'spokenWord-mastered-ding',
+    name: 'Mastery Ding',
+    path: '/assets/audio/sfx/spokenWord-mastered-ding.mp3',
+    description: 'Bell sound played when player earns a mastery badge',
+    season: 'summer',
+    minigame: 'spokenWord',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'spokenWord-line-select',
+    name: 'Line Selection Sound',
+    path: '/assets/audio/sfx/spokenWord-line-select.mp3',
+    description: 'Flip sound when selecting a stanza line',
+    season: 'summer',
+    minigame: 'spokenWord',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'spokenWord-typing',
+    name: 'Typing Reveal Sound',
+    path: '/assets/audio/sfx/spokenWord-typing.mp3',
+    description: 'Typing sound used when the completed poem is displayed',
+    season: 'summer',
+    minigame: 'spokenWord',
+    type: 'audio',
+    required: false
+  },
+  {
     id: 'spoken-word-paper',
     name: 'Paper Background',
     path: '/assets/minigames/summer/spokenWord/paper-background.png',
@@ -390,6 +420,16 @@ export const minigameAssets: MinigameAsset[] = [
     name: 'Theme Icons',
     path: '/assets/minigames/summer/spokenWord/theme-icons.png',
     description: 'Icons representing different poem themes',
+    season: 'summer',
+    minigame: 'spokenWord',
+    type: 'sprite',
+    required: true
+  },
+  {
+    id: 'spoken-word-mastery-icons',
+    name: 'Mastery Icons',
+    path: '/assets/minigames/summer/spokenWord/mastery-icons.png',
+    description: 'Icon badges representing different mastery levels achieved',
     season: 'summer',
     minigame: 'spokenWord',
     type: 'sprite',
