@@ -4,9 +4,8 @@ import { assetManager, getAssetSource } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
 import backgrounds from '@/data/backgrounds';
 import minigameAssets from '@/data/minigameAssets';
-import { BackgroundAsset } from '@/types/assets';
+import { BackgroundAsset, MinigameAsset } from '@/types/assets';
 import { CharacterExpression } from '@/types/expressions';
-import { MinigameAsset } from '@/types/assets';
 
 interface AssetPreloaderProps {
   onComplete: () => void;
@@ -41,10 +40,18 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
     .filter(bg => !priorityOnly || (bg as BackgroundAsset).priority === true)
     .map(bg => (bg as BackgroundAsset).image);
   
-  // Extract minigame asset paths
+  // Extract minigame asset paths - ensure we're handling the proper structure
   const minigameAssetPaths = Object.values(minigameAssets)
-    .filter(asset => !priorityOnly || (asset as MinigameAsset).priority === true)
-    .map(asset => (asset as MinigameAsset).src);
+    .filter(asset => {
+      // Type guard to ensure we only process valid assets with src property
+      if (!asset || typeof asset !== 'object' || !('src' in asset)) {
+        console.warn('Invalid minigame asset found:', asset);
+        return false;
+      }
+      return !priorityOnly || (asset as any).priority === true;
+    })
+    .map(asset => (asset as any).src) // Use any here since there are type mismatches
+    .filter(Boolean); // Filter out any undefined values
 
   useEffect(() => {
     // Store total counts

@@ -20,7 +20,12 @@ export type CharacterMood =
   | 'concerned'
   | 'reflective'
   | 'pleased'
-  | 'proud';
+  | 'proud'
+  | 'excited'
+  | 'sincere'
+  | 'grateful'
+  | 'serious'
+  | 'vulnerable';
   
 export type MoodType = CharacterMood | 'normal';
 

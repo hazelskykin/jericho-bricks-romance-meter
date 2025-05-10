@@ -6,7 +6,7 @@ class SoundManager {
   private music: Record<string, HTMLAudioElement> = {};
   private muted: boolean = false;
   private musicMuted: boolean = false;
-  private loadErrors: Record<string, boolean> = {};
+  private loadErrors: Record<string, number> = {}; // Changed from boolean to number
   private audioAvailable: boolean = true;
   private errorCount: number = 0;
   private maxErrorRetries: number = 2; // Limit retries to prevent infinite loops
@@ -96,7 +96,7 @@ class SoundManager {
     priorityEffects.forEach(effect => {
       try {
         // Skip if already failed multiple times to avoid infinite loops
-        if (this.loadErrors[effect.id] >= this.maxErrorRetries) {
+        if ((this.loadErrors[effect.id] || 0) >= this.maxErrorRetries) {
           console.warn(`Skipping sound ${effect.id} - exceeded max retry attempts`);
           this.replaceSoundWithSilence(effect.id, effect.category === 'music');
           return;
@@ -115,7 +115,7 @@ class SoundManager {
           this.errorCount++;
           
           // Try fallback if provided and hasn't exceeded retry limit
-          if (effect.fallbackSrc && this.loadErrors[effect.id] < this.maxErrorRetries) {
+          if (effect.fallbackSrc && (this.loadErrors[effect.id] || 0) < this.maxErrorRetries) {
             console.log(`Trying fallback sound: ${effect.fallbackSrc}`);
             audio.src = effect.fallbackSrc;
           } else {
@@ -145,7 +145,7 @@ class SoundManager {
         audio.src = fixedSrc;
         
         // Only try to preload if we haven't exceeded retry limit
-        if (!this.loadErrors[effect.id] || this.loadErrors[effect.id] < this.maxErrorRetries) {
+        if (!this.loadErrors[effect.id] || (this.loadErrors[effect.id] || 0) < this.maxErrorRetries) {
           audio.preload = 'auto'; // Explicitly set preload
           
           // Use a timeout to prevent hanging
@@ -186,7 +186,7 @@ class SoundManager {
       
       batch.forEach(effect => {
         // Skip if already failed
-        if (this.loadErrors[effect.id] >= this.maxErrorRetries) return;
+        if ((this.loadErrors[effect.id] || 0) >= this.maxErrorRetries) return;
         
         try {
           const audio = new Audio();

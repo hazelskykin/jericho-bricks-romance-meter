@@ -1,45 +1,31 @@
 
-export interface Position {
-  x: number;
-  y: number;
-}
-
-export interface MudCharacterPosition {
-  x: number;
-  y: number;
-}
-
-export interface MudBall {
+export interface MudballData {
   id: string;
-  position: Position;
-  team: 'team1' | 'team2';
-  isFlying: boolean;
-  targetPosition?: Position;
-  velocity?: {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
+  targetX: number;
+  targetY: number;
+  rotation: number;
+  speed: number;
+  shooter: 'player' | 'opponent';
+  state: 'flying' | 'splashing' | 'completed';
+  splashStartTime?: number;
+}
+
+export interface AISettings {
+  accuracy: number; // 0-1, how accurate the AI is
+  reactionTime: number; // ms, how quickly the AI responds
+  aggressiveness: number; // 0-1, how often the AI throws
+}
+
+export interface MudFlingGameState {
+  playerCharacter: string;
+  opponentCharacter: string;
+  score: {
+    player: number;
+    opponent: number;
   };
-  size: number;
-  flying: boolean;
-  isThrown?: boolean;
-  isHeld?: boolean;
-  
-  // For compatibility with older code
-  x?: number;
-  y?: number;
-  targetX?: number;
-  targetY?: number;
-  speed?: number;
-  owner?: 'player' | 'opponent';
-  timeLeft?: number;
-  angle?: number;
-  state?: 'flying' | 'splashed';
-}
-
-export interface Character {
-  id: string;
-  position: Position;
-  team: 'team1' | 'team2';
-  isHit: boolean;
-  recoveryTime: number;
+  gameTime: number; // Total time in seconds
+  timeRemaining: number; // Time left in seconds
+  gameStatus: 'intro' | 'playing' | 'paused' | 'completed';
 }

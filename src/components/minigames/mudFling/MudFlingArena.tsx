@@ -1,94 +1,119 @@
 
-import React, { useRef } from 'react';
-import { MudBall } from './useMudBalls';
+import React, { useEffect, useState, useRef } from 'react';
 import MudCharacter from './MudCharacter';
 import MudBallSprite from './MudBallSprite';
+import { CharacterId } from '@/types/game';
+import { assetManager } from '@/utils/assetManager';
 import MudFlingFountain from './MudFlingFountain';
+import { soundManager } from '@/utils/soundEffects';
+import { MudballData } from './types';
 
 interface MudFlingArenaProps {
-  playerPosition: { x: number, y: number };
-  opponentPosition: { x: number, y: number };
-  playerMudballs: MudBall[];
-  opponentMudballs: MudBall[];
-  onPlayerMove: (x: number, y: number) => void;
-  onArenaClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  playerCharacter: CharacterId;
+  opponentCharacter: CharacterId;
+  score: { player: number; opponent: number };
+  onThrow: () => void;
+  onHit: (target: 'player' | 'opponent') => void;
+  mudballs: MudballData[];
 }
 
-const ARENA_WIDTH = 600;
-const ARENA_HEIGHT = 450;
-
 const MudFlingArena: React.FC<MudFlingArenaProps> = ({
-  playerPosition,
-  opponentPosition,
-  playerMudballs,
-  opponentMudballs,
-  onPlayerMove,
-  onArenaClick
+  playerCharacter,
+  opponentCharacter,
+  score,
+  onThrow,
+  onHit,
+  mudballs
 }) => {
   const arenaRef = useRef<HTMLDivElement>(null);
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!arenaRef.current) return;
+  const [arenaSize, setArenaSize] = useState({ width: 800, height: 600 });
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
+
+  useEffect(() => {
+    // Update arena size on resize
+    const updateSize = () => {
+      if (arenaRef.current) {
+        const { width, height } = arenaRef.current.getBoundingClientRect();
+        setArenaSize({ width, height });
+      }
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
     
-    const rect = arenaRef.current.getBoundingClientRect();
-    const x = Math.max(50, Math.min(ARENA_WIDTH / 2 - 50, e.clientX - rect.left));
-    const y = Math.max(50, Math.min(ARENA_HEIGHT - 50, e.clientY - rect.top));
-    
-    onPlayerMove(x, y);
-  };
+    // Preload the arena background
+    const img = new Image();
+    img.onload = () => setBackgroundLoaded(true);
+    img.onerror = () => {
+      console.error("Failed to load mud-arena.png");
+      setBackgroundLoaded(true); // Continue anyway to prevent blocking
+    };
+    img.src = '/assets/minigames/spring/mudFling/mud-arena.png';
+
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
+  // Calculate score display position
+  const playerScore = score.player.toString().padStart(2, '0');
+  const opponentScore = score.opponent.toString().padStart(2, '0');
 
   return (
     <div 
-      ref={arenaRef}
-      className="relative w-[600px] h-[450px] bg-cover bg-center border-4 border-brown-600 overflow-hidden"
-      style={{ backgroundImage: "url('/assets/minigames/spring/mudFling/mud-arena.png')" }}
-      onMouseMove={handleMouseMove}
-      onClick={onArenaClick}
+      ref={arenaRef} 
+      className="relative w-full h-full overflow-hidden rounded-lg shadow-lg"
+      style={{
+        backgroundImage: "url('/assets/minigames/spring/mudFling/mud-arena.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: backgroundLoaded ? 1 : 0.5,
+        transition: 'opacity 0.5s ease-in-out'
+      }}
     >
-      {/* Fountain in the center */}
-      <MudFlingFountain fountainIntensity="medium" />
+      {/* Score display */}
+      <div className="absolute top-4 left-0 right-0 flex justify-center z-10">
+        <div className="bg-black/70 px-6 py-2 rounded-full flex gap-6 items-center">
+          <div className="text-2xl font-bold text-blue-300">{playerScore}</div>
+          <div className="text-lg font-medium text-gray-300">vs</div>
+          <div className="text-2xl font-bold text-orange-300">{opponentScore}</div>
+        </div>
+      </div>
       
-      {/* Player Character */}
-      <MudCharacter 
-        id="maven"
-        x={playerPosition.x}
-        y={playerPosition.y}
-        width={80}
-        height={100}
-        isPlayer={true}
-        isMuddy={false}
-      />
+      {/* Mud fountain in center */}
+      <MudFlingFountain />
       
-      {/* Opponent Character */}
-      <MudCharacter 
-        id="navarre"
-        x={opponentPosition.x}
-        y={opponentPosition.y}
-        width={80}
-        height={100}
-        isPlayer={false}
-        isMuddy={false}
-      />
-      
-      {/* Player's Mudballs */}
-      {playerMudballs.map((ball, index) => (
-        <MudBallSprite
-          key={`player-ball-${index}`}
-          x={ball.x}
-          y={ball.y}
-          state={ball.state}
-          angle={ball.angle || 0}
+      {/* Characters */}
+      <div className="absolute bottom-0 left-[5%]">
+        <MudCharacter 
+          characterId={playerCharacter} 
+          position="left"
+          onThrow={onThrow}
         />
-      ))}
+      </div>
+      <div className="absolute bottom-0 right-[5%]">
+        <MudCharacter 
+          characterId={opponentCharacter} 
+          position="right"
+        />
+      </div>
       
-      {/* Opponent's Mudballs */}
-      {opponentMudballs.map((ball, index) => (
-        <MudBallSprite
-          key={`opponent-ball-${index}`}
-          x={ball.x}
-          y={ball.y}
-          state={ball.state}
-          angle={ball.angle || 0}
+      {/* Render mudballs */}
+      {mudballs.map(mudball => (
+        <MudBallSprite 
+          key={mudball.id}
+          mudball={mudball}
+          arenaSize={arenaSize}
+          onHit={(target) => {
+            try {
+              if (target === 'opponent') {
+                soundManager.playSFX('mud-hit');
+              } else {
+                soundManager.playSFX('mud-hit');
+              }
+            } catch (e) {
+              console.warn('Could not play mud hit sound');
+            }
+            onHit(target);
+          }}
         />
       ))}
     </div>
