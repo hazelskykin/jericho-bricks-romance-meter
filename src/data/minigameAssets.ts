@@ -663,27 +663,159 @@ export const minigameAssets: MinigameAsset[] = [
     type: 'image',
     required: true
   },
+  // Crafter - Autumn Minigame
+{
+  id: 'crafter-hit-block',
+  name: 'Base Placement',
+  path: '/assets/audio/sfx/crafter-hit-block.mp3',
+  description: 'Sound played when the base material is placed on the workshop table',
+  season: 'autumn',
+  minigame: 'crafter',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'crafter-loop-gameplay',
+  name: 'Gameplay Music Loop',
+  path: '/assets/audio/music/crafter-loop-gameplay.mp3',
+  description: 'Background music loop for the Crafter minigame',
+  season: 'autumn',
+  minigame: 'crafter',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'crafter-finish-initials',
+  name: 'Finish with Initials',
+  path: '/assets/audio/sfx/crafter-finish-initials.mp3',
+  description: 'Sound used when adding a final monogram or initials to the crafted item',
+  season: 'autumn',
+  minigame: 'crafter',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'crafter-complete-fanfare',
+  name: 'Craft Complete Fanfare',
+  path: '/assets/audio/sfx/crafter-complete-fanfare.mp3',
+  description: 'Celebratory fanfare played when a craft is completed',
+  season: 'autumn',
+  minigame: 'crafter',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'crafter-decor-add',
+  name: 'Accent Decor Added',
+  path: '/assets/audio/sfx/crafter-decor-add.mp3',
+  description: 'Click sound used when adding decorative accents to the craft',
+  season: 'autumn',
+  minigame: 'crafter',
+  type: 'audio',
+  required: false
+},
+
   
   // Autumn - Memories Date
   {
-    id: 'memories-date-locations',
-    name: 'Date Locations',
-    path: '/assets/minigames/autumn/memoriesDate/locations.png',
-    description: 'Images of different date locations in the city',
+    id: 'memories-date-locations-boardwalk',
+    name: 'Date Locations Boardwalk',
+    path: '/assets/minigames/autumn/memoriesDate/boardwalk-backdrop.png',
+    description: 'Boadwalk as a date locations in the city',
     season: 'autumn',
     minigame: 'memoriesDate',
     type: 'sprite',
     required: true
   },
   {
-    id: 'memories-date-characters',
-    name: 'Character Poses',
-    path: '/assets/minigames/autumn/memoriesDate/character-poses.png',
-    description: 'Special poses for characters during the date minigame',
+    id: 'memories-date-locations-market',
+    name: 'Date Locations Market',
+    path: '/assets/minigames/autumn/memoriesDate/market-backdrop.png',
+    description: 'Market as a date locations in the city',
     season: 'autumn',
     minigame: 'memoriesDate',
     type: 'sprite',
     required: true
+  },
+  {
+    id: 'memories-date-locations-overlook',
+    name: 'Date Locations Overlook',
+    path: '/assets/minigames/autumn/memoriesDate/overlook-backdrop.png',
+    description: 'Overlook as a date locations in the city',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'sprite',
+    required: true
+  },
+  {
+    id: 'memories-date-stickers',
+    name: 'Photo Stickers',
+    path: '/assets/minigames/autumn/memoriesDate/stickers.png',
+    description: 'Stickers to add to photos taken during the date minigame',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'sprite',
+    required: true
+  },
+  {
+    id: 'memories-date-frames',
+    name: 'Photo Frames',
+    path: '/assets/minigames/autumn/memoriesDate/photo-frames.png',
+    description: 'Photo Frames to select from for photos taken during the date minigame',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'sprite',
+    required: true
+  },
+  {
+    id: 'memoriesDate-loop-gameplay',
+    name: 'Gameplay Music Loop',
+    path: '/assets/audio/music/memoriesDate-loop-gameplay.mp3',
+    description: 'Background music loop for the Memories Date minigame',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'memoriesDate-frame-select',
+    name: 'Frame Selection Click',
+    path: '/assets/audio/sfx/memoriesDate-frame-select.mp3',
+    description: 'Click sound for switching between photo frames or filters',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'memoriesDate-camera-click',
+    name: 'Camera Shutter',
+    path: '/assets/audio/sfx/memoriesDate-camera-click.mp3',
+    description: 'Sound of the camera taking a snapshot',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'memoriesDate-effect-twinkle',
+    name: 'Twinkle Effect',
+    path: '/assets/audio/sfx/memoriesDate-effect-twinkle.mp3',
+    description: 'Sparkle sound effect for magical or cute sticker overlays',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'memoriesDate-sticker-select',
+    name: 'Sticker Selection',
+    path: '/assets/audio/sfx/memoriesDate-sticker-select.mp3',
+    description: 'Pop sound when choosing a sticker to apply to the photo',
+    season: 'autumn',
+    minigame: 'memoriesDate',
+    type: 'audio',
+    required: false
   },
   
   // Winter - Charity Auction
