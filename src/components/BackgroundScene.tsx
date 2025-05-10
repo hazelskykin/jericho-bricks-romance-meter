@@ -10,6 +10,7 @@ interface BackgroundSceneProps {
   alt?: string;
   className?: string;
   transitionDuration?: number;
+  priority?: boolean;
 }
 
 const BackgroundScene: React.FC<BackgroundSceneProps> = ({
@@ -18,6 +19,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   alt = 'Background scene',
   className = '',
   transitionDuration = 500,
+  priority = true,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSrc, setCurrentSrc] = useState<string>('');
