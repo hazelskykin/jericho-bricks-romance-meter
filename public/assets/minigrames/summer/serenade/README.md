@@ -1,0 +1,1 @@
+Serenade: Music note sprites, stage background, hit markers, music tracks

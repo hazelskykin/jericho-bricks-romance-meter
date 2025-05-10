@@ -139,6 +139,10 @@ class AssetManager {
         return;
       }
 
+      // We only need to handle path with typo for location-icons.png and
+      // fix path capitalization issues
+      const fixedPath = this.fixPath(src);
+
       // Load new image
       const img = new Image();
       
@@ -185,6 +189,9 @@ class AssetManager {
           }
         }
       };
+      
+      // Use the potentially fixed path
+      img.src = fixedPath;
     });
   }
 
@@ -192,6 +199,10 @@ class AssetManager {
    * Fix paths with capitalization issues
    */
   private fixPath(src: string): string {
+    // Fix locaton-icons typo if it exists
+    if (src.includes('/locaton-icons.png')) {
+      return src.replace('/locaton-icons.png', '/location-icons.png');
+    }
     
     // Fix BloomWithAView capitalization
     if (src.includes('/spring/bloomwithAView/')) {
