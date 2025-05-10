@@ -16,6 +16,7 @@ const Game: React.FC = () => {
   const [priorityAssetsLoaded, setPriorityAssetsLoaded] = useState(false);
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [soundInitialized, setSoundInitialized] = useState(false);
+  const [activeMinigame, setActiveMinigame] = useState<MinigameType | null>(null);
   
   // Initialize game scenes
   const {
@@ -88,12 +89,6 @@ const Game: React.FC = () => {
       ) : (
         <GameInterface />
       )}
-      
-      <MinigameHandler 
-        activeMinigame={null} 
-        completeMinigame={() => {}} 
-        exitMinigame={() => {}}
-      />
       
       {/* Dev Scene Jumper - always available */}
       <DevSceneJumper 

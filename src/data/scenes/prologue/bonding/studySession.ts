@@ -39,7 +39,7 @@ const studySessionScenes: Record<string, Scene> = {
         text: "By the time you leave, you feel well-prepared for tomorrow's departure, and you notice approving glances from Etta.",
       }
     ],
-    nextSceneId: 'departure-lobby', // Updated to go to the lobby scene first
+    nextSceneId: 'departure-lobby',
   }
 };
 

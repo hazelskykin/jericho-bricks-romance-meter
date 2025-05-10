@@ -151,6 +151,7 @@ const GameInterface: React.FC = () => {
     return <AboutScreen />;
   }
 
+  // Only render MinigameHandler when there is an active minigame
   if (activeMinigame) {
     return (
       <>
