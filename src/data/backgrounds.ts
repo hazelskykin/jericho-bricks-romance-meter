@@ -4,6 +4,7 @@ interface BackgroundAsset {
   image: string;
   description: string;
   gradient: string;
+  required?:  boolean;
 }
 
 const backgrounds: Record<string, BackgroundAsset> = {
@@ -12,14 +13,16 @@ const backgrounds: Record<string, BackgroundAsset> = {
     name: 'Wall Tiles',
     image: '/assets/backgrounds/wall-tiles.png',
     description: 'Decorative wall tiles with geometric patterns and a subtle steampunk influence.',
-    gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.2), rgba(42, 30, 78, 0.3))'
+    gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.2), rgba(42, 30, 78, 0.3))',
+    required:  true
   },
   'cybaton-office': {
     id: 'cybaton-office',
     name: 'Cybaton Office',
     image: '/assets/backgrounds/cybaton-office.jpg',
     description: 'Modern tech infrastructure with retro-futuristic brass accents and digital displays mixed with analog gauges.',
-    gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.1), rgba(42, 30, 78, 0.2))'
+    gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.1), rgba(42, 30, 78, 0.2))',
+    required:  true
   },
   'cybaton-meeting-room': {
     id: 'cybaton-meeting-room',
