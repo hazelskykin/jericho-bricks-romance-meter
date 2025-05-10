@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import SeasonTransition from './SeasonTransition';
 import { MinigameType } from '@/types/minigames';
+import { toast } from 'sonner';
 
 /**
  * Game scene observer component to handle minigame transitions and season changes
@@ -13,6 +14,7 @@ const GameSceneObserver = () => {
   // Monitor scene changes to detect when to trigger minigames or season transitions
   useEffect(() => {
     const currentScene = gameState.currentScene;
+    console.log(`GameSceneObserver: Current scene is ${currentScene}`);
     
     // Check specific minigame trigger scenes - these MUST match the scene IDs in data files
     const minigameMappings: Record<string, MinigameType> = {
@@ -40,15 +42,20 @@ const GameSceneObserver = () => {
     // Explicitly check if the current scene is a minigame trigger
     if (currentScene in minigameMappings) {
       const minigameType = minigameMappings[currentScene];
+      console.log(`GameSceneObserver: Detected minigame trigger scene for ${minigameType}`);
+      
+      toast.info(`Starting minigame: ${minigameType}`);
       
       // Add a clearer delay to ensure state updates are processed in the right order
       setTimeout(() => {
         try {
+          console.log(`GameSceneObserver: Starting minigame ${minigameType}`);
           startMinigame(minigameType);
         } catch (error) {
           console.error("Error starting minigame:", error);
+          toast.error(`Failed to start minigame: ${error}`);
         }
-      }, 500); // Increase delay to ensure state is ready
+      }, 500); // Delay to ensure state is ready
     }
     
     // Check for season transition scenes

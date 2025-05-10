@@ -1,137 +1,112 @@
 
-import { CharacterId, GameState } from '@/types/game';
-import { AffectionChanges } from '@/types/minigames';
+import { GameState, CharacterId } from '@/types/game';
+import { MinigameType } from '@/types/minigames';
 
-// Helper to determine affection level based on value
-export const getAffectionLevel = (value: number): string => {
-  if (value <= -15) return 'Hostile';
-  if (value <= -5) return 'Cold';
-  if (value <= 5) return 'Neutral';
-  if (value <= 15) return 'Friendly';
-  if (value <= 25) return 'Close';
-  if (value <= 35) return 'Very Close';
-  return 'Intimate';
+// Define interface for affection changes
+export interface AffectionChanges {
+  [key: string]: Partial<Record<CharacterId, number>>;
+}
+
+// Get affection level based on numeric value
+export const getAffectionLevel = (affection: number): string => {
+  if (affection >= 75) return 'Love';
+  if (affection >= 50) return 'Strong';
+  if (affection >= 25) return 'Warm';
+  if (affection >= 10) return 'Friendly';
+  if (affection >= 0) return 'Neutral';
+  return 'Cold';
 };
 
-// Get affection changes for a specific minigame
-export const getAffectionChangesForMinigame = (minigameType: string): Partial<Record<CharacterId, number>> => {
+// Determine affection changes for a specific minigame
+export const getAffectionChangesForMinigame = (minigameType: MinigameType): Partial<Record<CharacterId, number>> => {
+  // Default affection changes for each minigame
   const affectionChanges: AffectionChanges = {
     // Spring minigames
-    broomsAway: { xavier: 1, senara: 1 },
-    mudFling: { navarre: 1, etta: 1 },
-    bloomWithAView: { navarre: 0.5, etta: 0.5, senara: 0.5 },
+    'broomsAway': { 'xavier': 5 },
+    'mudFling': { 'navarre': 5 },
+    'bloomWithAView': { 'senara': 5 },
     
-    // Summer minigames  
-    serenade: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
-    spokenWord: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
-    whatsOnTap: { navarre: 1, xavier: 0.5, etta: 0.5, senara: 0.5 },
-      
+    // Summer minigames
+    'serenade': { 'xavier': 5 },
+    'spokenWord': { 'senara': 5 },
+    'whatsOnTap': { 'navarre': 5 },
+    
     // Autumn minigames
-    tourGuide: { etta: 1, senara: 0.5, xavier: 0.5 },
-    crafter: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
+    'tourGuide': { 'etta': 5 },
+    'crafter': { 'senara': 5 },
+    'memoriesDate': {}, // Special handling based on current love interest
     
     // Winter minigames
-    charityAuction: { xavier: 0.5, navarre: 0.5, etta: 0.5, senara: 0.5 },
-    lookingSigns: {}  // Special case handled separately
+    'charityAuction': { 'etta': 5 },
+    'galaDance': {}, // Special handling based on current love interest
+    'lookingSigns': {} // Special handling based on current love interest
   };
-
+  
   return affectionChanges[minigameType] || {};
 };
 
-// Apply affection changes to characters
+// Apply a set of affection changes to game state
 export const applyAffectionChanges = (
   gameState: GameState,
-  affectionChanges: Partial<Record<CharacterId, number>>,
+  changes: Partial<Record<CharacterId, number>>,
   setGameState: React.Dispatch<React.SetStateAction<GameState>>
 ): void => {
-  if (Object.keys(affectionChanges).length === 0) return;
+  // Create a new characters object with updated affection values
+  const updatedCharacters = { ...gameState.characters };
   
-  // Create a safe copy of characters
-  const updatedCharacters = JSON.parse(JSON.stringify(gameState.characters));
-  
-  // Apply each change safely
-  Object.entries(affectionChanges).forEach(([charId, change]) => {
-    const characterId = charId as CharacterId;
-    if (updatedCharacters[characterId]) {
-      const currentAffection = updatedCharacters[characterId].affection || 0;
-      updatedCharacters[characterId].affection = currentAffection + change;
+  // Apply each change
+  Object.entries(changes).forEach(([characterId, changeValue]) => {
+    const charId = characterId as CharacterId;
+    if (updatedCharacters[charId] && changeValue) {
+      const currentAffection = updatedCharacters[charId].affection || 0;
+      updatedCharacters[charId] = {
+        ...updatedCharacters[charId],
+        affection: Math.max(0, Math.min(100, currentAffection + changeValue))
+      };
+      
+      console.log(`Affection change for ${charId}: ${currentAffection} -> ${updatedCharacters[charId].affection}`);
     }
   });
   
-  // Update game state with new character affection values
-  setGameState(prev => ({
-    ...prev,
+  // Update game state with new affection values
+  setGameState(prevState => ({
+    ...prevState,
     characters: updatedCharacters
   }));
 };
 
-// Handle special case for love interest-specific affection changes
+// Special handling for love interest affection in minigames
 export const handleLoveInterestAffectionChange = (
-  minigameType: string,
+  minigameType: MinigameType,
   gameState: GameState,
   success: boolean,
   setGameState: React.Dispatch<React.SetStateAction<GameState>>
 ): void => {
-  const currentLoveInterest = gameState.currentLoveInterest;
-  if (!currentLoveInterest) return;
+  const { currentLoveInterest } = gameState;
   
-  // Special case for specific minigames that focus on the love interest
-  if (minigameType === 'memoriesDate') {
-    // Major boost to the current love interest
-    const updatedCharacters = { ...gameState.characters };
-    const currentAffection = updatedCharacters[currentLoveInterest].affection;
-    updatedCharacters[currentLoveInterest] = {
-      ...updatedCharacters[currentLoveInterest],
-      affection: currentAffection + 2
-    };
+  // If no love interest is selected, no special handling needed
+  if (!currentLoveInterest) {
+    return;
+  }
+  
+  // Special love interest minigames and their affection changes
+  const loveInterestMinigames: Partial<Record<MinigameType, number>> = {
+    'memoriesDate': 8,
+    'galaDance': 10,
+    'lookingSigns': success ? 15 : -5
+  };
+  
+  // Check if this is a love interest minigame
+  if (minigameType in loveInterestMinigames) {
+    const affectionChange = loveInterestMinigames[minigameType] || 0;
     
-    setGameState(prev => ({
-      ...prev,
-      characters: updatedCharacters
-    }));
-  } else if (minigameType === 'galaDance') {
-    // Major boost to the current love interest
-    const updatedCharacters = { ...gameState.characters };
-    const currentAffection = updatedCharacters[currentLoveInterest].affection;
-    updatedCharacters[currentLoveInterest] = {
-      ...updatedCharacters[currentLoveInterest],
-      affection: currentAffection + 1.5
-    };
+    // Apply the affection change to the current love interest
+    applyAffectionChanges(
+      gameState,
+      { [currentLoveInterest]: affectionChange },
+      setGameState
+    );
     
-    setGameState(prev => ({
-      ...prev,
-      characters: updatedCharacters
-    }));
-  } else if (minigameType === 'lookingSigns') {
-    // Handle special case for lookingSigns
-    if (!success) {
-      // Failing has a significant negative effect
-      const updatedCharacters = { ...gameState.characters };
-      const currentAffection = updatedCharacters[currentLoveInterest].affection;
-      const newAffection = Math.max(0, currentAffection - 2);
-      
-      updatedCharacters[currentLoveInterest] = {
-        ...updatedCharacters[currentLoveInterest],
-        affection: newAffection
-      };
-      
-      setGameState(prev => ({
-        ...prev,
-        characters: updatedCharacters
-      }));
-    } else {
-      // Success gives a boost
-      const updatedCharacters = { ...gameState.characters };
-      const currentAffection = updatedCharacters[currentLoveInterest].affection;
-      updatedCharacters[currentLoveInterest] = {
-        ...updatedCharacters[currentLoveInterest],
-        affection: currentAffection + 1
-      };
-      
-      setGameState(prev => ({
-        ...prev,
-        characters: updatedCharacters
-      }));
-    }
+    console.log(`Applied love interest affection change for ${currentLoveInterest}: ${affectionChange}`);
   }
 };

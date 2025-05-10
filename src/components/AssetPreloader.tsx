@@ -1,33 +1,33 @@
 
 import React, { useEffect, useState } from 'react';
-import { assetManager, getAssetSource } from '@/utils/assetManager';
+import { assetManager } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
 import backgrounds from '@/data/backgrounds';
-import minigameAssets from '@/data/minigameAssets';
-import { BackgroundAsset, MinigameAsset } from '@/types/assets';
+import { BackgroundAsset } from '@/types/assets';
 import { CharacterExpression } from '@/types/expressions';
 
 interface AssetPreloaderProps {
   onComplete: () => void;
   priorityOnly?: boolean;
+  skipMinigameAssets?: boolean;
 }
 
-const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnly = false }) => {
+const AssetPreloader: React.FC<AssetPreloaderProps> = ({ 
+  onComplete, 
+  priorityOnly = false,
+  skipMinigameAssets = true // Default to skipping minigame assets
+}) => {
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [loadingBackgrounds, setLoadingBackgrounds] = useState(true);
-  const [loadingMinigameAssets, setLoadingMinigameAssets] = useState(true);
   
   const [loadedCharacters, setLoadedCharacters] = useState(0);
   const [loadedBackgrounds, setLoadedBackgrounds] = useState(0);
-  const [loadedMinigameAssets, setLoadedMinigameAssets] = useState(0);
   
   const [characterErrors, setCharacterErrors] = useState(0);
   const [backgroundErrors, setBackgroundErrors] = useState(0);
-  const [minigameErrors, setMinigameErrors] = useState(0);
   
   const [totalCharacters, setTotalCharacters] = useState(0);
   const [totalBackgrounds, setTotalBackgrounds] = useState(0);
-  const [totalMinigameAssets, setTotalMinigameAssets] = useState(0);
 
   // Extract list of character expression image paths
   const characterPaths = Object.values(characterExpressions)
@@ -39,30 +39,15 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
   const backgroundPaths = Object.values(backgrounds)
     .filter(bg => !priorityOnly || (bg as BackgroundAsset).priority === true)
     .map(bg => (bg as BackgroundAsset).image);
-  
-  // Extract minigame asset paths - ensure we're handling the proper structure
-  const minigameAssetPaths = Object.values(minigameAssets)
-    .filter(asset => {
-      // Type guard to ensure we only process valid assets with src property
-      if (!asset || typeof asset !== 'object' || !('src' in asset)) {
-        console.warn('Invalid minigame asset found:', asset);
-        return false;
-      }
-      return !priorityOnly || (asset as any).priority === true;
-    })
-    .map(asset => (asset as any).src) // Use any here since there are type mismatches
-    .filter(Boolean); // Filter out any undefined values
 
   useEffect(() => {
     // Store total counts
     setTotalCharacters(characterPaths.length);
     setTotalBackgrounds(backgroundPaths.length);
-    setTotalMinigameAssets(minigameAssetPaths.length);
     
     // Load character expressions
     if (characterPaths.length > 0) {
       assetManager.preloadAssets(characterPaths, (loaded, total) => {
-        // Use a function to set the state to ensure we're updating based on the latest state
         setLoadedCharacters(loaded);
       }).then(() => {
         const errors = characterPaths.filter(path => assetManager.didAssetFail(path)).length;
@@ -77,7 +62,6 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
     // Load backgrounds
     if (backgroundPaths.length > 0) {
       assetManager.preloadAssets(backgroundPaths, (loaded, total) => {
-        // Use a function to set the state to ensure we're updating based on the latest state
         setLoadedBackgrounds(loaded);
       }).then(() => {
         const errors = backgroundPaths.filter(path => assetManager.didAssetFail(path)).length;
@@ -88,34 +72,19 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
     } else {
       setLoadingBackgrounds(false);
     }
-    
-    // Load minigame assets
-    if (minigameAssetPaths.length > 0) {
-      assetManager.preloadAssets(minigameAssetPaths, (loaded, total) => {
-        // Use a function to set the state to ensure we're updating based on the latest state
-        setLoadedMinigameAssets(loaded);
-      }).then(() => {
-        const errors = minigameAssetPaths.filter(path => assetManager.didAssetFail(path)).length;
-        setMinigameErrors(errors);
-        console.log(`Loaded ${minigameAssetPaths.length - errors} minigame assets, ${errors} errors`);
-        setLoadingMinigameAssets(false);
-      });
-    } else {
-      setLoadingMinigameAssets(false);
-    }
-  }, [characterPaths, backgroundPaths, minigameAssetPaths]);
+  }, [characterPaths, backgroundPaths]);
 
   // Check if all assets are loaded
   useEffect(() => {
-    if (!loadingCharacters && !loadingBackgrounds && !loadingMinigameAssets) {
-      console.log('All assets loaded.');
+    if (!loadingCharacters && !loadingBackgrounds) {
+      console.log('All required assets loaded.');
       onComplete();
     }
-  }, [loadingCharacters, loadingBackgrounds, loadingMinigameAssets, onComplete]);
+  }, [loadingCharacters, loadingBackgrounds, onComplete]);
 
   // Calculate overall progress
-  const totalAssets = totalCharacters + totalBackgrounds + totalMinigameAssets;
-  const loadedAssets = loadedCharacters + loadedBackgrounds + loadedMinigameAssets;
+  const totalAssets = totalCharacters + totalBackgrounds;
+  const loadedAssets = loadedCharacters + loadedBackgrounds;
   const progress = totalAssets > 0 ? Math.min(100, Math.round((loadedAssets / totalAssets) * 100)) : 100;
 
   return (
@@ -134,8 +103,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
       <div className="text-xs text-gray-400 max-w-md text-center px-4">
         {loadingCharacters && `Loading character expressions (${loadedCharacters}/${totalCharacters})...`}
         {loadingBackgrounds && `Loading backgrounds (${loadedBackgrounds}/${totalBackgrounds})...`}
-        {loadingMinigameAssets && `Loading minigame assets (${loadedMinigameAssets}/${totalMinigameAssets})...`}
-        {!loadingCharacters && !loadingBackgrounds && !loadingMinigameAssets && 'All assets loaded!'}
+        {!loadingCharacters && !loadingBackgrounds && 'All assets loaded!'}
       </div>
     </div>
   );

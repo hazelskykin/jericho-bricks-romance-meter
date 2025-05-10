@@ -2,12 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import GameInterface from './GameInterface';
 import MainMenu from './MainMenu';
-import MinigameHandler from './minigames/MinigameHandler';
 import { GameProvider } from '../context/GameContext';
 import AssetPreloader from './AssetPreloader';
 import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
-import { MinigameType } from '@/types/minigames';
 import { soundManager } from '@/utils/soundEffects';
 import { toast } from 'sonner';
 import { initializeGameSounds } from '@/utils/soundEffects';
@@ -18,7 +16,6 @@ const Game: React.FC = () => {
   const [priorityAssetsLoaded, setPriorityAssetsLoaded] = useState(false);
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [soundInitialized, setSoundInitialized] = useState(false);
-  const [activeMinigame, setActiveMinigame] = useState<MinigameType | null>(null);
   
   // Initialize game scenes
   const {
@@ -103,6 +100,7 @@ const Game: React.FC = () => {
       <AssetPreloader 
         onComplete={() => setPriorityAssetsLoaded(true)}
         priorityOnly={true}
+        skipMinigameAssets={true}
       />
     );
   }
@@ -140,6 +138,7 @@ const Game: React.FC = () => {
               setAssetsLoaded(true);
               setLoadingComplete(true);
             }}
+            skipMinigameAssets={true}
           />
         </div>
       )}

@@ -91,6 +91,25 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log(`Game Context - Transitioning to scene: ${nextSceneId}`);
     
     try {
+      // Special case: Minigame start scenes
+      if (nextSceneId.includes('-start') && 
+          (nextSceneId.includes('brooms-away') || 
+           nextSceneId.includes('mud-fling') || 
+           nextSceneId.includes('bloom-view') ||
+           nextSceneId.includes('serenade') ||
+           nextSceneId.includes('spoken-word') ||
+           nextSceneId.includes('whats-on-tap') ||
+           nextSceneId.includes('tour-guide') ||
+           nextSceneId.includes('crafter') ||
+           nextSceneId.includes('memories-date') ||
+           nextSceneId.includes('charity-auction') ||
+           nextSceneId.includes('gala-dance') ||
+           nextSceneId.includes('looking-signs'))) {
+        
+        console.log(`Detected minigame start scene: ${nextSceneId}`);
+        // Let it proceed normally so GameSceneObserver can handle it
+      }
+      
       // Special case handling for character selection screens
       if (nextSceneId === 'spring-selection' || nextSceneId === 'spring-character-selection') {
         console.log('Redirecting to spring character selection');
