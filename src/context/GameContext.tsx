@@ -7,6 +7,7 @@ import { useGameMinigames, MinigameType } from '@/hooks/useGameMinigames';
 import { useGameSeasons } from '@/hooks/useGameSeasons';
 import { useEpilogueChecker } from '@/hooks/useEpilogueChecker';
 import GameSceneObserver from '@/components/GameSceneObserver';
+import { toast } from 'sonner';
 
 // Initial game state
 const initialGameState: GameState = {
@@ -50,17 +51,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [gameState, setGameState] = useState<GameState>(initialGameState);
   
   // Initialize game scenes hook
-  const { currentSceneId, transitionToScene } = useGameScenes({ 
+  const { currentSceneId, transitionToScene, currentScene } = useGameScenes({ 
     initialScene: initialGameState.currentScene 
   });
   
   // Update game state when current scene changes
   useEffect(() => {
-    setGameState(prev => ({
-      ...prev,
-      currentScene: currentSceneId,
-    }));
-  }, [currentSceneId]);
+    if (currentSceneId !== gameState.currentScene) {
+      console.log(`Updating game state currentScene from ${gameState.currentScene} to ${currentSceneId}`);
+      setGameState(prev => ({
+        ...prev,
+        currentScene: currentSceneId,
+      }));
+    }
+  }, [currentSceneId, gameState.currentScene]);
   
   // Initialize game minigames hook
   const { 
@@ -82,47 +86,72 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Initialize epilogue checker
   const { routeToEpilogue } = useEpilogueChecker(gameState, setGameState);
   
-  // Handle scene transition
+  // Handle scene transition with better error handling
   const handleSceneTransition = useCallback((nextSceneId: string) => {
     console.log(`Game Context - Transitioning to scene: ${nextSceneId}`);
     
-    // Special case handling for character selection screens
-    if (nextSceneId === 'spring-selection' || nextSceneId === 'spring-character-selection') {
-      console.log('Redirecting to spring character selection');
-      transitionToScene('spring-character-selection');
-      return;
+    try {
+      // Special case handling for character selection screens
+      if (nextSceneId === 'spring-selection' || nextSceneId === 'spring-character-selection') {
+        console.log('Redirecting to spring character selection');
+        transitionToScene('spring-character-selection');
+        return;
+      }
+      
+      if (nextSceneId === 'summer-selection' || nextSceneId === 'summer-character-selection') {
+        console.log('Redirecting to summer character selection');
+        transitionToScene('summer-character-selection');
+        return;
+      }
+      
+      // Special handling for autumn and winter character scenes with love interest
+      if ((nextSceneId === 'autumn-character-path' || nextSceneId.includes('autumn-character')) && gameState.currentLoveInterest) {
+        const characterScene = `autumn-character-${gameState.currentLoveInterest}`;
+        console.log(`Redirecting to autumn character scene with love interest: ${characterScene}`);
+        transitionToScene(characterScene);
+        return;
+      }
+      
+      if ((nextSceneId === 'winter-planning-character' || nextSceneId.includes('winter-character')) && gameState.currentLoveInterest) {
+        const characterScene = `winter-planning-${gameState.currentLoveInterest}`;
+        console.log(`Redirecting to winter character scene with love interest: ${characterScene}`);
+        transitionToScene(characterScene);
+        return;
+      }
+      
+      // Specific handling for prologue-intro
+      if (nextSceneId === 'prologue-intro') {
+        console.log('Handling prologue-intro special case');
+        transitionToScene('intro');
+        return;
+      }
+      
+      // Default case
+      transitionToScene(nextSceneId);
+    } catch (error) {
+      console.error('Error during scene transition:', error);
+      toast.error('Failed to transition to next scene. Please try again.');
+      
+      // Fallback to main menu if serious error
+      if (String(error).includes('Cannot read properties of undefined')) {
+        toast.error('Critical error encountered. Returning to main menu.');
+        transitionToScene('start');
+      }
     }
-    
-    if (nextSceneId === 'summer-selection' || nextSceneId === 'summer-character-selection') {
-      console.log('Redirecting to summer character selection');
-      transitionToScene('summer-character-selection');
-      return;
-    }
-    
-    // Special handling for autumn and winter character scenes with love interest
-    if ((nextSceneId === 'autumn-character-path' || nextSceneId.includes('autumn-character')) && gameState.currentLoveInterest) {
-      const characterScene = `autumn-character-${gameState.currentLoveInterest}`;
-      console.log(`Redirecting to autumn character scene with love interest: ${characterScene}`);
-      transitionToScene(characterScene);
-      return;
-    }
-    
-    if ((nextSceneId === 'winter-planning-character' || nextSceneId.includes('winter-character')) && gameState.currentLoveInterest) {
-      const characterScene = `winter-planning-${gameState.currentLoveInterest}`;
-      console.log(`Redirecting to winter character scene with love interest: ${characterScene}`);
-      transitionToScene(characterScene);
-      return;
-    }
-    
-    // Default case
-    transitionToScene(nextSceneId);
   }, [transitionToScene, gameState.currentLoveInterest]);
   
-  // Handle new game
+  // Handle new game with improved error handling
   const handleNewGame = useCallback(() => {
     console.log('Starting new game');
-    setGameState({...initialGameState});
-    handleSceneTransition('prologue-intro');
+    try {
+      setGameState({...initialGameState});
+      // Use a direct known ID to avoid mapping issues
+      handleSceneTransition('intro');
+      toast.success('New game started!');
+    } catch (error) {
+      console.error('Failed to start new game:', error);
+      toast.error('Failed to start new game. Please try again.');
+    }
   }, [handleSceneTransition]);
   
   // Handle about screen

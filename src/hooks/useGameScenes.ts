@@ -14,6 +14,11 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
   const [loading, setLoading] = useState(false);
   const [transitionEffect, setTransitionEffect] = useState<string | null>(null);
 
+  // Debug: Log all available scenes 
+  useEffect(() => {
+    console.log('Available scenes in allScenes:', Object.keys(allScenes));
+  }, []);
+  
   // Get the current scene data
   const currentScene = allScenes[currentSceneId];
   
@@ -25,6 +30,9 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
       
       // Map scene ID if needed
       const mappedSceneId = mapSceneId(sceneId);
+      
+      // Debug: Check if the scene exists
+      console.log(`Checking if scene [${mappedSceneId}] exists:`, Boolean(allScenes[mappedSceneId]));
       
       // Check if scene exists
       if (allScenes[mappedSceneId]) {
@@ -41,8 +49,12 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
         const fallbackScene = handleSceneError(mappedSceneId);
         
         if (fallbackScene && allScenes[fallbackScene]) {
+          console.log(`Using fallback scene [${fallbackScene}]`);
           setPreviousSceneId(currentSceneId);
           setCurrentSceneId(fallbackScene);
+        } else {
+          console.error(`No fallback found for scene [${mappedSceneId}]`);
+          toast.error(`Failed to find scene "${mappedSceneId}" or a suitable fallback`);
         }
       }
       
