@@ -438,6 +438,66 @@ export const minigameAssets: MinigameAsset[] = [
   
   // Summer - What's On Tap
   {
+    id: 'whatsOnTap-serve-ding',
+    name: 'Serve Ding',
+    path: '/assets/audio/sfx/whatsOnTap-serve-ding.mp3',
+    description: 'Bell sound when a drink is successfully served',
+    season: 'summer',
+    minigame: 'whatsOnTap',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'whatsOnTap-glass-down',
+    name: 'Glass Down',
+    path: '/assets/audio/sfx/whatsOnTap-glass-down.mp3',
+    description: 'Sound of placing a glass on the counter',
+    season: 'summer',
+    minigame: 'whatsOnTap',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'whatsOnTap-pour-beer',
+    name: 'Pour Beer',
+    path: '/assets/audio/sfx/whatsOnTap-pour-beer.mp3',
+    description: 'Sound of pouring beer from the tap',
+    season: 'summer',
+    minigame: 'whatsOnTap',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'whatsOnTap-pour-lemonade',
+    name: 'Pour Lemonade',
+    path: '/assets/audio/sfx/whatsOnTap-pour-lemonade.mp3',
+    description: 'Sound of pouring lemonade with ice',
+    season: 'summer',
+    minigame: 'whatsOnTap',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'whatsOnTap-pour-seltzer',
+    name: 'Pour Seltzer',
+    path: '/assets/audio/sfx/whatsOnTap-pour-seltzer.mp3',
+    description: 'Fizzing sound when pouring seltzer soda',
+    season: 'summer',
+    minigame: 'whatsOnTap',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'whatsOnTap-loop-gameplay',
+    name: 'Gameplay Music Loop',
+    path: '/assets/audio/music/whatsOnTap-loop-gameplay.mp3',
+    description: 'Background music loop for the What’s On Tap minigame',
+    season: 'summer',
+    minigame: 'whatsOnTap',
+    type: 'audio',
+    required: false
+  },
+  {
     id: 'whats-on-tap-glasses',
     name: 'Drink Glasses',
     path: '/assets/minigames/summer/whatsOnTap/glasses.png',
@@ -452,6 +512,16 @@ export const minigameAssets: MinigameAsset[] = [
     name: 'Drink Ingredients',
     path: '/assets/minigames/summer/whatsOnTap/ingredients.png',
     description: 'Ingredients for mixing drinks',
+    season: 'summer',
+    minigame: 'whatsOnTap',
+    type: 'sprite',
+    required: true
+  },
+  {
+    id: 'whats-on-tap-beverage-taps',
+    name: 'Beverage Taps',
+    path: '/assets/minigames/summer/whatsOnTap/beverage-taps.png',
+    description: 'Beverage taps for pouring drinks',
     season: 'summer',
     minigame: 'whatsOnTap',
     type: 'sprite',
