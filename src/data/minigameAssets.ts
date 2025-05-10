@@ -274,6 +274,76 @@ export const minigameAssets: MinigameAsset[] = [
   
   // Summer - Serenade
   {
+    id: 'serenade-combo-brightnotes',
+    name: 'Combo Bonus Sound',
+    path: '/assets/audio/sfx/serenade-combo-brightnotes.mp3',
+    description: 'Melodic chime for successful combo chain in the rhythm game',
+    season: 'summer',
+    minigame: 'serenade',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'serenade-hit-note',
+    name: 'Note Hit Sound',
+    path: '/assets/audio/sfx/serenade-hit-note.mp3',
+    description: 'Beat hit sound when player taps a note correctly',
+    season: 'summer',
+    minigame: 'serenade',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'serenade-track-blue',
+    name: 'Blue Track',
+    path: '/assets/audio/music/serenade-track-blue.mp3',
+    description: 'Music track associated with the blue-themed character in Serenade',
+    season: 'summer',
+    minigame: 'serenade',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'serenade-track-orange',
+    name: 'Orange Track',
+    path: '/assets/audio/music/serenade-track-orange.mp3',
+    description: 'Music track associated with the orange-themed character in Serenade',
+    season: 'summer',
+    minigame: 'serenade',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'serenade-track-purple',
+    name: 'Purple Track',
+    path: '/assets/audio/music/serenade-track-purple.mp3',
+    description: 'Music track associated with the purple-themed character in Serenade',
+    season: 'summer',
+    minigame: 'serenade',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'serenade-track-red',
+    name: 'Red Track',
+    path: '/assets/audio/music/serenade-track-red.mp3',
+    description: 'Music track associated with the red-themed character in Serenade',
+    season: 'summer',
+    minigame: 'serenade',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'serenade-miss-thud',
+    name: 'Miss Sound',
+    path: '/assets/audio/sfx/serenade-miss-thud.mp3',
+    description: 'Thud sound when a note is missed',
+    season: 'summer',
+    minigame: 'serenade',
+    type: 'audio',
+    required: false
+  }
+  {
     id: 'serenade-notes',
     name: 'Music Notes',
     path: '/assets/minigames/summer/serenade/music-notes.png',
@@ -302,26 +372,6 @@ export const minigameAssets: MinigameAsset[] = [
     minigame: 'serenade',
     type: 'image',
     required: true
-  },
-  {
-    id: 'serenade-track-beat1',
-    name: 'Beat Track 1',
-    path: '/assets/audio/music/serenade-track1.mp3',
-    description: 'First music track option for the rhythm game',
-    season: 'summer',
-    minigame: 'serenade',
-    type: 'audio',
-    required: false
-  },
-  {
-    id: 'serenade-track-beat2',
-    name: 'Beat Track 2',
-    path: '/assets/audio/music/serenade-track2.mp3',
-    description: 'Second music track option for the rhythm game',
-    season: 'summer',
-    minigame: 'serenade',
-    type: 'audio',
-    required: false
   },
   
   // Summer - Spoken Word
