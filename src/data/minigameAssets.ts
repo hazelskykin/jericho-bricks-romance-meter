@@ -891,3 +891,6 @@ export const minigameAssets: MinigameAsset[] = [
     required: true
   },
 ]
+};
+
+export MinigameAssets
