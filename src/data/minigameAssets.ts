@@ -868,7 +868,6 @@ export const minigameAssets: MinigameAsset[] = [
     type: 'audio',
     required: false
   },
-
   
   // Winter - Gala Dance
   {
@@ -887,3 +886,5 @@ export const minigameAssets: MinigameAsset[] = [
     path: '/assets/minigames/winter/galaDance/dance-moves.png',
     description: 'Icons representing different dance moves',
     season:
+  }
+]
