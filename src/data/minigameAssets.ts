@@ -491,7 +491,7 @@ export const minigameAssets: MinigameAsset[] = [
     id: 'whatsOnTap-loop-gameplay',
     name: 'Gameplay Music Loop',
     path: '/assets/audio/music/whatsOnTap-loop-gameplay.mp3',
-    description: 'Background music loop for the What's On Tap minigame',
+    description: 'Background music loop for the minigame',
     season: 'summer',
     minigame: 'whatsOnTap',
     type: 'audio',
