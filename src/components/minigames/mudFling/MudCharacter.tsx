@@ -12,14 +12,14 @@ interface MudCharacterProps {
   isMuddy: boolean;
 }
 
-const MudCharacter: React.FC<MudCharacterProps> = ({
-  id,
+const MudCharacter: React.FC<Partial<MudCharacterProps>> = ({
+  id = 'maven',
   x,
   y,
-  width,
-  height,
+  width = 80,
+  height = 100,
   isPlayer,
-  isMuddy
+  isMuddy = false
 }) => {
   // Map character ID to character-specific styling
   const getCharacterColor = () => {
@@ -69,9 +69,9 @@ const MudCharacter: React.FC<MudCharacterProps> = ({
           className="w-full h-full object-contain"
         />
         
-        {/* Show mud splatter effect when hit */}
+        {/* Show mud splatter effect when hit - Fixed path from minigrames to minigames */}
         {isMuddy && (
-          <div className="absolute inset-0 bg-[url('/assets/minigrames/spring/mudFling/splashEffects_victoryEffect.png')] bg-cover opacity-70" />
+          <div className="absolute inset-0 bg-[url('/assets/minigames/spring/mudFling/splashEffects_victoryEffect.png')] bg-cover opacity-70" />
         )}
         
         {/* Highlight for player character */}

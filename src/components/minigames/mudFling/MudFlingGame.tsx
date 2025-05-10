@@ -3,12 +3,19 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import MudFlingArena from './MudFlingArena';
 import MudFlingControls from './MudFlingControls';
 import GameStatusMessage from '../common/GameStatusMessage';
-import SoundToggle from '../common/SoundToggle';
+import { SoundToggle } from '../common/SoundToggle';
 import { useMudBalls } from './useMudBalls';
 import { useCharacterAI } from './useCharacterAI';
-import { MudCharacterPosition, MudGameStatus } from './types';
 import { soundManager } from '@/utils/soundEffects';
 import { Button } from '@/components/ui/button';
+
+// Define the types from types.ts file here since they're not exported properly
+interface MudCharacterPosition {
+  x: number;
+  y: number;
+}
+
+type MudGameStatus = 'ready' | 'countdown' | 'playing' | 'ended';
 
 interface MudFlingGameProps {
   onComplete: (score: number) => void;
@@ -35,7 +42,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
   } = useMudBalls();
   
   // Initialize opponent AI
-  const { updateOpponent } = useCharacterAI({
+  const { updateOpponentPosition } = useCharacterAI({
     playerPosition,
     opponentPosition,
     throwMudball: (x, y) => {
@@ -103,7 +110,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
           }
         );
         
-        updateOpponent();
+        updateOpponentPosition();
       }, 1000 / 60); // 60 FPS
     };
 
@@ -124,7 +131,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
       if (countdownTimer) clearInterval(countdownTimer);
       if (gameTimer) clearInterval(gameTimer);
     };
-  }, [muted, onComplete, updateMudballs, updateOpponent, resetMudballs, score]);
+  }, [muted, onComplete, updateMudballs, updateOpponentPosition, resetMudballs, score]);
 
   // Handle player movement and mud throwing
   const handlePlayerMove = useCallback((x: number, y: number) => {
@@ -155,11 +162,13 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
           <span className="text-white font-bold">Score: {score}</span>
           <span className="ml-4 text-white font-bold">Time: {timeLeft}s</span>
         </div>
-        <SoundToggle muted={muted} toggleMute={toggleMute} />
+        <SoundToggle showMusicToggle={false} />
       </div>
 
       {gameStatus === 'countdown' && (
-        <GameStatusMessage message={`Game starting in ${countdown}...`} />
+        <div className="absolute inset-0 flex items-center justify-center z-30 bg-black bg-opacity-60">
+          <div className="text-white text-4xl font-bold">{countdown}</div>
+        </div>
       )}
       
       {gameStatus === 'ended' && (
@@ -182,7 +191,11 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
         onArenaClick={handlePlayerThrow}
       />
 
-      <MudFlingControls />
+      <MudFlingControls 
+        timeRemaining={timeLeft}
+        team1Score={score}
+        team2Score={0}
+      />
     </div>
   );
 };

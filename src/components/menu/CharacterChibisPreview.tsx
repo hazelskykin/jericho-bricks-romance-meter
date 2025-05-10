@@ -61,11 +61,16 @@ const CharacterChibisPreview: React.FC<CharacterChibisPreviewProps> = ({
           {/* Colored frame for the chibi */}
           <div 
             className="absolute inset-0 rounded-lg transform scale-105"
-            style={{ backgroundColor: characterColors[chibi.id as keyof typeof characterColors], opacity: 0.2 }}
+            style={{ 
+              backgroundColor: characterColors[chibi.id as keyof typeof characterColors] || '#888888', 
+              opacity: 0.2 
+            }}
           />
           
           <img
-            src={showNeutral && 'neutralImage' in chibi ? chibi.neutralImage : chibi.image}
+            src={(showNeutral && 'neutralImage' in chibi) ? 
+              (chibi.neutralImage as string) : 
+              chibi.image}
             alt={chibi.description}
             width={chibi.width || "100px"}
             height="auto"

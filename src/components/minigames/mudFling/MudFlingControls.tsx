@@ -1,45 +1,36 @@
 
 import React from 'react';
-import { Progress } from '@/components/ui/progress';
 
-interface MudFlingControlsProps {
+export interface MudFlingControlsProps {
   timeRemaining: number;
   team1Score: number;
   team2Score: number;
-  selectedBall?: string;
 }
 
 const MudFlingControls: React.FC<MudFlingControlsProps> = ({
   timeRemaining,
   team1Score,
-  team2Score,
-  selectedBall
+  team2Score
 }) => {
   return (
-    <div className="p-2 bg-black/10 backdrop-blur-sm rounded-md">
+    <div className="mud-fling-controls w-full max-w-3xl mt-4 px-4">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="text-white bg-purple-500 px-3 py-1 rounded-md">
-            Your Team: {team1Score}
+        <div className="flex items-center">
+          <div className="bg-purple-100 text-purple-900 px-3 py-1 rounded-md">
+            <span className="font-bold">Team 1:</span> {team1Score}
           </div>
-          <div className="text-white bg-red-500 px-3 py-1 rounded-md">
-            Opponents: {team2Score}
+          <div className="ml-4 bg-orange-100 text-orange-900 px-3 py-1 rounded-md">
+            <span className="font-bold">Team 2:</span> {team2Score}
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
-          <span className="text-white">Time:</span>
-          <div className="w-32 h-2.5">
-            <Progress value={(timeRemaining / 60) * 100} className="h-2.5" />
-          </div>
-          <span className="text-white">{timeRemaining}s</span>
+        <div className="bg-gray-100 text-gray-900 px-3 py-1 rounded-md">
+          <span className="font-bold">Time:</span> {timeRemaining}s
         </div>
-        
-        {selectedBall && (
-          <div className="text-white bg-amber-500 px-3 py-1 rounded-md animate-pulse">
-            Ready to throw!
-          </div>
-        )}
+      </div>
+      
+      <div className="mt-4 text-sm text-gray-300">
+        <p>Move your mouse to position your character and click to throw mud!</p>
       </div>
     </div>
   );

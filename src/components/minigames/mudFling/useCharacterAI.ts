@@ -1,67 +1,113 @@
+import { useState, useCallback } from 'react';
+import { Character, MudBall, Position } from '@/hooks/useMudFlingGame';
 
-import { Character, MudBall, Position } from './types';
-
-interface AISettings {
-  decisionFrequency: number; // How often AI characters make decisions (0-1)
-  aimAccuracy: number; // How accurate AI aiming is (0-1)
+interface UseCharacterAIProps {
+  playerPosition: React.RefObject<{ x: number, y: number }>;
+  opponentPosition: React.RefObject<{ x: number, y: number }>;
+  throwMudball: (x: number, y: number) => void;
 }
 
-export function useCharacterAI() {
-  // AI settings
-  const aiSettings: AISettings = {
-    decisionFrequency: 0.03, // 3% chance per frame to make a decision
-    aimAccuracy: 0.7 // 70% accuracy
-  };
+export function useCharacterAI({ 
+  playerPosition, 
+  opponentPosition, 
+  throwMudball 
+}: UseCharacterAIProps) {
+  const [lastThrowTime, setLastThrowTime] = useState(0);
+  const [aiMovementTime, setAiMovementTime] = useState(0);
+  const [aiMovementDirection, setAiMovementDirection] = useState({ x: 1, y: 1 });
 
-  // AI character throws a mud ball
-  const aiCharactersThrow = (
-    characters: Character[], 
-    mudBalls: MudBall[], 
+  // AI decision making - when to throw mud
+  const updateOpponent = useCallback(() => {
+    // Only move AI opponent every 500ms
+    const now = Date.now();
+    if (now - aiMovementTime > 500) {
+      setAiMovementTime(now);
+      
+      // Simple AI movement that stays within bounds
+      if (!opponentPosition.current) return;
+      
+      // Random chance to change direction
+      if (Math.random() < 0.2) {
+        setAiMovementDirection({
+          x: Math.random() > 0.5 ? 1 : -1,
+          y: Math.random() > 0.5 ? 1 : -1
+        });
+      }
+      
+      // Update position with boundary checking
+      let newX = opponentPosition.current.x + (aiMovementDirection.x * 10);
+      let newY = opponentPosition.current.y + (aiMovementDirection.y * 5);
+      
+      // Keep within arena bounds (right side of arena)
+      newX = Math.max(350, Math.min(550, newX));
+      newY = Math.max(50, Math.min(400, newY));
+      
+      opponentPosition.current.x = newX;
+      opponentPosition.current.y = newY;
+      
+      // Decide whether to throw based on timing
+      if (now - lastThrowTime > 2000) { // throw every 2 seconds
+        setLastThrowTime(now);
+        if (playerPosition.current) {
+          // Add some randomness to the throw
+          const targetX = playerPosition.current.x + (Math.random() * 40 - 20);
+          const targetY = playerPosition.current.y + (Math.random() * 40 - 20);
+          throwMudball(targetX, targetY);
+        }
+      }
+    }
+  }, [opponentPosition, playerPosition, lastThrowTime, aiMovementTime, aiMovementDirection, throwMudball]);
+  
+  // Added for compatibility with useMudFlingGame
+  const aiCharactersThrow = useCallback((
+    characters: Character[],
+    mudBalls: MudBall[],
     throwMudBall: (ballId: string, target: Position, velocity?: { x: number, y: number }) => void
   ) => {
-    // Only team2 members are AI controlled
+    // Find AI characters (team2)
     const aiCharacters = characters.filter(char => char.team === 'team2' && !char.isHit);
     
-    // No AI characters available to throw
-    if (aiCharacters.length === 0) return;
-    
-    // Find available mud balls for team2
-    const availableBalls = mudBalls.filter(
-      ball => ball.team === 'team2' && !ball.isFlying
-    );
-    
-    // No mud balls available to throw
-    if (availableBalls.length === 0) return;
-    
-    // For each AI character, decide whether to throw
-    aiCharacters.forEach(aiChar => {
-      // Random decision to throw based on frequency
-      if (Math.random() > aiSettings.decisionFrequency) return;
-      
-      // Choose a random mud ball to throw
-      const ballToThrow = availableBalls[Math.floor(Math.random() * availableBalls.length)];
-      if (!ballToThrow) return;
-      
-      // Find target characters (player team)
-      const targets = characters.filter(char => char.team === 'team1' && !char.isHit);
-      if (targets.length === 0) return;
-      
-      // Choose a random target
-      const target = targets[Math.floor(Math.random() * targets.length)];
-      
-      // Calculate target position with some randomness based on accuracy
-      const accuracy = aiSettings.aimAccuracy;
-      const randomFactor = 1 - accuracy;
-      
-      const targetX = target.position.x + (Math.random() * 80 - 40) * randomFactor;
-      const targetY = target.position.y + (Math.random() * 80 - 40) * randomFactor;
-      
-      // Throw the mud ball
-      throwMudBall(ballToThrow.id, { x: targetX, y: targetY });
+    // For each AI character, decide if they should throw
+    aiCharacters.forEach(character => {
+      // Random chance to throw (about 5% per call)
+      if (Math.random() < 0.05) {
+        // Find a target (preferably a player character)
+        const playerCharacters = characters.filter(char => char.team === 'team1' && !char.isHit);
+        
+        if (playerCharacters.length > 0) {
+          // Target a random player character
+          const targetChar = playerCharacters[Math.floor(Math.random() * playerCharacters.length)];
+          
+          // Find an available mud ball
+          const availableBalls = mudBalls.filter(ball => !ball.isThrown && !ball.isHeld);
+          
+          if (availableBalls.length > 0) {
+            const ballToThrow = availableBalls[Math.floor(Math.random() * availableBalls.length)];
+            
+            // Add some randomness to the throw
+            const targetPosition = {
+              x: targetChar.position.x + (Math.random() * 40 - 20),
+              y: targetChar.position.y + (Math.random() * 40 - 20)
+            };
+            
+            // Calculate velocity based on distance
+            const dx = targetPosition.x - character.position.x;
+            const dy = targetPosition.y - character.position.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // Normalize and scale
+            const velocity = {
+              x: (dx / distance) * 5,
+              y: (dy / distance) * 5
+            };
+            
+            // Throw the mud ball
+            throwMudBall(ballToThrow.id, targetPosition, velocity);
+          }
+        }
+      }
     });
-  };
+  }, []);
 
-  return {
-    aiCharactersThrow
-  };
+  return { updateOpponent, aiCharactersThrow };
 }

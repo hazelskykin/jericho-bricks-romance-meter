@@ -126,6 +126,12 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     </MinigameContainer>
   );
   
+  // Wrap the score-based minigame completion in a success-based one
+  const handleScoreCompletion = (score: number) => {
+    // Consider a score above 0 as success
+    completeMinigame(score > 0);
+  };
+  
   // Render the appropriate minigame based on activeMinigame
   try {
     // Use explicit type check to avoid issues with string comparison
@@ -134,7 +140,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
       case 'broomsAway':
         return <BroomsAwayGame onComplete={completeMinigame} onExit={exitMinigame} />;
       case 'mudFling':
-        return <MudFlingGame onComplete={completeMinigame} onExit={exitMinigame} />;
+        return <MudFlingGame onComplete={handleScoreCompletion} onExit={exitMinigame} />;
       case 'bloomWithAView':
         return <BloomWithAViewGame onComplete={completeMinigame} onExit={exitMinigame} />;
       

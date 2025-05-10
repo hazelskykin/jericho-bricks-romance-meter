@@ -46,20 +46,28 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
       onClick={onArenaClick}
     >
       {/* Fountain in the center */}
-      <MudFlingFountain />
+      <MudFlingFountain fountainIntensity="medium" />
       
       {/* Player Character */}
       <MudCharacter 
+        id="maven"
         x={playerPosition.x}
         y={playerPosition.y}
+        width={80}
+        height={100}
         isPlayer={true}
+        isMuddy={false}
       />
       
       {/* Opponent Character */}
       <MudCharacter 
+        id="navarre"
         x={opponentPosition.x}
         y={opponentPosition.y}
+        width={80}
+        height={100}
         isPlayer={false}
+        isMuddy={false}
       />
       
       {/* Player's Mudballs */}
@@ -68,7 +76,6 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
           key={`player-ball-${index}`}
           x={ball.x}
           y={ball.y}
-          type="player"
           state={ball.state}
           angle={ball.angle || 0}
         />
@@ -80,7 +87,6 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
           key={`opponent-ball-${index}`}
           x={ball.x}
           y={ball.y}
-          type="opponent"
           state={ball.state}
           angle={ball.angle || 0}
         />

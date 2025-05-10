@@ -1,14 +1,25 @@
-// src/components/MudFling/MudBallSprite.tsx
+
 import React from 'react';
 
 interface MudBallSpriteProps {
   x: number;
   y: number;
   size?: number;
-  direction?: 'left' | 'right' | 'up' | 'down'; // Optional
+  direction?: 'left' | 'right' | 'up' | 'down';
+  state: 'flying' | 'splashed';
+  angle: number;
+  type?: string;
 }
 
-const MudBallSprite: React.FC<MudBallSpriteProps> = ({ x, y, size = 15, direction }) => {
+const MudBallSprite: React.FC<MudBallSpriteProps> = ({ 
+  x, 
+  y, 
+  size = 15, 
+  direction,
+  state = 'flying',
+  angle = 0,
+  type = 'player'
+}) => {
   // Optional direction-based style tweaks
   const rotationMap = {
     up: 'rotate-0',
@@ -22,11 +33,25 @@ const MudBallSprite: React.FC<MudBallSpriteProps> = ({ x, y, size = 15, directio
     top: y,
     width: size,
     height: size,
+    transform: `rotate(${angle}deg)`,
+  };
+
+  const getClassNames = () => {
+    const baseClasses = 'absolute rounded-full shadow-md';
+    
+    // Different styling based on state
+    if (state === 'flying') {
+      return `${baseClasses} bg-brown-800`;
+    } else if (state === 'splashed') {
+      return `${baseClasses} bg-brown-600 opacity-70`;
+    }
+    
+    return baseClasses;
   };
 
   return (
     <div
-      className={`absolute bg-brown-800 rounded-full shadow-md ${
+      className={`${getClassNames()} ${
         direction ? rotationMap[direction] : ''
       }`}
       style={style}
