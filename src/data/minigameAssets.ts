@@ -885,6 +885,9 @@ export const minigameAssets: MinigameAsset[] = [
     name: 'Dance Moves',
     path: '/assets/minigames/winter/galaDance/dance-moves.png',
     description: 'Icons representing different dance moves',
-    season:
-  }
+    season: 'winter',
+    minigame: 'galaDance',
+    type: 'image',
+    required: true
+  },
 ]
