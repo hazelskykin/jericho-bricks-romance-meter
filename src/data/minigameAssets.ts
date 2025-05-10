@@ -17,6 +17,66 @@ export interface MinigameAsset {
 export const minigameAssets: MinigameAsset[] = [
   // Spring - Brooms Away
   {
+    id: 'broomsAway-success',
+    name: 'Success Sound',
+    path: '/assets/audio/sfx/broomsAway-success.mp3',
+    description: 'Chime sound effect for successfully cleaning an area',
+    season: 'spring',
+    minigame: 'broomsAway',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'broomsAway-loop-gameplay',
+    name: 'Gameplay Music Loop',
+    path: '/assets/audio/music/broomsAway-loop-gameplay.mp3',
+    description: 'Background music loop for the Brooms Away minigame',
+    season: 'spring',
+    minigame: 'broomsAway',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'broomsAway-loop-drone',
+    name: 'Drone Hover Loop',
+    path: '/assets/audio/sfx/broomsAway-loop-drone.mp3',
+    description: 'Looping hover sound for the cleaning drone',
+    season: 'spring',
+    minigame: 'broomsAway',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'broomsAway-trash-collected',
+    name: 'Trash Collected',
+    path: '/assets/audio/sfx/broomsAway-trash-collected.mp3',
+    description: 'Sound effect for collecting a trash item',
+    season: 'spring',
+    minigame: 'broomsAway',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'broomsAway-grid-click',
+    name: 'Grid Click',
+    path: '/assets/audio/sfx/broomsAway-grid-click.mp3',
+    description: 'Soft click for interacting with grid tiles',
+    season: 'spring',
+    minigame: 'broomsAway',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'broomsAway-incorrect-square',
+    name: 'Incorrect Square',
+    path: '/assets/audio/sfx/broomsAway-incorrect-square.mp3',
+    description: 'Buzzer-like sound for incorrect tile selection',
+    season: 'spring',
+    minigame: 'broomsAway',
+    type: 'audio',
+    required: false
+  },
+  {
     id: 'broom-drone',
     name: 'Broom Drone',
     path: '/assets/minigames/spring/broomsAway/broom-drone.png',
@@ -59,6 +119,66 @@ export const minigameAssets: MinigameAsset[] = [
   
   // Spring - Mud Fling
   {
+    id: 'mudFling-loop-gameplay',
+    name: 'Gameplay Music Loop',
+    path: '/assets/audio/music/mudFling-loop-gameplay.mp3',
+    description: 'Background music loop for the Mud Fling minigame',
+    season: 'spring',
+    minigame: 'mudFling',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'mudFling-hit-boink',
+    name: 'Boink Hit Sound',
+    path: '/assets/audio/sfx/mudFling-hit-boink.mp3',
+    description: 'Funny chibi reaction sound when hit',
+    season: 'spring',
+    minigame: 'mudFling',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'mudFling-hit-splash',
+    name: 'Splash Hit Sound',
+    path: '/assets/audio/sfx/mudFling-hit-splash.mp3',
+    description: 'Splash effect when mud lands',
+    season: 'spring',
+    minigame: 'mudFling',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'mudFling-hit-splat',
+    name: 'Splat Hit Sound',
+    path: '/assets/audio/sfx/mudFling-hit-splat.mp3',
+    description: 'Messy mud splat impact sound',
+    season: 'spring',
+    minigame: 'mudFling',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'mudFling-throw-whoosh',
+    name: 'Throw Whoosh',
+    path: '/assets/audio/sfx/mudFling-throw-whoosh.mp3',
+    description: 'Throwing sound for a mud ball',
+    season: 'spring',
+    minigame: 'mudFling',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'mudFling-crowdcheer',
+    name: 'Crowd Cheer',
+    path: '/assets/audio/sfx/mudFling-crowdcheer.mp3',
+    description: 'Audience cheer reaction for Mud Fling',
+    season: 'spring',
+    minigame: 'mudFling',
+    type: 'audio',
+    required: false
+  },
+  {
     id: 'mud-ball',
     name: 'Mud Ball',
     path: '/assets/minigames/spring/mudFling/mud-ball.png',
@@ -88,18 +208,49 @@ export const minigameAssets: MinigameAsset[] = [
     type: 'image',
     required: true
   },
-  {
-    id: 'mud-splash',
-    name: 'Mud Splash Effect',
-    path: '/assets/minigames/spring/mudFling/mud-splash.png',
-    description: 'Splash effect when mud hits a character',
-    season: 'spring',
-    minigame: 'mudFling',
-    type: 'sprite',
-    required: true
-  },
   
   // Spring - Bloom With A View
+  // Bloom With A View
+  {
+    id: 'bloomWithAView-ambience-birdsong',
+    name: 'Birdsong Ambience',
+    path: '/assets/audio/sfx/bloomWithAView-ambience-birdsong.mp3',
+    description: 'Bird chirping ambience for the garden background',
+    season: 'spring',
+    minigame: 'bloomWithAView',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'bloomWithAView-loop-gameplay',
+    name: 'Gameplay Music Loop',
+    path: '/assets/audio/music/bloomWithAView-loop-gameplay.mp3',
+    description: 'Background music loop for Bloom With A View',
+    season: 'spring',
+    minigame: 'bloomWithAView',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'bloomWithAView-effect-rustle',
+    name: 'Rustle Effect',
+    path: '/assets/audio/sfx/bloomWithAView-effect-rustle.mp3',
+    description: 'Soft rustling sound for flower interaction',
+    season: 'spring',
+    minigame: 'bloomWithAView',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'bloomWithAView-success',
+    name: 'Success Sound',
+    path: '/assets/audio/sfx/bloomWithAView-success.mp3',
+    description: 'Twinkle sound for a successful flower placement',
+    season: 'spring',
+    minigame: 'bloomWithAView',
+    type: 'audio',
+    required: false
+  },
   {
     id: 'bloom-flower-tiles',
     name: 'Flower Tiles',
