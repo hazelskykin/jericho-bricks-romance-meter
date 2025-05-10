@@ -3,6 +3,9 @@ import { toast } from 'sonner';
 
 // Scene mapping for transitions
 const sceneMapping: Record<string, string> = {
+  // Prologue scenes
+  'prologue-intro': 'intro',
+  
   // Spring scenes
   'spring-character-selection': 'spring-character-selection',
   'spring-festival-planning': 'spring-planning',
@@ -24,6 +27,7 @@ const sceneMapping: Record<string, string> = {
 
 // Error fallbacks for scenes that might not exist
 const sceneFallbacks: Record<string, string> = {
+  'prologue-intro': 'intro',
   'spring-festival-planning': 'spring-intro',
   'summer-festival-planning': 'summer-intro',
   'autumn-festival-planning': 'autumn-intro',

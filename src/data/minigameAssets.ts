@@ -1,3 +1,4 @@
+
 /**
  * List of required graphic assets for all minigames in the Jericho Bricks game
  */
@@ -889,8 +890,7 @@ export const minigameAssets: MinigameAsset[] = [
     minigame: 'galaDance',
     type: 'image',
     required: true
-  },
-]
-};
+  }
+];
 
-export default MinigameAssets;
+export default minigameAssets;

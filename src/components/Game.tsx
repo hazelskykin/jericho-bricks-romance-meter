@@ -9,6 +9,7 @@ import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
 import { MinigameType } from '@/types/minigames';
 import { initializeGameSounds, soundManager } from '@/utils/soundEffects';
+import { toast } from 'sonner';
 
 const Game: React.FC = () => {
   const [showMainMenu, setShowMainMenu] = useState(true);
@@ -37,25 +38,44 @@ const Game: React.FC = () => {
   // Initialize sound system when component mounts
   useEffect(() => {
     if (!soundInitialized) {
-      initializeGameSounds();
-      setSoundInitialized(true);
-      console.log('Sound system initialized');
+      try {
+        initializeGameSounds();
+        setSoundInitialized(true);
+        console.log('Sound system initialized');
+      } catch (error) {
+        console.error('Failed to initialize sound system:', error);
+      }
     }
   }, [soundInitialized]);
 
   // Handle game start
   const handleStartGame = () => {
-    // Play UI click sound
-    soundManager.playSFX('ui-click');
+    try {
+      // Try to play UI click sound
+      soundManager.playSFX('ui-click');
+    } catch (error) {
+      console.warn('Could not play sound effect:', error);
+    }
     
     setShowMainMenu(false);
-    transitionToScene('prologue-intro');
+    
+    try {
+      // First try intro (which is the mapped version of prologue-intro)
+      transitionToScene('intro');
+    } catch (error) {
+      console.error('Failed to transition to intro scene:', error);
+      toast.error('Failed to start game. Please try again.');
+    }
   };
 
   // Handle game reset
   const handleResetGame = () => {
-    // Play UI click sound
-    soundManager.playSFX('ui-click');
+    try {
+      // Play UI click sound
+      soundManager.playSFX('ui-click');
+    } catch (error) {
+      console.warn('Could not play sound effect:', error);
+    }
     
     setShowMainMenu(true);
     transitionToScene('start');

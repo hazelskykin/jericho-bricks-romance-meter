@@ -1,94 +1,77 @@
 
-import React, { useEffect, useState } from 'react';
-import { CharacterId } from '@/types/game';
-import { ChibiImageData } from '@/data/characterChibis';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ChibiImageData } from '@/types/game';
 
 interface CharacterChibisPreviewProps {
-  characterChibis: Record<CharacterId, ChibiImageData>;
+  characterChibis: Record<string, ChibiImageData>;
   loadingComplete: boolean;
+  showNeutral?: boolean;
 }
 
-const CharacterChibisPreview: React.FC<CharacterChibisPreviewProps> = ({ characterChibis, loadingComplete }) => {
-  const [activeCharacterIds, setActiveCharacterIds] = useState<CharacterId[]>([]);
-  
-  useEffect(() => {
-    if (loadingComplete) {
-      // Stagger character appearances
-      const timeouts: NodeJS.Timeout[] = [];
-      const characters: CharacterId[] = ['maven', 'xavier', 'navarre', 'etta', 'senara'];
-      
-      characters.forEach((id, index) => {
-        const timeout = setTimeout(() => {
-          setActiveCharacterIds(prev => [...prev, id]);
-        }, index * 300); // 300ms delay between each character
-        
-        timeouts.push(timeout);
-      });
-      
-      return () => {
-        timeouts.forEach(timeout => clearTimeout(timeout));
-      };
-    }
-  }, [loadingComplete]);
-  
-  return (
-    <div className="relative h-[220px] w-[500px]">
-      {Object.entries(characterChibis).map(([id, data]) => {
-        const isActive = activeCharacterIds.includes(id as CharacterId);
-        const characterId = id as CharacterId;
-        
-        return (
-          <div 
-            key={id}
-            className={`absolute transition-all duration-500 ease-out ${getPositionClass(characterId)} ${
-              isActive 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 translate-y-10'
-            }`}
-            style={{ transitionDelay: isActive ? `${getCharacterIndex(characterId) * 0.2}s` : '0s' }}
-          >
-            <img 
-              src={data.neutralImage || data.image} // Prefer neutral image if available
-              alt={`${id} chibi`} 
-              className="h-auto drop-shadow-lg"
-              style={{ width: data.width || '100px' }}
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-
-// Helper function to get character position class
-const getPositionClass = (characterId: CharacterId): string => {
-  switch (characterId) {
-    case 'maven':
-      return 'left-[50%] bottom-0 transform -translate-x-1/2 z-30';
-    case 'xavier':
-      return 'left-[15%] bottom-0 transform -translate-x-1/2 z-20';
-    case 'navarre':
-      return 'left-[30%] bottom-0 transform -translate-x-1/2 z-20';
-    case 'etta':
-      return 'left-[70%] bottom-0 transform -translate-x-1/2 z-20';
-    case 'senara':
-      return 'left-[85%] bottom-0 transform -translate-x-1/2 z-20';
-    default:
-      return 'left-0 bottom-0';
-  }
-};
-
-// Helper function to get character index for animation delay
-const getCharacterIndex = (characterId: CharacterId): number => {
-  const indices: Record<CharacterId, number> = {
-    'maven': 0,
-    'xavier': 1,
-    'navarre': 2,
-    'etta': 3,
-    'senara': 4
+const CharacterChibisPreview: React.FC<CharacterChibisPreviewProps> = ({ 
+  characterChibis, 
+  loadingComplete,
+  showNeutral = true 
+}) => {
+  // Define colors for character frames
+  const characterColors = {
+    maven: '#0D98BA',   // Maven's teal
+    xavier: '#4CC2FF',  // Xavier's blue
+    navarre: '#FFB347', // Navarre's orange
+    etta: '#FF5E5B',    // Etta's red
+    senara: '#9C89FF'   // Senara's purple
   };
   
-  return indices[characterId] || 0;
+  // Animation variants for staggered entrance
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  return (
+    <motion.div 
+      className="flex items-end space-x-2"
+      variants={containerVariants}
+      initial="hidden"
+      animate={loadingComplete ? "visible" : "hidden"}
+    >
+      {Object.values(characterChibis).map((chibi) => (
+        <motion.div 
+          key={chibi.id} 
+          className="relative"
+          variants={itemVariants}
+        >
+          {/* Colored frame for the chibi */}
+          <div 
+            className="absolute inset-0 rounded-lg transform scale-105"
+            style={{ backgroundColor: characterColors[chibi.id as keyof typeof characterColors], opacity: 0.2 }}
+          />
+          
+          <img
+            src={showNeutral ? chibi.neutralImage : chibi.image}
+            alt={chibi.description}
+            width={chibi.width || "100px"}
+            height="auto"
+            className="object-contain relative z-10"
+          />
+        </motion.div>
+      ))}
+    </motion.div>
+  );
 };
 
 export default CharacterChibisPreview;

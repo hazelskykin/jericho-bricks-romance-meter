@@ -204,14 +204,19 @@ class AssetManager {
       return src.replace('/minigrames/', '/minigames/');
     }
     
-    if (src.includes('/bloomwithAView/')) {
+    if (src.includes('/minigames/spring/bloomwithAView/')) {
       // Fix the incorrect folder capitalization
-      return src.replace('/bloomwithAView/', '/bloomWithAView/');
+      return src.replace('/minigames/spring/bloomwithAView/', '/minigames/spring/bloomWithAView/');
     }
     
     // Fix locaton-icons typo if it exists
     if (src.includes('/locaton-icons.png')) {
       return src.replace('/locaton-icons.png', '/location-icons.png');
+    }
+    
+    // Handle specific files that might have different names in public vs reference
+    if (src.includes('/splashEffects_victoryEffect.png')) {
+      return src.replace('/splashEffects_victoryEffect.png', '/splashVictory.png');
     }
     
     return src;
