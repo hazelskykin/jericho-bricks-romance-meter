@@ -346,7 +346,7 @@ class SoundManager {
           
           // Only mark as error if it's not a user interaction issue
           if (error.name !== 'NotAllowedError') {
-            this.loadErrors[musicId] = true;
+            this.loadErrors[musicId] = 1; // Changed from boolean to number
           }
         });
       }
@@ -355,7 +355,7 @@ class SoundManager {
       this.currentMusic = musicId;
     } catch (e) {
       console.warn(`Error playing music ${musicId}:`, e);
-      this.loadErrors[musicId] = true;
+      this.loadErrors[musicId] = 1; // Changed from boolean to number
     }
   }
   

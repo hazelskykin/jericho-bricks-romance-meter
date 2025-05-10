@@ -2,11 +2,14 @@
 import { useState, useEffect } from 'react';
 import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
-import { Character, MudBall, Position } from '@/components/minigames/mudFling/types';
+import { 
+  Character, 
+  MudballData as MudBall, 
+  Position,
+  MudCharacterPosition
+} from '@/components/minigames/mudFling/types';
 import { useCharacterAI } from '@/components/minigames/mudFling/useCharacterAI';
 import { soundManager } from '@/utils/soundEffects';
-
-export type { Character, MudBall, Position };
 
 // Mock implementation of useMudBalls for compatibility
 const mockUseMudBalls = (characters: Character[], 
@@ -72,10 +75,12 @@ export function useMudFlingGame(onComplete: (success: boolean) => void, onExit: 
     throwMudBall
   } = mockUseMudBalls(characters, updateCharacter, updateScore);
   
-  // Initialize AI logic
+  // Initialize AI logic with dummy refs since we don't use the actual throwing logic
+  const dummyPlayerRef = { current: { x: 0, y: 0 } };
+  const dummyOpponentRef = { current: { x: 0, y: 0 } };
   const { aiCharactersThrow } = useCharacterAI({
-    playerPosition: { current: { x: 0, y: 0 } },
-    opponentPosition: { current: { x: 0, y: 0 } },
+    playerPosition: dummyPlayerRef,
+    opponentPosition: dummyOpponentRef,
     throwMudball: () => {}
   });
 

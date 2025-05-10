@@ -3,27 +3,36 @@ import React from 'react';
 import { CharacterId } from '@/types/game';
 
 interface MudCharacterProps {
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  isPlayer: boolean;
-  isMuddy: boolean;
+  id?: string;
+  characterId?: CharacterId;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  isPlayer?: boolean;
+  isMuddy?: boolean;
+  position?: string;
+  onThrow?: () => void;
 }
 
-const MudCharacter: React.FC<Partial<MudCharacterProps>> = ({
-  id = 'maven',
+const MudCharacter: React.FC<MudCharacterProps> = ({
+  id,
+  characterId,
   x,
   y,
   width = 80,
   height = 100,
   isPlayer,
-  isMuddy = false
+  isMuddy = false,
+  position,
+  onThrow
 }) => {
+  // Use either id or characterId, with preference for characterId
+  const characterIdValue = characterId || id || 'maven';
+
   // Map character ID to character-specific styling
   const getCharacterColor = () => {
-    switch (id) {
+    switch (characterIdValue) {
       case 'maven':
         return 'border-teal-400';
       case 'xavier':
@@ -41,10 +50,9 @@ const MudCharacter: React.FC<Partial<MudCharacterProps>> = ({
 
   // Get character image path based on id
   const getCharacterImage = () => {
-    const characterId = id as CharacterId;
     // Use chibi-neutral versions of characters when not muddy
     // Use regular chibi versions when muddy
-    return `/assets/characters/${characterId}-chibi${isMuddy ? '' : '-neutral'}.png`;
+    return `/assets/characters/${characterIdValue}-chibi${isMuddy ? '' : '-neutral'}.png`;
   };
 
   return (
@@ -65,7 +73,7 @@ const MudCharacter: React.FC<Partial<MudCharacterProps>> = ({
       >
         <img
           src={getCharacterImage()}
-          alt={`Character ${id}`}
+          alt={`Character ${characterIdValue}`}
           className="w-full h-full object-contain"
         />
         

@@ -184,6 +184,9 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
         opponentMudballs={opponentMudballs}
         onPlayerMove={handlePlayerMove}
         onArenaClick={handlePlayerThrow}
+        playerCharacter="maven"
+        opponentCharacter="navarre"
+        score={{ player: score, opponent: 0 }}
       />
 
       <MudFlingControls 

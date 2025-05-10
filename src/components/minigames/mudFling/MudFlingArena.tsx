@@ -6,24 +6,36 @@ import { CharacterId } from '@/types/game';
 import { assetManager } from '@/utils/assetManager';
 import MudFlingFountain from './MudFlingFountain';
 import { soundManager } from '@/utils/soundEffects';
-import { MudballData } from './types';
+import { MudballData, MudCharacterPosition } from './types';
 
 interface MudFlingArenaProps {
-  playerCharacter: CharacterId;
-  opponentCharacter: CharacterId;
-  score: { player: number; opponent: number };
-  onThrow: () => void;
-  onHit: (target: 'player' | 'opponent') => void;
-  mudballs: MudballData[];
+  playerCharacter?: CharacterId;
+  opponentCharacter?: CharacterId;
+  playerPosition?: MudCharacterPosition;
+  opponentPosition?: MudCharacterPosition;
+  score?: { player: number; opponent: number };
+  onThrow?: () => void;
+  onHit?: (target: 'player' | 'opponent') => void;
+  mudballs?: MudballData[];
+  playerMudballs?: MudballData[];
+  opponentMudballs?: MudballData[];
+  onPlayerMove?: (x: number, y: number) => void;
+  onArenaClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 const MudFlingArena: React.FC<MudFlingArenaProps> = ({
-  playerCharacter,
-  opponentCharacter,
-  score,
+  playerCharacter = 'maven',
+  opponentCharacter = 'xavier',
+  playerPosition,
+  opponentPosition,
+  score = { player: 0, opponent: 0 },
   onThrow,
   onHit,
-  mudballs
+  mudballs = [],
+  playerMudballs = [],
+  opponentMudballs = [],
+  onPlayerMove,
+  onArenaClick
 }) => {
   const arenaRef = useRef<HTMLDivElement>(null);
   const [arenaSize, setArenaSize] = useState({ width: 800, height: 600 });
@@ -57,6 +69,13 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
   const playerScore = score.player.toString().padStart(2, '0');
   const opponentScore = score.opponent.toString().padStart(2, '0');
 
+  // Handle arena interactions if needed
+  const handleArenaClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (onArenaClick) {
+      onArenaClick(e);
+    }
+  };
+
   return (
     <div 
       ref={arenaRef} 
@@ -68,6 +87,7 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
         opacity: backgroundLoaded ? 1 : 0.5,
         transition: 'opacity 0.5s ease-in-out'
       }}
+      onClick={handleArenaClick}
     >
       {/* Score display */}
       <div className="absolute top-4 left-0 right-0 flex justify-center z-10">
@@ -87,17 +107,22 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
           characterId={playerCharacter} 
           position="left"
           onThrow={onThrow}
+          x={playerPosition?.x}
+          y={playerPosition?.y}
+          isPlayer={true}
         />
       </div>
       <div className="absolute bottom-0 right-[5%]">
         <MudCharacter 
-          characterId={opponentCharacter} 
+          characterId={opponentCharacter}
           position="right"
+          x={opponentPosition?.x}
+          y={opponentPosition?.y}
         />
       </div>
       
-      {/* Render mudballs */}
-      {mudballs.map(mudball => (
+      {/* Render all mudballs (combined list or separate lists) */}
+      {mudballs.length > 0 && mudballs.map(mudball => (
         <MudBallSprite 
           key={mudball.id}
           mudball={mudball}
@@ -112,7 +137,40 @@ const MudFlingArena: React.FC<MudFlingArenaProps> = ({
             } catch (e) {
               console.warn('Could not play mud hit sound');
             }
-            onHit(target);
+            if (onHit) onHit(target);
+          }}
+        />
+      ))}
+
+      {/* Render player and opponent mudballs if provided separately */}
+      {mudballs.length === 0 && playerMudballs.map(mudball => (
+        <MudBallSprite 
+          key={mudball.id}
+          mudball={mudball}
+          arenaSize={arenaSize}
+          onHit={(target) => {
+            try {
+              soundManager.playSFX('mud-hit');
+            } catch (e) {
+              console.warn('Could not play mud hit sound');
+            }
+            if (onHit) onHit(target);
+          }}
+        />
+      ))}
+
+      {mudballs.length === 0 && opponentMudballs.map(mudball => (
+        <MudBallSprite 
+          key={mudball.id}
+          mudball={mudball}
+          arenaSize={arenaSize}
+          onHit={(target) => {
+            try {
+              soundManager.playSFX('mud-hit');
+            } catch (e) {
+              console.warn('Could not play mud hit sound');
+            }
+            if (onHit) onHit(target);
           }}
         />
       ))}

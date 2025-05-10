@@ -1,5 +1,6 @@
+
 import { useState, useCallback } from 'react';
-import { Character, MudBall, Position, MudCharacterPosition } from './types';
+import { Character, MudballData as MudBall, Position, MudCharacterPosition } from './types';
 
 interface UseCharacterAIProps {
   playerPosition: React.RefObject<MudCharacterPosition>;

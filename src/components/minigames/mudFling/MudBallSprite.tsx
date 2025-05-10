@@ -1,25 +1,37 @@
 
 import React from 'react';
+import { MudballData } from './types';
 
 interface MudBallSpriteProps {
-  x: number;
-  y: number;
+  mudball?: MudballData;
+  x?: number;
+  y?: number;
   size?: number;
   direction?: 'left' | 'right' | 'up' | 'down';
-  state: 'flying' | 'splashed';
-  angle: number;
+  state?: 'flying' | 'splashed';
+  angle?: number;
   type?: string;
+  arenaSize?: { width: number; height: number };
+  onHit?: (target: 'player' | 'opponent') => void;
 }
 
 const MudBallSprite: React.FC<MudBallSpriteProps> = ({ 
-  x, 
-  y, 
+  mudball,
+  x: propX, 
+  y: propY, 
   size = 15, 
   direction,
-  state = 'flying',
-  angle = 0,
-  type = 'player'
+  state: propState = 'flying',
+  angle: propAngle = 0,
+  type = 'player',
+  onHit
 }) => {
+  // Use mudball prop if available, otherwise fallback to individual props
+  const x = mudball ? mudball.x : propX || 0;
+  const y = mudball ? mudball.y : propY || 0;
+  const state = mudball ? mudball.state : propState;
+  const angle = mudball ? (mudball.rotation || mudball.angle || propAngle) : propAngle;
+
   // Optional direction-based style tweaks
   const rotationMap = {
     up: 'rotate-0',
@@ -31,8 +43,8 @@ const MudBallSprite: React.FC<MudBallSpriteProps> = ({
   const style = {
     left: x,
     top: y,
-    width: size,
-    height: size,
+    width: mudball?.size || size,
+    height: mudball?.size || size,
     transform: `rotate(${angle}deg)`,
   };
 
@@ -42,7 +54,7 @@ const MudBallSprite: React.FC<MudBallSpriteProps> = ({
     // Different styling based on state
     if (state === 'flying') {
       return `${baseClasses} bg-brown-800`;
-    } else if (state === 'splashed') {
+    } else if (state === 'splashed' || state === 'splashing') {
       return `${baseClasses} bg-brown-600 opacity-70`;
     }
     
