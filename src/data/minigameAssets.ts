@@ -614,20 +614,40 @@ export const minigameAssets: MinigameAsset[] = [
   
   // Autumn - Crafter
   {
-    id: 'crafter-materials',
-    name: 'Craft Materials',
-    path: '/assets/minigames/autumn/crafter/materials.png',
-    description: 'Different materials for crafting items',
+    id: 'crafter-fabricBase',
+    name: 'Crafter Fabric Base',
+    path: '/assets/minigames/autumn/crafter/fabricBase.png',
+    description: 'Fabric base material for crafting items',
     season: 'autumn',
     minigame: 'crafter',
     type: 'sprite',
     required: true
   },
   {
-    id: 'crafter-tools',
-    name: 'Crafting Tools',
-    path: '/assets/minigames/autumn/crafter/tools.png',
-    description: 'Tools used for crafting',
+    id: 'crafter-metalBase',
+    name: 'Crafter Metal Base',
+    path: '/assets/minigames/autumn/crafter/metalBase.png',
+    description: 'Metal base material for crafting items',
+    season: 'autumn',
+    minigame: 'crafter',
+    type: 'sprite',
+    required: true
+  },
+  {
+    id: 'crafter-woodBase',
+    name: 'Crafter Wood Base',
+    path: '/assets/minigames/autumn/crafter/woodBase.png',
+    description: 'Wood base material for crafting items',
+    season: 'autumn',
+    minigame: 'crafter',
+    type: 'sprite',
+    required: true
+  },
+  {
+    id: 'crafter-accents',
+    name: 'Crafting Accents',
+    path: '/assets/minigames/autumn/crafter/accents.png',
+    description: 'Accents and decor used for crafting',
     season: 'autumn',
     minigame: 'crafter',
     type: 'sprite',
