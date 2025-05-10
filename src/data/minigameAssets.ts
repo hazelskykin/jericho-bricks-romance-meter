@@ -559,16 +559,58 @@ export const minigameAssets: MinigameAsset[] = [
     type: 'sprite',
     required: true
   },
-  {
-    id: 'tour-guide-guests',
-    name: 'Guest Profiles',
-    path: '/assets/minigames/autumn/tourGuide/guest-profiles.png',
-    description: 'Profile images for different tour guests',
-    season: 'autumn',
-    minigame: 'tourGuide',
-    type: 'sprite',
-    required: true
-  },
+  // Tour Guide - Autumn Minigame
+{
+  id: 'tourGuide-stamp-check',
+  name: 'Stamp Confirmation',
+  path: '/assets/audio/sfx/tourGuide-stamp-check.mp3',
+  description: 'Sound of stamping confirmation for a guest tour group',
+  season: 'autumn',
+  minigame: 'tourGuide',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'tourGuide-tour-cancel',
+  name: 'Tour Cancelled',
+  path: '/assets/audio/sfx/tourGuide-tour-cancel.mp3',
+  description: 'Crumpling paper sound for when a tour is cancelled due to incorrect group size',
+  season: 'autumn',
+  minigame: 'tourGuide',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'tourGuide-location-select',
+  name: 'Location Select',
+  path: '/assets/audio/sfx/tourGuide-location-select.mp3',
+  description: 'Ping sound when selecting a location on the city map',
+  season: 'autumn',
+  minigame: 'tourGuide',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'tourGuide-slot-confirm',
+  name: 'Slot Confirmation',
+  path: '/assets/audio/sfx/tourGuide-slot-confirm.mp3',
+  description: 'Swoosh sound when a guest group is booked into a tour slot',
+  season: 'autumn',
+  minigame: 'tourGuide',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'tourGuide-loop-gameplay',
+  name: 'Gameplay Music Loop',
+  path: '/assets/audio/music/tourGuide-loop-gameplay.mp3',
+  description: 'Background music loop for the Tour Guide minigame',
+  season: 'autumn',
+  minigame: 'tourGuide',
+  type: 'audio',
+  required: false
+},
+
   
   // Autumn - Crafter
   {
