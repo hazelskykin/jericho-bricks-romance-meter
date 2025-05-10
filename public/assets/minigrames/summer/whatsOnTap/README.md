@@ -1,1 +1,0 @@
-What's On Tap: Glass sprites, ingredient sprites, bar background

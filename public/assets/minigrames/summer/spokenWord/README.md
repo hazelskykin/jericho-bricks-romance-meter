@@ -1,1 +1,0 @@
-Spoken Word: Paper background, theme icons

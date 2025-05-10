@@ -1,1 +1,0 @@
-Charity Auction: Auction item sprites, auction background

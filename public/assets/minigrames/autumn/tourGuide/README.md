@@ -1,1 +1,0 @@
-Tour Guide: City map, location icons, guest profiles
