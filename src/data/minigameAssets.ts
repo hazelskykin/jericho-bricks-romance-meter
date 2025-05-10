@@ -342,7 +342,7 @@ export const minigameAssets: MinigameAsset[] = [
     minigame: 'serenade',
     type: 'audio',
     required: false
-  }
+  },
   {
     id: 'serenade-notes',
     name: 'Music Notes',
@@ -491,7 +491,7 @@ export const minigameAssets: MinigameAsset[] = [
     id: 'whatsOnTap-loop-gameplay',
     name: 'Gameplay Music Loop',
     path: '/assets/audio/music/whatsOnTap-loop-gameplay.mp3',
-    description: 'Background music loop for the What’s On Tap minigame',
+    description: 'Background music loop for the What's On Tap minigame',
     season: 'summer',
     minigame: 'whatsOnTap',
     type: 'audio',

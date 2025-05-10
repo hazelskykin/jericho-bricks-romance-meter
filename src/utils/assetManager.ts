@@ -23,6 +23,7 @@ class AssetManager {
   private loadQueue: string[];
   private loading: boolean;
   private completionCallbacks: Array<() => void>;
+  private placeholderImage: HTMLImageElement | null = null;
 
   private constructor() {
     this.cache = {
@@ -33,6 +34,36 @@ class AssetManager {
     this.loadQueue = [];
     this.loading = false;
     this.completionCallbacks = [];
+    this.initPlaceholder();
+  }
+
+  private async initPlaceholder() {
+    try {
+      // Create a simple placeholder image as SVG data URL for fallbacks
+      const placeholderSvg = `
+        <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="200" fill="#303050" />
+          <text x="50%" y="50%" font-family="sans-serif" font-size="24" fill="#9b87f5" text-anchor="middle" dominant-baseline="middle">
+            Image
+          </text>
+        </svg>
+      `;
+      
+      // Convert SVG to data URL
+      const svgBlob = new Blob([placeholderSvg], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(svgBlob);
+      
+      // Create image and wait for it to load
+      const img = new Image();
+      await new Promise((resolve) => {
+        img.onload = resolve;
+        img.src = url;
+      });
+      
+      this.placeholderImage = img;
+    } catch (e) {
+      console.error('Could not create placeholder image', e);
+    }
   }
 
   public static getInstance(): AssetManager {
@@ -101,12 +132,15 @@ class AssetManager {
    * Load a single asset
    */
   private loadSingleAsset(src: string): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       // Check if already loaded
       if (this.cache.loaded.has(src)) {
         resolve(this.cache.images.get(src)!);
         return;
       }
+
+      // Fix path if it's a minigame path with wrong casing
+      const fixedPath = this.fixMinigamePath(src);
 
       // Load new image
       const img = new Image();
@@ -118,23 +152,69 @@ class AssetManager {
       };
       
       img.onerror = () => {
-        console.error(`Failed to load image: ${src}`);
+        console.warn(`Failed to load image: ${fixedPath}`);
         this.cache.failed.add(src);
         
-        // Try fallback
-        if (!src.includes('silence.mp3')) {
-          console.info(`Trying fallback asset for: ${src}`);
-          const fallbackImg = new Image();
-          fallbackImg.src = '/placeholder.svg';
+        // Try to provide appropriate fallback based on path
+        if (this.placeholderImage) {
+          // Use type-appropriate placeholder
+          const fallbackImg = this.placeholderImage;
+          console.info(`Using placeholder for: ${src}`);
           this.cache.images.set(src, fallbackImg);
           resolve(fallbackImg);
         } else {
-          reject(new Error(`Failed to load asset: ${src}`));
+          // If even the placeholder fails, create a simple canvas
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = 100;
+            canvas.height = 100;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.fillStyle = '#303050';
+              ctx.fillRect(0, 0, 100, 100);
+              ctx.fillStyle = '#9b87f5';
+              ctx.font = '14px sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText('Image', 50, 50);
+              
+              const fallbackImg = new Image();
+              fallbackImg.src = canvas.toDataURL();
+              this.cache.images.set(src, fallbackImg);
+              resolve(fallbackImg);
+            }
+          } catch (e) {
+            console.error('Failed to create fallback image', e);
+            resolve(new Image()); // Empty image as last resort
+          }
         }
       };
       
-      img.src = src;
+      // Use the potentially fixed path
+      img.src = fixedPath;
     });
+  }
+
+  /**
+   * Fix paths with wrong casing (common issue with minigame paths)
+   */
+  private fixMinigamePath(src: string): string {
+    // Handle common path issues
+    if (src.includes('/minigrames/')) {
+      // Fix the incorrect path folder name
+      return src.replace('/minigrames/', '/minigames/');
+    }
+    
+    if (src.includes('/bloomwithAView/')) {
+      // Fix the incorrect folder capitalization
+      return src.replace('/bloomwithAView/', '/bloomWithAView/');
+    }
+    
+    // Fix locaton-icons typo if it exists
+    if (src.includes('/locaton-icons.png')) {
+      return src.replace('/locaton-icons.png', '/location-icons.png');
+    }
+    
+    return src;
   }
 
   /**
@@ -175,6 +255,7 @@ class AssetManager {
   public exposeToWindow(): void {
     if (typeof window !== 'undefined') {
       (window as any).gameImageCache = this.cache.images;
+      (window as any).assetManager = this;
     }
   }
 }

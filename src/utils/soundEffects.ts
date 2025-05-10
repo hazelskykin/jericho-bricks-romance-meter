@@ -21,6 +21,7 @@ class SoundManager {
   private sfxVolume: number = 0.7;
   private musicVolume: number = 0.5;
   private currentMusic: string | null = null;
+  private silenceAudio: HTMLAudioElement | null = null;
 
   constructor() {
     // Initialize with empty sounds
@@ -61,9 +62,29 @@ class SoundManager {
     try {
       const testAudio = new Audio();
       this.audioAvailable = (typeof testAudio.canPlayType === 'function');
+      if (this.audioAvailable) {
+        // Create a silent audio as fallback
+        this.createSilenceAudio();
+      }
     } catch (e) {
       console.warn('Audio not supported in this environment, all sound will be disabled');
       this.audioAvailable = false;
+    }
+  }
+  
+  // Create a silent audio element for fallbacks
+  private createSilenceAudio() {
+    try {
+      // Create silent audio using base64 encoded mp3
+      // This is a 0.1 second silent MP3
+      const silenceBase64 = 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=';
+      
+      const audio = new Audio(silenceBase64);
+      audio.loop = false;
+      audio.volume = 0;
+      this.silenceAudio = audio;
+    } catch (e) {
+      console.warn('Could not create silence audio', e);
     }
   }
 
@@ -77,9 +98,12 @@ class SoundManager {
       try {
         const audio = new Audio();
         
+        // Fix common audio paths issues
+        const fixedSrc = this.fixAudioPath(effect.src);
+        
         // Add error handling for the load event
         audio.onerror = (e) => {
-          console.warn(`Could not load sound: ${effect.src}`);
+          console.warn(`Could not load sound: ${fixedSrc}`);
           this.loadErrors[effect.id] = true;
           this.errorCount++;
           
@@ -87,23 +111,27 @@ class SoundManager {
           if (effect.fallbackSrc) {
             console.log(`Trying fallback sound: ${effect.fallbackSrc}`);
             audio.src = effect.fallbackSrc;
+          } else if (this.silenceAudio) {
+            // If no fallback provided, use silence
+            // This ensures we still have an audio element that can be played without errors
+            this.replaceSoundWithSilence(effect.id, effect.category === 'music');
           }
           
           // Dispatch event to notify components
           window.dispatchEvent(new CustomEvent('sound-error', { 
-            detail: { id: effect.id, src: effect.src } 
+            detail: { id: effect.id, src: fixedSrc } 
           }));
         };
 
         // Add event listeners to improve error handling
         audio.addEventListener('error', () => {
-          console.warn(`Error event triggered for sound: ${effect.src}`);
+          console.warn(`Error event triggered for sound: ${fixedSrc}`);
           this.loadErrors[effect.id] = true;
           this.errorCount++;
           
           // Dispatch event to notify components
           window.dispatchEvent(new CustomEvent('sound-error', { 
-            detail: { id: effect.id, src: effect.src } 
+            detail: { id: effect.id, src: fixedSrc } 
           }));
         }, false);
         
@@ -117,19 +145,50 @@ class SoundManager {
           this.sounds[effect.id] = audio;
         }
         
-        audio.src = effect.src;
+        audio.src = fixedSrc;
+        audio.preload = 'auto'; // Explicitly set preload
         audio.load(); // Explicitly start loading the audio
       } catch (e) {
         console.warn(`Error initializing sound ${effect.id}:`, e);
         this.loadErrors[effect.id] = true;
         this.errorCount++;
+        // Create silent audio as fallback
+        this.replaceSoundWithSilence(effect.id, effect.category === 'music');
       }
     });
+  }
+  
+  // Replace a failed sound with silence
+  private replaceSoundWithSilence(soundId: string, isMusic: boolean = false) {
+    if (!this.silenceAudio) return;
+    
+    try {
+      // Clone the silence audio element for this sound
+      const silentAudio = this.silenceAudio.cloneNode() as HTMLAudioElement;
+      
+      if (isMusic) {
+        this.music[soundId] = silentAudio;
+      } else {
+        this.sounds[soundId] = silentAudio;
+      }
+    } catch (e) {
+      console.error('Failed to create silent audio fallback', e);
+    }
+  }
+  
+  // Fix common audio path issues
+  private fixAudioPath(src: string): string {
+    // Check if audio file path needs fixing 
+    // (e.g., if path is /assets/audio/sfx/x.mp3 but file is actually /audio/x.mp3)
+    if (src.startsWith('/assets/audio/')) {
+      return src.replace('/assets/audio/', '/audio/');
+    }
+    return src;
   }
 
   play(soundId: string): void {
     // Skip if sound is missing, muted, or audio is not available
-    if (this.muted || !this.audioAvailable || !this.sounds[soundId] || this.loadErrors[soundId]) {
+    if (this.muted || !this.audioAvailable || !this.sounds[soundId]) {
       return;
     }
     
@@ -148,12 +207,16 @@ class SoundManager {
       if (playPromise !== undefined) {
         playPromise.catch(error => {
           console.warn(`Failed to play sound ${soundId}:`, error);
-          this.loadErrors[soundId] = true;
           
-          // Dispatch event to notify components
-          window.dispatchEvent(new CustomEvent('sound-error', { 
-            detail: { id: soundId, error } 
-          }));
+          // Only mark as error if it's not a user interaction issue
+          if (error.name !== 'NotAllowedError') {
+            this.loadErrors[soundId] = true;
+            
+            // Dispatch event to notify components
+            window.dispatchEvent(new CustomEvent('sound-error', { 
+              detail: { id: soundId, error } 
+            }));
+          }
         });
       }
     } catch (e) {
@@ -191,7 +254,11 @@ class SoundManager {
       if (playPromise !== undefined) {
         playPromise.catch(error => {
           console.warn(`Failed to play music ${musicId}:`, error);
-          this.loadErrors[musicId] = true;
+          
+          // Only mark as error if it's not a user interaction issue
+          if (error.name !== 'NotAllowedError') {
+            this.loadErrors[musicId] = true;
+          }
         });
       }
       
@@ -341,10 +408,22 @@ class SoundManager {
   getErrorCount(): number {
     return this.errorCount;
   }
+  
+  // Expose the manager to window for debugging
+  exposeToWindow(): void {
+    if (typeof window !== 'undefined') {
+      (window as any).soundManager = this;
+    }
+  }
 }
 
 // Export a singleton instance
 export const soundManager = new SoundManager();
+
+// Expose to window for debugging
+if (typeof window !== 'undefined') {
+  (window as any).soundManager = soundManager;
+}
 
 // Organize sounds by category
 export type SoundCategory = 'ui' | 'minigame' | 'dialogue' | 'ambient' | 'music';
@@ -397,18 +476,11 @@ export function initializeGameSounds(): void {
     { id: 'score-up', src: '/audio/bellding.mp3', category: 'minigame', volume: 0.5 },
     { id: 'click', src: '/audio/buttonPress.mp3', category: 'ui', volume: 0.4 },
     { id: 'win', src: '/audio/fanfare.mp3', category: 'minigame', volume: 0.7 },
-    { id: 'error', src: '/audio/buzz.mp3', category: 'ui', volume: 0.4 },
-    
-    // Ambient background sounds
-    { id: 'ambient-city', src: '/audio/doorchime.mp3', category: 'ambient', volume: 0.3, loop: true },
-    { id: 'ambient-nature', src: '/audio/birdsong.mp3', category: 'ambient', volume: 0.2, loop: true },
-    
-    // Music tracks - these would ideally be longer audio files
-    { id: 'music-menu', src: '/audio/flourish.mp3', category: 'music', volume: 0.4, loop: true },
-    { id: 'game-background', src: '/audio/birdsong.mp3', category: 'music', volume: 0.3, loop: true },
+    { id: 'error', src: '/audio/buzz.mp3', category: 'ui', volume: 0.4 }
   ];
   
   soundManager.preloadSounds(gameSounds);
+  soundManager.exposeToWindow();
 }
 
 // Hook to play sounds related to UI interactions

@@ -29,8 +29,10 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
     let total = 0;
     if (!priorityOnly) {
       total += Object.keys(backgrounds).length;
-      total += Object.keys(charactersData).length;
-      total += minigameAssets.length;
+      total += Object.keys(charactersData).length * 5; // Approximate expressions per character
+      
+      // Count only required minigame assets for more accurate progress
+      total += minigameAssets.filter(asset => asset.required).length;
     } else {
       // Count only priority assets
       total = 5; // Example: Adjust based on actual priority assets
@@ -57,7 +59,9 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
             
             // Type check for string path
             if (typeof expressionSrc === 'string') {
-              await assetManager.preloadAssets([expressionSrc]);
+              await assetManager.preloadAssets([expressionSrc], (loadedCount) => {
+                // Update progress internally
+              });
               loaded++;
               updateProgress(loaded + errorCount);
             }
@@ -82,8 +86,11 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
       
       try {
         const backgroundPaths = backgroundKeys.map(key => backgrounds[key].image);
-        await assetManager.preloadAssets(backgroundPaths);
+        await assetManager.preloadAssets(backgroundPaths, (loadedCount) => {
+          // Update progress internally
+        });
         loaded = backgroundPaths.length;
+        updateProgress(prevLoaded => prevLoaded + loaded);
       } catch (err) {
         console.error(`Error loading backgrounds:`, err);
         errored++;
@@ -97,13 +104,17 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
     const loadMinigameAssets = async () => {
       console.log('Loading minigame assets...');
       
+      // Only load required assets for a better user experience
+      const requiredAssets = minigameAssets.filter(asset => asset.required);
       let loaded = 0;
       let errored = 0;
       
       try {
-        const assetPaths = minigameAssets.map(asset => asset.path);
-        await assetManager.preloadAssets(assetPaths);
-        loaded = assetPaths.length;
+        const assetPaths = requiredAssets.map(asset => asset.path);
+        await assetManager.preloadAssets(assetPaths, (loadedCount) => {
+          loaded = loadedCount;
+          updateProgress(prevLoaded => prevLoaded + loaded);
+        });
       } catch (err) {
         console.error(`Error loading minigame assets:`, err);
         errored++;
@@ -124,9 +135,10 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
           '/assets/characters/etta/etta-neutral.png',
           '/assets/characters/maven/maven-neutral.png',
           '/assets/characters/navarre/navarre-happy.png'
-        ]);
+        ], (loadedCount) => {
+          updateProgress(loadedCount);
+        });
         
-        updateProgress(5);
         console.log('Priority assets loaded successfully.');
       } catch (error) {
         console.error('Error loading priority assets:', error);
@@ -158,7 +170,15 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
     // Check if all required assets are loaded
     if (backgroundsLoaded && charactersLoaded && minigameAssetsLoaded) {
       if (errorCount > 0) {
-        toast.error(`Assets loaded with ${errorCount} errors. Check console for details.`);
+        // Only show an error toast if there are a significant number of errors
+        if (errorCount > 5) {
+          toast.error(`Some assets failed to load (${errorCount} errors). Fallbacks will be used.`, {
+            duration: 5000
+          });
+        } else {
+          // For fewer errors, just log them
+          console.warn(`${errorCount} assets failed to load. Fallbacks will be used.`);
+        }
       }
       
       // Delay the onComplete callback to ensure assets are fully ready
@@ -178,15 +198,15 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
       <div className="w-64 h-4 bg-gray-300 rounded-full">
         <div
           className="h-full bg-purple-600 rounded-full transition-all duration-500"
-          style={{ width: `${progress}%` }}
+          style={{ width: `${Math.min(progress, 100)}%` }}
         ></div>
       </div>
       <div className="text-white text-sm mt-2">
-        {assetsLoaded} / {totalAssets} Assets Loaded ({progress.toFixed(0)}%)
+        {assetsLoaded} / {totalAssets} Assets Loaded ({Math.min(progress, 100).toFixed(0)}%)
       </div>
       {errorCount > 0 && (
-        <div className="text-red-500 text-sm mt-2">
-          {errorCount} Errors. See console for details.
+        <div className="text-amber-400 text-sm mt-2">
+          {errorCount} assets couldn't be loaded. Fallbacks will be used where possible.
         </div>
       )}
     </div>
