@@ -10,6 +10,7 @@ import useGameScenes from '../hooks/useGameScenes';
 import { MinigameType } from '@/types/minigames';
 import { soundManager } from '@/utils/soundEffects';
 import { toast } from 'sonner';
+import { initializeGameSounds } from '@/utils/soundEffects';
 
 const Game: React.FC = () => {
   const [showMainMenu, setShowMainMenu] = useState(true);
@@ -42,6 +43,7 @@ const Game: React.FC = () => {
   useEffect(() => {
     if (!soundInitialized) {
       try {
+        initializeGameSounds();
         soundManager.exposeToWindow();
         setSoundInitialized(true);
         console.log('Sound system initialized');
@@ -66,6 +68,9 @@ const Game: React.FC = () => {
     
     // If intro scene exists in our scenes data, transition to it
     transitionToScene('intro');
+    
+    // Show toast indicating game started
+    toast.success('Starting new game...');
   };
 
   // Handle game reset
@@ -83,6 +88,12 @@ const Game: React.FC = () => {
   // Handle about button click
   const handleAbout = () => {
     console.log('Showing about screen');
+    try {
+      soundManager.playSFX('ui-click');
+    } catch (error) {
+      console.warn('Could not play sound effect:', error);
+    }
+    
     transitionToScene('about');
   };
 

@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import { soundManager } from '@/utils/soundEffects';
 
 interface MenuButtonsProps {
   onNewGame: () => void;
@@ -9,19 +9,35 @@ interface MenuButtonsProps {
 }
 
 const MenuButtons: React.FC<MenuButtonsProps> = ({ onNewGame, onAbout }) => {
-  const handleNewGameClick = (e: React.MouseEvent) => {
+  const handleNewGameClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     console.log("New Game button clicked inside MenuButtons");
+    
+    // Try to play click sound
+    try {
+      soundManager.playSFX('ui-click');
+    } catch (error) {
+      console.warn('Failed to play click sound:', error);
+    }
+    
     onNewGame();
-  };
+  }, [onNewGame]);
 
-  const handleAboutClick = (e: React.MouseEvent) => {
+  const handleAboutClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     console.log("About button clicked inside MenuButtons");
+    
+    // Try to play click sound
+    try {
+      soundManager.playSFX('ui-click');
+    } catch (error) {
+      console.warn('Failed to play click sound:', error);
+    }
+    
     if (onAbout) {
       onAbout();
     }
-  };
+  }, [onAbout]);
 
   return (
     <div className="space-y-4">

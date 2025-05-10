@@ -1,12 +1,6 @@
+
 // Sound utility for managing game sound effects
-type SoundEffect = {
-  id: string;
-  src: string;
-  volume?: number;
-  fallbackSrc?: string;
-  category?: 'ui' | 'minigame' | 'dialogue' | 'ambient' | 'music';
-  loop?: boolean;
-};
+import { SoundCategory, SoundEffect } from '@/types/assets';
 
 class SoundManager {
   private sounds: Record<string, HTMLAudioElement> = {};
@@ -117,9 +111,11 @@ class SoundManager {
           }
           
           // Dispatch event to notify components
-          window.dispatchEvent(new CustomEvent('sound-error', { 
-            detail: { id: effect.id, src: fixedSrc } 
-          }));
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('sound-error', { 
+              detail: { id: effect.id, src: fixedSrc } 
+            }));
+          }
         };
 
         // Add event listeners to improve error handling
@@ -129,9 +125,11 @@ class SoundManager {
           this.errorCount++;
           
           // Dispatch event to notify components
-          window.dispatchEvent(new CustomEvent('sound-error', { 
-            detail: { id: effect.id, src: fixedSrc } 
-          }));
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('sound-error', { 
+              detail: { id: effect.id, src: fixedSrc } 
+            }));
+          }
         }, false);
         
         // Set volume based on category
@@ -177,6 +175,11 @@ class SoundManager {
   
   // Fix common audio path issues
   private fixAudioPath(src: string): string {
+    // Check if path is undefined (should not happen with proper types, but just in case)
+    if (!src) {
+      return '';
+    }
+    
     // Check if audio file path needs fixing 
     // (e.g., if path is /assets/audio/sfx/x.mp3 but file is actually /audio/x.mp3)
     if (src.startsWith('/assets/audio/')) {
@@ -188,6 +191,10 @@ class SoundManager {
   play(soundId: string): void {
     // Skip if sound is missing, muted, or audio is not available
     if (this.muted || !this.audioAvailable || !this.sounds[soundId]) {
+      // If sound is missing, create a silent audio fallback
+      if (!this.sounds[soundId]) {
+        this.replaceSoundWithSilence(soundId);
+      }
       return;
     }
     
@@ -212,9 +219,11 @@ class SoundManager {
             this.loadErrors[soundId] = true;
             
             // Dispatch event to notify components
-            window.dispatchEvent(new CustomEvent('sound-error', { 
-              detail: { id: soundId, error } 
-            }));
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new CustomEvent('sound-error', { 
+                detail: { id: soundId, error } 
+              }));
+            }
           }
         });
       }
@@ -424,9 +433,6 @@ if (typeof window !== 'undefined') {
   (window as any).soundManager = soundManager;
 }
 
-// Organize sounds by category
-export type SoundCategory = 'ui' | 'minigame' | 'dialogue' | 'ambient' | 'music';
-
 // Preload all game sounds
 export function initializeGameSounds(): void {
   // Only attempt to preload if audio is available
@@ -440,7 +446,7 @@ export function initializeGameSounds(): void {
   // Game sound effects - using silent fallbacks for now since the audio files aren't loading properly
   const silentFallback = 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=';
   
-  const gameSounds = [
+  const gameSounds: SoundEffect[] = [
     // UI Sounds with fallbacks
     { id: 'ui-click', src: '/audio/buttonPress.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
     { id: 'ui-hover', src: '/audio/softPop.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.2 },

@@ -78,11 +78,20 @@ class AssetManager {
    */
   public preloadAssets(assets: string[], onProgress?: (loaded: number, total: number) => void): Promise<void> {
     return new Promise((resolve) => {
-      const totalAssets = assets.length;
+      // Filter out any undefined or null values
+      const validAssets = assets.filter(src => src);
+      
+      if (validAssets.length === 0) {
+        // No valid assets to load
+        resolve();
+        return;
+      }
+      
+      const totalAssets = validAssets.length;
       let loadedCount = 0;
 
       // Filter out already loaded or queued assets
-      const newAssets = assets.filter(src => 
+      const newAssets = validAssets.filter(src => 
         !this.cache.loaded.has(src) && 
         !this.cache.failed.has(src) &&
         !this.loadQueue.includes(src)
@@ -138,6 +147,14 @@ class AssetManager {
         resolve(this.cache.images.get(src)!);
         return;
       }
+      
+      // Check if src is undefined or empty
+      if (!src) {
+        console.warn(`Invalid image path: empty or undefined`);
+        this.cache.failed.add(src);
+        this.useFallbackImage(src, resolve);
+        return;
+      }
 
       // We only need to handle path with typo for location-icons.png and
       // fix path capitalization issues
@@ -155,50 +172,57 @@ class AssetManager {
       img.onerror = () => {
         console.warn(`Failed to load image: ${fixedPath}`);
         this.cache.failed.add(src);
-        
-        // Try to provide appropriate fallback based on path
-        if (this.placeholderImage) {
-          // Use type-appropriate placeholder
-          const fallbackImg = this.placeholderImage;
-          console.info(`Using placeholder for: ${src}`);
-          this.cache.images.set(src, fallbackImg);
-          resolve(fallbackImg);
-        } else {
-          // If even the placeholder fails, create a simple canvas
-          try {
-            const canvas = document.createElement('canvas');
-            canvas.width = 100;
-            canvas.height = 100;
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-              ctx.fillStyle = '#303050';
-              ctx.fillRect(0, 0, 100, 100);
-              ctx.fillStyle = '#9b87f5';
-              ctx.font = '14px sans-serif';
-              ctx.textAlign = 'center';
-              ctx.fillText('Image', 50, 50);
-              
-              const fallbackImg = new Image();
-              fallbackImg.src = canvas.toDataURL();
-              this.cache.images.set(src, fallbackImg);
-              resolve(fallbackImg);
-            }
-          } catch (e) {
-            console.error('Failed to create fallback image', e);
-            resolve(new Image()); // Empty image as last resort
-          }
-        }
+        this.useFallbackImage(src, resolve);
       };
       
       // Use the potentially fixed path
       img.src = fixedPath;
     });
   }
+  
+  // Helper method to provide fallback image
+  private useFallbackImage(src: string, resolve: (img: HTMLImageElement) => void) {
+    // Try to provide appropriate fallback based on path
+    if (this.placeholderImage) {
+      // Use type-appropriate placeholder
+      const fallbackImg = this.placeholderImage;
+      console.info(`Using placeholder for: ${src}`);
+      this.cache.images.set(src, fallbackImg);
+      resolve(fallbackImg);
+    } else {
+      // If even the placeholder fails, create a simple canvas
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 100;
+        canvas.height = 100;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#303050';
+          ctx.fillRect(0, 0, 100, 100);
+          ctx.fillStyle = '#9b87f5';
+          ctx.font = '14px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Image', 50, 50);
+          
+          const fallbackImg = new Image();
+          fallbackImg.src = canvas.toDataURL();
+          this.cache.images.set(src, fallbackImg);
+          resolve(fallbackImg);
+        }
+      } catch (e) {
+        console.error('Failed to create fallback image', e);
+        resolve(new Image()); // Empty image as last resort
+      }
+    }
+  }
 
   /**
    * Fix paths with capitalization issues
    */
   private fixPath(src: string): string {
+    // Safety check for null or undefined
+    if (!src) return '';
+    
     // Fix locaton-icons typo if it exists
     if (src.includes('/locaton-icons.png')) {
       return src.replace('/locaton-icons.png', '/location-icons.png');

@@ -4,6 +4,11 @@ export interface Position {
   y: number;
 }
 
+export interface MudCharacterPosition {
+  x: number;
+  y: number;
+}
+
 export interface MudBall {
   id: string;
   position: Position;
@@ -14,8 +19,21 @@ export interface MudBall {
     x: number;
     y: number;
   };
-  size: number; // Add size property
-  flying: boolean; // Add flying alias for isFlying for backward compatibility
+  size: number;
+  flying: boolean;
+  isThrown?: boolean;
+  isHeld?: boolean;
+  
+  // For compatibility with older code
+  x?: number;
+  y?: number;
+  targetX?: number;
+  targetY?: number;
+  speed?: number;
+  owner?: 'player' | 'opponent';
+  timeLeft?: number;
+  angle?: number;
+  state?: 'flying' | 'splashed';
 }
 
 export interface Character {

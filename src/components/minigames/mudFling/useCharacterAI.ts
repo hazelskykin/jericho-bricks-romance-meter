@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
-import { Character, MudBall, Position } from '@/hooks/useMudFlingGame';
+import { Character, MudBall, Position, MudCharacterPosition } from './types';
 
 interface UseCharacterAIProps {
-  playerPosition: React.RefObject<{ x: number, y: number }>;
-  opponentPosition: React.RefObject<{ x: number, y: number }>;
+  playerPosition: React.RefObject<MudCharacterPosition>;
+  opponentPosition: React.RefObject<MudCharacterPosition>;
   throwMudball: (x: number, y: number) => void;
 }
 
@@ -79,7 +79,9 @@ export function useCharacterAI({
           const targetChar = playerCharacters[Math.floor(Math.random() * playerCharacters.length)];
           
           // Find an available mud ball
-          const availableBalls = mudBalls.filter(ball => !ball.isThrown && !ball.isHeld);
+          const availableBalls = mudBalls.filter(ball => 
+            !(ball as any).isThrown && !(ball as any).isHeld
+          );
           
           if (availableBalls.length > 0) {
             const ballToThrow = availableBalls[Math.floor(Math.random() * availableBalls.length)];
@@ -109,5 +111,11 @@ export function useCharacterAI({
     });
   }, []);
 
-  return { updateOpponent, aiCharactersThrow };
+  return { 
+    updateOpponentPosition: updateOpponent,
+    updateOpponent, 
+    aiCharactersThrow 
+  };
 }
+
+export default useCharacterAI;

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { assetManager } from '@/utils/assetManager';
+import { assetManager, getAssetSource } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
 import backgrounds from '@/data/backgrounds';
 import minigameAssets from '@/data/minigameAssets';
@@ -29,17 +29,17 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
 
   // Extract list of character expression image paths
   const characterPaths = Object.values(characterExpressions)
-    .filter(expr => priorityOnly ? expr.priority : true)
+    .filter(expr => !priorityOnly || (expr.priority === true))
     .map(expr => expr.image);
   
   // Extract list of background image paths
   const backgroundPaths = Object.values(backgrounds)
-    .filter(bg => priorityOnly ? bg.priority : true)
+    .filter(bg => !priorityOnly || (bg.priority === true))
     .map(bg => bg.image);
   
   // Extract minigame asset paths
   const minigameAssetPaths = Object.values(minigameAssets)
-    .filter(asset => priorityOnly ? asset.priority : true)
+    .filter(asset => !priorityOnly || (asset.priority === true))
     .map(asset => asset.src);
 
   useEffect(() => {
@@ -54,7 +54,6 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({ onComplete, priorityOnl
         // Use a function to set the state to ensure we're updating based on the latest state
         setLoadedCharacters(loaded);
       }).then(() => {
-        const stats = assetManager.getStats();
         const errors = characterPaths.filter(path => assetManager.didAssetFail(path)).length;
         setCharacterErrors(errors);
         console.log(`Loaded ${characterPaths.length - errors} character expressions, ${errors} errors`);

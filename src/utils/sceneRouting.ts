@@ -7,6 +7,7 @@ const sceneMapping: Record<string, string> = {
   'prologue-intro': 'intro',
   'team-meeting': 'team-meeting',
   'intro': 'intro', // Explicitly map intro to itself to ensure it's found
+  'about': 'about', // Explicitly map about to itself
   
   // Spring scenes
   'spring-character-selection': 'spring-character-selection',
@@ -50,6 +51,12 @@ export const mapSceneId = (sceneId: string): string => {
     return sceneMapping[sceneId];
   }
   
+  // Special case for intro scenes to ensure they're found
+  if (sceneId === 'intro' || sceneId === 'prologue-intro') {
+    console.log(`Special handling for intro scene: [${sceneId}]`);
+    return 'intro';
+  }
+  
   // If no mapping exists, return the original ID
   console.log(`No mapping for scene [${sceneId}], using as is`);
   return sceneId;
@@ -70,9 +77,21 @@ export const handleSceneError = (sceneId: string): string | null => {
     return fallbackScene;
   }
   
+  // Special case for intro scenes to ensure they're found
+  if (sceneId === 'intro' || sceneId === 'prologue-intro') {
+    console.log(`Special fallback for intro scene: [${sceneId}]`);
+    return 'intro';
+  }
+  
+  // Special case for about scene to ensure it's found
+  if (sceneId === 'about') {
+    console.log(`Special fallback for about scene: [${sceneId}]`);
+    return 'about';
+  }
+  
   // No fallback available
   toast.error(`Scene "${sceneId}" not found and no fallback exists`);
-  return null;
+  return 'start'; // Default to start as ultimate fallback
 };
 
 /**

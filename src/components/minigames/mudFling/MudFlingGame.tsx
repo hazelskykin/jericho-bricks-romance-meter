@@ -8,12 +8,7 @@ import { useMudBalls } from './useMudBalls';
 import { useCharacterAI } from './useCharacterAI';
 import { soundManager } from '@/utils/soundEffects';
 import { Button } from '@/components/ui/button';
-
-// Define the types from types.ts file here since they're not exported properly
-interface MudCharacterPosition {
-  x: number;
-  y: number;
-}
+import { MudCharacterPosition } from './types';
 
 type MudGameStatus = 'ready' | 'countdown' | 'playing' | 'ended';
 
@@ -42,7 +37,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
   } = useMudBalls();
   
   // Initialize opponent AI
-  const { updateOpponentPosition } = useCharacterAI({
+  const { updateOpponent } = useCharacterAI({
     playerPosition,
     opponentPosition,
     throwMudball: (x, y) => {
@@ -110,14 +105,14 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
           }
         );
         
-        updateOpponentPosition();
+        updateOpponent();
       }, 1000 / 60); // 60 FPS
     };
 
     const endGame = () => {
       setGameStatus('ended');
-      clearInterval(gameLoop!);
-      clearInterval(gameTimer!);
+      if (gameLoop) clearInterval(gameLoop);
+      if (gameTimer) clearInterval(gameTimer);
       // Submit final score
       onComplete(score);
     };
@@ -131,7 +126,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
       if (countdownTimer) clearInterval(countdownTimer);
       if (gameTimer) clearInterval(gameTimer);
     };
-  }, [muted, onComplete, updateMudballs, updateOpponentPosition, resetMudballs, score]);
+  }, [muted, onComplete, updateMudballs, updateOpponent, resetMudballs, score]);
 
   // Handle player movement and mud throwing
   const handlePlayerMove = useCallback((x: number, y: number) => {

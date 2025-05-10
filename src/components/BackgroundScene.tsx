@@ -34,6 +34,9 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       setCurrentSrc(backgrounds[backgroundId].image);
     } else if (src) {
       setCurrentSrc(src);
+    } else {
+      // Use default background if neither src nor backgroundId is provided
+      setCurrentSrc('/assets/backgrounds/default-background.jpg');
     }
   }, [backgroundId, src]);
 
@@ -51,6 +54,11 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       setIsLoaded(false);
       const img = new Image();
       img.onload = () => setIsLoaded(true);
+      img.onerror = (e) => {
+        console.error(`Error loading background image: ${currentSrc}`, e);
+        // Use default background on error
+        setCurrentSrc('/assets/backgrounds/default-background.jpg');
+      };
       img.src = currentSrc;
     }
   }, [currentSrc, imageCache]);
@@ -73,7 +81,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     if (currentSrc && currentSrc !== prevSrc) {
       setPrevSrc(prevSrc || currentSrc);
     }
-  }, [currentSrc]);
+  }, [currentSrc, prevSrc]);
 
   if (!currentSrc) return null;
 
