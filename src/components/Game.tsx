@@ -8,7 +8,7 @@ import AssetPreloader from './AssetPreloader';
 import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
 import { MinigameType } from '@/types/minigames';
-import { initializeGameSounds, soundManager } from '@/utils/soundEffects';
+import { soundManager } from '@/utils/soundEffects';
 import { toast } from 'sonner';
 
 const Game: React.FC = () => {
@@ -42,7 +42,7 @@ const Game: React.FC = () => {
   useEffect(() => {
     if (!soundInitialized) {
       try {
-        initializeGameSounds();
+        soundManager.exposeToWindow();
         setSoundInitialized(true);
         console.log('Sound system initialized');
       } catch (error) {
@@ -55,35 +55,22 @@ const Game: React.FC = () => {
   const handleStartGame = () => {
     console.log('Starting new game');
     
+    // Don't try to play sounds until they're properly initialized
     try {
-      // Try to play UI click sound, but don't block if it fails
-      try {
-        soundManager.playSFX('ui-click');
-      } catch (error) {
-        console.warn('Could not play sound effect:', error);
-      }
-      
-      setShowMainMenu(false);
-      
-      // First try with explicit prologue-intro scene id
-      transitionToScene('prologue-intro');
+      soundManager.playSFX('ui-click');
     } catch (error) {
-      console.error('Failed to transition to intro scene:', error);
-      toast.error('Failed to start game. Please try again.');
-      
-      // Fallback to direct 'intro' if prologue-intro fails
-      try {
-        transitionToScene('intro');
-      } catch (innerError) {
-        console.error('Fallback transition also failed:', innerError);
-      }
+      console.warn('Could not play sound effect:', error);
     }
+    
+    setShowMainMenu(false);
+    
+    // If intro scene exists in our scenes data, transition to it
+    transitionToScene('intro');
   };
 
   // Handle game reset
   const handleResetGame = () => {
     try {
-      // Play UI click sound
       soundManager.playSFX('ui-click');
     } catch (error) {
       console.warn('Could not play sound effect:', error);
@@ -91,6 +78,12 @@ const Game: React.FC = () => {
     
     setShowMainMenu(true);
     transitionToScene('start');
+  };
+
+  // Handle about button click
+  const handleAbout = () => {
+    console.log('Showing about screen');
+    transitionToScene('about');
   };
 
   // Show loading screen first, then show priority assets, then show main menu
@@ -116,7 +109,7 @@ const Game: React.FC = () => {
         <MainMenu 
           onNewGame={handleStartGame} 
           loadingComplete={loadingComplete}
-          onAbout={() => transitionToScene('about')}
+          onAbout={handleAbout}
         />
       ) : (
         <GameInterface />

@@ -20,46 +20,58 @@ export function SoundToggle({ showMusicToggle = true, compact = false }: SoundTo
   
   // Initialize state from sound manager
   useEffect(() => {
-    setMuted(soundManager.isMuted());
-    setMusicMuted(soundManager.isMusicMuted());
-    setAudioAvailable(soundManager.isAudioAvailable());
-    
-    // Check if there are any audio load errors
-    setAudioLoadErrors(soundManager.hasLoadErrors());
-    
-    // Subscribe to error updates
-    const errorListener = () => {
+    try {
+      setMuted(soundManager.isMuted());
+      setMusicMuted(soundManager.isMusicMuted());
+      setAudioAvailable(soundManager.isAudioAvailable());
+      
+      // Check if there are any audio load errors
       setAudioLoadErrors(soundManager.hasLoadErrors());
-    };
-    
-    window.addEventListener('sound-error', errorListener);
-    
-    return () => {
-      window.removeEventListener('sound-error', errorListener);
-    };
+      
+      // Subscribe to error updates
+      const errorListener = () => {
+        setAudioLoadErrors(soundManager.hasLoadErrors());
+      };
+      
+      window.addEventListener('sound-error', errorListener);
+      
+      return () => {
+        window.removeEventListener('sound-error', errorListener);
+      };
+    } catch (error) {
+      console.error('Error initializing SoundToggle component:', error);
+      setAudioAvailable(false);
+    }
   }, []);
   
   const handleSFXToggle = () => {
-    const newMutedState = soundManager.toggleMute();
-    setMuted(newMutedState);
-    
-    // Play feedback sound if unmuting
-    if (!newMutedState) {
-      setTimeout(() => {
-        soundManager.playSFX('ui-click');
-      }, 100);
+    try {
+      const newMutedState = soundManager.toggleMute();
+      setMuted(newMutedState);
+      
+      // Try to play feedback sound if unmuting
+      if (!newMutedState) {
+        setTimeout(() => {
+          try {
+            soundManager.playSFX('ui-click');
+          } catch (error) {
+            console.warn('Failed to play feedback sound:', error);
+          }
+        }, 100);
+      }
+    } catch (error) {
+      console.error('Error toggling SFX:', error);
     }
   };
   
   const handleMusicToggle = () => {
-    const newMusicMutedState = soundManager.toggleMusicMute();
-    setMusicMuted(newMusicMutedState);
+    try {
+      const newMusicMutedState = soundManager.toggleMusicMute();
+      setMusicMuted(newMusicMutedState);
+    } catch (error) {
+      console.error('Error toggling music:', error);
+    }
   };
-  
-  // If audio is not available at all, don't show the toggle
-  if (!audioAvailable) {
-    return null;
-  }
   
   return (
     <div className="flex items-center gap-2">
@@ -78,6 +90,7 @@ export function SoundToggle({ showMusicToggle = true, compact = false }: SoundTo
           </TooltipTrigger>
           <TooltipContent>
             {muted ? "Unmute sound effects" : "Mute sound effects"}
+            {audioLoadErrors && " (Some sounds failed to load)"}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -104,3 +117,6 @@ export function SoundToggle({ showMusicToggle = true, compact = false }: SoundTo
     </div>
   );
 }
+
+// Named export rather than default export
+export default SoundToggle;

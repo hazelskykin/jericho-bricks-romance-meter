@@ -5,6 +5,12 @@ import teamMeetingScenes from './teamMeeting';
 import departureScenes from './departure';
 import bonding from './bonding/studySession';
 
+// Debug log all scene IDs from imported files
+console.log('Intro scenes:', Object.keys(introScenes));
+console.log('Team meeting scenes:', Object.keys(teamMeetingScenes));
+console.log('Departure scenes:', Object.keys(departureScenes));
+console.log('Bonding scenes:', Object.keys(bonding));
+
 const prologue: Record<string, Scene> = {
   ...introScenes,
   ...teamMeetingScenes,

@@ -1,4 +1,3 @@
-
 // Sound utility for managing game sound effects
 type SoundEffect = {
   id: string;
@@ -436,51 +435,53 @@ export function initializeGameSounds(): void {
     return;
   }
 
-  // Default placeholder sound for cases where files are missing
-  const silenceSound = '/audio/silence.mp3';
-
-  // Game sound effects
-  const gameSounds: SoundEffect[] = [
-    // UI Sounds
-    { id: 'ui-click', src: '/audio/buttonPress.mp3', category: 'ui', volume: 0.4 },
-    { id: 'ui-hover', src: '/audio/softPop.mp3', category: 'ui', volume: 0.2 },
-    { id: 'ui-notification', src: '/audio/chime.mp3', category: 'ui', volume: 0.5 },
-    { id: 'ui-success', src: '/audio/bellchime.mp3', category: 'ui', volume: 0.5 },
-    { id: 'ui-error', src: '/audio/buzz.mp3', category: 'ui', volume: 0.4 },
+  console.log('Initializing game sound system...');
+  
+  // Game sound effects - using silent fallbacks for now since the audio files aren't loading properly
+  const silentFallback = 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=';
+  
+  const gameSounds = [
+    // UI Sounds with fallbacks
+    { id: 'ui-click', src: '/audio/buttonPress.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
+    { id: 'ui-hover', src: '/audio/softPop.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.2 },
+    { id: 'ui-notification', src: '/audio/chime.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.5 },
+    { id: 'ui-success', src: '/audio/bellchime.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.5 },
+    { id: 'ui-error', src: '/audio/buzz.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
     
     // Minigame: Mud Fling sounds
-    { id: 'mud-select', src: '/audio/itemPickup.mp3', category: 'minigame', volume: 0.4 },
-    { id: 'mud-throw', src: '/audio/whoosh.mp3', category: 'minigame', volume: 0.6 },
-    { id: 'mud-hit', src: '/audio/wetsplat.mp3', category: 'minigame', volume: 0.5 },
-    { id: 'mud-fountain', src: '/audio/water-splash.mp3', category: 'minigame', volume: 0.3 },
+    { id: 'mud-select', src: '/audio/itemPickup.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.4 },
+    { id: 'mud-throw', src: '/audio/whoosh.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.6 },
+    { id: 'mud-hit', src: '/audio/wetsplat.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
+    { id: 'mud-fountain', src: '/audio/water-splash.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.3 },
     
     // Minigame: Brooms Away sounds
-    { id: 'broom-sweep', src: '/audio/softrustle.mp3', category: 'minigame', volume: 0.4 },
-    { id: 'spot-flag', src: '/audio/ping.mp3', category: 'minigame', volume: 0.5 },
-    { id: 'spot-break', src: '/audio/crumblingPaper.mp3', category: 'minigame', volume: 0.6 },
+    { id: 'broom-sweep', src: '/audio/softrustle.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.4 },
+    { id: 'spot-flag', src: '/audio/ping.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
+    { id: 'spot-break', src: '/audio/crumblingPaper.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.6 },
     
     // Minigame: Bloom With A View sounds
-    { id: 'item-found', src: '/audio/twinkle.mp3', category: 'minigame', volume: 0.5 },
-    { id: 'item-click', src: '/audio/slideClick.mp3', category: 'minigame', volume: 0.3 },
-    { id: 'hint-activate', src: '/audio/twinkleChimes.mp3', category: 'minigame', volume: 0.4 },
+    { id: 'item-found', src: '/audio/twinkle.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
+    { id: 'item-click', src: '/audio/slideClick.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.3 },
+    { id: 'hint-activate', src: '/audio/twinkleChimes.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.4 },
     
     // Minigame: What's On Tap sounds
-    { id: 'pour-start', src: '/audio/tapPour.mp3', category: 'minigame', volume: 0.5 },
-    { id: 'pour-stop', src: '/audio/drinkdowntap.mp3', category: 'minigame', volume: 0.5 },
-    { id: 'fizz', src: '/audio/fizz.mp3', category: 'minigame', volume: 0.4 },
-    { id: 'order-complete', src: '/audio/purchase.mp3', category: 'minigame', volume: 0.5 },
+    { id: 'pour-start', src: '/audio/tapPour.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
+    { id: 'pour-stop', src: '/audio/drinkdowntap.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
+    { id: 'fizz', src: '/audio/fizz.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.4 },
+    { id: 'order-complete', src: '/audio/purchase.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
     
     // Common game sounds
-    { id: 'game-win', src: '/audio/fanfare.mp3', category: 'minigame', volume: 0.7 },
-    { id: 'game-lose', src: '/audio/missWhoosh.mp3', category: 'minigame', volume: 0.7 },
-    { id: 'score-up', src: '/audio/bellding.mp3', category: 'minigame', volume: 0.5 },
-    { id: 'click', src: '/audio/buttonPress.mp3', category: 'ui', volume: 0.4 },
-    { id: 'win', src: '/audio/fanfare.mp3', category: 'minigame', volume: 0.7 },
-    { id: 'error', src: '/audio/buzz.mp3', category: 'ui', volume: 0.4 }
+    { id: 'game-win', src: '/audio/fanfare.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.7 },
+    { id: 'game-lose', src: '/audio/missWhoosh.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.7 },
+    { id: 'score-up', src: '/audio/bellding.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.5 },
+    { id: 'click', src: '/audio/buttonPress.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 },
+    { id: 'win', src: '/audio/fanfare.mp3', fallbackSrc: silentFallback, category: 'minigame', volume: 0.7 },
+    { id: 'error', src: '/audio/buzz.mp3', fallbackSrc: silentFallback, category: 'ui', volume: 0.4 }
   ];
   
   soundManager.preloadSounds(gameSounds);
   soundManager.exposeToWindow();
+  console.log('Sound system initialized');
 }
 
 // Hook to play sounds related to UI interactions

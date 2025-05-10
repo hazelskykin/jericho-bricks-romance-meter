@@ -6,6 +6,7 @@ const sceneMapping: Record<string, string> = {
   // Prologue scenes
   'prologue-intro': 'intro',
   'team-meeting': 'team-meeting',
+  'intro': 'intro', // Explicitly map intro to itself to ensure it's found
   
   // Spring scenes
   'spring-character-selection': 'spring-character-selection',
@@ -40,6 +41,9 @@ const sceneFallbacks: Record<string, string> = {
  * or provides fallbacks for missing scenes
  */
 export const mapSceneId = (sceneId: string): string => {
+  // Debug: log all scene mappings
+  console.log('Available scene mappings:', Object.keys(sceneMapping));
+  
   // Check if we have a direct mapping
   if (sceneId in sceneMapping) {
     console.log(`Mapping scene [${sceneId}] to [${sceneMapping[sceneId]}]`);
@@ -47,6 +51,7 @@ export const mapSceneId = (sceneId: string): string => {
   }
   
   // If no mapping exists, return the original ID
+  console.log(`No mapping for scene [${sceneId}], using as is`);
   return sceneId;
 };
 
