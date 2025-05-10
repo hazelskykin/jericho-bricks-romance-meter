@@ -2,10 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import GameTitle from './GameTitle';
 import MenuButtons from './MenuButtons';
-import CharacterChibisPreview from './CharacterChibisPreview';
-import characterChibis from '../../data/characterChibis';
 import { Toaster } from 'sonner';
-import { CharacterId, ChibiImageData } from '@/types/game';
 
 interface MainContentProps {
   onNewGame: () => void;
@@ -14,7 +11,6 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, onAbout }) => {
-  const [charactersLoaded, setCharactersLoaded] = useState(false);
   
   // Manage character animation states
   useEffect(() => {
@@ -36,15 +32,6 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, o
           {/* Game Title */}
           <div className="flex flex-col items-end mb-6 animate-fade-in">
             <GameTitle />
-          </div>
-          
-          {/* Character Chibis in 2x2 Grid */}
-          <div className={`w-full flex justify-end items-end mb-8 md:mb-8 mt-4 md:mt-0 transition-all duration-700 ${charactersLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <CharacterChibisPreview
-              characterChibis={characterChibis}
-              loadingComplete={loadingComplete}
-              showNeutral={false} // Use regular chibi images
-            />
           </div>
           
           {/* Menu Buttons */}
