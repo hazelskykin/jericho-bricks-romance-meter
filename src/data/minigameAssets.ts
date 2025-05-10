@@ -954,7 +954,39 @@ export const minigameAssets: MinigameAsset[] = [
     minigame: 'lookingSigns',
     type: 'sprite',
     required: true
-  }
+  },
+  // Looking for Signs - Winter Minigame
+{
+  id: 'lookingSigns-clue-found',
+  name: 'Clue Found',
+  path: '/assets/audio/sfx/lookingSigns-clue-found.mp3',
+  description: 'Chime that plays when a hidden sign appears for sorting',
+  season: 'winter',
+  minigame: 'lookingSigns',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'lookingSigns-sign-sorted',
+  name: 'Sign Sorted',
+  path: '/assets/audio/sfx/lookingSigns-sign-sorted.mp3',
+  description: 'Subtle swoosh indicating a sign was correctly sorted',
+  season: 'winter',
+  minigame: 'lookingSigns',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'lookingSigns-sort-wrong',
+  name: 'Incorrect Sort',
+  path: '/assets/audio/sfx/lookingSigns-sort-wrong.mp3',
+  description: 'Short zap to indicate a sign was sorted incorrectly',
+  season: 'winter',
+  minigame: 'lookingSigns',
+  type: 'audio',
+  required: false
+}
+
 ];
 
 /**
