@@ -839,6 +839,37 @@ export const minigameAssets: MinigameAsset[] = [
     type: 'image',
     required: true
   },
+  {
+    id: 'charityAuction-item-reveal',
+    name: 'Item Reveal or Bid Cue',
+    path: '/assets/audio/sfx/charityAuction-item-reveal.mp3',
+    description: 'Stylized sound cue for dramatic item reveals or player bid gestures',
+    season: 'winter',
+    minigame: 'charityAuction',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'charityAuction-bid-won',
+    name: 'Winning Bid Confirmed',
+    path: '/assets/audio/sfx/charityAuction-bid-won.mp3',
+    description: 'Gavel sound indicating a winning bid has been accepted',
+    season: 'winter',
+    minigame: 'charityAuction',
+    type: 'audio',
+    required: false
+  },
+  {
+    id: 'charityAuction-purchase-confirm',
+    name: 'Item Purchase Confirm',
+    path: '/assets/audio/sfx/charityAuction-purchase-confirm.mp3',
+    description: 'Chime played after a successful bid to confirm item claim',
+    season: 'winter',
+    minigame: 'charityAuction',
+    type: 'audio',
+    required: false
+  },
+
   
   // Winter - Gala Dance
   {
@@ -862,15 +893,46 @@ export const minigameAssets: MinigameAsset[] = [
     required: true
   },
   {
-    id: 'gala-dance-music',
-    name: 'Gala Music',
-    path: '/assets/audio/music/gala-music.mp3',
-    description: 'Music for the gala dance minigame',
-    season: 'winter',
-    minigame: 'galaDance',
-    type: 'audio',
-    required: false
+  id: 'galaDance-loop-gameplay',
+  name: 'Gameplay Music Loop',
+  path: '/assets/audio/music/galaDance-loop-gameplay.mp3',
+  description: 'Folk waltz background music for the Gala Dance minigame',
+  season: 'winter',
+  minigame: 'galaDance',
+  type: 'audio',
+  required: false
   },
+  // Gala Dance - Winter Minigame
+{
+  id: 'galaDance-step-hit',
+  name: 'Dance Step Hit',
+  path: '/assets/audio/sfx/galaDance-step-hit.mp3',
+  description: 'Tap sound for a correctly timed dance move',
+  season: 'winter',
+  minigame: 'galaDance',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'galaDance-combo-flourish',
+  name: 'Combo Flourish',
+  path: '/assets/audio/sfx/galaDance-combo-flourish.mp3',
+  description: 'Musical flourish when chaining dance steps successfully',
+  season: 'winter',
+  minigame: 'galaDance',
+  type: 'audio',
+  required: false
+},
+{
+  id: 'galaDance-miss',
+  name: 'Dance Miss Sound',
+  path: '/assets/audio/sfx/galaDance-miss.mp3',
+  description: 'Whoosh or fumble sound for missing a dance cue',
+  season: 'winter',
+  minigame: 'galaDance',
+  type: 'audio',
+  required: false
+},
   
   // Winter - Looking for Signs
   {
@@ -884,10 +946,10 @@ export const minigameAssets: MinigameAsset[] = [
     required: true
   },
   {
-    id: 'looking-signs-scenes',
-    name: 'Scene Backgrounds',
-    path: '/assets/minigames/winter/lookingSigns/scene-backgrounds.png',
-    description: 'Different scene backgrounds for the sign search',
+    id: 'looking-signs-scene',
+    name: 'Signs Background',
+    path: '/assets/minigames/winter/lookingSigns/signs-background.png',
+    description: 'Background for the sign sorting',
     season: 'winter',
     minigame: 'lookingSigns',
     type: 'sprite',
