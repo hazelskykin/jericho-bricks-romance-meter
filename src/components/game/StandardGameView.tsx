@@ -157,12 +157,15 @@ const StandardGameView: React.FC = () => {
       {/* Character Portrait */}
       {currentDialogue && characterId && characterId !== 'narrator' && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="character-portrait-container">
-            <CharacterPortrait 
-              characterId={characterId}
-              mood={characterMood}
-              animate={true}
-            />
+          <div className="character-portrait-container h-full flex items-center justify-center">
+            <div className="w-[350px] h-[500px] flex items-center justify-center">
+              <CharacterPortrait 
+                characterId={characterId}
+                mood={characterMood}
+                animate={true}
+                className="max-h-full max-w-full object-contain"
+              />
+            </div>
           </div>
         </div>
       )}

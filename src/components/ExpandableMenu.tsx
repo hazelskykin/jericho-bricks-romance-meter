@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,8 +19,8 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
   onTesterClick, 
   activeView 
 }) => {
-  // Start with menu expanded by default
-  const [isExpanded, setIsExpanded] = useState(true);
+  // Start with menu collapsed by default
+  const [isExpanded, setIsExpanded] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const { handleSceneTransition, gameState, handleNewGame, handleAbout, replayCurrentScene } = useGame();
@@ -30,7 +31,8 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = ({
 
   const handleItemClick = (callback: () => void) => {
     callback();
-    // Don't close menu after clicking - keep it open for better UX
+    // Close menu after clicking for better UX
+    setIsExpanded(false);
   };
 
   const openGlossary = () => {

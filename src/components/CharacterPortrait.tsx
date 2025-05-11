@@ -79,7 +79,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
       setIsAnimating(true);
       const timer = setTimeout(() => {
         setIsAnimating(false);
-      }, 200); // Duration of the animation
+      }, 0); // Set to 0 to ensure it's shown immediately
       return () => clearTimeout(timer);
     }
   }, [animate, imageLoaded]);
@@ -93,9 +93,13 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
       alt={`${characterId} - ${mood}`}
       className={`
         ${className}
-        ${animate ? 'transition-opacity duration-200' : ''}
-        ${isAnimating ? 'opacity-100' : 'opacity-0'}
+        ${isAnimating ? 'opacity-100' : 'opacity-100'}
+        max-h-[80vh] object-contain
       `}
+      style={{
+        maxWidth: '100%',
+        height: 'auto'
+      }}
     />
   );
 };
