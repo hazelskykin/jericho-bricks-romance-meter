@@ -4,7 +4,7 @@ import { Scene } from '../../../../types/game';
 const summerFestivalCompletionScenes: Record<string, Scene> = {
   'summer-festival-completion': {
     id: 'summer-festival-completion',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'maven',
