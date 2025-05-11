@@ -30,6 +30,8 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
   const { handleSceneTransition, gameState } = useGame();
   const [completedActivities, setCompletedActivities] = useState<Set<string>>(new Set());
   const [allCompleted, setAllCompleted] = useState(false);
+  // Add a state to prevent auto-selection
+  const [skipClicked, setSkipClicked] = useState(false);
 
   // Check if all activities are completed
   useEffect(() => {
@@ -65,9 +67,15 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
   
   // Handle skip button click
   const handleSkipFestival = () => {
+    // Set skipClicked to true first to prevent auto-selection
+    setSkipClicked(true);
     console.log(`Skipping festival activities for ${season}`);
     toast.info(`Skipping ${season} festival activities`);
-    handleSceneTransition(`${season}-festival-completion`);
+    
+    // Small delay to ensure the skip flag is set before navigation
+    setTimeout(() => {
+      handleSceneTransition(`${season}-festival-completion`);
+    }, 50);
   };
 
   // Handle background click (no action needed, just preventing errors)
@@ -93,6 +101,9 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
 
   // For winter season with current love interest, we can automatically route to the appropriate activity
   useEffect(() => {
+    // Don't auto-select if skip was clicked
+    if (skipClicked) return;
+    
     if (season === 'winter' && gameState.currentLoveInterest) {
       // Give a slight delay to allow the component to render first
       const timer = setTimeout(() => {
@@ -109,7 +120,7 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
       
       return () => clearTimeout(timer);
     }
-  }, [season, gameState.currentLoveInterest, activities]);
+  }, [season, gameState.currentLoveInterest, activities, skipClicked]);
 
   return (
     <div className="relative w-full h-screen flex flex-col">
