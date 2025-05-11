@@ -8,7 +8,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Winter in Stonewich brings new challenges, but also new opportunities to build on what we've learned.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'narrator',
@@ -17,7 +17,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'etta',
         text: "This festival is our biggest challenge yet. We need to be prepared for increased system load and potential issues.",
-        mood: 'serious',
+        mood: 'neutral',
       },
       {
         character: 'narrator',
@@ -40,7 +40,7 @@ const winterPlanningScenes: Record<string, Scene> = {
   // Xavier's winter planning scene
   'winter-planning-xavier': {
     id: 'winter-planning-xavier',
-    background: 'cybaton-lab',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'xavier',
@@ -78,7 +78,7 @@ const winterPlanningScenes: Record<string, Scene> = {
   // Etta's winter planning scene
   'winter-planning-etta': {
     id: 'winter-planning-etta',
-    background: 'cybaton-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'etta',
@@ -103,7 +103,7 @@ const winterPlanningScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "That's a huge step, Etta. I'm proud of you for standing up for yourself.",
-        mood: 'confident',
+        mood: 'happy',
       },
       {
         character: 'etta',
@@ -121,7 +121,7 @@ const winterPlanningScenes: Record<string, Scene> = {
   // Navarre's winter planning scene
   'winter-planning-navarre': {
     id: 'winter-planning-navarre',
-    background: 'stonewich-cafe',
+    background: 'city-cafe',
     dialogue: [
       {
         character: 'navarre',
@@ -162,7 +162,12 @@ const winterPlanningScenes: Record<string, Scene> = {
         character: 'navarre',
         text: "I'm tired of being seen as just the charming influencer and want to encourage others to express themselves more authentically like I've been learning to do, with you. I want to be seen as someone capable of real commitment. Someone worthy of you.",
         mood: 'sad',
-      }
+      },
+      {
+        character: 'maven',
+        text: "In that case, I'd be happy to join you on the show.",
+        mood: 'embarrassed',
+      },
     ],
     nextSceneId: 'winter-festival-intro'
   },
