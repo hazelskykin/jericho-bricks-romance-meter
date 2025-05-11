@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -13,6 +14,7 @@ const sceneMapping: Record<string, string> = {
   'spring-festival-planning': 'spring-planning',
   'spring-character-path': 'spring-character-visit',
   'spring-selection': 'spring-selection', // Map to the actual scene we created
+  'spring-festival-completion': 'spring-festival-completion',
   
   // Spring character selection scenes with visit counts
   'spring-character-selection-1': 'spring-character-selection',
@@ -25,6 +27,8 @@ const sceneMapping: Record<string, string> = {
   'summer-festival-planning': 'summer-planning',
   'summer-character-path': 'summer-character-visit',
   'summer-visit-character': 'summer-character-selection', // Add this mapping for the transition
+  'summer-festival-completion': 'summer-festival-completion', // Add mapping for festival completion
+  'summer-conclusion-meeting': 'summer-conclusion-meeting',
   
   // Summer character selection scenes with visit counts
   'summer-character-selection-1': 'summer-character-selection',
@@ -50,6 +54,7 @@ const sceneFallbacks: Record<string, string> = {
   'winter-festival-planning': 'winter-intro',
   'spring-selection': 'spring-intro', // Fallback to spring-intro if something goes wrong
   'summer-visit-character': 'summer-character-selection', // Add fallback for summer visit
+  'summer-festival-completion': 'summer-planning', // Add fallback for festival completion
   
   // Fallbacks for character selection with visit counts
   'spring-character-selection-1': 'spring-character-selection',
