@@ -29,6 +29,23 @@ const winterFestivalScenes: Record<string, Scene> = {
     nextSceneId: 'winter-festival-activities'
   },
   
+ 'winter-festival-activities': {
+    id: 'winter-festival-activities',
+    background: 'stonewich-cityscape',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "With the Winter Gala & Games underway, there are several activities you could participate in.",
+      },
+      {
+        character: 'maven',
+        text: "Where should I focus my attention during the festival?",
+        mood: 'neutral',
+      }
+    ],
+    nextSceneId: 'winter-festival-completion'
+  },
+  
   'winter-festival-completion': {
     id: 'winter-festival-completion',
     background: 'stonewich-cityscape',
@@ -51,25 +68,9 @@ const winterFestivalScenes: Record<string, Scene> = {
         character: 'navarre',
         text: "We certainly have. The people of Stonewich are going to remember this winter for years to come.",
         mood: 'happy',
-      }
-    ],
-    nextSceneId: 'winter-conclusion'
-  },
-  'winter-festival-activities': {
-    id: 'winter-festival-activities',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "With the Winter Gala & Games underway, there are several activities you could participate in.",
       },
-      {
-        character: 'maven',
-        text: "Where should I focus my attention during the festival?",
-        mood: 'neutral',
-      }
     ],
-    nextSceneId: 'winter-festival-conclusion'
+    nextSceneId: 'winter-review-preparation'
   },
 };
 
