@@ -37,7 +37,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
       setTyping(true);
       setFinished(false);
       
-      // Check for fast typewriter effect (removing isGhost property reference)
+      // Check for fast typewriter effect
       const typeDelay = 20; // Default typing speed
       
       // Type effect

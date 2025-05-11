@@ -84,7 +84,7 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     max-height: 35vh;
     overflow-y: auto;
-    padding-left: 20px; /* Add extra padding on the left for the avatar to overlap */
+    padding-left: 30px; /* Increased left padding to prevent text truncation */
     /* Hide scrollbar for Chrome, Safari and Opera */
     &::-webkit-scrollbar {
       display: none;
