@@ -27,11 +27,46 @@ const StandardGameView: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
   const viewRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [fallbackTriggered, setFallbackTriggered] = useState(false);
 
   const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
   
-  // Get current scene from available scenes
-  const scene = allScenes[sceneId];
+  // Safely get current scene from available scenes with error handling
+  const scene = React.useMemo(() => {
+    try {
+      if (!sceneId) {
+        setError('Invalid scene ID: undefined or null');
+        return null;
+      }
+      
+      const sceneData = allScenes[sceneId];
+      
+      if (!sceneData) {
+        console.error(`Scene not found: ${sceneId}`);
+        setError(`Scene "${sceneId}" not found`);
+        
+        // Only trigger the fallback once
+        if (!fallbackTriggered) {
+          setFallbackTriggered(true);
+          
+          // Try to fallback to intro scene after a delay
+          setTimeout(() => {
+            handleSceneTransition('intro');
+          }, 1000);
+        }
+        
+        return null;
+      }
+      
+      setError(null);
+      return sceneData;
+    } catch (err) {
+      console.error('Error getting scene:', err);
+      setError(`Error loading scene: ${err}`);
+      return null;
+    }
+  }, [sceneId, fallbackTriggered, handleSceneTransition]);
   
   // Get current dialogue line
   const currentDialogue = scene?.dialogue?.[dialogueIndex];
@@ -45,22 +80,25 @@ const StandardGameView: React.FC = () => {
   // Debug logging
   useEffect(() => {
     console.log(`StandardGameView: Current scene: ${sceneId}, dialogue index: ${dialogueIndex}, showing choices: ${showChoices}`);
+    
     if (!scene) {
       console.error(`Scene not found: ${sceneId}`);
       toast.error(`Scene "${sceneId}" not found. Please report this error.`);
-    } else if (!currentDialogue && dialogueIndex < scene.dialogue.length) {
+    } else if (!currentDialogue && dialogueIndex < (scene.dialogue?.length || 0)) {
       console.error(`Dialogue line not found at index ${dialogueIndex} in scene ${sceneId}`);
     }
   }, [sceneId, dialogueIndex, showChoices, scene, currentDialogue]);
   
   // Simplified loading mechanism
   useEffect(() => {
-    // Short timeout to allow for transition effects
-    const timer = setTimeout(() => {
-      setLoaded(true);
-    }, 500);
-    
-    return () => clearTimeout(timer);
+    if (scene) {
+      // Short timeout to allow for transition effects
+      const timer = setTimeout(() => {
+        setLoaded(true);
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
   }, [scene]);
 
   const handleGameClick = () => {
@@ -73,18 +111,18 @@ const StandardGameView: React.FC = () => {
   
   // Click handler for the background - advance dialogue
   const handleBackgroundClick = () => {
-    if (!showChoices && loaded) {
+    if (!showChoices && loaded && scene) {
       handleDialogueClick();
     }
   };
   
   // Loading state or scene not found
-  if (!scene) {
+  if (error || !scene) {
     return (
       <div className="flex items-center justify-center h-screen w-full bg-black">
         <div className="text-center text-white">
           <Loader2 className="h-16 w-16 mx-auto animate-spin text-[#9b87f5] mb-4" />
-          <p>Scene not found or loading: {sceneId}</p>
+          <p>{error || `Scene not found or loading: ${sceneId}`}</p>
           <button 
             onClick={() => handleSceneTransition('start')} 
             className="mt-4 px-4 py-2 bg-[#9b87f5] rounded-md hover:bg-[#8B5CF6] transition-colors"

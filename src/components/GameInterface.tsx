@@ -14,9 +14,10 @@ import { allScenes } from '@/data/scenes';
 
 interface GameInterfaceProps {
   initialSceneId?: string;
+  gameStarted?: boolean;
 }
 
-const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId }) => {
+const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStarted = false }) => {
   const {
     gameState,
     handleNewGame,
@@ -28,19 +29,20 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId }) => {
   } = useGame();
   
   const [loadingComplete, setLoadingComplete] = useState(true); // Default to true for asset loading
+  const [initialized, setInitialized] = useState(false);
 
   // Debug the current scene
   useEffect(() => {
     console.log('GameInterface rendering with scene:', gameState.currentScene);
     console.log('Current scene data:', allScenes[gameState.currentScene]);
     
-    // If we received an initialSceneId and it's different from the current scene,
-    // we should transition to it
-    if (initialSceneId && initialSceneId !== 'start' && initialSceneId !== gameState.currentScene) {
-      console.log(`Syncing GameInterface to initialSceneId: ${initialSceneId}`);
+    // Only perform this sync once when the component first loads with an initialSceneId
+    if (!initialized && initialSceneId && initialSceneId !== 'start' && gameStarted) {
+      console.log(`Initializing GameInterface with scene: ${initialSceneId}`);
       handleSceneTransition(initialSceneId);
+      setInitialized(true);
     }
-  }, [gameState.currentScene, initialSceneId, handleSceneTransition]);
+  }, [gameState.currentScene, initialSceneId, handleSceneTransition, initialized, gameStarted]);
 
   const { routeToEpilogue } = useEpilogueChecker(gameState, setGameState => setGameState);
   const [showDevMenu, setShowDevMenu] = useState(false);
