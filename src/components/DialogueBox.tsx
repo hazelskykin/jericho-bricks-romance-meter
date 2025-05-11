@@ -5,6 +5,8 @@ import { DialogueLine } from '@/types/game';
 import { MoodType } from '@/types/expressions';
 import { Button } from '@/components/ui/button';
 import characters, { maven } from '@/data/characters';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import CharacterPortrait from './CharacterPortrait';
 
 interface DialogueBoxProps {
   line?: DialogueLine;
@@ -58,7 +60,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
     <AnimatePresence mode="wait">
       {isActive && (
         <motion.div 
-          className="dialog-box fixed bottom-4 left-0 right-0 p-6 rounded-lg z-30 mx-auto max-w-4xl"
+          className="dialog-box fixed bottom-4 left-0 right-0 p-6 rounded-lg z-30 mx-auto max-w-3xl"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
@@ -70,18 +72,38 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
             borderRight: characterData ? `1px solid ${characterData.color}30` : undefined,
           }}
         >
-          <div className="flex items-center justify-between mb-3">
-            {currentLine.character && (
-              <div 
-                className="font-medium text-lg"
-                style={{ color: characterData?.color || 'white' }}
-              >
-                <span>{displayName()}</span>
+          <div className="flex items-center gap-3 mb-3">
+            {currentLine.character && currentLine.character !== 'narrator' && (
+              <div className="flex items-center gap-3">
+                <div 
+                  className="w-12 h-12 rounded-full overflow-hidden border-2 flex items-center justify-center"
+                  style={{ borderColor: characterData?.color || 'white' }}
+                >
+                  <CharacterPortrait
+                    characterId={currentLine.character}
+                    mood={currentLine.mood || 'neutral'}
+                    animate={false}
+                    isInDialog={true}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div 
+                  className="font-medium text-lg"
+                  style={{ color: characterData?.color || 'white' }}
+                >
+                  <span>{displayName()}</span>
+                </div>
+              </div>
+            )}
+            
+            {(!currentLine.character || currentLine.character === 'narrator') && (
+              <div className="font-medium text-lg text-white/90">
+                <span>Narrator</span>
               </div>
             )}
           </div>
           
-          <p className="text-lg text-white/90 leading-relaxed">
+          <p className="text-lg text-white/90 leading-relaxed ml-0">
             {currentLine.text}
           </p>
           

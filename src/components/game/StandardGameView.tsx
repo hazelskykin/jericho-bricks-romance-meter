@@ -146,6 +146,9 @@ const StandardGameView: React.FC = () => {
   const characterMood = currentDialogue?.mood || 'neutral';
   // Get the character ID from current dialogue
   const characterId = currentDialogue?.character;
+  
+  // Determine if we should show the full character portrait
+  const shouldShowFullPortrait = characterId && characterId !== 'narrator';
 
   return (
     <div ref={viewRef} className="relative h-screen w-full overflow-hidden">
@@ -154,18 +157,16 @@ const StandardGameView: React.FC = () => {
         <BackgroundScene backgroundId={scene.background} />
       </div>
       
-      {/* Character Portrait */}
-      {currentDialogue && characterId && characterId !== 'narrator' && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="character-portrait-container h-full flex items-center justify-center">
-            <div className="w-[350px] h-[500px] flex items-center justify-center">
-              <CharacterPortrait 
-                characterId={characterId}
-                mood={characterMood}
-                animate={true}
-                className="max-h-full max-w-full object-contain"
-              />
-            </div>
+      {/* Character Portrait - only show if we have a character speaking */}
+      {shouldShowFullPortrait && (
+        <div className="absolute inset-y-0 right-1/4 flex items-center pointer-events-none z-20">
+          <div className="character-portrait-container max-h-[80vh] max-w-[350px]">
+            <CharacterPortrait 
+              characterId={characterId}
+              mood={characterMood}
+              animate={true}
+              className="character-portrait"
+            />
           </div>
         </div>
       )}

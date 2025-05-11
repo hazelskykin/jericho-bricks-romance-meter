@@ -11,6 +11,7 @@ interface CharacterPortraitProps {
   className?: string;
   animate?: boolean;
   onLoad?: () => void;
+  isInDialog?: boolean; // Add flag to determine if portrait is in dialog
 }
 
 const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
@@ -18,7 +19,8 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
   mood = 'neutral',
   className = '',
   animate = true,
-  onLoad
+  onLoad,
+  isInDialog = false
 }) => {
   const [characterExpression, setCharacterExpression] = useState<CharacterExpression | undefined>(undefined);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -79,12 +81,17 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
       setIsAnimating(true);
       const timer = setTimeout(() => {
         setIsAnimating(false);
-      }, 0); // Set to 0 to ensure it's shown immediately
+      }, 100);
       return () => clearTimeout(timer);
     }
   }, [animate, imageLoaded]);
   
   const portraitSrc = characterExpression && characterExpression.image ? characterExpression.image : '';
+
+  // Apply different styles based on whether this is in the dialog or main scene
+  const portraitStyle = isInDialog
+    ? "w-10 h-10 rounded-full object-cover object-center"
+    : "max-h-[500px] max-w-full object-contain";
 
   return (
     <img
@@ -93,11 +100,11 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
       alt={`${characterId} - ${mood}`}
       className={`
         ${className}
-        ${isAnimating ? 'opacity-100' : 'opacity-100'}
-        max-h-[80vh] object-contain
+        ${isAnimating ? 'animate-fade-in' : ''}
+        ${portraitStyle}
       `}
       style={{
-        maxWidth: '100%',
+        maxWidth: isInDialog ? '40px' : '100%',
         height: 'auto'
       }}
     />

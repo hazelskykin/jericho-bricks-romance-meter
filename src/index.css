@@ -71,10 +71,15 @@
     background: rgba(26, 31, 44, 0.8);
     border: 1px solid rgba(155, 135, 245, 0.3);
     backdrop-filter: blur(10px);
+    max-width: 90%; /* Ensure dialog box doesn't extend too far */
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .character-portrait {
     filter: drop-shadow(0 0 10px rgba(155, 135, 245, 0.5));
+    object-fit: contain;
+    max-height: 80vh;
   }
   
   .choice-button {
@@ -100,6 +105,13 @@
       opacity: 0.6;
       box-shadow: 0 0 15px rgba(76, 194, 255, 0.8);
     }
+  }
+  
+  /* Character portrait container styles */
+  .character-portrait-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
