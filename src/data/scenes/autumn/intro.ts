@@ -4,7 +4,7 @@ import { Scene } from '@/types/game';
 const introScenes: Record<string, Scene> = {
   'autumn-intro': {
     id: 'autumn-intro',
-    background: 'autumn-transition',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',
