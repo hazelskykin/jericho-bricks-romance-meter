@@ -109,8 +109,27 @@ const autumnConclusionScenes: Record<string, Scene> = {
         mood: 'neutral',
       }
     ],
-    nextSceneId: 'season-transition-winter'
+    nextSceneId: 'autumn-conclusion'
   }
+
+  'autumn-conclusion': {
+    id: 'autumn-conclusion',
+    background: 'stonewich-office',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "Autumn in Stonewich has been a time of reflection and deeper connections. The Heritage & Handicrafts Festival was amazing.",
+        mood: 'neutral',
+      },
+      {
+        character: 'maven',
+        text: "I feel like I'm really making special connections here. I'm looking forward to what comes next. Winter is coming!",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'season-transition-winter',
+  },
+  
 };
 
 export default autumnConclusionScenes;
