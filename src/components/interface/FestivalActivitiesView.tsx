@@ -62,6 +62,11 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
     handleSceneTransition(`${season}-festival-completion`);
   };
 
+  // Handle background click (no action needed, just preventing errors)
+  const handleBackgroundClick = () => {
+    // No action needed for background clicks in this view
+  };
+
   // Get appropriate background for the season
   const getSeasonBackground = () => {
     switch (season) {
@@ -80,7 +85,10 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
 
   return (
     <div className="relative w-full h-screen flex flex-col">
-      <GameBackgroundScene backgroundId={getSeasonBackground()} />
+      <GameBackgroundScene 
+        backgroundId={getSeasonBackground()} 
+        onBackgroundClick={handleBackgroundClick} 
+      />
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
         <div className="max-w-4xl w-full bg-black/80 rounded-lg p-6 text-white">
           <h1 className="text-3xl font-bold mb-6 text-center">
