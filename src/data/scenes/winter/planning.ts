@@ -15,8 +15,13 @@ const winterPlanningScenes: Record<string, Scene> = {
         text: "The team gathers to discuss plans for the Winter Gala & Games. There's a sense of change in the air, as each person reflects on their personal growth over the seasons.",
       },
       {
+        character: 'maven',
+        text: "This festival is our biggest challenge yet in many ways, but it feels strangely like an afterthought at times.",
+        mood: 'neutral',
+      },
+      {
         character: 'etta',
-        text: "This festival is our biggest challenge yet. We need to be prepared for increased system load and potential issues.",
+        text: "We still need to deliver on the festival. Maven, work your magic again.",
         mood: 'neutral',
       },
       {
