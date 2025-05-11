@@ -36,10 +36,24 @@ const GameSceneObserver = () => {
       // Winter minigames
       'winter-charity-auction-start': 'charityAuction',
       'winter-gala-dance-start': 'galaDance',
-      'winter-looking-signs-start': 'lookingSigns'
+      'winter-looking-signs-start': 'lookingSigns',
+      
+      // Direct mappings for easier debugging
+      'broomsAway': 'broomsAway',
+      'mudFling': 'mudFling',
+      'bloomWithAView': 'bloomWithAView',
+      'serenade': 'serenade',
+      'spokenWord': 'spokenWord',
+      'whatsOnTap': 'whatsOnTap',
+      'tourGuide': 'tourGuide',
+      'crafter': 'crafter',
+      'memoriesDate': 'memoriesDate',
+      'charityAuction': 'charityAuction',
+      'galaDance': 'galaDance',
+      'lookingSigns': 'lookingSigns'
     };
     
-    // Explicitly check if the current scene is a minigame trigger
+    // Handle minigame trigger scenes
     if (currentScene in minigameMappings) {
       const minigameType = minigameMappings[currentScene];
       console.log(`GameSceneObserver: Detected minigame trigger scene for ${minigameType}`);

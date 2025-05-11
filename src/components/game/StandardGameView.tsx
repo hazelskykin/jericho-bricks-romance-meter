@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import DialogueBox from '../DialogueBox';
@@ -10,7 +11,17 @@ import ExpandableMenu from '../ExpandableMenu';
 import { DialogueLine } from '@/types/game';
 
 const StandardGameView: React.FC = () => {
-  const { gameState, handleDialogueClick, handleChoiceClick, handleSceneTransition, handleNewGame, handleAbout, replayCurrentScene } = useGame();
+  // Access game context with our new handlers
+  const { 
+    gameState, 
+    handleDialogueClick, 
+    handleChoiceClick, 
+    handleSceneTransition, 
+    handleNewGame, 
+    handleAbout, 
+    replayCurrentScene 
+  } = useGame();
+  
   const [showHistory, setShowHistory] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
@@ -18,11 +29,24 @@ const StandardGameView: React.FC = () => {
 
   const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
   
-  // Get all the necessary state data from game context
-  const scene = gameState?.scenes?.[sceneId];
+  // Get current scene from available scenes
+  const scene = gameState?.scenes?.[sceneId] || allScenes[sceneId];
+  // Get current dialogue line
   const currentDialogue = scene?.dialogue?.[dialogueIndex];
+  // Build dialogue history up to current point
   const dialogHistory = scene?.dialogue?.slice(0, dialogueIndex + 1) || [];
-  const displayedChoices = showChoices ? scene?.choices || [] : [];
+  // Get choices if we're showing them
+  const displayedChoices = showChoices && scene?.choices ? scene.choices : [];
+  
+  // Debug logging
+  useEffect(() => {
+    console.log(`StandardGameView: Current scene: ${sceneId}, dialogue index: ${dialogueIndex}, showing choices: ${showChoices}`);
+    if (!scene) {
+      console.error(`Scene not found: ${sceneId}`);
+    } else if (!currentDialogue && dialogueIndex < scene.dialogue.length) {
+      console.error(`Dialogue line not found at index ${dialogueIndex} in scene ${sceneId}`);
+    }
+  }, [sceneId, dialogueIndex, showChoices, scene, currentDialogue]);
   
   // Simplified loading mechanism
   useEffect(() => {
@@ -42,6 +66,13 @@ const StandardGameView: React.FC = () => {
     setActiveView('tester');
   };
   
+  // Click handler for the background - advance dialogue
+  const handleBackgroundClick = () => {
+    if (!showChoices && loaded) {
+      handleDialogueClick();
+    }
+  };
+  
   // Loading state
   if (!scene || !loaded) {
     return (
@@ -58,8 +89,10 @@ const StandardGameView: React.FC = () => {
 
   return (
     <div ref={viewRef} className="relative h-screen w-full overflow-hidden">
-      {/* Background */}
-      <BackgroundScene backgroundId={scene.background} />
+      {/* Background - clickable to advance dialogue */}
+      <div onClick={handleBackgroundClick} className="h-full w-full">
+        <BackgroundScene backgroundId={scene.background} />
+      </div>
       
       {/* Character Portrait */}
       {currentDialogue && characterId && characterId !== 'narrator' && (
@@ -94,7 +127,7 @@ const StandardGameView: React.FC = () => {
       
       {/* Dialog Box or Choice Menu */}
       <div className="absolute bottom-0 left-0 right-0 z-30">
-        {displayedChoices.length > 0 ? (
+        {showChoices && displayedChoices.length > 0 ? (
           <ChoiceMenu 
             choices={displayedChoices} 
             onChoiceSelected={handleChoiceClick}
@@ -104,11 +137,15 @@ const StandardGameView: React.FC = () => {
           <DialogueBox
             dialogueLine={currentDialogue}
             onAdvance={handleDialogueClick}
+            isActive={loaded && Boolean(currentDialogue)}
           />
         )}
       </div>
     </div>
   );
 };
+
+// Import allScenes to ensure it's available
+import { allScenes } from '@/data/scenes';
 
 export default StandardGameView;

@@ -8,7 +8,7 @@ const mainMenu: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'Welcome to Versa!',
+        text: 'Welcome to Jericho Bricks!',
       },
     ],
     choices: [
@@ -29,11 +29,15 @@ const mainMenu: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'Versa is a visual novel game set in the city of Stonewich.',
+        text: 'Jericho Bricks is a visual novel game set in the city of Stonewich.',
       },
       {
         character: 'narrator',
         text: 'Follow Maven and her teammates as they navigate their roles as city administrators.',
+      },
+      {
+        character: 'narrator',
+        text: 'Each character has their own strengths and personality. Your choices will affect your relationships with them.',
       },
     ],
     choices: [
