@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import MudFlingArena from './MudFlingArena';
 import MudFlingControls from './MudFlingControls';
@@ -157,7 +156,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
           <span className="text-white font-bold">Score: {score}</span>
           <span className="ml-4 text-white font-bold">Time: {timeLeft}s</span>
         </div>
-        <SoundToggle showMusicToggle={false} />
+        <SoundToggle />
       </div>
 
       {gameStatus === 'countdown' && (

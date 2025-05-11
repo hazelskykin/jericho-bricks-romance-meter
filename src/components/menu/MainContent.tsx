@@ -3,7 +3,7 @@ import React from 'react';
 import GameTitle from './GameTitle';
 import MenuButtons from './MenuButtons';
 import { Toaster } from 'sonner';
-import SoundToggle from '../minigames/common/SoundToggle';
+import { SoundToggle } from '../minigames/common/SoundToggle';
 
 interface MainContentProps {
   onNewGame: () => void;
@@ -31,7 +31,7 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, o
             
             {/* Sound Controls */}
             <div className="mt-6 self-end">
-              <SoundToggle showMusicToggle={true} />
+              <SoundToggle />
             </div>
           </div>
         </div>
