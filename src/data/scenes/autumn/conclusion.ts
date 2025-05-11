@@ -18,12 +18,12 @@ const autumnConclusionScenes: Record<string, Scene> = {
       {
         character: 'etta',
         text: "The operational efficiency was 12% higher than last season. We're definitely improving.",
-        mood: 'pleased',
+        mood: 'happy',
       },
       {
         character: 'xavier',
         text: "All the systems performed without a single major issue. I think we've really hit our stride as a team.",
-        mood: 'proud',
+        mood: 'happy',
       },
       {
         character: 'maven',
@@ -57,7 +57,7 @@ const autumnConclusionScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "We're ready for it, Dr. Voss. We've learned so much since we started.",
-        mood: 'confident',
+        mood: 'happy',
       },
       {
         character: 'narrator',
@@ -81,12 +81,12 @@ const autumnConclusionScenes: Record<string, Scene> = {
       {
         character: 'navarre',
         text: "Just one season left. It's hard to believe how quickly this year has gone by.",
-        mood: 'reflective',
+        mood: 'sad',
       },
       {
         character: 'etta',
         text: "We've come a long way since that first awkward meeting at Cybaton headquarters.",
-        mood: 'reflective',
+        mood: 'sad',
       },
       {
         character: 'xavier',
@@ -101,12 +101,12 @@ const autumnConclusionScenes: Record<string, Scene> = {
       {
         character: 'senara',
         text: "I think we've all changed since then. For the better.",
-        mood: 'neutral',
+        mood: 'happy',
       },
       {
         character: 'maven',
         text: "Here's to our final season. Let's make it count.",
-        mood: 'determined',
+        mood: 'neutral',
       }
     ],
     nextSceneId: 'season-transition-winter'
