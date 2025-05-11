@@ -124,11 +124,16 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta had to be the Diva.",
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta...",
+      },
+      {
+        character: 'etta',
+        text: "Diva.",
+        mood: 'angry',
       },
       {
         character: 'narrator',
-        text: "The uncertainty around your role feels like it may trigger a panic attack. You wonder if you have time to start a calming ritual on your bionic or if breathing is enough to help calm down.",
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You try not to be obvious but can't help wondering if you have time to start a calming ritual on your bionic to help calm down.",
       },
       {
         character: 'navarre',
@@ -209,11 +214,16 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta had to be the Diva.",
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta...",
+      },
+      {
+        character: 'etta',
+        text: "Diva.",
+        mood: 'angry',
       },
       {
         character: 'narrator',
-        text: "The uncertainty around your role feels like it may trigger a panic attack. You wonder if you have time to start a calming ritual on your bionic or if breathing is enough to help calm down.",
+        text: "The uncertainty around your role feels like it may trigger a panic attack. You try not to be obvious as you wonder if you have time to start a calming ritual on your bionic.",
       },
       {
         character: 'xavier',
@@ -294,7 +304,12 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta had to be the Diva.",
+        text: "In the traditional team design, there were always four roles - Bellfox, Diva, Gnarus, and Solvitor. If Navarre was the Bellfox, Xavier the Solvitor, and Senara the Gnarus, then Etta...",
+      },
+      {
+        character: 'etta',
+        text: "Diva.",
+        mood: 'angry',
       },
       {
         character: 'narrator',
