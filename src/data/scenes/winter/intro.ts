@@ -21,13 +21,18 @@ const winterIntroScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "It's a complex logistical operation. Our systems will be running at maximum capacity.",
+        text: "The marking of a year's end, and the hopeful start to a new one. I never fully appreciated that sentiment before.",
         mood: 'neutral',
       },
       {
-        character: 'maven',
-        text: "I've heard so much about this festival. I'm excited to see it firsthand.",
+        character: 'navarre',
+        text: "I've heard so much about this festival. I'm excited to see it firsthand with the very best fashion and food.",
         mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "The fickle weather makes practical planning more essential than ever. There's so much to do!",
+        mood: 'neutral',
       },
     ],
     nextSceneId: 'winter-planning',
