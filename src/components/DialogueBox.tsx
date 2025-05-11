@@ -25,7 +25,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   const { processGlossaryTerms } = useGlossary();
   
   // Determine speaker name
-  const speakerName = dialogueLine?.character ? getSpeakerName(dialogueLine.character as CharacterId) : '';
+  const speakerName = dialogueLine?.character ? getSpeakerName(dialogueLine.character as CharacterId | string) : '';
   const showPortrait = dialogueLine?.character && dialogueLine.character !== 'narrator';
   const characterId = dialogueLine?.character as CharacterId | undefined;
   const characterMood = dialogueLine?.mood || 'neutral';
@@ -39,7 +39,8 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
       setTyping(true);
       setFinished(false);
       
-      const typeDelay = dialogueLine.isGhost ? 10 : 20;
+      // Check for fast typewriter effect (removing isGhost property reference)
+      const typeDelay = 20; // Default typing speed
       
       // Type effect
       let i = 0;
@@ -84,7 +85,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   return (
     <div 
       ref={dialogueBoxRef}
-      className="dialog-box p-4 rounded-lg w-full max-w-2xl mx-auto relative"
+      className="dialog-box p-4 rounded-lg w-full max-w-xl mx-auto relative"
       onClick={handleClick}
       style={{ cursor: isActive ? 'pointer' : 'default' }}
     >
@@ -93,7 +94,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
         <div className="flex items-center mb-2">
           {/* Character portrait - small circle avatar */}
           {showPortrait && characterId && (
-            <div className="w-12 h-12 rounded-full overflow-hidden mr-3 bg-gray-800 border-2 border-accent">
+            <div className="w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-800 border-2 border-accent">
               <CharacterPortrait 
                 characterId={characterId} 
                 mood={characterMood}

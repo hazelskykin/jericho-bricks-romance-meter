@@ -28,11 +28,11 @@ const GameDialogueSystem: React.FC<GameDialogueSystemProps> = ({
   characterMood
 }) => {
   // Only render character portrait for non-narrator characters
-  const shouldShowPortrait = characterId && characterId !== 'narrator';
+  const shouldShowPortrait = characterId && characterId !== 'narrator' as unknown as CharacterId;
   
   return (
     <div className="absolute bottom-8 left-0 right-0 z-30 flex justify-center">
-      <div className="max-w-[700px] w-full px-4">
+      <div className="max-w-xl w-full px-4">
         {showChoices && displayedChoices.length > 0 ? (
           <ChoiceMenu 
             choices={displayedChoices} 
