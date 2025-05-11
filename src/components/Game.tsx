@@ -31,7 +31,7 @@ const Game: React.FC = () => {
   // Debug logging
   useEffect(() => {
     console.log('Game component rendered, current scene:', currentSceneId);
-    if (!currentScene) {
+    if (!currentScene && currentSceneId !== 'start' && currentSceneId !== 'about') {
       console.error('Current scene is undefined for sceneId:', currentSceneId);
     }
     
@@ -103,7 +103,7 @@ const Game: React.FC = () => {
     );
   }
 
-  // Return the appropriate view
+  // Return the appropriate view based on current state
   return (
     <GameProvider>
       {!assetsLoaded && (

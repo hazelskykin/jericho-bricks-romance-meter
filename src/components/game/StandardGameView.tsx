@@ -8,7 +8,7 @@ import CharacterPortrait from '../CharacterPortrait';
 import DialogHistory from '../DialogHistory';
 import { Loader2 } from 'lucide-react';
 import ExpandableMenu from '../ExpandableMenu';
-import { DialogueLine } from '@/types/game';
+import { allScenes } from '@/data/scenes';
 
 const StandardGameView: React.FC = () => {
   // Access game context with our new handlers
@@ -30,11 +30,14 @@ const StandardGameView: React.FC = () => {
   const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
   
   // Get current scene from available scenes
-  const scene = gameState?.scenes?.[sceneId] || allScenes[sceneId];
+  const scene = allScenes[sceneId];
+  
   // Get current dialogue line
   const currentDialogue = scene?.dialogue?.[dialogueIndex];
+  
   // Build dialogue history up to current point
   const dialogHistory = scene?.dialogue?.slice(0, dialogueIndex + 1) || [];
+  
   // Get choices if we're showing them
   const displayedChoices = showChoices && scene?.choices ? scene.choices : [];
   
@@ -73,8 +76,19 @@ const StandardGameView: React.FC = () => {
     }
   };
   
-  // Loading state
-  if (!scene || !loaded) {
+  // Loading state or scene not found
+  if (!scene) {
+    return (
+      <div className="flex items-center justify-center h-screen w-full bg-black">
+        <div className="text-center text-white">
+          <Loader2 className="h-16 w-16 mx-auto animate-spin text-[#9b87f5] mb-4" />
+          <p>Scene not found or loading: {sceneId}</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!loaded) {
     return (
       <div className="flex items-center justify-center h-screen w-full bg-black">
         <Loader2 className="h-16 w-16 animate-spin text-[#9b87f5]" />
@@ -144,8 +158,5 @@ const StandardGameView: React.FC = () => {
     </div>
   );
 };
-
-// Import allScenes to ensure it's available
-import { allScenes } from '@/data/scenes';
 
 export default StandardGameView;
