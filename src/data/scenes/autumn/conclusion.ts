@@ -4,7 +4,7 @@ import { Scene } from '../../../types/game';
 const autumnConclusionScenes: Record<string, Scene> = {
   'autumn-festivities-conclusion': {
     id: 'autumn-festivities-conclusion',
-    background: 'stonewich-cityscape',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -47,25 +47,42 @@ const autumnConclusionScenes: Record<string, Scene> = {
         text: "The team meets with Dr. Voss to discuss the autumn festival's outcomes and prepare for winter.",
       },
       {
-        character: 'narrator',
-        text: "Dr. Voss: Your performance this season has been exemplary. The festival metrics show significant improvements across all categories.",
+        character: 'etta',
+        text: "That wraps up the report for the season. Did you have feedback for us, Dr. Voss?",
+        mood: 'neutral',
       },
       {
         character: 'narrator',
-        text: "With winter approaching, you'll face your final and most challenging season. The Winter Games & Gala is Stonewich's premier event.",
+        text: "Dr. Voss: Your performance this season has been exemplary. You continue to deliver as individual talents.",
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss: I don't think you need me to tell you that. You've started showing some progress on those broader social markers as well, as only a unified team can.",
       },
       {
         character: 'maven',
-        text: "We're ready for it, Dr. Voss. We've learned so much since we started.",
+        text: "Your feedback last season helped us to look beyond ourselves. We have a long way to go, but our behavioral patterns are shifting.",
         mood: 'happy',
       },
       {
         character: 'narrator',
-        text: "Dr. Voss: Indeed. I've observed considerable growth in all of you. Personal development is as important as professional achievements in this program.",
+        text: "Dr. Voss: Indeed. I've observed considerable changes, much more than could be considered coincidental.",
       },
       {
         character: 'narrator',
-        text: "Dr. Voss: Keep this momentum going into winter. It will determine your final evaluations and future assignments with Cybaton.",
+        text: "Dr. Voss: The autumn festival in particular drove higher rates of romantic commitments and productive skill building, both essential for a stable and happy workforce.",
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss: The competitors are still there, but the local authorities and commerce leaders are not as receptive.",
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss: From the end of summer until now, that is a remarkable shift. If you can keep up this momentum, Stonewich may emerge on stronger footing than it's had in the last ten years.",
+      },
+      {
+        character: 'narrator',
+        text: "Dr. Voss: Your final evaluations and future assignments with Cybaton will be at the end of the year. Cybaton is counting on you. Stonewich needs your best.",
       }
     ],
     nextSceneId: 'autumn-conclusion-debrief'
@@ -77,6 +94,26 @@ const autumnConclusionScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "After the meeting with Dr. Voss, the team debriefs on the shuttle back to Stonewich and reflects on their journey so far.",
+      },
+      {
+        character: 'etta',
+        text: "I can't believe what a difference there was between the report we gave at the end of summer and this one. Dr. Voss was practically giddy.",
+        mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "I don't know if we can go that far, but she definitely didn't have the doom and gloom soundtrack playing this time.",
+        mood: 'laughing',
+      },
+      {
+        character: 'xavier',
+        text: "Everything felt so much more grounded in purpose this season. It really helped me to consider a broader perspective.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "Maven's influence was subtle, sincere and effective.",
+        mood: 'happy',
       },
       {
         character: 'navarre',
@@ -106,14 +143,14 @@ const autumnConclusionScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Here's to our final season. Let's make it count.",
-        mood: 'neutral',
+        mood: 'happy',
       }
     ],
     nextSceneId: 'autumn-conclusion'
   },
   'autumn-conclusion': {
     id: 'autumn-conclusion',
-    background: 'stonewich-office',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
