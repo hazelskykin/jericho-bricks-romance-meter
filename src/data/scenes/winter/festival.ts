@@ -4,7 +4,7 @@ import { Scene } from '@/types/game';
 const winterFestivalScenes: Record<string, Scene> = {
   'winter-festival-intro': {
     id: 'winter-festival-intro',
-    background: 'stonewich-cityscape',
+    background: 'stonewich-office',
     dialogue: [
       {
         character: 'narrator',
@@ -31,7 +31,7 @@ const winterFestivalScenes: Record<string, Scene> = {
   
  'winter-festival-activities': {
     id: 'winter-festival-activities',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -48,7 +48,7 @@ const winterFestivalScenes: Record<string, Scene> = {
   
   'winter-festival-completion': {
     id: 'winter-festival-completion',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
