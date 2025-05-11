@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -44,7 +43,8 @@ const sceneMapping: Record<string, string> = {
   
   // Autumn scenes
   'autumn-character-path': 'autumn-character-relationship',
-  'autumn-festival-introduction': 'autumn-festival-intro',
+  'autumn-festival-introduction': 'autumn-festival-introduction', // Updated mapping to match the actual scene ID
+  'autumn-festival-activities': 'autumn-festival-activities',
 };
 
 // Error fallbacks for scenes that might not exist

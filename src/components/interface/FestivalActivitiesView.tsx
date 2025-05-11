@@ -1,21 +1,147 @@
 
-import React from 'react';
-import FestivalActivitiesScene from '../FestivalActivitiesScene';
+// Import necessary packages and components - don't change this section
+import React, { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { useGame } from '@/context/GameContext';
+import GameBackgroundScene from '../game/GameBackgroundScene';
+
+interface FestivalActivity {
+  id: string;
+  title: string;
+  description: string;
+  color: string;
+  sceneId: string;
+  available?: boolean;
+}
 
 interface FestivalActivitiesViewProps {
   sceneId: string;
-  activities: any[];
+  activities: FestivalActivity[];
   season: string;
 }
 
-const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({ sceneId, activities, season }) => {
+const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
+  sceneId,
+  activities,
+  season,
+}) => {
+  const { handleSceneTransition } = useGame();
+  const [completedActivities, setCompletedActivities] = useState<Set<string>>(new Set());
+  const [allCompleted, setAllCompleted] = useState(false);
+
+  // Check if all activities are completed
+  useEffect(() => {
+    // Only consider available activities
+    const availableActivities = activities.filter(
+      activity => activity.available !== false
+    );
+    
+    if (
+      availableActivities.length > 0 &&
+      availableActivities.every(activity => completedActivities.has(activity.id))
+    ) {
+      setAllCompleted(true);
+    }
+  }, [activities, completedActivities]);
+
+  // Handle activity selection
+  const handleActivitySelect = (activity: FestivalActivity) => {
+    // Mark this activity as completed
+    const newCompleted = new Set(completedActivities);
+    newCompleted.add(activity.id);
+    setCompletedActivities(newCompleted);
+
+    // Proceed to the activity scene
+    handleSceneTransition(activity.sceneId);
+  };
+
+  // Continue after all activities are completed
+  const handleContinue = () => {
+    console.log(`All activities explored, continuing to: ${season}-festival-completion`);
+    handleSceneTransition(`${season}-festival-completion`);
+  };
+
+  // Get appropriate background for the season
+  const getSeasonBackground = () => {
+    switch (season) {
+      case 'spring':
+        return 'stonewich-cityscape';
+      case 'summer':
+        return 'stonewich-cityscape';
+      case 'autumn':
+        return 'stonewich-cityscape';
+      case 'winter':
+        return 'stonewich-cityscape';
+      default:
+        return 'stonewich-cityscape';
+    }
+  };
+
   return (
-    <FestivalActivitiesScene
-      activities={activities}
-      title={`${season.charAt(0).toUpperCase() + season.slice(1)} Festival`}
-      description={`Choose which activities you'd like to experience during the ${season} festival.`}
-      completionSceneId={`${season}-festival-completion`}
-    />
+    <div className="relative w-full h-screen flex flex-col">
+      <GameBackgroundScene backgroundId={getSeasonBackground()} />
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
+        <div className="max-w-4xl w-full bg-black/80 rounded-lg p-6 text-white">
+          <h1 className="text-3xl font-bold mb-6 text-center">
+            {season.charAt(0).toUpperCase() + season.slice(1)} Festival Activities
+          </h1>
+          
+          <p className="mb-6 text-center">
+            Choose an activity to participate in during the festival:
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {activities.map((activity) => (
+              <Card
+                key={activity.id}
+                className="bg-gray-800 border-2 hover:border-purple-500 transition-all"
+                style={{
+                  borderColor: completedActivities.has(activity.id)
+                    ? 'rgba(255,255,255,0.2)'
+                    : activity.color,
+                }}
+              >
+                <CardContent className="p-4">
+                  <h2 className="text-xl font-bold mb-2">{activity.title}</h2>
+                  <p className="text-sm text-gray-300 mb-4">{activity.description}</p>
+                  <Button
+                    className="w-full"
+                    style={{
+                      backgroundColor: activity.color,
+                      opacity: completedActivities.has(activity.id) ? 0.6 : 1,
+                    }}
+                    disabled={
+                      activity.available === false ||
+                      completedActivities.has(activity.id)
+                    }
+                    onClick={() => handleActivitySelect(activity)}
+                  >
+                    {completedActivities.has(activity.id)
+                      ? 'Completed'
+                      : activity.available === false
+                      ? 'Not Available'
+                      : 'Select'}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          {allCompleted && (
+            <div className="flex justify-center">
+              <Button
+                variant="default"
+                className="bg-purple-700 hover:bg-purple-800"
+                onClick={handleContinue}
+              >
+                Continue to Festival Conclusion
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -106,33 +106,14 @@ const introScenes: Record<string, Scene> = {
       //after the relationship-development arc, then the festival should kick off with autumn-festival-introduction
     ],
     nextSceneId: 'autumn-character',
-
   },
 
   'autumn-character': {
-  id: 'autumn-character',
-  background: 'stonewich-cityscape',
-  dialogue: [], // or minimal
-  nextSceneId: null // handled via dynamic route handler
-},
-
-
-  'autumn-festival-introduction': {
-    id: 'autumn-festival-introduction',
+    id: 'autumn-character',
     background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "The day of the Autumn Heritage & Handicrafts Festival arrives. The streets are decorated with autumn leaves and historical artifacts, and the air is filled with excitement.",
-      },
-      {
-        character: 'maven',
-        text: "It's finally here! The festival looks amazing. I can't wait to explore everything it has to offer.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'autumn-festival-activities',
-  },
+    dialogue: [], // or minimal
+    nextSceneId: null // handled via dynamic route handler
+  }
 };
 
 export default introScenes;

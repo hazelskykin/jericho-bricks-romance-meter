@@ -1,4 +1,3 @@
-
 import { Scene } from '@/types/game';
 
 const relationshipScenes: Record<string, Scene> = {
