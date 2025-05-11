@@ -60,7 +60,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
     <AnimatePresence mode="wait">
       {isActive && (
         <motion.div 
-          className="dialog-box fixed bottom-4 left-0 right-0 p-6 rounded-lg z-30 mx-auto max-w-2xl"
+          className="dialog-box fixed bottom-4 left-0 right-0 p-4 rounded-lg z-30 mx-auto max-w-xl"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
@@ -76,7 +76,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
             {currentLine.character && currentLine.character !== 'narrator' && (
               <div className="flex items-center gap-3">
                 <div 
-                  className="w-10 h-10 rounded-full overflow-hidden border-2 flex items-center justify-center"
+                  className="w-12 h-12 rounded-full overflow-hidden border-2 flex items-center justify-center"
                   style={{ borderColor: characterData?.color || 'white' }}
                 >
                   <CharacterPortrait
@@ -102,7 +102,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
             )}
           </div>
           
-          <p className="text-lg text-white/90 leading-relaxed ml-0">
+          <p className="text-base text-white/90 leading-relaxed ml-0">
             {currentLine.text}
           </p>
           

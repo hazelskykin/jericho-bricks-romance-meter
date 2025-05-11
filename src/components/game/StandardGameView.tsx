@@ -10,6 +10,7 @@ import GameBackgroundScene from './GameBackgroundScene';
 import CharacterPortraitDisplay from './CharacterPortraitDisplay';
 import GameDialogueSystem from './GameDialogueSystem';
 import GameLoadingState from './GameLoadingState';
+import { CharacterId } from '@/types/game';
 
 const StandardGameView: React.FC = () => {
   // Access game context with our new handlers
@@ -135,10 +136,11 @@ const StandardGameView: React.FC = () => {
 
   // Get the character's mood from current dialogue
   const characterMood = currentDialogue?.mood || 'neutral';
-  // Get the character ID from current dialogue
-  const characterId = currentDialogue?.character;
   
-  // Determine if we should show the full character portrait
+  // Get the character ID from current dialogue, ensuring it's a valid CharacterId
+  const characterId = currentDialogue?.character as CharacterId | undefined;
+  
+  // Determine if we should show the full character portrait - only for valid character IDs that aren't narrator
   const shouldShowFullPortrait = characterId && characterId !== 'narrator';
 
   return (

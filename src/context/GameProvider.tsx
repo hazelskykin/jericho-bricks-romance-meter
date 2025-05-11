@@ -118,7 +118,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkSeasonProgress,
     activeMinigame,
     startMinigame,
-    // Fix: Type error by providing a proper wrapper function that matches expected signature
+    // Fix: Make sure the completeMinigame function is properly typed to match expected signature
     completeMinigame: (success: boolean, score?: number) => completeMinigame(success, score),
     exitMinigame,
     routeToEpilogue,

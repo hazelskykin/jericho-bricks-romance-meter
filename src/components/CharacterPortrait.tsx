@@ -90,8 +90,8 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
 
   // Apply different styles based on whether this is in the dialog or main scene
   const portraitClasses = isInDialog
-    ? "w-full h-full object-cover object-top rounded-full"
-    : "max-h-[500px] w-auto object-contain character-portrait";
+    ? "w-full h-full object-cover object-top rounded-full" // For avatar in dialog
+    : "h-[80vh] w-auto object-contain character-portrait"; // For main portrait display
 
   return (
     <img

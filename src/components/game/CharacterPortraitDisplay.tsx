@@ -15,6 +15,8 @@ const CharacterPortraitDisplay: React.FC<CharacterPortraitDisplayProps> = ({
   characterMood,
   shouldShow
 }) => {
+  // Only render if we should show a character and have a valid character ID
+  // that isn't the narrator (which is handled separately)
   if (!shouldShow || !characterId) return null;
   
   return (
