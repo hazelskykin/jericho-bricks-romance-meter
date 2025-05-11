@@ -5,7 +5,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Confession scenes for each character
   'winter-confession': {
     id: 'winter-confession',
-    background: 'winter-transition',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -23,7 +23,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Xavier's confession
   'winter-confession-xavier': {
     id: 'winter-confession-xavier',
-    background: 'winter-transition',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'xavier',
@@ -61,7 +61,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'winter-happy-xavier': {
     id: 'winter-happy-xavier',
-    background: 'winter-transition',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'xavier',
@@ -88,7 +88,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'winter-noncommit-xavier': {
     id: 'winter-noncommit-xavier',
-    background: 'winter-transition',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'xavier',
@@ -211,7 +211,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Etta's confession
   'winter-confession-etta': {
     id: 'winter-confession-etta',
-    background: 'winter-transition',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'etta',
@@ -259,7 +259,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'winter-happy-etta': {
     id: 'winter-happy-etta',
-    background: 'winter-transition',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'etta',
@@ -291,7 +291,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'winter-noncommit-etta': {
     id: 'winter-noncommit-etta',
-    background: 'winter-transition',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'etta',
@@ -324,7 +324,7 @@ const relationshipScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'senara',
-        text: "Maven, please sit here next to me. I'd like to share with you something new I've been researching. Something that has not come up in my analytical work before.",
+        text: "Maven, please sit here next to me. It might be a bit close. I'd like to share with you something new I've been researching. Something that has not come up in my analytical work before.",
         mood: 'happy',
       },
       {
