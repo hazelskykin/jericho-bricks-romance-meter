@@ -13,7 +13,7 @@ const introScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "I've learned so much about myself and what I truly value.",
-        mood: 'thoughtful'
+        mood: 'neutral'
       },
       {
         character: 'narrator',
@@ -28,12 +28,12 @@ const introScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'As you reflect on your journey, you realize how much you\'ve grown alongside your partner.'
+        text: "As you reflect on your journey, you realize how much you've grown alongside your partner."
       },
       {
         character: 'maven',
         text: "It wasn't always easy, but together we've accomplished something meaningful.",
-        mood: 'confident'
+        mood: 'happy'
       }
     ],
     nextSceneId: 'epilogue-conclusion'
