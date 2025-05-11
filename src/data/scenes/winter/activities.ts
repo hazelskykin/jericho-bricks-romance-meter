@@ -7,7 +7,7 @@ const winterActivityScenes: Record<string, Scene> = {
   // Charity Auction activity
   'winter-charity-auction-intro': {
     id: 'winter-charity-auction-intro',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -33,7 +33,7 @@ const winterActivityScenes: Record<string, Scene> = {
   },
   'winter-charity-auction-complete': {
     id: 'winter-charity-auction-complete',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -61,7 +61,7 @@ const winterActivityScenes: Record<string, Scene> = {
   // Gala Dance activity
   'winter-gala-dance-intro': {
     id: 'winter-gala-dance-intro',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -87,7 +87,7 @@ const winterActivityScenes: Record<string, Scene> = {
   },
   'winter-gala-dance-complete': {
     id: 'winter-gala-dance-complete',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -120,7 +120,7 @@ const winterActivityScenes: Record<string, Scene> = {
   // Looking for Signs activity
   'winter-looking-signs-intro': {
     id: 'winter-looking-signs-intro',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -151,7 +151,7 @@ const winterActivityScenes: Record<string, Scene> = {
   },
   'winter-looking-signs-complete': {
     id: 'winter-looking-signs-complete',
-    background: 'stonewich-cityscape',
+    background: 'winter-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
