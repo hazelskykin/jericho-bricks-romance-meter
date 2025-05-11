@@ -2,15 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
-import CharacterSelectionScene from './CharacterSelectionScene';
-import FestivalActivitiesScene from './FestivalActivitiesScene';
-import { CharacterId } from '@/types/game';
 import AboutScreen from './about/AboutScreen';
 import MinigameHandler from './minigames/MinigameHandler';
 import StandardGameView from './game/StandardGameView';
 import { useEpilogueChecker } from '@/hooks/useEpilogueChecker';
-import { Button } from './ui/button';
 import { allScenes } from '@/data/scenes';
+import GameDevMenu from './interface/GameDevMenu';
+import CharacterSelectionView from './interface/CharacterSelectionView';
+import FestivalActivitiesView from './interface/FestivalActivitiesView';
 
 interface GameInterfaceProps {
   initialSceneId?: string;
@@ -45,10 +44,11 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
   }, [gameState.currentScene, initialSceneId, handleSceneTransition, initialized, gameStarted]);
 
   const { routeToEpilogue } = useEpilogueChecker(gameState, setGameState => setGameState);
-  const [showDevMenu, setShowDevMenu] = useState(false);
 
+  // Handle special scene transitions
   useEffect(() => {
     const { currentScene, currentLoveInterest } = gameState;
+    
     if (currentScene === 'epilogue-route') {
       handleSceneTransition(routeToEpilogue(currentScene));
     } else if (currentScene === 'happy-ending-character' && currentLoveInterest) {
@@ -68,31 +68,25 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     }
   }, [gameState.currentScene, gameState.currentLoveInterest, handleSceneTransition, routeToEpilogue]);
 
-  const seasonalCharacterSelection = (season: 'spring' | 'summer') => {
-    const suffix = gameState.currentScene.replace(`${season}-character-selection`, '');
-    const visitedChars: CharacterId[] = [];
-    if (suffix.includes('1')) visitedChars.push('xavier');
-    if (suffix.includes('2')) visitedChars.push('navarre');
-    if (suffix.includes('3')) visitedChars.push('etta');
-    if (suffix.includes('4')) visitedChars.push('senara');
-    const remainingChars = (['xavier', 'navarre', 'etta', 'senara'] as CharacterId[]).filter(
-      char => !visitedChars.includes(char)
-    );
-    return (
-      <CharacterSelectionScene
-        availableCharacters={remainingChars}
-        scenePrefix={`${season}-visit`}
-        title={`${season.charAt(0).toUpperCase() + season.slice(1)} Connections`}
-        description={
-          remainingChars.length > 0
-            ? `Spend time with your teammates. Who would you like to visit next?`
-            : `You've visited all your teammates. You can proceed to the ${season.charAt(0).toUpperCase() + season.slice(1)} festival planning.`
-        }
-        completionSceneId={remainingChars.length === 0 ? `${season}-festival-planning` : undefined}
-      />
-    );
-  };
+  // Dev menu jump targets
+  const devJumpTargets = [
+    { id: 'spring-intro', label: 'Spring Intro' },
+    { id: 'spring-character-selection', label: 'Spring Character Select' },
+    { id: 'spring-festival-planning', label: 'Spring Festival Planning' },
+    { id: 'summer-intro', label: 'Summer Intro' },
+    { id: 'summer-character-selection', label: 'Summer Character Select' },
+    { id: 'summer-planning', label: 'Summer Festival Planning' },
+    { id: 'autumn-intro', label: 'Autumn Intro' },
+    { id: 'autumn-character-path', label: 'Autumn Romance Path' },
+    { id: 'autumn-festival-introduction', label: 'Autumn Festival' },
+    { id: 'winter-intro', label: 'Winter Intro' },
+    { id: 'winter-planning', label: 'Winter Festival Planning' },
+    { id: 'winter-planning-character', label: 'Winter Romance Path' },
+    { id: 'winter-festival-intro', label: 'Winter Festival' },
+    { id: 'epilogue-route', label: 'Epilogue' }
+  ];
 
+  // Festival activities data
   const seasonalFestivalActivities: Record<string, any[]> = {
     'spring-festival-activities': [
       { id: 'brooms-away', title: 'Brooms Away!', description: 'Help coordinate the cleanup efforts with the automated drones', color: '#4CC2FF', sceneId: 'spring-brooms-away-intro' },
@@ -116,53 +110,11 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     ]
   };
 
-  const devJumpTargets = [
-    { id: 'spring-intro', label: 'Spring Intro' },
-    { id: 'spring-character-selection', label: 'Spring Character Select' },
-    { id: 'spring-festival-planning', label: 'Spring Festival Planning' },
-    { id: 'summer-intro', label: 'Summer Intro' },
-    { id: 'summer-character-selection', label: 'Summer Character Select' },
-    { id: 'summer-planning', label: 'Summer Festival Planning' },
-    { id: 'autumn-intro', label: 'Autumn Intro' },
-    { id: 'autumn-character-path', label: 'Autumn Romance Path' },
-    { id: 'autumn-festival-introduction', label: 'Autumn Festival' },
-    { id: 'winter-intro', label: 'Winter Intro' },
-    { id: 'winter-planning', label: 'Winter Festival Planning' },
-    { id: 'winter-planning-character', label: 'Winter Romance Path' },
-    { id: 'winter-festival-intro', label: 'Winter Festival' },
-    { id: 'epilogue-route', label: 'Epilogue' }
-  ];
-
-  const DevMenu = () => (
-    process.env.NODE_ENV === 'development' && (
-      <div className="fixed top-4 left-4 z-50">
-        <Button
-          onClick={() => setShowDevMenu(!showDevMenu)}
-          className="bg-yellow-600 text-white px-4 py-2 text-sm rounded shadow"
-        >
-          {showDevMenu ? 'Hide Test Menu' : 'Show Test Menu'}
-        </Button>
-        {showDevMenu && (
-          <div className="mt-2 bg-black/80 p-4 rounded shadow max-w-xs space-y-2">
-            <p className="text-white text-sm font-semibold">Jump to Scene:</p>
-            <div className="flex flex-col space-y-1 max-h-64 overflow-y-auto pr-1">
-              {devJumpTargets.map(({ id, label }) => (
-                <Button key={id} onClick={() => handleSceneTransition(id)} className="text-xs whitespace-nowrap">
-                  {label}
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  );
-
   if (gameState.currentScene === 'start') {
     return (
       <>
         <MainMenu onNewGame={handleNewGame} onAbout={handleAbout} loadingComplete={loadingComplete} />
-        <DevMenu />
+        <GameDevMenu jumpTargets={devJumpTargets} onJumpToScene={handleSceneTransition} />
       </>
     );
   }
@@ -180,25 +132,49 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
           completeMinigame={completeMinigame}
           exitMinigame={exitMinigame}
         />
-        <DevMenu />
+        <GameDevMenu jumpTargets={devJumpTargets} onJumpToScene={handleSceneTransition} />
       </>
     );
   }
 
-  if (gameState.currentScene.includes('spring-character-selection')) return seasonalCharacterSelection('spring');
-  if (gameState.currentScene.includes('summer-character-selection')) return seasonalCharacterSelection('summer');
+  // Handle character selection scenes
+  if (gameState.currentScene.includes('spring-character-selection')) {
+    return (
+      <>
+        <CharacterSelectionView 
+          season="spring" 
+          sceneId={gameState.currentScene}
+          gameState={gameState} 
+        />
+        <GameDevMenu jumpTargets={devJumpTargets} onJumpToScene={handleSceneTransition} />
+      </>
+    );
+  }
+  
+  if (gameState.currentScene.includes('summer-character-selection')) {
+    return (
+      <>
+        <CharacterSelectionView 
+          season="summer" 
+          sceneId={gameState.currentScene}
+          gameState={gameState} 
+        />
+        <GameDevMenu jumpTargets={devJumpTargets} onJumpToScene={handleSceneTransition} />
+      </>
+    );
+  }
 
+  // Handle festival activities
   if (seasonalFestivalActivities[gameState.currentScene]) {
     const season = gameState.currentScene.split('-')[0];
     return (
       <>
-        <FestivalActivitiesScene
-          activities={seasonalFestivalActivities[gameState.currentScene]}
-          title={`${season.charAt(0).toUpperCase() + season.slice(1)} Festival`}
-          description={`Choose which activities you'd like to experience during the ${season} festival.`}
-          completionSceneId={`${season}-festival-completion`}
+        <FestivalActivitiesView 
+          sceneId={gameState.currentScene}
+          activities={seasonalFestivalActivities[gameState.currentScene]} 
+          season={season}
         />
-        <DevMenu />
+        <GameDevMenu jumpTargets={devJumpTargets} onJumpToScene={handleSceneTransition} />
       </>
     );
   }
@@ -207,7 +183,7 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
   return (
     <>
       <StandardGameView />
-      <DevMenu />
+      <GameDevMenu jumpTargets={devJumpTargets} onJumpToScene={handleSceneTransition} />
     </>
   );
 };

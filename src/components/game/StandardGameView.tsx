@@ -1,15 +1,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
-import DialogueBox from '../DialogueBox';
-import ChoiceMenu from '../ChoiceMenu';
-import BackgroundScene from '../BackgroundScene';
-import CharacterPortrait from '../CharacterPortrait';
-import DialogHistory from '../DialogHistory';
 import { Loader2 } from 'lucide-react';
-import ExpandableMenu from '../ExpandableMenu';
 import { allScenes } from '@/data/scenes';
 import { toast } from 'sonner';
+import ExpandableMenu from '../ExpandableMenu';
+import DialogHistory from '../DialogHistory';
+import GameBackgroundScene from './GameBackgroundScene';
+import CharacterPortraitDisplay from './CharacterPortraitDisplay';
+import GameDialogueSystem from './GameDialogueSystem';
+import GameLoadingState from './GameLoadingState';
 
 const StandardGameView: React.FC = () => {
   // Access game context with our new handlers
@@ -18,8 +18,6 @@ const StandardGameView: React.FC = () => {
     handleDialogueClick, 
     handleChoiceClick, 
     handleSceneTransition, 
-    handleNewGame, 
-    handleAbout, 
     replayCurrentScene 
   } = useGame();
   
@@ -119,18 +117,11 @@ const StandardGameView: React.FC = () => {
   // Loading state or scene not found
   if (error || !scene) {
     return (
-      <div className="flex items-center justify-center h-screen w-full bg-black">
-        <div className="text-center text-white">
-          <Loader2 className="h-16 w-16 mx-auto animate-spin text-[#9b87f5] mb-4" />
-          <p>{error || `Scene not found or loading: ${sceneId}`}</p>
-          <button 
-            onClick={() => handleSceneTransition('start')} 
-            className="mt-4 px-4 py-2 bg-[#9b87f5] rounded-md hover:bg-[#8B5CF6] transition-colors"
-          >
-            Return to Main Menu
-          </button>
-        </div>
-      </div>
+      <GameLoadingState 
+        error={error} 
+        sceneId={sceneId} 
+        onReturnToMenu={() => handleSceneTransition('start')} 
+      />
     );
   }
   
@@ -153,23 +144,17 @@ const StandardGameView: React.FC = () => {
   return (
     <div ref={viewRef} className="relative h-screen w-full overflow-hidden">
       {/* Background - clickable to advance dialogue */}
-      <div onClick={handleBackgroundClick} className="h-full w-full">
-        <BackgroundScene backgroundId={scene.background} />
-      </div>
+      <GameBackgroundScene 
+        backgroundId={scene.background} 
+        onBackgroundClick={handleBackgroundClick} 
+      />
       
-      {/* Character Portrait - only show if we have a character speaking */}
-      {shouldShowFullPortrait && (
-        <div className="absolute inset-y-0 right-1/4 flex items-center pointer-events-none z-20">
-          <div className="character-portrait-container max-h-[80vh] max-w-[350px]">
-            <CharacterPortrait 
-              characterId={characterId}
-              mood={characterMood}
-              animate={true}
-              className="character-portrait"
-            />
-          </div>
-        </div>
-      )}
+      {/* Character Portrait */}
+      <CharacterPortraitDisplay 
+        characterId={characterId}
+        characterMood={characterMood}
+        shouldShow={shouldShowFullPortrait}
+      />
       
       {/* Dialog History Button */}
       <ExpandableMenu 
@@ -190,21 +175,14 @@ const StandardGameView: React.FC = () => {
       )}
       
       {/* Dialog Box or Choice Menu */}
-      <div className="absolute bottom-0 left-0 right-0 z-30">
-        {showChoices && displayedChoices.length > 0 ? (
-          <ChoiceMenu 
-            choices={displayedChoices} 
-            onChoiceSelected={handleChoiceClick}
-            isActive={true}
-          />
-        ) : (
-          <DialogueBox
-            dialogueLine={currentDialogue}
-            onAdvance={handleDialogueClick}
-            isActive={loaded && Boolean(currentDialogue)}
-          />
-        )}
-      </div>
+      <GameDialogueSystem
+        showChoices={showChoices}
+        displayedChoices={displayedChoices}
+        currentDialogue={currentDialogue}
+        loaded={loaded}
+        onDialogueClick={handleDialogueClick}
+        onChoiceClick={handleChoiceClick}
+      />
     </div>
   );
 };

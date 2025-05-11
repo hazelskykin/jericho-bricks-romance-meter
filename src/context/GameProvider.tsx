@@ -118,7 +118,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkSeasonProgress,
     activeMinigame,
     startMinigame,
-    // Fix the type error by passing () => { completeMinigame("new") } 
+    // Fix: Type error by providing a proper wrapper function that matches expected signature
     completeMinigame: (success: boolean, score?: number) => completeMinigame(success, score),
     exitMinigame,
     routeToEpilogue,
