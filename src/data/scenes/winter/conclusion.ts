@@ -2,44 +2,7 @@
 import { Scene } from '../../../types/game';
 
 const winterConclusionScenes: Record<string, Scene> = {
-  'winter-festival-completion': {
-    id: 'winter-festival-completion',
-    background: 'winter-transition',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "The Winter Games & Gala comes to a magical conclusion. As the final events wrap up, there's a sense of accomplishment throughout the team.",
-      },
-      {
-        character: 'xavier',
-        text: "All systems functioned at optimal capacity throughout the entire festival. It's a new record!",
-        mood: 'happy',
-      },
-      {
-        character: 'navarre',
-        text: "And the social media engagement was off the charts. People loved this year's events.",
-        mood: 'happy',
-      },
-      {
-        character: 'etta',
-        text: "The organizational structure we implemented was highly efficient. Dr. Voss should be pleased with the results.",
-        mood: 'happy',
-      },
-      {
-        character: 'maven',
-        text: "We've come so far since we first arrived in Stonewich. It's hard to believe our year is almost over.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'senara',
-        text: "We should prepare our final report for Dr. Voss. This could be our last seasonal assessment.",
-        mood: 'sad',
-      }
-    ],
-    nextSceneId: 'winter-review-preparation',
-  },
-
-  // Annual Review Preparation
+    // Annual Review Preparation
   'winter-review-preparation': {
     id: 'winter-review-preparation',
     background: 'stonewich-office',
