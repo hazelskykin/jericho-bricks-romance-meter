@@ -34,7 +34,7 @@ const GameDialogueSystem: React.FC<GameDialogueSystemProps> = ({
     <div className="absolute bottom-6 left-0 right-0 z-30 flex justify-center px-4 sm:px-6">
       <div className="w-full max-w-3xl relative">
         {/* Speaker portrait that overlaps the dialog box */}
-        {shouldShowPortrait && (
+        {shouldShowPortrait && !showChoices && (
           <div className="absolute -left-5 -top-16 z-40">
             <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-800/80 border-2 border-accent shadow-lg">
               <CharacterPortrait 
