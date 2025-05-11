@@ -12,7 +12,7 @@ const sceneMapping: Record<string, string> = {
   'spring-character-selection': 'spring-character-selection',
   'spring-festival-planning': 'spring-planning',
   'spring-character-path': 'spring-character-visit',
-  'spring-selection': 'spring-selection', // Map to the actual scene we just created
+  'spring-selection': 'spring-selection', // Map to the actual scene we created
   
   // Spring character selection scenes with visit counts
   'spring-character-selection-1': 'spring-character-selection',
@@ -24,6 +24,13 @@ const sceneMapping: Record<string, string> = {
   'summer-character-selection': 'summer-character-selection',
   'summer-festival-planning': 'summer-planning',
   'summer-character-path': 'summer-character-visit',
+  'summer-visit-character': 'summer-character-selection', // Add this mapping for the transition
+  
+  // Summer character selection scenes with visit counts
+  'summer-character-selection-1': 'summer-character-selection',
+  'summer-character-selection-2': 'summer-character-selection',
+  'summer-character-selection-3': 'summer-character-selection',
+  'summer-character-selection-4': 'summer-character-selection',
   
   // Autumn scenes
   'autumn-character-path': 'autumn-character-relationship',
@@ -42,12 +49,19 @@ const sceneFallbacks: Record<string, string> = {
   'autumn-festival-planning': 'autumn-intro',
   'winter-festival-planning': 'winter-intro',
   'spring-selection': 'spring-intro', // Fallback to spring-intro if something goes wrong
+  'summer-visit-character': 'summer-character-selection', // Add fallback for summer visit
   
   // Fallbacks for character selection with visit counts
   'spring-character-selection-1': 'spring-character-selection',
   'spring-character-selection-2': 'spring-character-selection',
   'spring-character-selection-3': 'spring-character-selection',
   'spring-character-selection-4': 'spring-character-selection',
+  
+  // Fallbacks for summer character selection with visit counts
+  'summer-character-selection-1': 'summer-character-selection',
+  'summer-character-selection-2': 'summer-character-selection',
+  'summer-character-selection-3': 'summer-character-selection',
+  'summer-character-selection-4': 'summer-character-selection',
 };
 
 /**

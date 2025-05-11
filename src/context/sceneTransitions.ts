@@ -42,15 +42,24 @@ export const useSceneTransitions = (
         return;
       }
       
+      // Check if scene exists explicitly before attempting transition
+      if (nextSceneId === 'summer-visit-character') {
+        console.log('Detected summer-visit-character, redirecting to summer-character-selection');
+        nextSceneId = 'summer-character-selection';
+      }
+      
       // Validate that the scene exists before attempting transition
       if (!allScenes[nextSceneId] && nextSceneId !== 'start' && nextSceneId !== 'about') {
         console.error(`Scene [${nextSceneId}] not found in allScenes`);
-        toast.error(`Failed to find scene "${nextSceneId}". Redirecting to a known scene.`);
         
         // Try to handle with a fallback
         if (nextSceneId.includes('intro') || nextSceneId === 'prologue-intro') {
           nextSceneId = 'intro';
+        } else if (nextSceneId === 'summer-visit-character') {
+          nextSceneId = 'summer-character-selection';
+          toast.info('Transitioning to summer character selection');
         } else {
+          toast.error(`Failed to find scene "${nextSceneId}". Redirecting to a known scene.`);
           nextSceneId = 'start'; // Default fallback
         }
       }

@@ -1,3 +1,4 @@
+
 import { Scene } from '../../../types/game';
 
 const summerIntroScenes: Record<string, Scene> = {
@@ -80,8 +81,8 @@ const summerIntroScenes: Record<string, Scene> = {
         mood: 'happy',
       },
     ],
-    // This would typically point to a summer character selection or planning scene
-    nextSceneId: 'summer-visit-character',
+    // Update the next scene to point to character selection
+    nextSceneId: 'summer-character-selection',
   },
 };
 

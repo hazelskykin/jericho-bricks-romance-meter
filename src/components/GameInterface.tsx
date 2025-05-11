@@ -152,7 +152,9 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     );
   }
   
-  if (gameState.currentScene.includes('summer-character-selection')) {
+  // Handle summer character selection scenes
+  if (gameState.currentScene === 'summer-character-selection' || 
+      /^summer-character-selection-\d+$/.test(gameState.currentScene)) {
     return (
       <>
         <CharacterSelectionView 
