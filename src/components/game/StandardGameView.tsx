@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import { Loader2 } from 'lucide-react';
@@ -151,7 +150,7 @@ const StandardGameView: React.FC = () => {
         onBackgroundClick={handleBackgroundClick} 
       />
       
-      {/* Character portrait - centered in background */}
+      {/* Character portrait - we keep this component but it now returns null */}
       <CharacterPortraitDisplay
         characterId={characterId as CharacterId | undefined}
         characterMood={characterMood}
