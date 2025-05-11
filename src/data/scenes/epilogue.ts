@@ -13,7 +13,7 @@ const epilogueScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "It's hard to believe two years have passed since I first arrived in Stonewich.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'maven',
@@ -31,7 +31,7 @@ const epilogueScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Looking back on everything that's happened, the biggest change for me...",
-        mood: 'thoughtful',
+        mood: 'neutral',
       }
     ],
     nextSceneId: 'epilogue-route',
@@ -81,7 +81,7 @@ const epilogueScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: "Thank you for playing Jericho Bricks! Your journey in Stonewich has come to an end.",
+        text: "Thank you for playing Versa! Your journey in Stonewich has come to an end.",
       },
       {
         character: 'narrator',
@@ -94,7 +94,7 @@ const epilogueScenes: Record<string, Scene> = {
         nextSceneId: 'start'
       },
       {
-        text: "About Jericho Bricks",
+        text: "About Versa",
         nextSceneId: 'about'
       }
     ]
