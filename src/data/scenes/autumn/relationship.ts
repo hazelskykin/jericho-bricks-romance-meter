@@ -162,7 +162,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Navarre's autumn route
   'autumn-navarre': {
     id: 'autumn-navarre',
-    background: 'autumn-transition',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
@@ -205,7 +205,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'autumn-navarre-dilemma': {
     id: 'autumn-navarre-dilemma',
-    background: 'autumn-transition',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'navarre',
@@ -509,7 +509,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Senara's autumn route
   'autumn-senara': {
     id: 'autumn-senara',
-    background: 'cybaton-library',
+    background: 'cybaton-shuttle',
     dialogue: [
       {
         character: 'narrator',
@@ -551,7 +551,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'autumn-senara-truth': {
     id: 'autumn-senara-truth',
-    background: 'cybaton-library',
+    background: 'cybaton-shuttle',
     dialogue: [
       {
         character: 'senara',
@@ -613,17 +613,17 @@ const relationshipScenes: Record<string, Scene> = {
         text: "Of course. I'm here with you. I'm glad you felt you could ask me to support you like this.",
         mood: 'happy',
       },
-      {
-        character: 'narrator',
-        text: "The interface time seemed brief to you, but Senara's usual calm expression showed subtle signs of weariness.",
-      }
     ],
     nextSceneId: 'autumn-senara-resolution',
   },
   'autumn-senara-resolution': {
     id: 'autumn-senara-resolution',
-    background: 'cybaton-shuttle',
+    background: 'cybaton-library',
     dialogue: [
+      {
+        character: 'narrator',
+        text: "The interface time seemed brief to you, but Senara's usual calm expression showed subtle signs of weariness.",
+      },
       {
         character: 'senara',
         text: "Thank you once again for coming with me today.",
