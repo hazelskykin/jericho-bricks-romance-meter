@@ -41,6 +41,8 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
     .map(bg => (bg as BackgroundAsset).image);
 
   useEffect(() => {
+    console.log(`AssetPreloader: Loading assets (${priorityOnly ? 'priority only' : 'all'}, ${skipMinigameAssets ? 'skipping minigames' : 'with minigames'})`);
+    
     // Store total counts
     setTotalCharacters(characterPaths.length);
     setTotalBackgrounds(backgroundPaths.length);
@@ -72,7 +74,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
     } else {
       setLoadingBackgrounds(false);
     }
-  }, [characterPaths, backgroundPaths]);
+  }, [characterPaths, backgroundPaths, priorityOnly]);
 
   // Check if all assets are loaded
   useEffect(() => {

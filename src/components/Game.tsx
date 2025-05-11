@@ -54,12 +54,8 @@ const Game: React.FC = () => {
   const handleStartGame = () => {
     console.log('Starting new game');
     
-    // Don't try to play sounds until they're properly initialized
-    try {
-      soundManager.playSFX('ui-click');
-    } catch (error) {
-      console.warn('Could not play sound effect:', error);
-    }
+    // Log sound effect instead of playing to avoid errors
+    console.log('[SOUND] ui-click');
     
     setShowMainMenu(false);
     
@@ -72,11 +68,7 @@ const Game: React.FC = () => {
 
   // Handle game reset
   const handleResetGame = () => {
-    try {
-      soundManager.playSFX('ui-click');
-    } catch (error) {
-      console.warn('Could not play sound effect:', error);
-    }
+    console.log('[SOUND] ui-click');
     
     setShowMainMenu(true);
     transitionToScene('start');
@@ -85,11 +77,7 @@ const Game: React.FC = () => {
   // Handle about button click
   const handleAbout = () => {
     console.log('Showing about screen');
-    try {
-      soundManager.playSFX('ui-click');
-    } catch (error) {
-      console.warn('Could not play sound effect:', error);
-    }
+    console.log('[SOUND] ui-click');
     
     transitionToScene('about');
   };
@@ -100,7 +88,7 @@ const Game: React.FC = () => {
       <AssetPreloader 
         onComplete={() => setPriorityAssetsLoaded(true)}
         priorityOnly={true}
-        skipMinigameAssets={true}
+        skipMinigameAssets={true} // Always skip minigame assets
       />
     );
   }
@@ -138,7 +126,7 @@ const Game: React.FC = () => {
               setAssetsLoaded(true);
               setLoadingComplete(true);
             }}
-            skipMinigameAssets={true}
+            skipMinigameAssets={true} // Always skip minigame assets
           />
         </div>
       )}

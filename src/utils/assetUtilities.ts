@@ -51,6 +51,16 @@ export function isHighPriorityAsset(asset: any): boolean {
  * Generate fallback path for common missing assets
  */
 export function getFallbackAssetPath(originalPath: string): string {
+  // If the path is empty or undefined, return a generic fallback
+  if (!originalPath) {
+    return '/assets/backgrounds/wall-tiles.jpg';
+  }
+  
+  // For minigame assets, always return a city background
+  if (originalPath.includes('/minigame') || originalPath.includes('/minigrames/')) {
+    return '/assets/backgrounds/stonewich-cityscape.jpg';
+  }
+  
   // General fallbacks for common assets
   if (originalPath.includes('/audio/')) {
     return 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=';
@@ -60,54 +70,22 @@ export function getFallbackAssetPath(originalPath: string): string {
   if (originalPath.includes('/characters/')) {
     const character = originalPath.match(/\/characters\/([^-]+)/)?.[1];
     if (character) {
-      return `/assets/characters/${character}-neutral.png`;
+      return `/assets/backgrounds/stonewich-cityscape.jpg`;
     }
   }
   
-  // Fallback for minigame assets
-  if (originalPath.includes('/minigames/') || originalPath.includes('/minigrames/')) {
-    // Check for specific bloom with a view files
-    if (originalPath.includes('bloomWithAView/garden-background.png')) {
-      return '/assets/backgrounds/stonewich-cityscape.jpg'; // Use a city background as fallback
-    }
-    
-    // Check for mud arena
-    if (originalPath.includes('mudFling/mud-arena.png')) {
-      return '/assets/backgrounds/stonewich-cityscape.jpg'; // Use a city background as fallback
-    }
-    
-    // Fix common path issues
-    return originalPath.replace('/minigrames/', '/minigames/');
-  }
-  
-  return originalPath;
+  return '/assets/backgrounds/stonewich-cityscape.jpg';
 }
 
 /**
  * Fix common path issues with assets
  */
 export function fixAssetPath(path: string): string {
-  if (!path) return '';
+  if (!path) return '/assets/backgrounds/stonewich-cityscape.jpg';
   
-  // Fix minigrames vs minigames typo
-  if (path.includes('/minigrames/')) {
-    path = path.replace('/minigrames/', '/minigames/');
-  }
-  
-  // Fix capitalization issues
-  if (path.includes('/bloomwithAView/')) {
-    path = path.replace('/bloomwithAView/', '/bloomWithAView/');
-  }
-  
-  // Handle specific troublesome paths
-  if (path.includes('/minigames/spring/bloomWithAView/garden-background.png')) {
-    console.log('Using fallback for garden-background.png');
-    path = '/assets/backgrounds/stonewich-cityscape.jpg';
-  }
-  
-  if (path.includes('/minigames/spring/mudFling/mud-arena.png')) {
-    console.log('Using fallback for mud-arena.png');
-    path = '/assets/backgrounds/stonewich-cityscape.jpg';
+  // For any minigame asset, just return a cityscape background
+  if (path.includes('/minigames/') || path.includes('/minigrames/')) {
+    return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
   return path;

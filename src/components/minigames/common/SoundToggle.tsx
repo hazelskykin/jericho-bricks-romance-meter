@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Volume2, VolumeX, Music, MicOff } from 'lucide-react';
+import { soundManager } from '@/utils/soundEffects';
 
 interface SoundToggleProps {
   showMusicToggle?: boolean;
@@ -12,15 +13,19 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({ showMusicToggle = fals
   const [musicMuted, setMusicMuted] = useState(false);
   
   const toggleMute = () => {
-    setMuted(!muted);
-    // In a real implementation, this would connect to the sound system
-    console.log(`Sound effects are now ${!muted ? 'muted' : 'unmuted'}`);
+    const newMuted = !muted;
+    setMuted(newMuted);
+    // Connect to the sound system
+    soundManager.setMuted(newMuted);
+    console.log(`Sound effects are now ${newMuted ? 'muted' : 'unmuted'}`);
   };
   
   const toggleMusic = () => {
-    setMusicMuted(!musicMuted);
-    // In a real implementation, this would connect to the music system
-    console.log(`Music is now ${!musicMuted ? 'muted' : 'unmuted'}`);
+    const newMusicMuted = !musicMuted;
+    setMusicMuted(newMusicMuted);
+    // Connect to the sound system
+    soundManager.setMusicMuted(newMusicMuted);
+    console.log(`Music is now ${newMusicMuted ? 'muted' : 'unmuted'}`);
   };
   
   return (
