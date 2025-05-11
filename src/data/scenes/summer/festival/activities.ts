@@ -5,7 +5,7 @@ const summerFestivalActivitiesScenes: Record<string, Scene> = {
   // Festival activities selection scene
   'summer-festival-activities': {
     id: 'summer-festival-activities',
-    background: 'stonewich-cityscape',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
