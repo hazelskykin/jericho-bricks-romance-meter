@@ -94,6 +94,34 @@ const backgrounds: Record<string, BackgroundAsset> = {
     description: 'A quieter corner of the Stonewich office, perfect for one-on-one discussions and focused work sessions.',
     gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
   },
+  'spring-cityoverlook': {
+    id: 'spring-cityoverlook',
+    name: 'Spring Cityoverlook',
+    image: '/assets/backgrounds/spring-cityoverlook.jpg',
+    description: 'A great spot to see the city in different seasons.',
+    gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
+  },
+    'summer-cityoverlook': {
+    id: 'summer-cityoverlook',
+    name: 'Summer Cityoverlook',
+    image: '/assets/backgrounds/summer-cityoverlook.jpg',
+    description: 'A great spot to see the city in different seasons.',
+    gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
+  },
+    'autumn-cityoverlook': {
+    id: 'autumn-cityoverlook',
+    name: 'Autumn Cityoverlook',
+    image: '/assets/backgrounds/autumn-cityoverlook.jpg',
+    description: 'A great spot to see the city in different seasons.',
+    gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
+  },
+    'winter-cityoverlook': {
+    id: 'winter-cityoverlook',
+    name: 'winter Cityoverlook',
+    image: '/assets/backgrounds/winter-cityoverlook.jpg',
+    description: 'A great spot to see the city in different seasons.',
+    gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
+  },
   
   // Add explicit entries for the season transition backgrounds
   'spring-transition': {
