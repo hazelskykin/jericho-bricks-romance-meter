@@ -27,14 +27,16 @@ const GameDialogueSystem: React.FC<GameDialogueSystemProps> = ({
   characterId,
   characterMood
 }) => {
-  // Only render speaker portrait for non-narrator characters
-  const shouldShowPortrait = characterId && characterId !== 'narrator' as unknown as CharacterId;
+  // Only render speaker portrait for non-narrator characters when NOT showing choices
+  const shouldShowPortrait = characterId && 
+                             characterId !== 'narrator' as unknown as CharacterId && 
+                             !showChoices;
   
   return (
     <div className="absolute bottom-6 left-0 right-0 z-30 flex justify-center px-4 sm:px-6">
       <div className="w-full max-w-3xl relative">
-        {/* Speaker portrait that overlaps the dialog box */}
-        {shouldShowPortrait && !showChoices && (
+        {/* Speaker portrait that overlaps the dialog box - only show when not displaying choices */}
+        {shouldShowPortrait && (
           <div className="absolute -left-5 -top-16 z-40">
             <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-800/80 border-2 border-accent shadow-lg">
               <CharacterPortrait 

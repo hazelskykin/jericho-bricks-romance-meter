@@ -111,7 +111,6 @@ const autumnConclusionScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'autumn-conclusion'
   },
-
   'autumn-conclusion': {
     id: 'autumn-conclusion',
     background: 'stonewich-office',
@@ -128,8 +127,7 @@ const autumnConclusionScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'season-transition-winter',
-  },
-  
+  }
 };
 
 export default autumnConclusionScenes;
