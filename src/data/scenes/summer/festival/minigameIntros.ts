@@ -5,7 +5,7 @@ const summerFestivalMinigameIntrosScenes: Record<string, Scene> = {
   // Summer minigame intro scenes
   'summer-serenade-intro': {
     id: 'summer-serenade-intro',
-    background: 'stonewich-cityscape',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'xavier',
@@ -33,7 +33,7 @@ const summerFestivalMinigameIntrosScenes: Record<string, Scene> = {
   
   'summer-spoken-word-intro': {
     id: 'summer-spoken-word-intro',
-    background: 'city-cafe',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'senara',
@@ -61,7 +61,7 @@ const summerFestivalMinigameIntrosScenes: Record<string, Scene> = {
   
   'summer-whats-on-tap-intro': {
     id: 'summer-whats-on-tap-intro',
-    background: 'city-cafe',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'navarre',
