@@ -25,7 +25,7 @@ const ChoiceMenu: React.FC<ChoiceMenuProps> = ({ choices, onChoiceSelected, isAc
           What will you do?
         </div>
         
-        <div className="grid gap-3 w-full max-h-[50vh] overflow-visible">
+        <div className="grid gap-3 w-full">
           {choices.map((choice, index) => (
             <motion.button
               key={index}
