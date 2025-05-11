@@ -94,7 +94,7 @@ const introScenes: Record<string, Scene> = {
 
   'autumn-relationship-development': {
     id: 'autumn-relationship-development',
-    background: 'stonewich-cityscape',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
@@ -110,7 +110,7 @@ const introScenes: Record<string, Scene> = {
 
   'autumn-character': {
     id: 'autumn-character',
-    background: 'stonewich-cityscape',
+    background: 'autumn-cityoverlook',
     dialogue: [], // or minimal
     nextSceneId: null // handled via dynamic route handler
   }
