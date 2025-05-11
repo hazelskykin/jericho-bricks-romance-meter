@@ -20,7 +20,7 @@ const backgrounds: Record<string, BackgroundAsset> = {
     id: 'cybaton-office',
     name: 'Cybaton Office',
     image: '/assets/backgrounds/cybaton-office.jpg',
-    description: 'Modern tech infrastructure with retro-futuristic brass accents and digital displays mixed with analog gauges.',
+    description: 'Modern tech infrastructure with retro-futuristic brass accents and amphitheater style seating.',
     gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.1), rgba(42, 30, 78, 0.2))',
     required:  true
   },
