@@ -228,34 +228,7 @@ const winterPlanningScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'winter-festival-intro'
   },
-
-  // Winter festival introduction
-  'winter-festival-intro': {
-    id: 'winter-festival-intro',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "The day of the Winter Gala & Games arrives. Stonewich is transformed, streets glittering with lights and decorations.",
-      },
-      {
-        character: 'maven',
-        text: "It's beautiful. All our planning has really paid off.",
-        mood: 'happy',
-      },
-      {
-        character: 'etta',
-        text: "All the arrangements have been made, and the teams are executing smoothly.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "Let's make this a night to remember.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'winter-festival-activities'
-  }
+]
 };
 
 export default winterPlanningScenes;
