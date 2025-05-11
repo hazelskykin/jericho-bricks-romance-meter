@@ -230,7 +230,7 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "You spend the afternoon with Navarre, mapping out a strategic plan for venue arrangements and artist relations. Though he maintains his professional demeanor, you notice his smile doesn't quite reach his eyes when Lissa's name comes up.",
+        text: "You spend the afternoon with Navarre, mapping out a strategic plan for venue arrangements and artist relations. Though he maintains his professional demeanor, you notice his smile doesn't quite reach his eyes when Morgan's name comes up.",
       },
     ],
     nextSceneId: 'summer-character-selection-2',
