@@ -66,7 +66,7 @@ const summerConclusionScenes: Record<string, Scene> = {
         text: "Dr. Voss makes eye contact with you for a long, uncomfortable moment before dismissing the team.",
       },
     ],
-    nextsceneID: 'summer-conclusion-debrief',
+    nextSceneId: 'summer-conclusion-debrief',
   }, 
     
   'summer-conclusion-debrief': {
@@ -155,9 +155,7 @@ const summerConclusionScenes: Record<string, Scene> = {
         character: 'narrator',
         text: "You're not sure exactly what it is you can do, but you hope you don't let your team down.",
       },
-    ]
-
-    
+    ],
     nextSceneId: 'season-transition-autumn' // This will lead to the autumn season transition
   }
 };
