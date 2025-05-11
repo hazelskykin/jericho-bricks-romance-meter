@@ -5,7 +5,7 @@ import { Scene, CharacterId } from '@/types/game';
 const springCharacterSelections: Record<string, Scene> = {
   'spring-character-selection': {
     id: 'spring-character-selection',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
