@@ -15,9 +15,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   onAdvance,
   isActive
 }) => {
-  const [text, setText] = useState<string>('');
   const [displayedText, setDisplayedText] = useState<string>('');
-  const [typing, setTyping] = useState<boolean>(false);
   const [finished, setFinished] = useState<boolean>(false);
   const dialogueBoxRef = useRef<HTMLDivElement>(null);
   
@@ -26,34 +24,13 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   // Determine speaker name
   const speakerName = dialogueLine?.character ? getSpeakerName(dialogueLine.character as CharacterId | string) : '';
   const characterId = dialogueLine?.character as CharacterId | undefined;
-  const characterMood = dialogueLine?.mood || 'neutral';
   
-  // Reset and set up text display when dialogue line changes
+  // Display full text immediately when the dialogue line changes
   useEffect(() => {
     if (dialogueLine) {
       const content = dialogueLine.text || '';
-      setText(content);
-      setDisplayedText('');
-      setTyping(true);
-      setFinished(false);
-      
-      // Check for fast typewriter effect
-      const typeDelay = 20; // Default typing speed
-      
-      // Type effect
-      let i = 0;
-      const timer = setInterval(() => {
-        if (i < content.length) {
-          setDisplayedText(prev => prev + content.charAt(i));
-          i++;
-        } else {
-          clearInterval(timer);
-          setTyping(false);
-          setFinished(true);
-        }
-      }, typeDelay);
-      
-      return () => clearInterval(timer);
+      setDisplayedText(content);
+      setFinished(true);
     }
   }, [dialogueLine]);
   
@@ -61,12 +38,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   const handleClick = () => {
     if (!isActive) return;
     
-    if (typing) {
-      // If still typing, complete the text immediately
-      setDisplayedText(text);
-      setTyping(false);
-      setFinished(true);
-    } else if (finished) {
+    if (finished) {
       // If finished typing, advance to next dialogue
       onAdvance();
     }

@@ -1,6 +1,5 @@
 
 import React from 'react';
-import CharacterPortrait from '../CharacterPortrait';
 import { CharacterId } from '@/types/game';
 import { MoodType } from '@/types/expressions';
 
@@ -10,11 +9,7 @@ interface CharacterPortraitDisplayProps {
   shouldShow: boolean;
 }
 
-const CharacterPortraitDisplay: React.FC<CharacterPortraitDisplayProps> = ({
-  characterId,
-  characterMood,
-  shouldShow
-}) => {
+const CharacterPortraitDisplay: React.FC<CharacterPortraitDisplayProps> = () => {
   // We're now suppressing the character portrait display entirely
   return null;
 };

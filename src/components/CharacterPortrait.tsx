@@ -18,7 +18,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
   characterId,
   mood = 'neutral',
   className = '',
-  animate = true,
+  animate = false,
   onLoad,
   isInDialog = false
 }) => {
@@ -75,7 +75,7 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
     };
   }, [onLoad]);
 
-  // Trigger animation
+  // Trigger animation only when explicitly requested
   useEffect(() => {
     if (animate && imageLoaded) {
       setIsAnimating(true);
