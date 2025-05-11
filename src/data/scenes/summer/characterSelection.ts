@@ -17,7 +17,7 @@ if (!summerCharacterSelections['summer-character-selection']) {
   // Create it explicitly if it doesn't exist
   summerCharacterSelections['summer-character-selection'] = {
     id: 'summer-character-selection',
-    background: 'stonewich-cityscape',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
