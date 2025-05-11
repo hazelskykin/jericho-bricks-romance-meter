@@ -66,10 +66,11 @@ const winterFestivalScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Where should I focus my attention during the festival?",
-        mood: 'thoughtful',
+        mood: 'neutral',
       }
-    ]
-  }
+    ],
+    nextSceneId: 'winter-festival-conclusion'
+  },
 };
 
 export default winterFestivalScenes;
