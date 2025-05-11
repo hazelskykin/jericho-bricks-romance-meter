@@ -165,8 +165,13 @@ const winterPlanningScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "I'm tired of being seen as just the charming influencer and want to encourage others to express themselves more authentically like I've been learning to do, with you. I want to be seen as someone capable of real commitment. Someone worthy of you.",
+        text: "I'm tired of being seen as just the charming influencer and want to encourage others to express themselves more authentically like I've been learning to do, with you.",
         mood: 'sad',
+      },
+      {
+        character: 'navarre',
+        text: "I want to be seen as someone capable of real commitment. Someone worthy of you.",
+        mood: 'embarrassed',
       },
       {
         character: 'maven',
