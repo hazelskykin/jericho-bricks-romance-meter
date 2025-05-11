@@ -8,16 +8,16 @@ const conclusionScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'Your time in Stonewich has come to its official conclusion, but your story with your partner is just beginning.'
+        text: "Your time in Stonewich has come to its official conclusion, but your story with your partner is just beginning."
       },
       {
         character: 'maven',
         text: "Whatever comes next, I know we'll face it together.",
-        mood: 'happy'
+        mood: 'happy',
       },
       {
         character: 'narrator',
-        text: "As the sun sets on your year in the program, a new dawn awaits..."
+        text: "As the sun sets on your year in the program, a new dawn awaits...",
       }
     ],
     nextSceneId: 'epilogue-end'
@@ -28,11 +28,11 @@ const conclusionScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'Congratulations! You have completed this character\'s route.'
+        text: "Congratulations! You have completed this character's route.",
       },
       {
         character: 'narrator',
-        text: 'Return to the main menu to explore another character\'s story or continue your journey.'
+        text: "Return to the main menu to explore another character's story or continue your journey."
       }
     ],
     nextSceneId: 'start'
