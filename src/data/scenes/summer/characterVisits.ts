@@ -247,12 +247,12 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "And now you're competitors. That must be awkward.",
+        text: "History? That must be awkward.",
         mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "More than awkward. She takes it personally. Every success I have is somehow a slight against her.",
+        text: "More than awkward. She takes it personally. Every success I have had since we parted ways is like a rebuke to her.",
         mood: 'sad',
       },
       {
@@ -262,17 +262,27 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "Why is she so determined to undermine you specifically?",
+        text: "Why is she so determined to undermine you specifically? Is it just coincidental that she's assigned to Stonewich?",
         mood: 'neutral',
       },
       {
         character: 'navarre',
-        text: "Because... we were more than classmates once. And when Cybaton chose me over her, she took it as a betrayal.",
+        text: "Cybaton chose me over her, for one reason. She's ready to prove in any way she can that she's more capable.",
         mood: 'sad',
       },
       {
         character: 'maven',
-        text: "I had no idea you carried this weight while making everything look so effortless.",
+        text: "...and?",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "I'm sure it's not coincidental. Part of the reason this has been so personal is because of the feelings she still has for me.",
+        mood: 'embarrassed',
+      },
+      {
+        character: 'maven',
+        text: "So your history was not just as classmates and collaborators but also intimate? I had no idea you carried this weight while making everything look so effortless.",
         mood: 'surprised',
       },
       {
