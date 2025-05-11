@@ -68,10 +68,10 @@ const autumnConclusionScenes: Record<string, Scene> = {
         text: "Dr. Voss: Keep this momentum going into winter. It will determine your final evaluations and future assignments with Cybaton.",
       }
     ],
-    nextSceneId: 'autumn-conclusion'
+    nextSceneId: 'autumn-conclusion-debrief'
   },
   'autumn-conclusion': {
-    id: 'autumn-conclusion',
+    id: 'autumn-conclusion-debrief',
     background: 'cybaton-shuttle',
     dialogue: [
       {
