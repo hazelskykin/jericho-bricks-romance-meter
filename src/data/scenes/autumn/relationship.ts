@@ -688,7 +688,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'senara',
         text: "Like a weight has been lifted. I never realized how oppressive I found that experience before.",
-        mood: 'happy',
+        mood: 'laughing',
       },
       {
         character: 'maven',
@@ -716,7 +716,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Autumn in Stonewich has been a time of reflection and deeper connections. The Heritage & Handicrafts Festival was amazing.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'xavier',
@@ -736,7 +736,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'senara',
         text: "The winter festival is quite the spectacle, from what I've read. A formal gala, charity auction, and various winter games.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       }
     ],
     nextSceneId: 'season-transition-winter',
