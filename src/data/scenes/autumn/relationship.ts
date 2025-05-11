@@ -9,22 +9,22 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "I've been spending a lot of time with Xavier lately. He's been working on something in his free time, but he seems hesitant to share it.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'xavier',
         text: "Hey Maven, do you have a minute? I've been meaning to show you something.",
-        mood: 'nervous',
+        mood: 'neutral',
       },
       {
         character: 'maven',
         text: "Of course, Xavier. What is it?",
-        mood: 'curious',
+        mood: 'happy',
       },
       {
         character: 'xavier',
         text: "I've been developing a new communications system for the city. It incorporates the latest Cybaton technology, but I wanted your perspective.",
-        mood: 'nervous',
+        mood: 'neutral',
       },
       {
         character: 'xavier',
@@ -62,7 +62,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "That's what I've been focusing on with this project. Making sure it's not just efficient and a good UI but does actual good for everyone in Stonewich.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'maven',
@@ -92,7 +92,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'xavier',
         text: "I've been struggling with this for months. Balancing innovation with social adaptability is hard.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'maven',
@@ -118,7 +118,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Maybe we could present it to the team first as a small scale pilot? Get their feedback before taking it to the city council?",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'xavier',
@@ -128,12 +128,12 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "We can also see for ourselves if we're able to leverage the functionality to generate new connections like you envision.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'xavier',
         text: "You know, I've been so caught up in the technical aspects that I forgot about the importance of collaboration.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'xavier',
@@ -143,7 +143,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Are you still feeling lonely?",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'xavier',
@@ -167,7 +167,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Navarre has been unusually quiet lately. He's usually so outgoing and social.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'navarre',
@@ -177,7 +177,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Sure, Navarre. Is everything okay?",
-        mood: 'concerned',
+        mood: 'sad',
       },
       {
         character: 'navarre',
@@ -220,7 +220,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "What's holding you back the most?",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'navarre',
@@ -245,7 +245,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Morgan Thornfield? She seems even more interested in you than before.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
       {
         character: 'navarre',
