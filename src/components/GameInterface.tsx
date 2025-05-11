@@ -137,8 +137,9 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     );
   }
 
-  // Handle character selection scenes
-  if (gameState.currentScene === 'spring-character-selection') {
+  // Handle character selection scenes - match both plain and numbered versions
+  if (gameState.currentScene === 'spring-character-selection' || 
+      /^spring-character-selection-\d+$/.test(gameState.currentScene)) {
     return (
       <>
         <CharacterSelectionView 

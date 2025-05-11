@@ -14,7 +14,16 @@ const CharacterSelectionView: React.FC<CharacterSelectionViewProps> = ({
   sceneId,
   gameState 
 }) => {
-  const suffix = sceneId.replace(`${season}-character-selection`, '');
+  console.log(`CharacterSelectionView rendering with sceneId: ${sceneId}`);
+  
+  // Extract suffix number if present (e.g., spring-character-selection-1 -> 1)
+  let suffix = '';
+  const suffixMatch = sceneId.match(/-(\d+)$/);
+  if (suffixMatch) {
+    suffix = suffixMatch[1];
+  }
+  
+  // Parse which characters have been visited
   const visitedChars: CharacterId[] = [];
   
   if (suffix.includes('1')) visitedChars.push('xavier');
@@ -22,9 +31,20 @@ const CharacterSelectionView: React.FC<CharacterSelectionViewProps> = ({
   if (suffix.includes('3')) visitedChars.push('etta');
   if (suffix.includes('4')) visitedChars.push('senara');
   
+  // For simplified checking, we also look at the number itself
+  const suffixNumber = parseInt(suffix) || 0;
+  if (suffixNumber === 1) visitedChars.push('xavier');
+  if (suffixNumber === 2) visitedChars.push('navarre');
+  if (suffixNumber === 3) visitedChars.push('etta');
+  if (suffixNumber === 4) visitedChars.push('senara');
+  
+  console.log(`Detected visited characters: ${visitedChars.join(', ')}`);
+  
   const remainingChars = (['xavier', 'navarre', 'etta', 'senara'] as CharacterId[]).filter(
     char => !visitedChars.includes(char)
   );
+  
+  console.log(`Remaining characters to visit: ${remainingChars.join(', ')}`);
   
   return (
     <CharacterSelectionScene

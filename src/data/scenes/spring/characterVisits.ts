@@ -1,4 +1,3 @@
-
 import { Scene } from '../../../types/game';
 
 // Create individual character visit scenes

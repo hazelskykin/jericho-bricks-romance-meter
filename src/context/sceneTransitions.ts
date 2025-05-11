@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { GameState } from '@/types/game';
 import { allScenes } from '@/data/scenes';
 import { toast } from 'sonner';
+import { mapSceneId } from '@/utils/sceneRouting';
 
 /**
  * Custom hook for scene transition functionality
@@ -17,6 +18,30 @@ export const useSceneTransitions = (
     console.log(`Game Context - Transitioning to scene: ${nextSceneId}`);
     
     try {
+      // Special handling for numbered character selection scenes
+      if (/^spring-character-selection-\d+$/.test(nextSceneId) || 
+          /^summer-character-selection-\d+$/.test(nextSceneId)) {
+        console.log(`Detected numbered character selection scene: ${nextSceneId}`);
+        
+        // Extract the base scene ID (without the number)
+        const baseSceneId = nextSceneId.replace(/-\d+$/, '');
+        console.log(`Using base scene: ${baseSceneId} for numbered scene ${nextSceneId}`);
+        
+        // Ensure we reset dialogue index when transitioning to a new scene
+        setGameState(prev => ({
+          ...prev,
+          dialogueIndex: 0,
+          showChoices: false,
+          sceneHistory: [...prev.sceneHistory, prev.currentScene],
+          currentScene: baseSceneId // Use the base scene ID in state
+        }));
+        
+        // Use the mapped base scene ID for the actual transition
+        const mappedSceneId = mapSceneId(baseSceneId);
+        transitionToScene(mappedSceneId);
+        return;
+      }
+      
       // Validate that the scene exists before attempting transition
       if (!allScenes[nextSceneId] && nextSceneId !== 'start' && nextSceneId !== 'about') {
         console.error(`Scene [${nextSceneId}] not found in allScenes`);
