@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 import ExpandableMenu from '../ExpandableMenu';
 import DialogHistory from '../DialogHistory';
 import GameBackgroundScene from './GameBackgroundScene';
-import CharacterPortraitDisplay from './CharacterPortraitDisplay';
 import GameDialogueSystem from './GameDialogueSystem';
 import GameLoadingState from './GameLoadingState';
 import { CharacterId } from '@/types/game';
@@ -138,9 +137,10 @@ const StandardGameView: React.FC = () => {
   const characterMood = currentDialogue?.mood || 'neutral';
   
   // Get the character ID from current dialogue, ensuring it's a valid CharacterId
-  const characterId = currentDialogue?.character as CharacterId | undefined;
+  const characterId = currentDialogue?.character;
   
-  // Determine if we should show the full character portrait - only for valid character IDs that aren't narrator
+  // Determine if we should show the full character portrait - only for character IDs that aren't narrator
+  // Fix the type error by comparing as strings
   const shouldShowFullPortrait = characterId && characterId !== 'narrator';
 
   return (
@@ -149,13 +149,6 @@ const StandardGameView: React.FC = () => {
       <GameBackgroundScene 
         backgroundId={scene.background} 
         onBackgroundClick={handleBackgroundClick} 
-      />
-      
-      {/* Character Portrait */}
-      <CharacterPortraitDisplay 
-        characterId={characterId}
-        characterMood={characterMood}
-        shouldShow={shouldShowFullPortrait}
       />
       
       {/* Dialog History Button */}
@@ -184,6 +177,8 @@ const StandardGameView: React.FC = () => {
         loaded={loaded}
         onDialogueClick={handleDialogueClick}
         onChoiceClick={handleChoiceClick}
+        characterId={characterId as CharacterId | undefined}
+        characterMood={characterMood}
       />
     </div>
   );

@@ -60,7 +60,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
     <AnimatePresence mode="wait">
       {isActive && (
         <motion.div 
-          className="dialog-box fixed bottom-4 left-0 right-0 p-4 rounded-lg z-30 mx-auto max-w-xl"
+          className="dialog-box fixed bottom-4 left-0 right-0 p-3 rounded-lg z-30 mx-auto"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
@@ -70,13 +70,15 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
             borderLeft: characterData ? `4px solid ${characterData.color}` : undefined,
             borderBottom: characterData ? `1px solid ${characterData.color}30` : undefined,
             borderRight: characterData ? `1px solid ${characterData.color}30` : undefined,
+            maxWidth: '450px', // Smaller max width
+            height: '140px',   // Fixed height
           }}
         >
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-3 mb-2">
             {currentLine.character && currentLine.character !== 'narrator' && (
               <div className="flex items-center gap-3">
                 <div 
-                  className="w-12 h-12 rounded-full overflow-hidden border-2 flex items-center justify-center"
+                  className="w-16 h-16 rounded-full overflow-hidden border-2 flex items-center justify-center"
                   style={{ borderColor: characterData?.color || 'white' }}
                 >
                   <CharacterPortrait
@@ -102,14 +104,14 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
             )}
           </div>
           
-          <p className="text-base text-white/90 leading-relaxed ml-0">
+          <p className="text-sm text-white/90 leading-relaxed ml-0 max-h-[50px] overflow-y-auto pr-2">
             {currentLine.text}
           </p>
           
-          <div className="mt-4 flex justify-end">
+          <div className="mt-2 flex justify-end">
             <Button 
               onClick={handleAdvance} 
-              className="text-sm bg-cyberpunk-dark hover:bg-cyberpunk-secondary border border-cyberpunk-primary/30"
+              className="text-xs bg-cyberpunk-dark hover:bg-cyberpunk-secondary border border-cyberpunk-primary/30"
               style={{
                 borderColor: characterData ? `${characterData.color}50` : undefined,
               }}

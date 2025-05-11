@@ -88,10 +88,10 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
   
   const portraitSrc = characterExpression && characterExpression.image ? characterExpression.image : '';
 
-  // Apply different styles based on whether this is in the dialog or main scene
+  // Apply different styles based on whether this is in the dialog or not
   const portraitClasses = isInDialog
     ? "w-full h-full object-cover object-top rounded-full" // For avatar in dialog
-    : "h-[80vh] w-auto object-contain character-portrait"; // For main portrait display
+    : "h-auto w-auto object-contain"; // For any other use
 
   return (
     <img

@@ -2,7 +2,8 @@
 import React from 'react';
 import DialogueBox from '../DialogueBox';
 import ChoiceMenu from '../ChoiceMenu';
-import { DialogueChoice, DialogueLine } from '@/types/game';
+import { DialogueChoice, DialogueLine, CharacterId } from '@/types/game';
+import { MoodType } from '@/types/expressions';
 
 interface GameDialogueSystemProps {
   showChoices: boolean;
@@ -11,6 +12,8 @@ interface GameDialogueSystemProps {
   loaded: boolean;
   onDialogueClick: () => void;
   onChoiceClick: (index: number) => void;
+  characterId?: CharacterId;
+  characterMood: MoodType;
 }
 
 const GameDialogueSystem: React.FC<GameDialogueSystemProps> = ({
@@ -19,7 +22,9 @@ const GameDialogueSystem: React.FC<GameDialogueSystemProps> = ({
   currentDialogue,
   loaded,
   onDialogueClick,
-  onChoiceClick
+  onChoiceClick,
+  characterId,
+  characterMood
 }) => {
   return (
     <div className="absolute bottom-0 left-0 right-0 z-30">
