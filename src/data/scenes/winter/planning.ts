@@ -30,7 +30,7 @@ const winterPlanningScenes: Record<string, Scene> = {
 
   'winter-planning-character': {
     id: 'winter-planning-character',
-    background: 'stonewich-office',
+    background: 'winter-cityoverlook',
     dialogue: [
       // This scene is now empty as its dialogue was moved to the main winter-planning scene
     ],
