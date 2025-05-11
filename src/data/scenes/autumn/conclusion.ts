@@ -70,7 +70,7 @@ const autumnConclusionScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'autumn-conclusion-debrief'
   },
-  'autumn-conclusion': {
+  'autumn-conclusion-debrief': {
     id: 'autumn-conclusion-debrief',
     background: 'cybaton-shuttle',
     dialogue: [

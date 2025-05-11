@@ -46,11 +46,13 @@ const sceneMapping: Record<string, string> = {
   
   // Autumn scenes
   'autumn-character-path': 'autumn-character-relationship',
-  'autumn-festival-introduction': 'autumn-festival-introduction', // Updated mapping to match the actual scene ID
+  'autumn-festival-introduction': 'autumn-festival-introduction',
   'autumn-festival-activities': 'autumn-festival-activities',
   'autumn-festival-completion': 'autumn-festival-completion',
+  'autumn-conclusion-debrief': 'autumn-conclusion-debrief',
   
   // Winter scenes
+  'winter-intro': 'winter-intro',
   'winter-festival-activities': 'winter-festival-activities',
   'winter-festival-completion': 'winter-festival-completion',
 };
@@ -66,7 +68,9 @@ const sceneFallbacks: Record<string, string> = {
   'summer-visit-character': 'summer-character-selection', // Add fallback for summer visit
   'summer-festival-completion': 'summer-planning', // Add fallback for festival completion
   'season-transition-autumn': 'autumn-intro', // Fallback for autumn transition
+  'season-transition-winter': 'winter-intro', // Fallback for winter transition
   'autumn-festival-completion': 'autumn-intro', // Fallback for autumn festival completion
+  'autumn-conclusion-debrief': 'autumn-intro', // Fallback for autumn conclusion
   'winter-festival-completion': 'winter-intro', // Fallback for winter festival completion
   
   // Fallbacks for character selection with visit counts
