@@ -1,4 +1,3 @@
-
 import { Scene } from '@/types/game';
 
 const winterPlanningScenes: Record<string, Scene> = {
@@ -20,27 +19,23 @@ const winterPlanningScenes: Record<string, Scene> = {
         text: "This festival is our biggest challenge yet. We need to be prepared for increased system load and potential issues.",
         mood: 'serious',
       },
-    ],
-    // This is a routing scene that will direct to character-specific content
-    choices: [
       {
-        text: "Continue",
-        nextSceneId: 'winter-planning-character'
+        character: 'narrator',
+        text: "You find yourself naturally working with the one person who you have become closest to.",
       }
-    ]
+    ],
+    // Removed the choices array, and added the narrator dialogue line that was previously in winter-planning-character
+    nextSceneId: 'winter-planning-character'
   },
 
-'winter-planning-character': {
-  id: 'winter-planning-character',
-  background: 'stonewich-office',
-  dialogue: [
-    {
-      character: 'narrator',
-      text: "You find yourself naturally working with the one person who you have become closest to.",
-    }
-  ],
-  nextSceneId: null // ❗️This allows your game engine to handle dynamic routing
-},
+  'winter-planning-character': {
+    id: 'winter-planning-character',
+    background: 'stonewich-office',
+    dialogue: [
+      // This scene is now empty as its dialogue was moved to the main winter-planning scene
+    ],
+    nextSceneId: null // This allows your game engine to handle dynamic routing
+  },
 
   // Xavier's winter planning scene
   'winter-planning-xavier': {

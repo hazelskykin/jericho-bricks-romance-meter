@@ -30,8 +30,13 @@ const SpecialSceneRouter: React.FC = () => {
       } else {
         handleSceneTransition(fallbackMap[currentScene]);
       }
+    } 
+    // Add special handling for winter-planning to auto-transition without requiring player input
+    else if (currentScene === 'winter-planning' && gameState.dialogueIndex === 2 && gameState.showChoices && currentLoveInterest) {
+      console.log(`Auto-transitioning from winter-planning to winter-planning-character for ${currentLoveInterest}`);
+      handleSceneTransition('winter-planning-character');
     }
-  }, [gameState.currentScene, gameState.currentLoveInterest, handleSceneTransition, routeToEpilogue]);
+  }, [gameState.currentScene, gameState.currentLoveInterest, gameState.dialogueIndex, gameState.showChoices, handleSceneTransition, routeToEpilogue]);
 
   return null; // This component doesn't render anything
 };
