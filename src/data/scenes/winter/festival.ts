@@ -8,26 +8,27 @@ const winterFestivalScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: "The Winter Gala & Games transforms Stonewich into a magical wonderland. The streets are lined with twinkling lights, and the central plaza has been converted into an elegant outdoor ballroom.",
+        text: "The day of the Winter Gala & Games arrives. Stonewich is transformed, streets glittering with lights and decorations.",
       },
       {
         character: 'maven',
-        text: "It's even more beautiful than I imagined. Everyone looks so elegant.",
+        text: "It's beautiful. All our planning has really paid off.",
         mood: 'happy',
       },
       {
-        character: 'xavier',
-        text: "The Winter Gala is Stonewich's premier social event. It's where partnerships are formed, deals are made, and of course, where everyone shows off their finest attire.",
+        character: 'etta',
+        text: "All the arrangements have been made, and the teams are executing smoothly.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "It's also home to some of our most cherished traditions. The charity auction, the winter waltz, the search for signs...",
-        mood: 'neutral',
+        text: "Let's make this a night to remember.",
+        mood: 'happy',
       }
     ],
     nextSceneId: 'winter-festival-activities'
   },
+  
   'winter-festival-completion': {
     id: 'winter-festival-completion',
     background: 'stonewich-cityscape',
