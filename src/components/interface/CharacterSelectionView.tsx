@@ -14,7 +14,7 @@ const CharacterSelectionView: React.FC<CharacterSelectionViewProps> = ({
   sceneId,
   gameState 
 }) => {
-  console.log(`CharacterSelectionView rendering with sceneId: ${sceneId}`);
+  console.log(`CharacterSelectionView rendering with sceneId: ${sceneId}, season: ${season}`);
   
   // Extract suffix number if present (e.g., spring-character-selection-1 -> 1)
   let suffix = '';

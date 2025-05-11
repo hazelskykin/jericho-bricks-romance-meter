@@ -18,6 +18,14 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
   // Debug: Log all available scenes 
   useEffect(() => {
     console.log('Available scenes in allScenes:', Object.keys(allScenes));
+    
+    // Debug specific summer scenes
+    const summerScenes = Object.keys(allScenes).filter(key => key.startsWith('summer-'));
+    console.log('Available summer scenes:', summerScenes);
+    
+    if (!allScenes['summer-character-selection']) {
+      console.error('summer-character-selection scene is missing!');
+    }
   }, []);
   
   // Get the current scene data with error handling
@@ -35,6 +43,12 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
       transitionInProgress.current = true;
       setLoading(true);
       console.log(`Attempting to transition from scene [${currentSceneId}] to [${sceneId}]`);
+      
+      // Debug check for summer character selection
+      if (sceneId === 'summer-character-selection') {
+        console.log('Trying to transition to summer-character-selection');
+        console.log('This scene exists in allScenes:', Boolean(allScenes['summer-character-selection']));
+      }
       
       try {
         // Map scene ID if needed
@@ -65,6 +79,15 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
             console.log(`Special handling for about scene`);
             setPreviousSceneId(currentSceneId);
             setCurrentSceneId('about');
+          }
+          // Special case for summer character selection
+          else if (mappedSceneId === 'summer-character-selection') {
+            console.log('Special handling for summer character selection scene');
+            // Try to force a transition to the character selection
+            setPreviousSceneId(currentSceneId);
+            // Use a different approach - try to use the GameInterface's direct rendering
+            setCurrentSceneId('summer-character-selection');
+            toast.info('Transitioning to summer character selection');
           }
           // Try to handle the error with a fallback
           else {

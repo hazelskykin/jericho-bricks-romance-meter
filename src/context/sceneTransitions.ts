@@ -42,10 +42,26 @@ export const useSceneTransitions = (
         return;
       }
       
-      // Check if scene exists explicitly before attempting transition
-      if (nextSceneId === 'summer-visit-character') {
-        console.log('Detected summer-visit-character, redirecting to summer-character-selection');
-        nextSceneId = 'summer-character-selection';
+      // Special case for summer visit character transition
+      if (nextSceneId === 'summer-visit-character' || nextSceneId === 'summer-character-selection') {
+        console.log(`Handling special summer scene: ${nextSceneId}`);
+        
+        // Force render the summer character selection component through GameInterface
+        setGameState(prev => ({
+          ...prev,
+          dialogueIndex: 0,
+          showChoices: false,
+          sceneHistory: [...prev.sceneHistory, prev.currentScene],
+          currentScene: 'summer-character-selection'
+        }));
+        
+        // Check if the scene exists in allScenes for debugging
+        console.log('summer-character-selection exists in allScenes:', 
+                   Boolean(allScenes['summer-character-selection']));
+                   
+        // Always transition to the known route
+        transitionToScene('summer-character-selection');
+        return;
       }
       
       // Validate that the scene exists before attempting transition
@@ -55,9 +71,18 @@ export const useSceneTransitions = (
         // Try to handle with a fallback
         if (nextSceneId.includes('intro') || nextSceneId === 'prologue-intro') {
           nextSceneId = 'intro';
-        } else if (nextSceneId === 'summer-visit-character') {
-          nextSceneId = 'summer-character-selection';
+        } else if (nextSceneId === 'summer-visit-character' || nextSceneId === 'summer-character-selection') {
+          // Special handling for summer scenes
+          setGameState(prev => ({
+            ...prev,
+            dialogueIndex: 0,
+            showChoices: false,
+            sceneHistory: [...prev.sceneHistory, prev.currentScene],
+            currentScene: 'summer-character-selection'
+          }));
+          
           toast.info('Transitioning to summer character selection');
+          return;
         } else {
           toast.error(`Failed to find scene "${nextSceneId}". Redirecting to a known scene.`);
           nextSceneId = 'start'; // Default fallback

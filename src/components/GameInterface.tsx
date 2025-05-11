@@ -35,6 +35,12 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     console.log('GameInterface rendering with scene:', gameState.currentScene);
     console.log('Current scene data:', allScenes[gameState.currentScene]);
     
+    // Debug summer-character-selection specifically
+    if (gameState.currentScene === 'summer-character-selection') {
+      console.log('Summer character selection scene triggered in GameInterface');
+      console.log('Scene exists in allScenes:', Boolean(allScenes['summer-character-selection']));
+    }
+    
     // Only perform this sync once when the component first loads with an initialSceneId
     if (!initialized && initialSceneId && initialSceneId !== 'start' && gameStarted) {
       console.log(`Initializing GameInterface with scene: ${initialSceneId}`);
@@ -152,14 +158,16 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     );
   }
   
-  // Handle summer character selection scenes
+  // Handle summer character selection scenes - improved detection
   if (gameState.currentScene === 'summer-character-selection' || 
-      /^summer-character-selection-\d+$/.test(gameState.currentScene)) {
+      /^summer-character-selection-\d+$/.test(gameState.currentScene) ||
+      gameState.currentScene === 'summer-visit-character') {
+    console.log('Rendering summer character selection view');
     return (
       <>
         <CharacterSelectionView 
           season="summer" 
-          sceneId={gameState.currentScene}
+          sceneId={gameState.currentScene === 'summer-visit-character' ? 'summer-character-selection' : gameState.currentScene}
           gameState={gameState} 
         />
         <GameDevMenu jumpTargets={devJumpTargets} onJumpToScene={handleSceneTransition} />
