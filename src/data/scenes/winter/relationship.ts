@@ -14,7 +14,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "I can't help but think about what happens next... and about us. Maybe we should talk.",
-        mood: 'thoughtful',
+        mood: 'neutral',
       },
     ],
     nextSceneId: 'winter-character-confession',
@@ -320,7 +320,7 @@ const relationshipScenes: Record<string, Scene> = {
   // Senara's confession
   'winter-confession-senara': {
     id: 'winter-confession-senara',
-    background: 'stonewich-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'senara',
@@ -355,7 +355,7 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'senara',
         text: "My conclusion, after thorough analysis, is that I've developed passionate feelings for you. A near certainty of love.",
-        mood: "happy"     
+        mood: "embarrassed"     
       }
     ],
     choices: [
@@ -373,7 +373,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'winter-happy-senara': {
     id: 'winter-happy-senara',
-    background: 'stonewich-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'senara',
@@ -403,7 +403,6 @@ const relationshipScenes: Record<string, Scene> = {
       {
         character: 'narrator',
         text: "You lean forward and give the lightest, gentlest kiss to Senara on his cheek.",
-        mood: 'embarrassed',
       },
       {
         character: 'senara',
@@ -430,7 +429,7 @@ const relationshipScenes: Record<string, Scene> = {
   },
   'winter-noncommit-senara': {
     id: 'winter-noncommit-senara',
-    background: 'stonewich-office',
+    background: 'stonewich-workstation',
     dialogue: [
       {
         character: 'senara',
