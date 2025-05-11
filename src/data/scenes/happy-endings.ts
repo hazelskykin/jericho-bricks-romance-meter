@@ -228,7 +228,7 @@ const happyEndingScenes: Record<string, Scene> = {
 
   'happy-ending-senara': {
     id: 'happy-ending-senara',
-    background: 'stonewich-sunset',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
@@ -302,7 +302,7 @@ const happyEndingScenes: Record<string, Scene> = {
   
   'versa-epilogue-check': {
     id: 'versa-epilogue-check',
-    background: 'stonewich-sunset',
+    background: 'happy-ending-epilogue',
     dialogue: [
       {
         character: 'maven',
