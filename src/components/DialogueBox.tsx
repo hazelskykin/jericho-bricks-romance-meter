@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { DialogueLine, CharacterId } from '../types/game';
-import CharacterPortrait from './CharacterPortrait';
 import { useGlossary } from '../hooks/useGlossary';
 import { getSpeakerName } from '../utils/dialogueUtils';
 
@@ -26,7 +25,6 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   
   // Determine speaker name
   const speakerName = dialogueLine?.character ? getSpeakerName(dialogueLine.character as CharacterId | string) : '';
-  const showPortrait = dialogueLine?.character && dialogueLine.character !== 'narrator';
   const characterId = dialogueLine?.character as CharacterId | undefined;
   const characterMood = dialogueLine?.mood || 'neutral';
   
@@ -89,22 +87,9 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
       onClick={handleClick}
       style={{ cursor: isActive ? 'pointer' : 'default' }}
     >
-      {/* Speaker name and portrait */}
+      {/* Speaker name */}
       {speakerName && (
-        <div className="flex items-center mb-3">
-          {/* Character portrait - small circle avatar */}
-          {showPortrait && characterId && (
-            <div className="w-10 h-10 min-w-[40px] rounded-full overflow-hidden mr-3 bg-gray-800 border-2 border-accent flex-shrink-0">
-              <CharacterPortrait 
-                characterId={characterId} 
-                mood={characterMood}
-                className="w-full h-full" 
-                isInDialog={true}
-              />
-            </div>
-          )}
-          
-          {/* Speaker name */}
+        <div className="mb-3 pl-4">
           <div 
             className="text-lg font-semibold text-white text-glow-sm"
             style={{ color: characterId ? `var(--character-${characterId}-color, white)` : 'white' }}
@@ -116,7 +101,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
       
       {/* Dialogue text */}
       <div 
-        className="text-white text-base leading-relaxed"
+        className="text-white text-base leading-relaxed px-4"
         dangerouslySetInnerHTML={{ __html: processedDisplayedText }}
       />
       
