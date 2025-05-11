@@ -27,7 +27,7 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
   activities,
   season,
 }) => {
-  const { handleSceneTransition } = useGame();
+  const { handleSceneTransition, gameState } = useGame();
   const [completedActivities, setCompletedActivities] = useState<Set<string>>(new Set());
   const [allCompleted, setAllCompleted] = useState(false);
 
@@ -57,7 +57,7 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
     handleSceneTransition(activity.sceneId);
   };
 
-  // Continue after all activities are completed or when skipping
+  // Continue after all activities are completed
   const handleContinue = () => {
     console.log(`All activities explored, continuing to: ${season}-festival-completion`);
     handleSceneTransition(`${season}-festival-completion`);
@@ -91,6 +91,26 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
     }
   };
 
+  // For winter season with current love interest, we can automatically route to the appropriate activity
+  useEffect(() => {
+    if (season === 'winter' && gameState.currentLoveInterest) {
+      // Give a slight delay to allow the component to render first
+      const timer = setTimeout(() => {
+        // In winter with a love interest, auto-select a romance activity
+        const romanceActivity = activities.find(a => 
+          (a.id === 'gala-dance' || a.id === 'looking-signs') && a.available !== false
+        );
+        
+        if (romanceActivity) {
+          console.log(`Auto-selecting romance activity for winter: ${romanceActivity.id}`);
+          handleActivitySelect(romanceActivity);
+        }
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [season, gameState.currentLoveInterest, activities]);
+
   return (
     <div className="relative w-full h-screen flex flex-col">
       <GameBackgroundScene 
@@ -116,6 +136,7 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
                   borderColor: completedActivities.has(activity.id)
                     ? 'rgba(255,255,255,0.2)'
                     : activity.color,
+                  opacity: activity.available === false ? 0.6 : 1
                 }}
               >
                 <CardContent className="p-4">
@@ -153,16 +174,6 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
             >
               Skip Festival Activities
             </Button>
-            
-            {allCompleted && (
-              <Button
-                variant="default"
-                className="bg-purple-700 hover:bg-purple-800"
-                onClick={handleContinue}
-              >
-                Continue to Festival Conclusion
-              </Button>
-            )}
           </div>
         </div>
       </div>

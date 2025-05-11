@@ -8,6 +8,7 @@ import relationshipScenes from './relationship';
 import teamFutureScenes from './teamfuture';
 import winterTransitions from './transitions';
 import seasonTransitionScenes from './transition';
+import festivalScenes from './festival';
 
 const winter: Record<string, Scene> = {
   ...introScenes,
@@ -18,6 +19,7 @@ const winter: Record<string, Scene> = {
   ...teamFutureScenes,
   ...winterTransitions,
   ...seasonTransitionScenes,
+  ...festivalScenes,
 };
 
 export default winter;

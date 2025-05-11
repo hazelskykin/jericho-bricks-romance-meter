@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -50,11 +49,18 @@ const sceneMapping: Record<string, string> = {
   'autumn-festival-activities': 'autumn-festival-activities',
   'autumn-festival-completion': 'autumn-festival-completion',
   'autumn-conclusion-debrief': 'autumn-conclusion-debrief',
+  'autumn-conclusion': 'autumn-conclusion',
   
   // Winter scenes
   'winter-intro': 'winter-intro',
+  'winter-planning': 'winter-planning',
+  'winter-festival-intro': 'winter-festival-intro',
   'winter-festival-activities': 'winter-festival-activities',
   'winter-festival-completion': 'winter-festival-completion',
+  'winter-charity-auction-intro': 'winter-charity-auction-intro',
+  'winter-gala-dance-intro': 'winter-gala-dance-intro',
+  'winter-looking-signs-intro': 'winter-looking-signs-intro',
+  'winter-conclusion': 'winter-conclusion',
 };
 
 // Error fallbacks for scenes that might not exist
