@@ -228,7 +228,6 @@ const winterPlanningScenes: Record<string, Scene> = {
     ],
     nextSceneId: 'winter-festival-intro'
   },
-]
 };
 
 export default winterPlanningScenes;
