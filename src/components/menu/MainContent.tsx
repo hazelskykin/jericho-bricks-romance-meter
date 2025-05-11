@@ -31,7 +31,7 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, o
             
             {/* Sound Controls */}
             <div className="mt-6 self-end">
-              <SoundToggle />
+              <SoundToggle showMusicToggle={true} />
             </div>
           </div>
         </div>

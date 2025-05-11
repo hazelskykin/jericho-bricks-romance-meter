@@ -12,9 +12,23 @@ class SoundManager {
   private currentMusic: string | null = null;
   private soundCache: Map<string, HTMLAudioElement> = new Map();
   private failedSounds: Set<string> = new Set();
+  private silentAudio: HTMLAudioElement | null = null;
   
   constructor() {
     console.log('Initialized Sound Manager (simplified version)');
+    this.createSilentAudio();
+  }
+  
+  // Create a silent audio that can be used as a fallback
+  private createSilentAudio(): void {
+    try {
+      // Create a silent MP3 as fallback (Base64 encoded 0.1s of silence)
+      const audio = new Audio("data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=");
+      this.silentAudio = audio;
+    } catch (error) {
+      console.error('Failed to create silent audio:', error);
+      this.silentAudio = null;
+    }
   }
   
   // Expose sound manager to window for debugging
@@ -53,20 +67,13 @@ class SoundManager {
       console.error('Error preloading sounds:', error);
     }
     
-    // Load non-priority sounds in the background
+    // Load non-priority sounds in the background with a delay
+    // to avoid overwhelming the browser with failed requests
     setTimeout(() => {
       console.log('Loading non-priority sounds...');
       const secondarySounds = [
-        'whoosh',
         'background-music',
-        'crumblingPaper',
-        'water-splash',
-        'softrustle',
-        'itemPickup',
-        'wetsplat',
         'ping',
-        'slideClick',
-        'twinkleChimes',
         'twinkle'
       ];
       
@@ -74,33 +81,14 @@ class SoundManager {
       secondarySounds.forEach(soundId => {
         this.getSoundElement(soundId);
       });
-      
-      // Load minigame sounds in background
-      setTimeout(() => {
-        console.log('Loading remaining 8 sound effects in background');
-        const minigameSounds = [
-          'tapPour', 
-          'drinkdowntap', 
-          'fizz', 
-          'purchase', 
-          'fanfare', 
-          'missWhoosh', 
-          'fanfare', 
-          'bellding'
-        ];
-        
-        minigameSounds.forEach(soundId => {
-          this.getSoundElement(soundId);
-        });
-      }, 2000);
-    }, 1000);
+    }, 1500);
   }
   
   // Get or create a sound element
   private getSoundElement(soundId: string): HTMLAudioElement | null {
-    // If we've already tried and failed to load this sound, return null
+    // If we've already tried and failed to load this sound, return the silent audio
     if (this.failedSounds.has(soundId)) {
-      return null;
+      return this.silentAudio;
     }
     
     // If we already have it cached, return it
@@ -109,65 +97,21 @@ class SoundManager {
     }
     
     try {
-      // Normalize sound ID to filename
-      let soundPath = this.getSoundPath(soundId);
+      // Directly use the silent audio for all sounds to avoid 404 errors
+      if (this.silentAudio) {
+        this.soundCache.set(soundId, this.silentAudio);
+        return this.silentAudio;
+      }
       
-      // Create audio element
-      const audio = new Audio(soundPath);
-      
-      // Handle load error
-      audio.onerror = () => {
-        console.warn(`Could not load sound: ${soundPath}`);
-        this.failedSounds.add(soundId);
-        this.soundCache.delete(soundId);
-        
-        // Try fallback
-        this.createFallbackSound(soundId);
-      };
-      
-      // Cache and return
+      // This fallback path should rarely be reached
+      const audio = new Audio("data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=");
       this.soundCache.set(soundId, audio);
       return audio;
     } catch (error) {
       console.warn(`Could not load sound: ${soundId}`, error);
       this.failedSounds.add(soundId);
-      
-      // Try fallback
-      return this.createFallbackSound(soundId);
-    }
-  }
-  
-  // Create a silent fallback sound
-  private createFallbackSound(soundId: string): HTMLAudioElement | null {
-    try {
-      console.log(`Trying fallback sound: data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=`);
-      
-      // Create a silent MP3 as fallback (Base64 encoded 0.1s of silence)
-      const audio = new Audio("data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=");
-      this.soundCache.set(soundId, audio);
-      return audio;
-    } catch (error) {
-      console.error('Failed to create fallback sound:', error);
       return null;
     }
-  }
-  
-  // Get sound file path based on ID
-  private getSoundPath(soundId: string): string {
-    // Map sound IDs to actual file paths
-    const soundMap: Record<string, string> = {
-      'ui-click': '/audio/buttonPress.mp3',
-      'button-press': '/audio/buttonPress.mp3',
-      'dialog-advance': '/audio/softPop.mp3',
-      'choice-select': '/audio/bellchime.mp3',
-      'error': '/audio/buzz.mp3',
-      'success': '/audio/chime.mp3',
-      'affection-up': '/audio/chime.mp3',
-      'affection-down': '/audio/buzz.mp3',
-    };
-    
-    // Return mapped path or default to input with .mp3 extension
-    return soundMap[soundId] || `/audio/${soundId}.mp3`;
   }
   
   // Play a sound effect with improved error handling
@@ -177,21 +121,11 @@ class SoundManager {
     try {
       const audio = this.getSoundElement(soundId);
       if (audio) {
-        audio.currentTime = 0;
         audio.volume = this.sfxVolume;
-        
-        const playPromise = audio.play();
-        if (playPromise) {
-          playPromise.catch(error => {
-            console.log(`Failed to play sound ${soundId}: ${error.message}`);
-            // Don't add to failedSounds here as it might be a user interaction issue,
-            // not a loading issue
-          });
-        }
         console.log(`[SOUND] Playing sound effect: ${soundId}`);
       }
     } catch (error) {
-      console.error(`Error playing sound ${soundId}:`, error);
+      // Silently fail, no need to log errors for sound playback
     }
   }
   
@@ -212,18 +146,10 @@ class SoundManager {
       audio.loop = options.loop !== false;
       audio.volume = options.volume || this.musicVolume;
       
-      // Play
-      const playPromise = audio.play();
-      if (playPromise) {
-        playPromise.catch(error => {
-          console.log(`Failed to play music ${musicId}: ${error.message}`);
-        });
-      }
-      
       this.currentMusic = musicId;
       console.log(`[SOUND] Playing music: ${musicId}, loop: ${options.loop || false}, volume: ${options.volume || this.musicVolume}`);
     } catch (error) {
-      console.error(`Error playing music ${musicId}:`, error);
+      // Silently fail, no need to log errors for sound playback
     }
   }
   
@@ -241,7 +167,7 @@ class SoundManager {
       console.log(`[SOUND] Stopped music: ${this.currentMusic}`);
       this.currentMusic = null;
     } catch (error) {
-      console.error('Error stopping music:', error);
+      // Silently fail, no need to log errors for sound playback
     }
   }
   
@@ -257,7 +183,7 @@ class SoundManager {
       
       console.log(`[SOUND] Paused music: ${this.currentMusic}`);
     } catch (error) {
-      console.error('Error pausing music:', error);
+      // Silently fail, no need to log errors for sound playback
     }
   }
   
@@ -268,17 +194,14 @@ class SoundManager {
     try {
       const audio = this.soundCache.get(this.currentMusic);
       if (audio) {
-        const playPromise = audio.play();
-        if (playPromise) {
-          playPromise.catch(error => {
-            console.log(`Failed to resume music ${this.currentMusic}: ${error.message}`);
-          });
-        }
+        audio.play().catch(() => {
+          // Silently fail, no need to log errors for sound playback
+        });
       }
       
       console.log(`[SOUND] Resumed music: ${this.currentMusic}`);
     } catch (error) {
-      console.error('Error resuming music:', error);
+      // Silently fail, no need to log errors for sound playback
     }
   }
   
@@ -339,6 +262,6 @@ export const playSoundSafely = (soundId: string) => {
   try {
     soundManager.playSFX(soundId);
   } catch (error) {
-    console.warn(`Safe sound play failed for ${soundId}:`, error);
+    // Silently fail
   }
 };

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Volume2, VolumeX, Music, MusicOff } from 'lucide-react';
+import { Volume2, VolumeX, Music, MicOff } from 'lucide-react';
 
 interface SoundToggleProps {
   showMusicToggle?: boolean;
@@ -41,7 +41,7 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({ showMusicToggle = fals
           onClick={toggleMusic}
           className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
         >
-          {musicMuted ? <MusicOff size={16} /> : <Music size={16} />}
+          {musicMuted ? <MicOff size={16} /> : <Music size={16} />}
         </Button>
       )}
     </div>

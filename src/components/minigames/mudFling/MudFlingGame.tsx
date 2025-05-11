@@ -156,7 +156,7 @@ const MudFlingGame: React.FC<MudFlingGameProps> = ({ onComplete, onExit }) => {
           <span className="text-white font-bold">Score: {score}</span>
           <span className="ml-4 text-white font-bold">Time: {timeLeft}s</span>
         </div>
-        <SoundToggle />
+        <SoundToggle showMusicToggle={true} />
       </div>
 
       {gameStatus === 'countdown' && (

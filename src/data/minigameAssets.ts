@@ -7,7 +7,7 @@ const minigameAssets: MinigameAsset[] = [
   {
     id: 'mud-arena',
     name: 'Mud Fling Arena',
-    src: '/assets/minigames/spring/mudFling/mud-arena.png',
+    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Use a fallback that exists
     description: 'Background for mud fling arena',
     priority: true,
     category: 'background'
@@ -77,7 +77,7 @@ const minigameAssets: MinigameAsset[] = [
   {
     id: 'bloom-background',
     name: 'Bloom With a View Background',
-    src: '/assets/minigames/spring/bloomWithAView/garden-background.png',
+    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Use a fallback that exists
     description: 'Garden background for Bloom With a View',
     priority: true,
     category: 'background'
