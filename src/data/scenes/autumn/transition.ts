@@ -2,25 +2,25 @@
 import { Scene } from '../../../types/game';
 
 const seasonTransitionScenes: Record<string, Scene> = {
-  'season-transition-winter': {
-    id: 'season-transition-winter',
-    background: 'winter-transition',
+  'season-transition-autumn': {
+    id: 'season-transition-autumn',
+    background: 'autumn-transition',
     dialogue: [
       {
         character: 'narrator',
-        text: "As autumn fades, winter settles over Stonewich. The city transforms under a blanket of snow and twinkling lights.",
+        text: "As summer fades, autumn blankets Stonewich in rich, warm colors. The city prepares for the Handicrafts & Heritage festival.",
       },
       {
         character: 'narrator',
-        text: "A new season brings new challenges and opportunities, as well as the looming final assessment of the team's year in Stonewich.",
+        text: "The team's bond has grown stronger, and certain relationships have deepened beyond professional camaraderie.",
       },
       {
         character: 'maven',
-        text: "Winter in Stonewich... it's beautiful. Hard to believe our year is almost up.",
+        text: "Autumn in Stonewich... I can feel a change in the air. Not just the season, but something in me too.",
         mood: 'thoughtful',
       }
     ],
-    nextSceneId: 'winter-intro'
+    nextSceneId: 'autumn-intro'
   }
 };
 

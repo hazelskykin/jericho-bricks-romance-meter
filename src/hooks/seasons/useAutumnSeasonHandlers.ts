@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
 import { showRelationshipMilestone } from '@/components/RelationshipMilestone';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 
 export function useAutumnSeasonHandlers(
   gameState: GameState,
@@ -30,6 +30,8 @@ export function useAutumnSeasonHandlers(
       }));
       
       // Show notification about focusing on one relationship
+      toast.success(`${topCharacter[1].name} has become your primary love interest for the autumn season!`);
+      
       showRelationshipMilestone({
         characterId: charId as CharacterId,
         milestoneText: "Your relationship has deepened. A more intimate bond may be possible.",
@@ -45,6 +47,8 @@ export function useAutumnSeasonHandlers(
         ...prev,
         currentSeason: 'autumn'
       }));
+      
+      toast.info("No clear romantic connection has formed. Continuing to autumn without a primary love interest.");
     }
   }, [gameState.characters, gameState.viableRoutes, setGameState]);
 
