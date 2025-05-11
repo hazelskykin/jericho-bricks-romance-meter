@@ -4,7 +4,7 @@ import { Scene } from '../../../types/game';
 const springConclusionScenes: Record<string, Scene> = {
   'spring-conclusion': {
     id: 'spring-conclusion',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
