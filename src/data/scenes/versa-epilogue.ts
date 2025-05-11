@@ -4,7 +4,7 @@ import { Scene } from '@/types/game';
 const versaEpilogueScenes: Record<string, Scene> = {
   'versa-epilogue-intro': {
     id: 'versa-epilogue-intro',
-    background: 'cybaton-special',
+    background: 'cybaton-ahuttle',
     dialogue: [
       {
         character: 'narrator',
