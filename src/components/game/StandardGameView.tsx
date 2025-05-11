@@ -4,17 +4,15 @@ import { useGame } from '@/context/GameContext';
 import { Loader2 } from 'lucide-react';
 import { allScenes } from '@/data/scenes';
 import { toast } from 'sonner';
-import ExpandableMenu from '../ExpandableMenu';
-import DialogHistory from '../DialogHistory';
+import { CharacterId } from '@/types/game';
 import GameBackgroundScene from './GameBackgroundScene';
 import GameDialogueSystem from './GameDialogueSystem';
 import GameLoadingState from './GameLoadingState';
-import { CharacterId } from '@/types/game';
-import CharacterPortraitDisplay from './CharacterPortraitDisplay';
-import AffectionMeter from '@/components/AffectionMeter';
+import AffectionMeterSection from './AffectionMeterSection';
+import DialogHistorySection from './DialogHistorySection';
 
 const StandardGameView: React.FC = () => {
-  // Access game context with our new handlers
+  // Access game context with handlers
   const { 
     gameState, 
     handleDialogueClick, 
@@ -155,9 +153,6 @@ const StandardGameView: React.FC = () => {
   // Get the character ID from current dialogue, ensuring it's a valid CharacterId
   const characterId = currentDialogue?.character;
   
-  // Determine if we should show the full character portrait - only for character IDs that aren't narrator
-  const shouldShowFullPortrait = characterId && characterId !== 'narrator';
-
   return (
     <div ref={viewRef} className="relative h-screen w-full overflow-hidden">
       {/* Background - clickable to advance dialogue */}
@@ -166,53 +161,23 @@ const StandardGameView: React.FC = () => {
         onBackgroundClick={handleBackgroundClick} 
       />
       
-      {/* Character portrait - we keep this component but it now returns null */}
-      <CharacterPortraitDisplay
-        characterId={characterId as CharacterId | undefined}
-        characterMood={characterMood}
-        shouldShow={shouldShowFullPortrait}
-      />
-      
-      {/* Dialog History Button */}
-      <ExpandableMenu 
-        onGameClick={handleGameClick}
-        onTesterClick={handleTesterClick}
+      {/* Dialog History Section */}
+      <DialogHistorySection 
+        showHistory={showHistory}
+        setShowHistory={setShowHistory}
+        dialogHistory={dialogHistory}
         activeView={activeView}
+        handleGameClick={handleGameClick}
+        handleTesterClick={handleTesterClick}
+        replayCurrentScene={replayCurrentScene}
       />
       
-      {/* Dialog History Overlay */}
-      {showHistory && (
-        <DialogHistory
-          dialogHistory={dialogHistory}
-          onClose={() => setShowHistory(false)}
-          onOpenChange={() => setShowHistory(false)}
-          open={showHistory}
-          onReplayScene={replayCurrentScene}
-        />
-      )}
-      
-      {/* Affection meter */}
-      <div className="absolute top-4 right-4 z-30">
-        <button 
-          onClick={toggleAffectionMeter} 
-          className="bg-[#9b87f5] hover:bg-[#8B5CF6] p-2 rounded-full mb-2 shadow-md"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-          </svg>
-        </button>
-        
-        {Object.entries(gameState.characters)
-          .filter(([id]) => id !== 'maven')
-          .map(([id, character]) => (
-            <div key={id} className="mb-2">
-              <AffectionMeter 
-                character={character} 
-                isOpen={showAffection}
-              />
-            </div>
-          ))}
-      </div>
+      {/* Affection Meter Section */}
+      <AffectionMeterSection 
+        showAffection={showAffection}
+        toggleAffectionMeter={toggleAffectionMeter}
+        characters={gameState.characters}
+      />
       
       {/* Dialog Box or Choice Menu */}
       <GameDialogueSystem
