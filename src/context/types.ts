@@ -1,5 +1,6 @@
 
-import { GameState, CharacterId, MinigameType } from "@/types/game";
+import { GameState, CharacterId } from "@/types/game";
+import { MinigameType } from "@/types/minigames";
 
 export interface GameContextValue {
   gameState: GameState;

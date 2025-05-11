@@ -1,6 +1,6 @@
 
 import { useState, useCallback } from 'react';
-import { GameState } from '@/types/game';
+import { GameState, CharacterId } from '@/types/game';
 import { allScenes } from '@/data/scenes';
 import { toast } from 'sonner';
 import { soundManager } from '@/utils/soundEffects';

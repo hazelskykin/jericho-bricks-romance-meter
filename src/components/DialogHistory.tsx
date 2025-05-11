@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DialogueLine } from '@/types/game';
+import { allScenes } from '@/data/scenes';
 
 interface DialogHistoryProps {
   open: boolean;
@@ -30,10 +31,10 @@ const DialogHistory: React.FC<DialogHistoryProps> = ({
 }) => {
   const { gameState } = useGame();
   
-  // Use external dialogHistory if provided, otherwise use from gameState
+  // Use external dialogHistory if provided, otherwise use from current scene
   const dialogHistory = externalDialogHistory || 
     (gameState?.currentScene && gameState?.dialogueIndex !== undefined ? 
-      gameState.scenes[gameState.currentScene]?.dialogue.slice(0, gameState.dialogueIndex + 1) : 
+      allScenes[gameState.currentScene]?.dialogue?.slice(0, gameState.dialogueIndex + 1) || [] : 
       []);
   
   const handleClose = () => {
