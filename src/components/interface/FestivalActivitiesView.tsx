@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useGame } from '@/context/GameContext';
 import GameBackgroundScene from '../game/GameBackgroundScene';
+import { toast } from 'sonner';
 
 interface FestivalActivity {
   id: string;
@@ -56,9 +57,16 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
     handleSceneTransition(activity.sceneId);
   };
 
-  // Continue after all activities are completed
+  // Continue after all activities are completed or when skipping
   const handleContinue = () => {
     console.log(`All activities explored, continuing to: ${season}-festival-completion`);
+    handleSceneTransition(`${season}-festival-completion`);
+  };
+  
+  // Handle skip button click
+  const handleSkipFestival = () => {
+    console.log(`Skipping festival activities for ${season}`);
+    toast.info(`Skipping ${season} festival activities`);
     handleSceneTransition(`${season}-festival-completion`);
   };
 
@@ -136,8 +144,17 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
             ))}
           </div>
           
-          {allCompleted && (
-            <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
+            {/* Skip button that's always visible */}
+            <Button
+              variant="outline"
+              className="border-[#9b87f5] hover:bg-[#9b87f5]/10 text-white"
+              onClick={handleSkipFestival}
+            >
+              Skip Festival Activities
+            </Button>
+            
+            {allCompleted && (
               <Button
                 variant="default"
                 className="bg-purple-700 hover:bg-purple-800"
@@ -145,8 +162,8 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
               >
                 Continue to Festival Conclusion
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

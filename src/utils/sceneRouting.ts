@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -14,6 +15,7 @@ const sceneMapping: Record<string, string> = {
   'spring-character-path': 'spring-character-visit',
   'spring-selection': 'spring-selection', // Map to the actual scene we created
   'spring-festival-completion': 'spring-festival-completion',
+  'spring-festival-activities': 'spring-festival-activities',
   
   // Spring character selection scenes with visit counts
   'spring-character-selection-1': 'spring-character-selection',
@@ -27,6 +29,7 @@ const sceneMapping: Record<string, string> = {
   'summer-character-path': 'summer-character-visit',
   'summer-visit-character': 'summer-character-selection', // Add this mapping for the transition
   'summer-festival-completion': 'summer-festival-completion', // Add mapping for festival completion
+  'summer-festival-activities': 'summer-festival-activities',
   'summer-conclusion-meeting': 'summer-conclusion-meeting',
   
   // Summer character selection scenes with visit counts
@@ -45,6 +48,11 @@ const sceneMapping: Record<string, string> = {
   'autumn-character-path': 'autumn-character-relationship',
   'autumn-festival-introduction': 'autumn-festival-introduction', // Updated mapping to match the actual scene ID
   'autumn-festival-activities': 'autumn-festival-activities',
+  'autumn-festival-completion': 'autumn-festival-completion',
+  
+  // Winter scenes
+  'winter-festival-activities': 'winter-festival-activities',
+  'winter-festival-completion': 'winter-festival-completion',
 };
 
 // Error fallbacks for scenes that might not exist
@@ -58,6 +66,8 @@ const sceneFallbacks: Record<string, string> = {
   'summer-visit-character': 'summer-character-selection', // Add fallback for summer visit
   'summer-festival-completion': 'summer-planning', // Add fallback for festival completion
   'season-transition-autumn': 'autumn-intro', // Fallback for autumn transition
+  'autumn-festival-completion': 'autumn-intro', // Fallback for autumn festival completion
+  'winter-festival-completion': 'winter-intro', // Fallback for winter festival completion
   
   // Fallbacks for character selection with visit counts
   'spring-character-selection-1': 'spring-character-selection',
