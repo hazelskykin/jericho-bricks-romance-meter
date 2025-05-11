@@ -9,6 +9,7 @@ import { useEpilogueChecker } from '@/hooks/useEpilogueChecker';
 import GameSceneObserver from '@/components/GameSceneObserver';
 import { toast } from 'sonner';
 import { soundManager } from '@/utils/soundEffects';
+import { allScenes } from '../data/scenes';
 
 // Initial game state
 const initialGameState: GameState = {
@@ -63,6 +64,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setGameState(prev => ({
         ...prev,
         currentScene: currentSceneId,
+        dialogueIndex: 0, // Reset dialogue index when changing scenes
+        showChoices: false // Hide choices when changing scenes
       }));
     }
   }, [currentSceneId, gameState.currentScene]);
@@ -139,7 +142,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error in handleDialogueClick:', error);
       toast.error('An error occurred while progressing dialogue');
     }
-  }, [gameState.currentScene, gameState.dialogueIndex, transitionToScene]);
+  }, [gameState.currentScene, gameState.dialogueIndex]);
   
   // Handle choice selection - NEW FUNCTION
   const handleChoiceClick = useCallback((choiceIndex: number) => {
@@ -219,7 +222,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error in handleChoiceClick:', error);
       toast.error('An error occurred while processing your choice');
     }
-  }, [gameState.currentScene, transitionToScene]);
+  }, [gameState.currentScene]);
   
   // Replay the current scene - NEW FUNCTION
   const replayCurrentScene = useCallback(() => {
@@ -298,7 +301,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setGameState(prev => ({
         ...prev,
         dialogueIndex: 0,
-        showChoices: false
+        showChoices: false,
+        sceneHistory: [...prev.sceneHistory, prev.currentScene]
       }));
       
       // Default case
@@ -327,13 +331,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Failed to start new game:', error);
       toast.error('Failed to start new game. Please try again.');
     }
-  }, [handleSceneTransition]);
+  }, []);
   
   // Handle about screen
   const handleAbout = useCallback(() => {
     console.log('Showing about screen');
     handleSceneTransition('about');
-  }, [handleSceneTransition]);
+  }, []);
 
   // Create value object for provider
   const value = {
@@ -374,6 +378,3 @@ export const useGame = () => {
   }
   return context;
 };
-
-// Import allScenes at the top of the file
-import { allScenes } from '../data/scenes';

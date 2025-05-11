@@ -34,7 +34,19 @@ const Game: React.FC = () => {
     if (!currentScene) {
       console.error('Current scene is undefined for sceneId:', currentSceneId);
     }
-  }, [currentSceneId, currentScene]);
+    
+    // If the current scene is no longer 'start', we should hide the main menu
+    if (currentSceneId !== 'start' && currentSceneId !== 'about' && showMainMenu) {
+      console.log('Scene is not start or about, hiding main menu');
+      setShowMainMenu(false);
+    }
+    
+    // If we're back at the start scene, show the main menu
+    if ((currentSceneId === 'start' || currentSceneId === 'about') && !showMainMenu) {
+      console.log('Returning to start/about scene, showing main menu');
+      setShowMainMenu(true);
+    }
+  }, [currentSceneId, currentScene, showMainMenu]);
 
   // Initialize sound system when component mounts
   useEffect(() => {
@@ -57,9 +69,7 @@ const Game: React.FC = () => {
     // Log sound effect instead of playing to avoid errors
     console.log('[SOUND] ui-click');
     
-    setShowMainMenu(false);
-    
-    // If intro scene exists in our scenes data, transition to it
+    // Transition to intro scene first, then hide the main menu
     transitionToScene('intro');
     
     // Show toast indicating game started
