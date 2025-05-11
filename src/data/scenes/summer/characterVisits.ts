@@ -6,7 +6,7 @@ const characterVisitScenes: Record<string, Scene> = {
   // Xavier visits - using the workstation for one-on-one time
   'summer-visit-xavier': {
     id: 'summer-visit-xavier',
-    background: 'stonewich-cityscape',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
@@ -68,7 +68,7 @@ const characterVisitScenes: Record<string, Scene> = {
   
   'summer-visit-xavier-technical': {
     id: 'summer-visit-xavier-technical',
-    background: 'stonewich-cityscape',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'xavier',
@@ -105,7 +105,7 @@ const characterVisitScenes: Record<string, Scene> = {
   
   'summer-visit-xavier-personal': {
     id: 'summer-visit-xavier-personal',
-    background: 'stonewich-cityscape',
+    background: 'summer-cityoverlook',
     dialogue: [
       {
         character: 'xavier',
