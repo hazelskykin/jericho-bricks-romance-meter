@@ -14,7 +14,7 @@ import DevJumpTargets from './DevJumpTargets';
 interface SceneRendererProps {
   gameState: GameState;
   activeMinigame: MinigameType | null;
-  completeMinigame: (score: number) => void;
+  completeMinigame: (success: boolean, score?: number) => void;
   exitMinigame: () => void;
   handleSceneTransition: (sceneId: string) => void;
   handleNewGame: () => void;

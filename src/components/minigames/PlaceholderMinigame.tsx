@@ -8,7 +8,7 @@ import { SoundToggle } from './common/SoundToggle';
 
 interface PlaceholderMinigameProps {
   minigameType: MinigameType;
-  onComplete: (success: boolean) => void;
+  onComplete: (success: boolean, score?: number) => void;
   onExit: () => void;
 }
 

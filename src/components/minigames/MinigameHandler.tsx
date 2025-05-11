@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 interface MinigameHandlerProps {
   activeMinigame: MinigameType | null;
-  completeMinigame: (success: boolean) => void;
+  completeMinigame: (success: boolean, score?: number) => void;
   exitMinigame: () => void;
 }
 
