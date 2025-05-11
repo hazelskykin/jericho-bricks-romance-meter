@@ -110,7 +110,7 @@ const autumnConclusionScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'autumn-conclusion'
-  }
+  },
 
   'autumn-conclusion': {
     id: 'autumn-conclusion',
