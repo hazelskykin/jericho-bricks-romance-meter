@@ -4,7 +4,6 @@ import DialogueBox from '../DialogueBox';
 import ChoiceMenu from '../ChoiceMenu';
 import { DialogueChoice, DialogueLine, CharacterId } from '@/types/game';
 import { MoodType } from '@/types/expressions';
-import CharacterPortrait from '../CharacterPortrait';
 
 interface GameDialogueSystemProps {
   showChoices: boolean;
@@ -31,8 +30,8 @@ const GameDialogueSystem: React.FC<GameDialogueSystemProps> = ({
   const shouldShowPortrait = characterId && characterId !== 'narrator' as unknown as CharacterId;
   
   return (
-    <div className="absolute bottom-8 left-0 right-0 z-30 flex justify-center">
-      <div className="max-w-xl w-full px-4">
+    <div className="absolute bottom-6 left-0 right-0 z-30 flex justify-center px-4 sm:px-6">
+      <div className="w-full max-w-3xl">
         {showChoices && displayedChoices.length > 0 ? (
           <ChoiceMenu 
             choices={displayedChoices} 

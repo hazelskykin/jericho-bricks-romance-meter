@@ -21,7 +21,7 @@ const CharacterPortraitDisplay: React.FC<CharacterPortraitDisplayProps> = ({
   }
 
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-4/5 z-10 character-portrait-container">
+    <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-3/4 z-10 character-portrait-container">
       <CharacterPortrait 
         characterId={characterId}
         mood={characterMood}

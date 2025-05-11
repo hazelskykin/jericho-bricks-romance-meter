@@ -85,16 +85,16 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   return (
     <div 
       ref={dialogueBoxRef}
-      className="dialog-box p-4 rounded-lg w-full max-w-xl mx-auto relative"
+      className="dialog-box p-4 rounded-lg w-full max-w-4xl mx-auto relative"
       onClick={handleClick}
       style={{ cursor: isActive ? 'pointer' : 'default' }}
     >
-      {/* Speaker name label */}
+      {/* Speaker name and portrait */}
       {speakerName && (
-        <div className="flex items-center mb-2">
+        <div className="flex items-center mb-3">
           {/* Character portrait - small circle avatar */}
           {showPortrait && characterId && (
-            <div className="w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-800 border-2 border-accent">
+            <div className="w-10 h-10 min-w-[40px] rounded-full overflow-hidden mr-3 bg-gray-800 border-2 border-accent flex-shrink-0">
               <CharacterPortrait 
                 characterId={characterId} 
                 mood={characterMood}
@@ -116,13 +116,13 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
       
       {/* Dialogue text */}
       <div 
-        className="text-white text-base leading-relaxed pl-14"
+        className="text-white text-base leading-relaxed"
         dangerouslySetInnerHTML={{ __html: processedDisplayedText }}
       />
       
       {/* Continue indicator */}
       {finished && (
-        <div className="absolute bottom-3 right-4 animate-bounce text-white text-sm">
+        <div className="absolute bottom-2 right-4 animate-bounce text-white text-sm">
           ▼
         </div>
       )}
