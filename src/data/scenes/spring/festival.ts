@@ -52,7 +52,7 @@ const springFestivalScenes: Record<string, Scene> = {
   // Navigation scene for festival activities
   'spring-festival-activities': {
     id: 'spring-festival-activities',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
