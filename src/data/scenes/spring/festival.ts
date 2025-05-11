@@ -22,12 +22,12 @@ const springFestivalScenes: Record<string, Scene> = {
       },
       {
         character: 'navarre',
-        text: "I've leveraged my connections to create quite a buzz. Fashion designers are creating festival-themed collections, media outlets are covering us, and several celebrities have confirmed attendance. The PR for Stonewich is excellent, and businesses are lining up for sponsorship opportunities.",
+        text: "I've leveraged my connections to create quite a buzz. Fashion designers are creating festival-themed collections, media outlets are covering us, and several celebrities have confirmed attendance.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "I've developed an AI assistant for festival attendees. It offers historical anecdotes about the festival, a comprehensive flower identification database, and detailed planting guidance. The information is accessible through interactive kiosks throughout the festival grounds.",
+        text: "I've developed an AI assistant for festival attendees. It offers historical anecdotes about the festival, a comprehensive flower identification database, and detailed planting guidance.",
         mood: 'neutral',
       },
       {
