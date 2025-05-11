@@ -97,10 +97,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     handleSeasonTransition,
     completeCharacterRoute,
     completeVersaRoute,
-    handleGameReset,
+    handleGameReset: originalHandleGameReset, // Rename to avoid confusion
     checkSeasonProgress
   } = useGameSeasons(gameState, setGameState, transitionToScene);
   
+  // Create a wrapper function for handleGameReset that doesn't require parameters
+  // to match the interface definition in types.ts
+  const handleGameReset = () => {
+    // Call the original function with a default value
+    originalHandleGameReset('new');
+  };
+
   // Initialize epilogue checker
   const { routeToEpilogue } = useEpilogueChecker(gameState, setGameState);
 
@@ -114,7 +121,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     handleSeasonTransition,
     completeCharacterRoute,
     completeVersaRoute,
-    handleGameReset,
+    handleGameReset, // Use the wrapper function that matches the interface
     checkSeasonProgress,
     activeMinigame,
     startMinigame,

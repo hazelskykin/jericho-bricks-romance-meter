@@ -1,127 +1,131 @@
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DialogueLine } from '@/types/game';
-import { MoodType } from '@/types/expressions';
-import { Button } from '@/components/ui/button';
-import characters, { maven } from '@/data/characters';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import React, { useState, useEffect, useRef } from 'react';
+import { DialogueLine, CharacterId } from '../types/game';
 import CharacterPortrait from './CharacterPortrait';
+import { useGlossary } from '../hooks/useGlossary';
+import { getSpeakerName } from '../utils/dialogueUtils';
 
 interface DialogueBoxProps {
-  line?: DialogueLine;
-  onContinue?: () => void;
-  isActive?: boolean;
-  dialogueLine?: DialogueLine;
-  onAdvance?: () => void;
+  dialogueLine: DialogueLine | undefined;
+  onAdvance: () => void;
+  isActive: boolean;
 }
 
-const DialogueBox: React.FC<DialogueBoxProps> = ({ 
-  line, 
+const DialogueBox: React.FC<DialogueBoxProps> = ({
   dialogueLine,
-  onContinue, 
   onAdvance,
-  isActive = true 
+  isActive
 }) => {
-  // Use either line or dialogueLine prop (for backward compatibility)
-  const currentLine = dialogueLine || line;
-  const handleAdvance = onAdvance || onContinue || (() => {});
+  const [text, setText] = useState<string>('');
+  const [displayedText, setDisplayedText] = useState<string>('');
+  const [typing, setTyping] = useState<boolean>(false);
+  const [finished, setFinished] = useState<boolean>(false);
+  const dialogueBoxRef = useRef<HTMLDivElement>(null);
   
-  if (!currentLine) return null;
+  const { processGlossaryTerms } = useGlossary();
   
-  // Get character data to display the correct color
-  const getCharacterData = () => {
-    if (!currentLine.character || currentLine.character === 'narrator') {
-      return null;
+  // Determine speaker name
+  const speakerName = dialogueLine?.character ? getSpeakerName(dialogueLine.character as CharacterId) : '';
+  const showPortrait = dialogueLine?.character && dialogueLine.character !== 'narrator';
+  const characterId = dialogueLine?.character as CharacterId | undefined;
+  const characterMood = dialogueLine?.mood || 'neutral';
+  
+  // Reset and set up text display when dialogue line changes
+  useEffect(() => {
+    if (dialogueLine) {
+      const content = dialogueLine.text || '';
+      setText(content);
+      setDisplayedText('');
+      setTyping(true);
+      setFinished(false);
+      
+      const typeDelay = dialogueLine.isGhost ? 10 : 20;
+      
+      // Type effect
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i < content.length) {
+          setDisplayedText(prev => prev + content.charAt(i));
+          i++;
+        } else {
+          clearInterval(timer);
+          setTyping(false);
+          setFinished(true);
+        }
+      }, typeDelay);
+      
+      return () => clearInterval(timer);
     }
+  }, [dialogueLine]);
+  
+  // Handle click to advance
+  const handleClick = () => {
+    if (!isActive) return;
     
-    if (currentLine.character === 'maven') {
-      return maven;
+    if (typing) {
+      // If still typing, complete the text immediately
+      setDisplayedText(text);
+      setTyping(false);
+      setFinished(true);
+    } else if (finished) {
+      // If finished typing, advance to next dialogue
+      onAdvance();
     }
-    
-    return characters[currentLine.character];
   };
   
-  const characterData = getCharacterData();
+  // Process text for glossary terms
+  const processedDisplayedText = processGlossaryTerms ? processGlossaryTerms(displayedText) : displayedText;
   
-  // Determine character name display
-  const displayName = () => {
-    if (currentLine.character === 'narrator') {
-      return 'Narrator';
-    } else if (currentLine.character === 'maven') {
-      return 'Maven (You)';
-    } else if (currentLine.character) {
-      return characters[currentLine.character]?.name || '';
-    }
-    return '';
-  };
+  // If no dialogue or not active, don't render
+  if (!dialogueLine || !isActive) {
+    return null;
+  }
 
   return (
-    <AnimatePresence mode="wait">
-      {isActive && (
-        <motion.div 
-          className="dialog-box fixed bottom-4 left-0 right-0 p-3 rounded-lg z-30 mx-auto"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 20, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          key={currentLine.text.substring(0, 20)}
-          style={{
-            borderLeft: characterData ? `4px solid ${characterData.color}` : undefined,
-            borderBottom: characterData ? `1px solid ${characterData.color}30` : undefined,
-            borderRight: characterData ? `1px solid ${characterData.color}30` : undefined,
-            maxWidth: '450px', // Smaller max width
-            height: '140px',   // Fixed height
-          }}
-        >
-          <div className="flex items-center gap-3 mb-2">
-            {currentLine.character && currentLine.character !== 'narrator' && (
-              <div className="flex items-center gap-3">
-                <div 
-                  className="w-16 h-16 rounded-full overflow-hidden border-2 flex items-center justify-center"
-                  style={{ borderColor: characterData?.color || 'white' }}
-                >
-                  <CharacterPortrait
-                    characterId={currentLine.character}
-                    mood={currentLine.mood || 'neutral'}
-                    animate={false}
-                    isInDialog={true}
-                  />
-                </div>
-                <div 
-                  className="font-medium text-lg"
-                  style={{ color: characterData?.color || 'white' }}
-                >
-                  <span>{displayName()}</span>
-                </div>
-              </div>
-            )}
-            
-            {(!currentLine.character || currentLine.character === 'narrator') && (
-              <div className="font-medium text-lg text-white/90">
-                <span>Narrator</span>
-              </div>
-            )}
-          </div>
+    <div 
+      ref={dialogueBoxRef}
+      className="dialog-box p-4 rounded-lg w-full max-w-2xl mx-auto relative"
+      onClick={handleClick}
+      style={{ cursor: isActive ? 'pointer' : 'default' }}
+    >
+      {/* Speaker name label */}
+      {speakerName && (
+        <div className="flex items-center mb-2">
+          {/* Character portrait - small circle avatar */}
+          {showPortrait && characterId && (
+            <div className="w-12 h-12 rounded-full overflow-hidden mr-3 bg-gray-800 border-2 border-accent">
+              <CharacterPortrait 
+                characterId={characterId} 
+                mood={characterMood}
+                className="w-full h-full" 
+                isInDialog={true}
+              />
+            </div>
+          )}
           
-          <p className="text-sm text-white/90 leading-relaxed ml-0 max-h-[50px] overflow-y-auto pr-2">
-            {currentLine.text}
-          </p>
-          
-          <div className="mt-2 flex justify-end">
-            <Button 
-              onClick={handleAdvance} 
-              className="text-xs bg-cyberpunk-dark hover:bg-cyberpunk-secondary border border-cyberpunk-primary/30"
-              style={{
-                borderColor: characterData ? `${characterData.color}50` : undefined,
-              }}
-            >
-              Continue
-            </Button>
+          {/* Speaker name */}
+          <div 
+            className="text-lg font-semibold text-white text-glow-sm"
+            style={{ color: characterId ? `var(--character-${characterId}-color, white)` : 'white' }}
+          >
+            {speakerName}
           </div>
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+      
+      {/* Dialogue text */}
+      <div 
+        className="text-white text-base leading-relaxed pl-14"
+        dangerouslySetInnerHTML={{ __html: processedDisplayedText }}
+      />
+      
+      {/* Continue indicator */}
+      {finished && (
+        <div className="absolute bottom-3 right-4 animate-bounce text-white text-sm">
+          ▼
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -10,6 +10,7 @@ import GameBackgroundScene from './GameBackgroundScene';
 import GameDialogueSystem from './GameDialogueSystem';
 import GameLoadingState from './GameLoadingState';
 import { CharacterId } from '@/types/game';
+import CharacterPortraitDisplay from './CharacterPortraitDisplay';
 
 const StandardGameView: React.FC = () => {
   // Access game context with our new handlers
@@ -140,7 +141,6 @@ const StandardGameView: React.FC = () => {
   const characterId = currentDialogue?.character;
   
   // Determine if we should show the full character portrait - only for character IDs that aren't narrator
-  // Fix the type error by comparing as strings
   const shouldShowFullPortrait = characterId && characterId !== 'narrator';
 
   return (
@@ -149,6 +149,13 @@ const StandardGameView: React.FC = () => {
       <GameBackgroundScene 
         backgroundId={scene.background} 
         onBackgroundClick={handleBackgroundClick} 
+      />
+      
+      {/* Character portrait - centered in background */}
+      <CharacterPortraitDisplay
+        characterId={characterId as CharacterId | undefined}
+        characterMood={characterMood}
+        shouldShow={shouldShowFullPortrait}
       />
       
       {/* Dialog History Button */}
