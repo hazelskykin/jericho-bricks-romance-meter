@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useGame } from '@/context/GameContext';
 import MainMenu from './MainMenu';
@@ -11,7 +12,11 @@ import { useEpilogueChecker } from '@/hooks/useEpilogueChecker';
 import { Button } from './ui/button';
 import { allScenes } from '@/data/scenes';
 
-const GameInterface: React.FC = () => {
+interface GameInterfaceProps {
+  initialSceneId?: string;
+}
+
+const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId }) => {
   const {
     gameState,
     handleNewGame,
@@ -28,7 +33,14 @@ const GameInterface: React.FC = () => {
   useEffect(() => {
     console.log('GameInterface rendering with scene:', gameState.currentScene);
     console.log('Current scene data:', allScenes[gameState.currentScene]);
-  }, [gameState.currentScene]);
+    
+    // If we received an initialSceneId and it's different from the current scene,
+    // we should transition to it
+    if (initialSceneId && initialSceneId !== 'start' && initialSceneId !== gameState.currentScene) {
+      console.log(`Syncing GameInterface to initialSceneId: ${initialSceneId}`);
+      handleSceneTransition(initialSceneId);
+    }
+  }, [gameState.currentScene, initialSceneId, handleSceneTransition]);
 
   const { routeToEpilogue } = useEpilogueChecker(gameState, setGameState => setGameState);
   const [showDevMenu, setShowDevMenu] = useState(false);

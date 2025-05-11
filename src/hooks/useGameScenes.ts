@@ -45,16 +45,34 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
         
         console.log(`Scene transition complete, now at [${mappedSceneId}]`);
       } else {
-        // Try to handle the error with a fallback
-        const fallbackScene = handleSceneError(mappedSceneId);
-        
-        if (fallbackScene && allScenes[fallbackScene]) {
-          console.log(`Using fallback scene [${fallbackScene}]`);
+        // Special case for intro scenes to ensure they're found
+        if (mappedSceneId === 'intro' || mappedSceneId === 'prologue-intro') {
+          console.log(`Special handling for intro scene: using 'intro'`);
           setPreviousSceneId(currentSceneId);
-          setCurrentSceneId(fallbackScene);
-        } else {
-          console.error(`No fallback found for scene [${mappedSceneId}]`);
-          toast.error(`Failed to find scene "${mappedSceneId}" or a suitable fallback`);
+          setCurrentSceneId('intro');
+        }
+        // Special case for about scene
+        else if (mappedSceneId === 'about') {
+          console.log(`Special handling for about scene`);
+          setPreviousSceneId(currentSceneId);
+          setCurrentSceneId('about');
+        }
+        // Try to handle the error with a fallback
+        else {
+          const fallbackScene = handleSceneError(mappedSceneId);
+          
+          if (fallbackScene && allScenes[fallbackScene]) {
+            console.log(`Using fallback scene [${fallbackScene}]`);
+            setPreviousSceneId(currentSceneId);
+            setCurrentSceneId(fallbackScene);
+          } else {
+            console.error(`No fallback found for scene [${mappedSceneId}]`);
+            toast.error(`Failed to find scene "${mappedSceneId}" or a suitable fallback`);
+            
+            // Default to start as ultimate fallback
+            setPreviousSceneId(currentSceneId);
+            setCurrentSceneId('start');
+          }
         }
       }
       

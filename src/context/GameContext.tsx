@@ -243,58 +243,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log(`Game Context - Transitioning to scene: ${nextSceneId}`);
     
     try {
-      // Special case: Minigame start scenes
-      if (nextSceneId.includes('-start') && 
-          (nextSceneId.includes('brooms-away') || 
-           nextSceneId.includes('mud-fling') || 
-           nextSceneId.includes('bloom-view') ||
-           nextSceneId.includes('serenade') ||
-           nextSceneId.includes('spoken-word') ||
-           nextSceneId.includes('whats-on-tap') ||
-           nextSceneId.includes('tour-guide') ||
-           nextSceneId.includes('crafter') ||
-           nextSceneId.includes('memories-date') ||
-           nextSceneId.includes('charity-auction') ||
-           nextSceneId.includes('gala-dance') ||
-           nextSceneId.includes('looking-signs'))) {
+      // Validate that the scene exists before attempting transition
+      if (!allScenes[nextSceneId] && nextSceneId !== 'start' && nextSceneId !== 'about') {
+        console.error(`Scene [${nextSceneId}] not found in allScenes`);
+        toast.error(`Failed to find scene "${nextSceneId}". Redirecting to a known scene.`);
         
-        console.log(`Detected minigame start scene: ${nextSceneId}`);
-        // Let it proceed normally so GameSceneObserver can handle it
-      }
-      
-      // Special case handling for character selection screens
-      if (nextSceneId === 'spring-selection' || nextSceneId === 'spring-character-selection') {
-        console.log('Redirecting to spring character selection');
-        transitionToScene('spring-character-selection');
-        return;
-      }
-      
-      if (nextSceneId === 'summer-selection' || nextSceneId === 'summer-character-selection') {
-        console.log('Redirecting to summer character selection');
-        transitionToScene('summer-character-selection');
-        return;
-      }
-      
-      // Special handling for autumn and winter character scenes with love interest
-      if ((nextSceneId === 'autumn-character-path' || nextSceneId.includes('autumn-character')) && gameState.currentLoveInterest) {
-        const characterScene = `autumn-character-${gameState.currentLoveInterest}`;
-        console.log(`Redirecting to autumn character scene with love interest: ${characterScene}`);
-        transitionToScene(characterScene);
-        return;
-      }
-      
-      if ((nextSceneId === 'winter-planning-character' || nextSceneId.includes('winter-character')) && gameState.currentLoveInterest) {
-        const characterScene = `winter-planning-${gameState.currentLoveInterest}`;
-        console.log(`Redirecting to winter character scene with love interest: ${characterScene}`);
-        transitionToScene(characterScene);
-        return;
-      }
-      
-      // Specific handling for prologue-intro
-      if (nextSceneId === 'prologue-intro') {
-        console.log('Handling prologue-intro special case');
-        transitionToScene('intro');
-        return;
+        // Try to handle with a fallback
+        if (nextSceneId.includes('intro') || nextSceneId === 'prologue-intro') {
+          nextSceneId = 'intro';
+        } else {
+          nextSceneId = 'start'; // Default fallback
+        }
       }
       
       // Ensure we reset dialogue index when transitioning to a new scene
@@ -309,35 +268,35 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       transitionToScene(nextSceneId);
     } catch (error) {
       console.error('Error during scene transition:', error);
-      toast.error('Failed to transition to next scene. Please try again.');
+      toast.error('Failed to transition to next scene. Returning to start.');
       
       // Fallback to main menu if serious error
-      if (String(error).includes('Cannot read properties of undefined')) {
-        toast.error('Critical error encountered. Returning to main menu.');
-        transitionToScene('start');
-      }
+      transitionToScene('start');
     }
-  }, [transitionToScene, gameState.currentLoveInterest]);
+  }, [transitionToScene]);
   
   // Handle new game with improved error handling
   const handleNewGame = useCallback(() => {
     console.log('Starting new game');
     try {
+      // Reset the game state completely
       setGameState({...initialGameState});
-      // Use a direct known ID to avoid mapping issues
+      
+      // Force transition to intro scene
       handleSceneTransition('intro');
+      
       toast.success('New game started!');
     } catch (error) {
       console.error('Failed to start new game:', error);
       toast.error('Failed to start new game. Please try again.');
     }
-  }, []);
+  }, [handleSceneTransition]);
   
   // Handle about screen
   const handleAbout = useCallback(() => {
     console.log('Showing about screen');
     handleSceneTransition('about');
-  }, []);
+  }, [handleSceneTransition]);
 
   // Create value object for provider
   const value = {
@@ -356,7 +315,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     completeMinigame,
     exitMinigame,
     routeToEpilogue,
-    // Add new handlers
     handleDialogueClick,
     handleChoiceClick,
     replayCurrentScene

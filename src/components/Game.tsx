@@ -62,14 +62,17 @@ const Game: React.FC = () => {
     }
   }, [soundInitialized]);
 
-  // Handle game start
+  // Handle game start - make this a proper function that handles the entire flow
   const handleStartGame = () => {
     console.log('Starting new game');
     
     // Log sound effect instead of playing to avoid errors
     console.log('[SOUND] ui-click');
     
-    // Transition to intro scene first, then hide the main menu
+    // Immediately hide the main menu first to avoid flicker
+    setShowMainMenu(false);
+    
+    // Transition to intro scene
     transitionToScene('intro');
     
     // Show toast indicating game started
@@ -119,7 +122,7 @@ const Game: React.FC = () => {
           onAbout={handleAbout}
         />
       ) : (
-        <GameInterface />
+        <GameInterface initialSceneId={currentSceneId} />
       )}
       
       {/* Dev Scene Jumper - always available */}

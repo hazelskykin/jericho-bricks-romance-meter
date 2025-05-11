@@ -9,6 +9,7 @@ import DialogHistory from '../DialogHistory';
 import { Loader2 } from 'lucide-react';
 import ExpandableMenu from '../ExpandableMenu';
 import { allScenes } from '@/data/scenes';
+import { toast } from 'sonner';
 
 const StandardGameView: React.FC = () => {
   // Access game context with our new handlers
@@ -46,6 +47,7 @@ const StandardGameView: React.FC = () => {
     console.log(`StandardGameView: Current scene: ${sceneId}, dialogue index: ${dialogueIndex}, showing choices: ${showChoices}`);
     if (!scene) {
       console.error(`Scene not found: ${sceneId}`);
+      toast.error(`Scene "${sceneId}" not found. Please report this error.`);
     } else if (!currentDialogue && dialogueIndex < scene.dialogue.length) {
       console.error(`Dialogue line not found at index ${dialogueIndex} in scene ${sceneId}`);
     }
@@ -83,6 +85,12 @@ const StandardGameView: React.FC = () => {
         <div className="text-center text-white">
           <Loader2 className="h-16 w-16 mx-auto animate-spin text-[#9b87f5] mb-4" />
           <p>Scene not found or loading: {sceneId}</p>
+          <button 
+            onClick={() => handleSceneTransition('start')} 
+            className="mt-4 px-4 py-2 bg-[#9b87f5] rounded-md hover:bg-[#8B5CF6] transition-colors"
+          >
+            Return to Main Menu
+          </button>
         </div>
       </div>
     );
