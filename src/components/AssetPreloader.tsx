@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { assetManager } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
 import backgrounds from '@/data/backgrounds';
+import minigameAssets from '@/data/minigameAssets';
 import { BackgroundAsset } from '@/types/assets';
 import { CharacterExpression } from '@/types/expressions';
 
@@ -15,19 +16,23 @@ interface AssetPreloaderProps {
 const AssetPreloader: React.FC<AssetPreloaderProps> = ({ 
   onComplete, 
   priorityOnly = false,
-  skipMinigameAssets = true // Default to skipping minigame assets
+  skipMinigameAssets = false // Changed default to false so we load minigame assets
 }) => {
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [loadingBackgrounds, setLoadingBackgrounds] = useState(true);
+  const [loadingMinigameAssets, setLoadingMinigameAssets] = useState(!skipMinigameAssets);
   
   const [loadedCharacters, setLoadedCharacters] = useState(0);
   const [loadedBackgrounds, setLoadedBackgrounds] = useState(0);
+  const [loadedMinigameAssets, setLoadedMinigameAssets] = useState(0);
   
   const [characterErrors, setCharacterErrors] = useState(0);
   const [backgroundErrors, setBackgroundErrors] = useState(0);
+  const [minigameErrors, setMinigameErrors] = useState(0);
   
   const [totalCharacters, setTotalCharacters] = useState(0);
   const [totalBackgrounds, setTotalBackgrounds] = useState(0);
+  const [totalMinigameAssets, setTotalMinigameAssets] = useState(0);
 
   // Extract list of character expression image paths
   const characterPaths = Object.values(characterExpressions)
@@ -39,6 +44,13 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
   const backgroundPaths = Object.values(backgrounds)
     .filter(bg => !priorityOnly || (bg as BackgroundAsset).priority === true)
     .map(bg => (bg as BackgroundAsset).image);
+    
+  // Extract minigame assets if not skipping
+  const minigameAssetPaths = !skipMinigameAssets 
+    ? minigameAssets
+        .filter(asset => !priorityOnly || asset.priority === true)
+        .map(asset => asset.src)
+    : [];
 
   useEffect(() => {
     console.log(`AssetPreloader: Loading assets (${priorityOnly ? 'priority only' : 'all'}, ${skipMinigameAssets ? 'skipping minigames' : 'with minigames'})`);
@@ -46,6 +58,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
     // Store total counts
     setTotalCharacters(characterPaths.length);
     setTotalBackgrounds(backgroundPaths.length);
+    setTotalMinigameAssets(minigameAssetPaths.length);
     
     // Load character expressions
     if (characterPaths.length > 0) {
@@ -74,19 +87,34 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
     } else {
       setLoadingBackgrounds(false);
     }
-  }, [characterPaths, backgroundPaths, priorityOnly]);
+    
+    // Load minigame assets if not skipping
+    if (!skipMinigameAssets && minigameAssetPaths.length > 0) {
+      console.log(`Loading ${minigameAssetPaths.length} minigame assets...`);
+      assetManager.preloadAssets(minigameAssetPaths, (loaded, total) => {
+        setLoadedMinigameAssets(loaded);
+      }).then(() => {
+        const errors = minigameAssetPaths.filter(path => assetManager.didAssetFail(path)).length;
+        setMinigameErrors(errors);
+        console.log(`Loaded ${minigameAssetPaths.length - errors} minigame assets, ${errors} errors`);
+        setLoadingMinigameAssets(false);
+      });
+    } else {
+      setLoadingMinigameAssets(false);
+    }
+  }, [characterPaths, backgroundPaths, minigameAssetPaths, priorityOnly, skipMinigameAssets]);
 
   // Check if all assets are loaded
   useEffect(() => {
-    if (!loadingCharacters && !loadingBackgrounds) {
+    if (!loadingCharacters && !loadingBackgrounds && !loadingMinigameAssets) {
       console.log('All required assets loaded.');
       onComplete();
     }
-  }, [loadingCharacters, loadingBackgrounds, onComplete]);
+  }, [loadingCharacters, loadingBackgrounds, loadingMinigameAssets, onComplete]);
 
   // Calculate overall progress
-  const totalAssets = totalCharacters + totalBackgrounds;
-  const loadedAssets = loadedCharacters + loadedBackgrounds;
+  const totalAssets = totalCharacters + totalBackgrounds + totalMinigameAssets;
+  const loadedAssets = loadedCharacters + loadedBackgrounds + loadedMinigameAssets;
   const progress = totalAssets > 0 ? Math.min(100, Math.round((loadedAssets / totalAssets) * 100)) : 100;
 
   return (
@@ -105,7 +133,8 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
       <div className="text-xs text-gray-400 max-w-md text-center px-4">
         {loadingCharacters && `Loading character expressions (${loadedCharacters}/${totalCharacters})...`}
         {loadingBackgrounds && `Loading backgrounds (${loadedBackgrounds}/${totalBackgrounds})...`}
-        {!loadingCharacters && !loadingBackgrounds && 'All assets loaded!'}
+        {loadingMinigameAssets && !skipMinigameAssets && `Loading minigame assets (${loadedMinigameAssets}/${totalMinigameAssets})...`}
+        {!loadingCharacters && !loadingBackgrounds && !loadingMinigameAssets && 'All assets loaded!'}
       </div>
     </div>
   );

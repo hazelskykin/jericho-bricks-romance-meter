@@ -18,16 +18,16 @@ const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, deb
   
   // Use debug mode styling if needed
   if (debugMode) {
-    // Debug mode uses colored squares
+    // Debug mode uses colored squares with increased size for better visibility and interaction
     return (
       <div 
         className={`absolute z-10 rounded-md ${item.highlighted ? 'animate-pulse' : ''}`}
         style={{
-          width: '80px',  // Increased size for better visibility
-          height: '80px', // Increased size for better visibility 
+          width: '80px',  // Increased size for better visibility and interaction
+          height: '80px', // Increased size for better visibility and interaction
           top: `${item.position.y - 40}px`,
           left: `${item.position.x - 40}px`,
-          backgroundColor: item.highlighted ? 'rgba(255, 255, 0, 0.7)' : 'rgba(255, 0, 0, 0.2)',
+          backgroundColor: item.highlighted ? 'rgba(255, 255, 0, 0.7)' : 'rgba(255, 0, 0, 0.3)',
           border: '2px dashed rgba(255, 255, 255, 0.7)',
           pointerEvents: 'none'
         }}
@@ -35,7 +35,7 @@ const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, deb
     );
   }
   
-  // Normal mode - render actual sprite from sprite sheet
+  // Normal mode - render actual sprite from sprite sheet with increased clickable area
   return (
     <div 
       className={`absolute z-10 ${item.highlighted ? 'animate-pulse' : ''}`}
@@ -48,7 +48,9 @@ const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, deb
         backgroundPosition: style.backgroundPosition,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'auto',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        // Add subtle highlight in production mode too
+        boxShadow: item.highlighted ? '0 0 15px 8px rgba(255, 255, 0, 0.3)' : 'none'
       }}
     />
   );

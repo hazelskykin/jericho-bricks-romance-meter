@@ -1,15 +1,114 @@
-
 import { MinigameAsset } from '@/types/assets';
 
 // Define minigame assets with proper types and working fallbacks
 const minigameAssets: MinigameAsset[] = [
-  // Spring - Mud Fling - Use only cityscape background for all minigame assets
+  // Spring - Bloom With a View - both paths with uppercase and lowercase 'w'
+  {
+    id: 'bloom-background-1',
+    name: 'Bloom With a View Background (Path 1)',
+    src: '/assets/minigames/spring/bloomWithAView/garden-background.png',
+    description: 'Garden background for Bloom With a View',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'bloom-background-2',
+    name: 'Bloom With a View Background (Path 2)',
+    src: '/assets/minigames/spring/bloomwithAView/garden-background.png',
+    description: 'Garden background for Bloom With a View',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'bloom-background-3',
+    name: 'Bloom With a View Background JPG (Path 1)',
+    src: '/assets/minigames/spring/bloomWithAView/garden-background.jpg',
+    description: 'Garden background JPG for Bloom With a View',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'bloom-background-4',
+    name: 'Bloom With a View Background JPG (Path 2)',
+    src: '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
+    description: 'Garden background JPG for Bloom With a View',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'bloom-objects-1',
+    name: 'Bloom Hidden Objects (Path 1)',
+    src: '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
+    description: 'Hidden objects for Bloom With a View',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'bloom-objects-2',
+    name: 'Bloom Hidden Objects (Path 2)',
+    src: '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
+    description: 'Hidden objects for Bloom With a View',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'bloom-objects-3',
+    name: 'Bloom Hidden Objects (Path 3)',
+    src: '/assets/minigames/spring/bloomwithAView/hidden_objects_sprites.png',
+    description: 'Hidden objects sprites for Bloom With a View',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'bloom-tiles-1',
+    name: 'Bloom Flower Tiles (Path 1)',
+    src: '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
+    description: 'Flower tiles for Bloom With a View',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'bloom-tiles-2',
+    name: 'Bloom Flower Tiles (Path 2)',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles.png',
+    description: 'Flower tiles for Bloom With a View',
+    priority: true,
+    category: 'item'
+  },
+  
+  // Try from minigrames (typo in folder name)
+  {
+    id: 'bloom-background-minigrames',
+    name: 'Bloom With a View Background (Minigrames)',
+    src: '/assets/minigrames/spring/bloomwithAView/garden-background.png',
+    description: 'Garden background from minigrames folder',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'bloom-objects-minigrames',
+    name: 'Bloom Hidden Objects (Minigrames)',
+    src: '/assets/minigrames/spring/bloomwithAView/hidden_objects_sprites.png',
+    description: 'Hidden objects from minigrames folder',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'bloom-tiles-minigrames',
+    name: 'Bloom Flower Tiles (Minigrames)',
+    src: '/assets/minigrames/spring/bloomwithAView/flower-tiles.png',
+    description: 'Flower tiles from minigrames folder',
+    priority: true,
+    category: 'item'
+  },
+  
+  // Spring - Mud Fling assets
   {
     id: 'mud-arena',
     name: 'Mud Fling Arena',
     src: '/assets/backgrounds/stonewich-cityscape.jpg', // Use a fallback that exists
     description: 'Background for mud fling arena',
-    priority: true,
+    priority: false,
     category: 'background'
   },
   {

@@ -9,86 +9,174 @@ type AssetLoadCallback = (
 ) => void;
 
 export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
-  // Asset paths for the game - using both PNG and JPG paths to try both
-  const bgPathPng = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.png');
-  const bgPathJpg = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.jpg');
-  const objectsPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/hidden-objects.png');
-  const tilesPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/flower-tiles.png');
+  console.log("Attempting to load Bloom With A View assets from all possible paths...");
   
-  // Check if assets exist by preloading them
+  // Try multiple possible paths to handle inconsistent casing in folder names
+  const possiblePaths = {
+    // Standard paths (uppercase W)
+    bgPathPng: '/assets/minigames/spring/bloomWithAView/garden-background.png',
+    bgPathJpg: '/assets/minigames/spring/bloomWithAView/garden-background.jpg',
+    objectsPath: '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
+    tilesPath: '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
+    
+    // Alternative paths (lowercase w)
+    bgPathPngAlt: '/assets/minigames/spring/bloomwithAView/garden-background.png',
+    bgPathJpgAlt: '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
+    objectsPathAlt: '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
+    tilesPathAlt: '/assets/minigames/spring/bloomwithAView/flower-tiles.png',
+    
+    // Different object name alternatives
+    objectsPathAlt2: '/assets/minigames/spring/bloomwithAView/hidden_objects_sprites.png',
+    objectsPathAlt3: '/assets/minigames/spring/bloomWithAView/hidden_objects_sprites.png'
+  };
+  
+  // Additional search path from minigrames folder (typo in the folder name exists in the codebase)
+  const minigramePaths = {
+    bgPathPng: '/assets/minigrames/spring/bloomwithAView/garden-background.png',
+    objectsPath: '/assets/minigrames/spring/bloomwithAView/hidden_objects_sprites.png',
+    tilesPath: '/assets/minigrames/spring/bloomwithAView/flower-tiles.png'
+  };
+  
+  // Track asset loading state
   let debugMode = false;
   let bgLoaded = false;
   let objectsLoaded = false;
   let tilesLoaded = false;
   
+  // Successfully loaded paths
+  let bgPath = '';
+  let objPath = '';
+  let tilePath = '';
+  
   // Function to check if all assets are loaded
   const checkAllLoaded = () => {
     if (bgLoaded && objectsLoaded && tilesLoaded) {
-      console.log('All BloomWithAView assets loaded successfully');
-      onLoad(bgLoaded ? bgPathPng : bgPathJpg, objectsPath, tilesPath, false);
+      console.log(`All BloomWithAView assets loaded successfully from paths: ${bgPath}, ${objPath}, ${tilePath}`);
+      onLoad(bgPath, objPath, tilePath, false);
     } else if (debugMode) {
       console.log('Using debug mode for BloomWithAView assets');
       // Use fallback paths for debug mode
       const fallbackBgPath = '/assets/backgrounds/stonewich-cityscape.jpg';
-      onLoad(
-        fallbackBgPath, 
-        '/assets/minigames/spring/bloomWithAView/hidden-objects.png', 
-        '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
-        true
-      );
+      onLoad(fallbackBgPath, objPath || possiblePaths.objectsPath, tilePath || possiblePaths.tilesPath, true);
     }
   };
   
-  // Try loading PNG background first
-  const bgImgPng = new Image();
-  bgImgPng.onload = () => {
-    console.log('Successfully loaded garden background PNG');
-    bgLoaded = true;
-    checkAllLoaded();
-  };
-  bgImgPng.onerror = () => {
-    console.log('Failed to load garden background PNG, trying JPG...');
-    // Try the JPG version
-    const bgImgJpg = new Image();
-    bgImgJpg.onload = () => {
-      console.log('Successfully loaded garden background JPG');
-      bgLoaded = true;
-      checkAllLoaded();
+  // Try all possible background paths
+  const tryLoadBackground = () => {
+    let attempts = 0;
+    const tryNextBg = (paths) => {
+      if (attempts >= paths.length) {
+        console.warn('Failed to load garden background from any path');
+        debugMode = true;
+        checkAllLoaded();
+        return;
+      }
+      
+      const path = paths[attempts];
+      console.log(`Trying to load background from: ${path}`);
+      const img = new Image();
+      img.onload = () => {
+        console.log(`Successfully loaded garden background from: ${path}`);
+        bgLoaded = true;
+        bgPath = path;
+        checkAllLoaded();
+      };
+      img.onerror = () => {
+        console.log(`Failed to load garden background from: ${path}, trying next...`);
+        attempts++;
+        tryNextBg(paths);
+      };
+      img.src = path;
     };
-    bgImgJpg.onerror = () => {
-      console.warn('Failed to load garden background image (both PNG and JPG)');
-      debugMode = true;
-      checkAllLoaded();
+    
+    // Try all paths in order
+    tryNextBg([
+      possiblePaths.bgPathPng,
+      possiblePaths.bgPathJpg,
+      possiblePaths.bgPathPngAlt,
+      possiblePaths.bgPathJpgAlt,
+      minigramePaths.bgPathPng
+    ]);
+  };
+  
+  // Try all possible object sprite paths
+  const tryLoadObjects = () => {
+    let attempts = 0;
+    const tryNextObj = (paths) => {
+      if (attempts >= paths.length) {
+        console.warn('Failed to load hidden objects from any path');
+        debugMode = true;
+        checkAllLoaded();
+        return;
+      }
+      
+      const path = paths[attempts];
+      console.log(`Trying to load hidden objects from: ${path}`);
+      const img = new Image();
+      img.onload = () => {
+        console.log(`Successfully loaded hidden objects from: ${path}`);
+        objectsLoaded = true;
+        objPath = path;
+        checkAllLoaded();
+      };
+      img.onerror = () => {
+        console.log(`Failed to load hidden objects from: ${path}, trying next...`);
+        attempts++;
+        tryNextObj(paths);
+      };
+      img.src = path;
     };
-    bgImgJpg.src = bgPathJpg;
+    
+    // Try all paths in order
+    tryNextObj([
+      possiblePaths.objectsPath,
+      possiblePaths.objectsPathAlt,
+      possiblePaths.objectsPathAlt2,
+      possiblePaths.objectsPathAlt3,
+      minigramePaths.objectsPath
+    ]);
   };
-  bgImgPng.src = bgPathPng;
   
-  // Load objects image
-  const objectsImg = new Image();
-  objectsImg.onload = () => {
-    objectsLoaded = true;
-    checkAllLoaded();
+  // Try all possible tile paths
+  const tryLoadTiles = () => {
+    let attempts = 0;
+    const tryNextTiles = (paths) => {
+      if (attempts >= paths.length) {
+        console.warn('Failed to load flower tiles from any path');
+        debugMode = true;
+        checkAllLoaded();
+        return;
+      }
+      
+      const path = paths[attempts];
+      console.log(`Trying to load flower tiles from: ${path}`);
+      const img = new Image();
+      img.onload = () => {
+        console.log(`Successfully loaded flower tiles from: ${path}`);
+        tilesLoaded = true;
+        tilePath = path;
+        checkAllLoaded();
+      };
+      img.onerror = () => {
+        console.log(`Failed to load flower tiles from: ${path}, trying next...`);
+        attempts++;
+        tryNextTiles(paths);
+      };
+      img.src = path;
+    };
+    
+    // Try all paths in order
+    tryNextTiles([
+      possiblePaths.tilesPath,
+      possiblePaths.tilesPathAlt,
+      minigramePaths.tilesPath
+    ]);
   };
-  objectsImg.onerror = () => {
-    console.warn('Failed to load hidden objects image');
-    debugMode = true;
-    checkAllLoaded();
-  };
-  objectsImg.src = objectsPath;
   
-  // Load tiles image
-  const tilesImg = new Image();
-  tilesImg.onload = () => {
-    tilesLoaded = true;
-    checkAllLoaded();
-  };
-  tilesImg.onerror = () => {
-    console.warn('Failed to load flower tiles image');
-    debugMode = true;
-    checkAllLoaded();
-  };
-  tilesImg.src = tilesPath;
+  // Start trying to load all assets
+  tryLoadBackground();
+  tryLoadObjects();
+  tryLoadTiles();
   
   // Set a timeout in case images take too long to load
   setTimeout(() => {
