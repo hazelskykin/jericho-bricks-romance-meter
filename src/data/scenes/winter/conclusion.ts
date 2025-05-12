@@ -38,7 +38,7 @@ const winterConclusionScenes: Record<string, Scene> = {
   
   'winter-voss-report': {
     id: 'winter-voss-report',
-    background: 'cybaton-office',
+    background: 'cybaton-meeting-room',
     dialogue: [
       {
         character: 'narrator',
