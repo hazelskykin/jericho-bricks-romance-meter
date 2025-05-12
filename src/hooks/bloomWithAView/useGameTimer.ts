@@ -1,8 +1,8 @@
 
 import { useEffect } from 'react';
+import { GameState } from './types';
 import { toast } from 'sonner';
 import { soundManager } from '@/utils/sound';
-import { GameState } from './types';
 
 interface GameTimerProps {
   gameState: GameState;
@@ -17,62 +17,88 @@ export function useGameTimer({
   setGameComplete,
   onComplete
 }: GameTimerProps) {
-  const { timeRemaining, gameComplete, hiddenItems } = gameState;
-  
-  // Play sound safely with fallbacks
-  const playSoundSafely = (soundId: string) => {
-    try {
-      console.log(`🔊 Attempting to play sound: ${soundId}`);
-      soundManager.playSFX(soundId);
-    } catch (error) {
-      console.error(`Failed to play sound ${soundId}:`, error);
-      
-      // Try alternative sound IDs with different capitalization
-      try {
-        const altSoundId = soundId.replace('bloomWithAView', 'bloomwithAView');
-        console.log(`🔊 Trying alternative sound ID: ${altSoundId}`);
-        soundManager.playSFX(altSoundId);
-      } catch (altError) {
-        console.error(`Failed to play alternative sound ${altError}`);
-      }
-    }
-  };
-  
-  // Game timer
+  const { timeRemaining, hiddenItems, gameComplete } = gameState;
+
+  // Timer effect to count down game time
   useEffect(() => {
-    if (timeRemaining <= 0 && !gameComplete) {
-      // Time's up, end the game
-      setGameComplete(true);
-      playSoundSafely('game-lose');
-      toast.error("Time's up!");
-      setTimeout(() => {
-        onComplete(false);
-      }, 2000);
-      return;
-    }
-    
+    // Skip if game is already complete
     if (gameComplete) return;
-    
-    const timer = setTimeout(() => {
-      setTimeRemaining(prev => prev - 1);
+
+    // Start timer
+    const timer = setInterval(() => {
+      setTimeRemaining(prev => {
+        const newTime = prev - 1;
+        
+        // Low time warning at 15 seconds
+        if (newTime === 15) {
+          toast.warning("Only 15 seconds left!");
+          playSoundSafely('click'); // Audio cue for low time
+        }
+        
+        // Game complete when timer reaches zero
+        if (newTime <= 0) {
+          handleGameComplete(false);
+          return 0;
+        }
+        
+        return newTime;
+      });
     }, 1000);
     
-    return () => clearTimeout(timer);
-  }, [timeRemaining, gameComplete, onComplete, setGameComplete, setTimeRemaining]);
-  
-  // Check for game completion
-  useEffect(() => {
-    const allFound = hiddenItems.every(item => item.found);
-    
-    if (allFound && !gameComplete) {
-      setGameComplete(true);
-      playSoundSafely('game-win');
-      toast.success("You found all the hidden items!");
-      setTimeout(() => {
-        onComplete(true);
-      }, 2000);
-    }
-  }, [hiddenItems, gameComplete, onComplete, setGameComplete]);
+    return () => clearInterval(timer);
+  }, [gameComplete]);
 
-  return { playSoundSafely };
+  // Check if all items are found to end the game
+  useEffect(() => {
+    const allItemsFound = hiddenItems.every(item => item.found);
+    
+    if (allItemsFound && hiddenItems.length > 0 && !gameComplete) {
+      handleGameComplete(true);
+    }
+  }, [hiddenItems, gameComplete]);
+
+  // Handle game completion
+  const handleGameComplete = (success: boolean) => {
+    if (gameComplete) return; // Prevent duplicate calls
+    
+    setGameComplete(true);
+    
+    // Play appropriate sound
+    if (success) {
+      playSoundSafely('bloomWithAView-success');
+      toast.success("Congratulations! You found all the items!");
+    } else {
+      playSoundSafely('item-miss');
+      toast.error("Time's up!");
+    }
+    
+    // Notify parent component
+    setTimeout(() => {
+      onComplete(success);
+    }, 2000); // Give time for toast to be seen
+  };
+  
+  // Helper function to safely play sounds, handling any errors
+  const playSoundSafely = (soundId: string) => {
+    try {
+      console.log(`Playing sound: ${soundId}`);
+      
+      // Try the exact ID first
+      soundManager.playSFX(soundId);
+      
+      // If we're trying to play a rustle effect, make sure it works
+      if (soundId === 'bloomWithAView-effect-rustle') {
+        // Try alternate sound IDs if needed
+        setTimeout(() => {
+          soundManager.playSFX('bloomWithAView-ambience-birdsong');
+        }, 100);
+      }
+    } catch (error) {
+      console.warn(`Error playing sound ${soundId}:`, error);
+    }
+  };
+
+  return {
+    playSoundSafely
+  };
 }

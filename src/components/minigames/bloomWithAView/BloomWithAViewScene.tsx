@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { HiddenItem } from '@/hooks/useBloomWithAViewGame';
+import { HiddenItem } from '@/hooks/bloomWithAView/types';
 import { getAssetPath } from '@/utils/assetUtilities';
 import { toast } from 'sonner';
 import { assetManager } from '@/utils/assetManager';
@@ -64,12 +64,12 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
       setBgImagePath(bgPath);
       
       // Try to set the objects image (fixed path)
-      const objectsPath = '/assets/minigrames/spring/bloomwithAView/hidden_objects_sprites.png';
+      const objectsPath = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
       console.log(`Setting objects image to: ${objectsPath}`);
       setObjectsImagePath(objectsPath);
       
       // Try to set the flower tiles image
-      const tilesPath = '/assets/minigrames/spring/bloomwithAView/flower-tiles.png';
+      const tilesPath = '/assets/minigames/spring/bloomWithAView/flower-tiles.png';
       console.log(`Setting flower tiles image to: ${tilesPath}`);
       setFlowerTilesPath(tilesPath);
       
@@ -97,10 +97,24 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
       };
       bgImage.src = '/assets/minigames/spring/bloomWithAView/garden-background.png';
       
+      // Try loading from the minigrames folder (alternate path) if the main path fails
+      setTimeout(() => {
+        if (!imageLoaded) {
+          const altBgImage = new Image();
+          altBgImage.onload = () => {
+            console.log("Background image found at alternate path!");
+            setBgImagePath('/assets/minigrames/spring/bloomwithAView/garden-background.png');
+            setImageLoaded(true);
+          };
+          altBgImage.src = '/assets/minigrames/spring/bloomwithAView/garden-background.png';
+        }
+      }, 1000);
+      
       // Check hidden objects image - updated path
       const objImage = new Image();
       objImage.onload = () => {
         console.log("Hidden objects image exists and loaded successfully!");
+        setObjectsImagePath('/assets/minigames/spring/bloomWithAView/hidden-objects.png');
         setDebugMode(false); // Turn off debug mode if we find the image
         setObjectsImageLoaded(true);
       };
@@ -124,7 +138,10 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
       
       // Check flower tiles image
       const tilesImage = new Image();
-      tilesImage.onload = () => console.log("Flower tiles image exists and loaded successfully!");
+      tilesImage.onload = () => {
+        console.log("Flower tiles image exists and loaded successfully!");
+        setFlowerTilesPath('/assets/minigames/spring/bloomWithAView/flower-tiles.png');
+      };
       tilesImage.onerror = () => {
         console.error("Flower tiles image failed to load - trying alternative path");
         // Try alternative path
@@ -205,26 +222,6 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
           />
         )}
         
-        {/* Flower tiles layer - made more visible */}
-        {imageLoaded && flowerTilesPath && (
-          <div 
-            className="absolute inset-0 z-5 opacity-60 pointer-events-none" 
-            style={{
-              backgroundImage: `url(${flowerTilesPath})`,
-              backgroundSize: '500px auto',
-              backgroundPosition: 'center',
-              mixBlendMode: 'overlay'
-            }}
-          />
-        )}
-
-        {/* Debug marker to show if we're in fallback mode */}
-        {debugMode && (
-          <div className="absolute top-16 left-4 bg-red-500 text-white px-4 py-2 rounded-lg z-40">
-            Missing image assets - Using debug mode
-          </div>
-        )}
-
         {/* Hidden object sprites (only visible until found) */}
         {hiddenItems.map((item) => (
           !item.found && (
@@ -243,10 +240,31 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
           )
         ))}
 
+        {/* Flower tiles layer - now more visible and on top of objects */}
+        {imageLoaded && flowerTilesPath && (
+          <div 
+            className="absolute inset-0 z-15 pointer-events-none" 
+            style={{
+              backgroundImage: `url(${flowerTilesPath})`,
+              backgroundSize: '500px auto',
+              backgroundPosition: 'center',
+              opacity: 0.85, // Increased opacity
+              mixBlendMode: 'normal' // Changed from overlay to normal
+            }}
+          />
+        )}
+
         {/* Game progress indicator */}
         <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-2 rounded-lg z-20">
           {foundItemCount} / {totalItemCount}
         </div>
+
+        {/* Debug marker to show if we're in fallback mode */}
+        {debugMode && (
+          <div className="absolute top-16 left-4 bg-red-500 text-white px-4 py-2 rounded-lg z-40">
+            Missing image assets - Using debug mode
+          </div>
+        )}
 
         {/* Visual markers for hints */}
         {hiddenItems.map((item) => (
@@ -255,11 +273,10 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
               key={`hint-${item.id}`}
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="absolute w-12 h-12 rounded-full border-2 border-dashed border-yellow-400 bg-yellow-400/20 z-10"
+              className="absolute w-12 h-12 rounded-full border-2 border-dashed border-yellow-400 bg-yellow-400/20 z-30"
               style={{
                 left: item.position.x - 24,
-                top: item.position.y - 24,
-                zIndex: 15
+                top: item.position.y - 24
               }}
             />
           )
@@ -272,11 +289,10 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
               key={`found-${item.id}`}
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="absolute w-8 h-8 rounded-full bg-green-500 flex items-center justify-center z-10"
+              className="absolute w-8 h-8 rounded-full bg-green-500 flex items-center justify-center z-20"
               style={{
                 left: item.position.x - 16,
-                top: item.position.y - 16,
-                zIndex: 20
+                top: item.position.y - 16
               }}
             >
               <span className="text-white text-xs">✓</span>
@@ -290,7 +306,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
             initial={{ opacity: 0.8, scale: 0.5 }}
             animate={{ opacity: 0, scale: 2 }}
             transition={{ duration: 0.5 }}
-            className="absolute w-8 h-8 rounded-full bg-white/50 pointer-events-none z-20"
+            className="absolute w-8 h-8 rounded-full bg-white/50 pointer-events-none z-40"
             style={{
               left: clickPosition.x - 16,
               top: clickPosition.y - 16,

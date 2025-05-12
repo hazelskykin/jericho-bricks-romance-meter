@@ -59,8 +59,8 @@ export function useGameHandlers({
     
     setClickPosition({ x, y });
     
-    // Play click sound
-    playSoundSafely('click');
+    // Play rustle sound effect when clicking in the garden
+    playSoundSafely('bloomWithAView-effect-rustle');
     
     // Check if click is near any hidden items
     const itemSize = 60; // Increase clickable area size
@@ -86,8 +86,8 @@ export function useGameHandlers({
     });
     
     if (!foundItem) {
-      // Play miss sound if no item was found
-      playSoundSafely('item-miss');
+      // Play click sound if no item was found
+      playSoundSafely('click');
     }
   };
   
@@ -132,7 +132,7 @@ export function useGameHandlers({
     } else {
       // Game is not complete, ask for confirmation
       if (window.confirm("Are you sure you want to exit? Your progress will be lost.")) {
-        soundManager.stopMusic(); // Now correctly using the imported soundManager
+        soundManager.stopMusic();
         onExit();
       }
     }

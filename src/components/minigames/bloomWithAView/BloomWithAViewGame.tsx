@@ -58,7 +58,7 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
       for (const path of musicPaths) {
         try {
           console.log(`🎵 Attempting to play music: ${path}`);
-          soundManager.playMusic(`${path}.mp3`, { loop: true, volume: 0.7 });
+          soundManager.playMusic(`${path}`, { loop: true, volume: 0.7 });
           console.log(`🎵 Successfully started music with path: ${path}`);
           success = true;
           break;
@@ -88,7 +88,7 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
       // Also try to play ambient sounds
       try {
         setTimeout(() => {
-          soundManager.playSFX('bloomWithAView-ambience-birdsong', { volume: 0.5 });
+          soundManager.playSFX('bloomWithAView-ambience-birdsong');
           console.log("🎵 Playing ambient birdsong");
         }, 1000);
       } catch (ambientErr) {
@@ -125,8 +125,8 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
               <Clock className="h-5 w-5 text-purple-400" />
               <span className="text-white text-lg font-medium">{timeRemaining}s</span>
               
-              {/* Sound toggle using component - Fixed type error here */}
-              <SoundToggle showMusicToggle />
+              {/* Sound toggle using component - Fix the TypeScript error here */}
+              <SoundToggle />
             </div>
           </div>
           
