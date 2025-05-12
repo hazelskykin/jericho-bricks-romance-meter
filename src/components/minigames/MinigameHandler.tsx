@@ -26,30 +26,52 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   // Pre-load minigame assets when component mounts
   useEffect(() => {
     if (activeMinigame === 'bloomWithAView') {
-      // Preload assets with both potential paths to handle capitalization inconsistencies
       console.log('Preloading BloomWithAView assets');
       
-      // Try multiple paths for garden background
+      // Explicitly check if files exist at multiple paths to handle case sensitivity and file extension issues
+      const checkFilePaths = async () => {
+        const paths = [
+          // Garden background - PNG is confirmed by the user
+          '/assets/minigames/spring/bloomWithAView/garden-background.png',
+          // Hidden objects sprite
+          '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
+          // Try other possible paths too
+          '/assets/minigames/spring/bloomwithAView/garden-background.png',
+          '/assets/minigames/spring/bloomwithAView/hidden_objects_sprites.png',
+          '/assets/backgrounds/garden-background.png',
+        ];
+        
+        console.log("Checking file paths:", paths);
+        
+        for (const path of paths) {
+          try {
+            const response = await fetch(path, { method: 'HEAD' });
+            console.log(`Path ${path}: ${response.ok ? 'EXISTS' : 'NOT FOUND'}`);
+          } catch (error) {
+            console.warn(`Error checking path ${path}:`, error);
+          }
+        }
+      };
+      
+      // Run the path checking
+      checkFilePaths();
+      
+      // Use asset manager to preload assets with specific paths
       const assetPaths = [
-        // Standard path
-        '/assets/minigames/spring/bloomWithAView/garden-background.jpg',
-        // Alternative capitalization
-        '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
-        // PNG alternative
+        // PNG background (as confirmed by user)
         '/assets/minigames/spring/bloomWithAView/garden-background.png',
-        '/assets/minigames/spring/bloomwithAView/garden-background.png',
-        // Hidden objects sprites
+        // Hidden objects assets
         '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
-        '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
-        '/assets/minigames/spring/bloomWithAView/hidden_objects_sprites.png',
-        '/assets/minigames/spring/bloomwithAView/hidden_objects_sprites.png',
+        '/assets/minigames/spring/bloomwithAView/hidden-objects.png'
       ];
       
-      // Use asset manager to batch load assets
       assetManager.preloadAssets(assetPaths, (loaded, total) => {
         console.log(`Loaded ${loaded}/${total} BloomWithAView assets`);
       }).then(() => {
         console.log('All BloomWithAView assets preloaded');
+      }).catch(error => {
+        console.error('Failed to preload assets:', error);
+        // Continue anyway, the game has fallbacks
       });
     }
     
