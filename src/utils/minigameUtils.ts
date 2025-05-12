@@ -42,6 +42,11 @@ export const getFallbackSceneForMinigame = (minigameType: MinigameType | null): 
     return 'winter-festival-midway';
   }
   
+  // Handle by game type
+  if (minigameType === 'crafter') {
+    return 'autumn-festival-activities';
+  }
+  
   return 'spring-festival-activities';
 };
 

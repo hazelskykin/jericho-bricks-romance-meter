@@ -1,8 +1,10 @@
+
 import React, { useEffect } from 'react';
 import { MinigameType } from '@/types/minigames';
 import PlaceholderMinigame from './PlaceholderMinigame';
 import { toast } from 'sonner';
 import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
+import CrafterGame from './crafter/CrafterGame';
 import { assetManager } from '@/utils/assetManager';
 
 interface MinigameHandlerProps {
@@ -13,7 +15,7 @@ interface MinigameHandlerProps {
 
 /**
  * MinigameHandler component that manages the active minigame
- * Currently implements BloomWithAView minigame, others use placeholders
+ * Currently implements BloomWithAView and Crafter minigames, others use placeholders
  */
 const MinigameHandler: React.FC<MinigameHandlerProps> = ({ 
   activeMinigame, 
@@ -43,6 +45,27 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         console.log('All BloomWithAView assets preloaded');
       }).catch(error => {
         console.error('Failed to preload assets:', error);
+        // Continue anyway, the game has fallbacks
+      });
+    }
+    else if (activeMinigame === 'crafter') {
+      console.log('Preloading Crafter assets');
+      
+      // Preload crafter assets
+      const assetPaths = [
+        '/assets/minigames/autumn/crafter/workshop-background.png',
+        '/assets/minigames/autumn/crafter/fabricBase.png',
+        '/assets/minigames/autumn/crafter/metalBase.png',
+        '/assets/minigames/autumn/crafter/woodBase.png',
+        '/assets/minigames/autumn/crafter/accents.png'
+      ];
+      
+      assetManager.preloadAssets(assetPaths, (loaded, total) => {
+        console.log(`Loaded ${loaded}/${total} Crafter assets`);
+      }).then(() => {
+        console.log('All Crafter assets preloaded');
+      }).catch(error => {
+        console.error('Failed to preload Crafter assets:', error);
         // Continue anyway, the game has fallbacks
       });
     }
@@ -92,6 +115,13 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     case 'bloomWithAView':
       return (
         <BloomWithAViewGame
+          onComplete={handleMinigameComplete}
+          onExit={handleExitMinigame}
+        />
+      );
+    case 'crafter':
+      return (
+        <CrafterGame
           onComplete={handleMinigameComplete}
           onExit={handleExitMinigame}
         />

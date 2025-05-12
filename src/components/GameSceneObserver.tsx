@@ -58,7 +58,10 @@ const GameSceneObserver = () => {
       const minigameType = minigameMappings[currentScene];
       console.log(`GameSceneObserver: Detected minigame trigger scene for ${minigameType}`);
       
-      toast.info(`Starting minigame: ${minigameType}`);
+      // Don't show toast if we're re-triggering the same minigame
+      if (gameState.currentScene !== minigameType) {
+        toast.info(`Starting minigame: ${minigameType}`);
+      }
       
       // Add a clearer delay to ensure state updates are processed in the right order
       setTimeout(() => {
@@ -75,7 +78,7 @@ const GameSceneObserver = () => {
     // Check for season transition scenes
     checkSeasonProgress(currentScene);
     
-  }, [gameState.currentScene, startMinigame, checkSeasonProgress]);
+  }, [gameState.currentScene, startMinigame, checkSeasonProgress, gameState]);
 
   // Render season transition screens when needed
   const renderSeasonTransition = () => {

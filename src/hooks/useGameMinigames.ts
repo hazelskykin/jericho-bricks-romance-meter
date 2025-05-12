@@ -23,11 +23,20 @@ export function useGameMinigames(
   // Track whether we've already handled a specific return scene
   const handledReturnScenes = useRef<Set<string>>(new Set());
   
+  // Track the last started minigame to prevent duplicate starts
+  const lastStartedMinigame = useRef<string | null>(null);
+  
   const { activeMinigame, returnSceneAfterMinigame } = minigameState;
   
   // Start a minigame
   const startMinigame = useCallback(
     (minigameType: MinigameType) => {
+      // Prevent starting the same minigame multiple times in quick succession
+      if (lastStartedMinigame.current === minigameType && Date.now() - (lastStartedMinigame.current as any) < 2000) {
+        console.log(`Ignoring duplicate start request for minigame: ${minigameType}`);
+        return;
+      }
+      
       console.log(`Starting minigame: ${minigameType}`);
       const nextSceneAfterMinigame = getNextSceneAfterMinigame(minigameType);
       
@@ -40,6 +49,10 @@ export function useGameMinigames(
         returnSceneAfterMinigame: nextSceneAfterMinigame,
         pendingMinigame: null,
       });
+      
+      // Track when we started this minigame
+      lastStartedMinigame.current = minigameType;
+      (lastStartedMinigame.current as any) = Date.now();
       
       // Log the state update
       console.log(`Minigame state updated - activeMinigame: ${minigameType}, returnScene: ${nextSceneAfterMinigame}`);
@@ -95,6 +108,9 @@ export function useGameMinigames(
         pendingMinigame: null,
       });
       
+      // Clear the last started minigame
+      lastStartedMinigame.current = null;
+      
       // Add a slight delay before transitioning to prevent multiple transitions
       setTimeout(() => {
         console.log(`Transitioning to next scene: ${returnScene}`);
@@ -148,6 +164,9 @@ export function useGameMinigames(
       returnSceneAfterMinigame: '',
       pendingMinigame: null,
     });
+    
+    // Clear the last started minigame
+    lastStartedMinigame.current = null;
     
     // Return to the festival activities screen instead of progressing the story
     console.log(`Returning to festival activities: ${festivalActivitiesScene}`);
