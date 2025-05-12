@@ -9,6 +9,7 @@ import AffectionMeterSection from './AffectionMeterSection';
 import DialogHistorySection from './DialogHistorySection';
 import GameViewHeader from './GameViewHeader';
 import { useGameScene } from './useGameScene';
+import { CharacterId } from '@/types/game'; // Add missing import for CharacterId
 
 const StandardGameView: React.FC = () => {
   // Access game context with handlers

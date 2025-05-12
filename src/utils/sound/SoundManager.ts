@@ -1,4 +1,3 @@
-
 /**
  * Sound Manager Class
  * Core class handling sound effects and music playback
@@ -137,6 +136,16 @@ class SoundManager {
     } else if (backgroundId === 'happy-ending-epilogue') {
       newBackgroundType = 'epilogue';
       musicTrack = 'bgm-endgame.mp3';
+    } else if (backgroundId === 'city-cafe') {
+      newBackgroundType = 'city';
+      musicTrack = 'bgm-city.mp3';
+    }
+    
+    // If no specific background type is identified, use the city music as fallback
+    if (!newBackgroundType && !this.currentMusic) {
+      console.log(`[MUSIC] Using city music as fallback for background: ${backgroundId}`);
+      newBackgroundType = 'fallback';
+      musicTrack = 'bgm-city.mp3';
     }
     
     // If background type changed or we're entering a new background type
