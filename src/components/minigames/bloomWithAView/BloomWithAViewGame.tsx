@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import MinigameContainer from '../MinigameContainer';
 import BloomWithAViewScene from './BloomWithAViewScene';
@@ -104,34 +105,6 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
       soundManager.stopMusic();
     };
   }, []);
-
-  // Safe sound player function
-  const playSoundEffect = (soundId: string) => {
-    try {
-      // Try with original ID first
-      soundManager.playSFX(soundId);
-    } catch (err) {
-      console.warn(`Failed to play sound ${soundId}, trying alternatives`);
-      
-      // Try alternatives with different casing
-      const alternatives = [
-        soundId.replace('bloomWithAView', 'bloomwithAView'),
-        soundId.replace('With', 'with'),
-        soundId.replace('-', '_'),
-        // Generic fallback sound if nothing else works
-        'click' 
-      ];
-      
-      for (const alt of alternatives) {
-        try {
-          soundManager.playSFX(alt);
-          return; // Stop if any sound plays successfully
-        } catch (altErr) {
-          // Continue to next alternative
-        }
-      }
-    }
-  };
 
   return (
     <MinigameContainer
