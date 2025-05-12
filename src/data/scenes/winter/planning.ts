@@ -11,8 +11,24 @@ const winterPlanningScenes: Record<string, Scene> = {
         mood: 'neutral',
       },
       {
-        character: 'narrator',
-        text: "The team gathers to discuss plans for the Winter Gala & Games. There's a sense of change in the air, as each person reflects on their personal growth over the seasons.",
+        character: 'xavier',
+        text: "Winter in Stonewich really is something special. The Gala & Games transforms the entire city.",
+        mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "The marking of a year's end, and the hopeful start to a new one. I never fully appreciated that sentiment before.",
+        mood: 'neutral',
+      },
+      {
+        character: 'navarre',
+        text: "I've heard so much about this festival. I'm excited to see it firsthand with the very best fashion and food.",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "The fickle weather makes practical planning more essential than ever. There's so much to do!",
+        mood: 'neutral',
       },
       {
         character: 'maven',
@@ -23,6 +39,11 @@ const winterPlanningScenes: Record<string, Scene> = {
         character: 'etta',
         text: "We still need to deliver on the festival. Maven, work your magic again.",
         mood: 'neutral',
+      },
+      {
+        character: 'xavier',
+        text: "We're all in this together.",
+        mood: 'happy',
       },
       {
         character: 'narrator',
