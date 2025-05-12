@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import MinigameContainer from '../MinigameContainer';
-import BloomWithAViewScene from './BloomWithAViewScene';
+import { BloomWithAViewScene } from './index';
 import BloomWithAViewItemList from './BloomWithAViewItemList';
 import GameStatusMessage from '../common/GameStatusMessage';
 import { Button } from '@/components/ui/button';
