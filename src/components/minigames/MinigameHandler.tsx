@@ -29,7 +29,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     if (activeMinigame === 'bloomWithAView') {
       console.log('Preloading BloomWithAView assets');
       
-      // Use asset manager to preload assets with specific paths - focusing on bloomwithAView (lowercase w)
+      // Use asset manager to preload assets with specific paths
       const assetPaths = [
         // Garden background (JPG version)
         '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
