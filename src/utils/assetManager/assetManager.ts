@@ -1,29 +1,17 @@
 
-import { toast } from 'sonner';
+import { AssetCache, AssetStats, ProgressCallback } from './types';
+import { fixPath } from './helpers';
+import { initPlaceholder, getPlaceholder, createCanvasFallback } from './fallbackImage';
 
-// Define types for assets
-export interface GameAsset {
-  id: string;
-  src: string;
-  type: 'background' | 'character' | 'ui' | 'minigame';
-  priority?: boolean;
-}
-
-// Asset cache interface
-interface AssetCache {
-  images: Map<string, HTMLImageElement>;
-  loaded: Set<string>;
-  failed: Set<string>;
-}
-
-// Create a singleton for the asset manager
-class AssetManager {
+/**
+ * AssetManager - Handles loading and caching of game assets
+ */
+export class AssetManager {
   private static instance: AssetManager;
   private cache: AssetCache;
   private loadQueue: string[];
   private loading: boolean;
   private completionCallbacks: Array<() => void>;
-  private placeholderImage: HTMLImageElement | null = null;
 
   private constructor() {
     this.cache = {
@@ -34,36 +22,8 @@ class AssetManager {
     this.loadQueue = [];
     this.loading = false;
     this.completionCallbacks = [];
-    this.initPlaceholder();
-  }
-
-  private async initPlaceholder() {
-    try {
-      // Create a simple placeholder image as SVG data URL for fallbacks
-      const placeholderSvg = `
-        <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="200" fill="#303050" />
-          <text x="50%" y="50%" font-family="sans-serif" font-size="24" fill="#9b87f5" text-anchor="middle" dominant-baseline="middle">
-            Image
-          </text>
-        </svg>
-      `;
-      
-      // Convert SVG to data URL
-      const svgBlob = new Blob([placeholderSvg], { type: 'image/svg+xml' });
-      const url = URL.createObjectURL(svgBlob);
-      
-      // Create image and wait for it to load
-      const img = new Image();
-      await new Promise((resolve) => {
-        img.onload = resolve;
-        img.src = url;
-      });
-      
-      this.placeholderImage = img;
-    } catch (e) {
-      console.error('Could not create placeholder image', e);
-    }
+    // Initialize placeholder image
+    initPlaceholder();
   }
 
   public static getInstance(): AssetManager {
@@ -76,7 +36,7 @@ class AssetManager {
   /**
    * Preload a batch of assets
    */
-  public preloadAssets(assets: string[], onProgress?: (loaded: number, total: number) => void): Promise<void> {
+  public preloadAssets(assets: string[], onProgress?: ProgressCallback): Promise<void> {
     return new Promise((resolve) => {
       // Filter out any undefined or null values
       const validAssets = assets.filter(src => src);
@@ -156,9 +116,8 @@ class AssetManager {
         return;
       }
 
-      // We only need to handle path with typo for location-icons.png and
-      // fix path capitalization issues
-      const fixedPath = this.fixPath(src);
+      // Fix path with potential issues
+      const fixedPath = fixPath(src);
 
       // Load new image
       const img = new Image();
@@ -192,71 +151,19 @@ class AssetManager {
   // Helper method to provide fallback image
   private useFallbackImage(src: string, resolve: (img: HTMLImageElement) => void) {
     // Try to provide appropriate fallback based on path
-    if (this.placeholderImage) {
-      // Use type-appropriate placeholder
-      const fallbackImg = this.placeholderImage;
+    const placeholderImg = getPlaceholder();
+    
+    if (placeholderImg) {
+      // Use placeholder
       console.info(`Using placeholder for: ${src}`);
+      this.cache.images.set(src, placeholderImg);
+      resolve(placeholderImg);
+    } else {
+      // If even the placeholder fails, create a simple canvas fallback
+      const fallbackImg = createCanvasFallback(src);
       this.cache.images.set(src, fallbackImg);
       resolve(fallbackImg);
-    } else {
-      // If even the placeholder fails, create a simple canvas
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = 100;
-        canvas.height = 100;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.fillStyle = '#303050';
-          ctx.fillRect(0, 0, 100, 100);
-          ctx.fillStyle = '#9b87f5';
-          ctx.font = '14px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText('Image', 50, 50);
-          
-          const fallbackImg = new Image();
-          fallbackImg.src = canvas.toDataURL();
-          this.cache.images.set(src, fallbackImg);
-          resolve(fallbackImg);
-        }
-      } catch (e) {
-        console.error('Failed to create fallback image', e);
-        resolve(new Image()); // Empty image as last resort
-      }
     }
-  }
-
-  /**
-   * Fix paths with capitalization issues
-   * Enhanced to handle null/undefined values safely
-   */
-  private fixPath(src: string): string {
-    // Safety check for null or undefined
-    if (!src) {
-      console.warn('Empty or undefined asset path provided');
-      return ''; // Return empty string instead of trying to work with undefined
-    }
-    
-    // Fix locaton-icons typo if it exists
-    if (src.includes('/locaton-icons.png')) {
-      return src.replace('/locaton-icons.png', '/location-icons.png');
-    }
-    
-    // Fix BloomWithAView capitalization
-    if (src.includes('/spring/bloomwithAView/')) {
-      return src.replace('/spring/bloomwithAView/', '/spring/bloomWithAView/');
-    }
-    
-    // Handle specific files that might have different names
-    if (src.includes('/splashEffects_victoryEffect.png')) {
-      return src.replace('/splashEffects_victoryEffect.png', '/splashVictory.png');
-    }
-    
-    // Handle cases where paths might be pointing to the wrong directory
-    if (src.startsWith('/assets/minigrames/')) {
-      return src.replace('/assets/minigrames/', '/assets/minigames/');
-    }
-    
-    return src;
   }
 
   /**
@@ -283,7 +190,7 @@ class AssetManager {
   /**
    * Get loading statistics
    */
-  public getStats(): { loaded: number, failed: number, total: number } {
+  public getStats(): AssetStats {
     return {
       loaded: this.cache.loaded.size,
       failed: this.cache.failed.size,
@@ -304,37 +211,3 @@ class AssetManager {
 
 // Export a singleton instance
 export const assetManager = AssetManager.getInstance();
-
-// Export a simplified API for getting assets
-export const getAsset = (src: string): HTMLImageElement | undefined => {
-  return assetManager.getAsset(src);
-};
-
-export const hasAsset = (src: string): boolean => {
-  return assetManager.hasAsset(src);
-};
-
-// Utility function to extract image source from various asset types
-export const getAssetSource = (asset: any): string => {
-  if (!asset) return '';
-  
-  // Handle different asset types
-  if (typeof asset === 'string') {
-    return asset;
-  } else if (typeof asset === 'object') {
-    // Object with src property
-    if (asset.src) return asset.src;
-    
-    // Object with image property (backgrounds)
-    if (asset.image) return asset.image;
-    
-    // Character expressions
-    if (asset.characterId && asset.mood) {
-      return asset.image || '';
-    }
-  }
-  
-  return '';
-};
-
-export default assetManager;
