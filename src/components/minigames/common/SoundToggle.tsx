@@ -18,14 +18,16 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({
   const toggleSound = () => {
     const newMutedState = !isSoundMuted;
     setIsSoundMuted(newMutedState);
-    soundManager.setMuted(newMutedState, 'sfx');
+    // Fix: Use correct argument format
+    soundManager.setMuted(newMutedState);
     console.log(`Sound effects ${newMutedState ? 'muted' : 'unmuted'}`);
   };
   
   const toggleMusic = () => {
     const newMutedState = !isMusicMuted;
     setIsMusicMuted(newMutedState);
-    soundManager.setMuted(newMutedState, 'music');
+    // Fix: Use correct argument format
+    soundManager.setMuted(newMutedState);
     console.log(`Music ${newMutedState ? 'muted' : 'unmuted'}`);
   };
 

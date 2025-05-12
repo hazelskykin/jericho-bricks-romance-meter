@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import MinigameContainer from '../MinigameContainer';
 import BloomWithAViewScene from './BloomWithAViewScene';
@@ -103,7 +102,6 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
     return () => {
       console.log("🎵 Stopping BloomWithAView music");
       soundManager.stopMusic();
-      soundManager.stopAllSFX();
     };
   }, []);
 

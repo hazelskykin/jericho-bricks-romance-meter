@@ -29,23 +29,27 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
   const [bgImagePath, setBgImagePath] = useState('');
   const [objectsImageLoaded, setObjectsImageLoaded] = useState(false);
   const [objectsImagePath, setObjectsImagePath] = useState('');
+  const [flowerTilesPath, setFlowerTilesPath] = useState('');
   const [debugMode, setDebugMode] = useState(false);
 
   // Add console logs to debug asset paths and loading
   useEffect(() => {
     console.log("Attempting to load BloomWithAView assets...");
     
-    // Preload both background and object assets with consistent paths
+    // Preload garden background, hidden objects, and flower tiles
     const assetPaths = [
-      // Try direct paths with PNG extension first (confirmed by user)
+      // Garden background (PNG)
       '/assets/minigames/spring/bloomWithAView/garden-background.png',
+      '/assets/minigrames/spring/bloomwithAView/garden-background.png',
+      // Hidden objects
       '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
-      // Try alternative locations as fallbacks
-      '/assets/minigames/spring/bloomwithAView/garden-background.png',
-      '/assets/backgrounds/garden-background.png'
+      '/assets/minigrames/spring/bloomwithAView/hidden-objects.png',
+      '/assets/minigrames/spring/bloomwithAView/hidden_objects_sprites.png',
+      // Flower tiles
+      '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
+      '/assets/minigrames/spring/bloomwithAView/flower-tiles.png',
     ];
     
-    // Log all file paths we're trying to load
     console.log("Attempting to load assets from paths:", assetPaths);
     
     // Use asset manager to preload assets
@@ -54,7 +58,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
     }).then(() => {
       console.log('Asset preloading complete');
       
-      // Try to set the background image with priority for PNG
+      // Try to set the background image
       const bgPath = '/assets/minigames/spring/bloomWithAView/garden-background.png';
       console.log(`Setting background image to: ${bgPath}`);
       setBgImagePath(bgPath);
@@ -63,6 +67,11 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
       const objectsPath = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
       console.log(`Setting objects image to: ${objectsPath}`);
       setObjectsImagePath(objectsPath);
+      
+      // Try to set the flower tiles image
+      const tilesPath = '/assets/minigames/spring/bloomWithAView/flower-tiles.png';
+      console.log(`Setting flower tiles image to: ${tilesPath}`);
+      setFlowerTilesPath(tilesPath);
       
       // Mark both as loaded (actual validation happens when rendering)
       setImageLoaded(true);
@@ -77,6 +86,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
     
     // Additional error handling: check if images actually exist at paths
     const checkPaths = async () => {
+      // Check background image
       const bgImage = new Image();
       bgImage.onload = () => console.log("Background image exists and loaded successfully!");
       bgImage.onerror = () => {
@@ -87,30 +97,48 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
       };
       bgImage.src = '/assets/minigames/spring/bloomWithAView/garden-background.png';
       
-      // Also check objects image
+      // Check hidden objects image
       const objImage = new Image();
-      objImage.onload = () => console.log("Objects image exists and loaded successfully!");
+      objImage.onload = () => console.log("Hidden objects image exists and loaded successfully!");
       objImage.onerror = () => {
-        console.error("Objects image failed to load - enabling debug mode");
+        console.error("Hidden objects image failed to load - enabling debug mode");
         setDebugMode(true);
       };
       objImage.src = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
+      
+      // Also check flower tiles image
+      const tilesImage = new Image();
+      tilesImage.onload = () => console.log("Flower tiles image exists and loaded successfully!");
+      tilesImage.onerror = () => console.error("Flower tiles image failed to load");
+      tilesImage.src = '/assets/minigames/spring/bloomWithAView/flower-tiles.png';
     };
     
     checkPaths();
   }, [backgroundImage]);
 
-  // Generate CSS for the hidden object elements based on their position
+  // Generate CSS for individual hidden object elements based on their ID
   const getHiddenObjectStyle = (item: HiddenItem) => {
-    if (!objectsImagePath || debugMode) return {};
+    // When in debug mode or no sprite sheet, use basic styling
+    if (!objectsImagePath || debugMode) {
+      return {
+        left: `${item.position.x - 25}px`,
+        top: `${item.position.y - 25}px`,
+        width: '50px',
+        height: '50px',
+        backgroundColor: 'rgba(255, 0, 255, 0.3)',
+        border: '2px dashed white',
+        borderRadius: '4px',
+      };
+    }
     
+    // When using sprite sheet, position each object correctly
     return {
-      left: `${item.position.x - 25}px`, // Adjust position to center
-      top: `${item.position.y - 25}px`, // Adjust position to center
+      left: `${item.position.x - 25}px`, // Center the 50x50 sprite
+      top: `${item.position.y - 25}px`,
       width: '50px',
       height: '50px',
-      backgroundImage: `url('${objectsImagePath}')`,
-      backgroundSize: '250px auto', // The sprite sheet is 5 items wide (50px * 5)
+      backgroundImage: `url(${objectsImagePath})`,
+      backgroundSize: '250px 50px', // The sprite sheet is 5 items wide (50px * 5) and 1 item tall
       backgroundPosition: getBackgroundPositionForItem(item.id),
       border: item.highlighted ? '2px dashed yellow' : 'none',
     };
@@ -119,11 +147,11 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
   // Map item IDs to positions in the sprite sheet
   const getBackgroundPositionForItem = (id: string): string => {
     const positions: Record<string, string> = {
-      'rare-orchid': '0px 0px',       // First sprite
-      'garden-gnome': '-50px 0px',    // Second sprite
-      'butterfly': '-100px 0px',      // Third sprite
+      'rare-orchid': '0px 0px',           // First sprite
+      'garden-gnome': '-50px 0px',        // Second sprite
+      'butterfly': '-100px 0px',          // Third sprite
       'vintage-watering-can': '-150px 0px', // Fourth sprite
-      'stone-sculpture': '-200px 0px' // Fifth sprite
+      'stone-sculpture': '-200px 0px'     // Fifth sprite
     };
     
     return positions[id] || '0px 0px'; // Default to first sprite if not found
@@ -151,6 +179,19 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
             }}
           />
         )}
+        
+        {/* Flower tiles layer - added as a decorative overlay */}
+        {imageLoaded && flowerTilesPath && (
+          <div 
+            className="absolute inset-0 z-5 opacity-40 pointer-events-none" 
+            style={{
+              backgroundImage: `url(${flowerTilesPath})`,
+              backgroundSize: '500px auto',
+              backgroundPosition: 'center',
+              mixBlendMode: 'overlay'
+            }}
+          />
+        )}
 
         {/* Debug marker to show if we're in fallback mode */}
         {debugMode && (
@@ -164,13 +205,8 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
           !item.found && (
             <div
               key={`object-${item.id}`}
-              className={`absolute z-10 ${objectsImagePath && !debugMode ? '' : 'bg-purple-500/50 rounded-full border-2 border-white'}`}
-              style={objectsImagePath && !debugMode ? getHiddenObjectStyle(item) : {
-                left: `${item.position.x - 25}px`,
-                top: `${item.position.y - 25}px`,
-                width: '50px',
-                height: '50px',
-              }}
+              className={`absolute z-10`}
+              style={getHiddenObjectStyle(item)}
             >
               {/* If no sprite sheet is available, show item names for debugging */}
               {(debugMode || !objectsImagePath) && (
