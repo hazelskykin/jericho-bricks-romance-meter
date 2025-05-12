@@ -5,6 +5,7 @@ import PlaceholderMinigame from './PlaceholderMinigame';
 import { toast } from 'sonner';
 import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
 import CrafterGame from './crafter/CrafterGame';
+import SpokenWordGame from './spokenWord/SpokenWordGame';
 import { assetManager } from '@/utils/assetManager';
 
 interface MinigameHandlerProps {
@@ -15,7 +16,7 @@ interface MinigameHandlerProps {
 
 /**
  * MinigameHandler component that manages the active minigame
- * Currently implements BloomWithAView and Crafter minigames, others use placeholders
+ * Currently implements BloomWithAView, Crafter, and SpokenWord minigames, others use placeholders
  */
 const MinigameHandler: React.FC<MinigameHandlerProps> = ({ 
   activeMinigame, 
@@ -66,6 +67,25 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         console.log('All Crafter assets preloaded');
       }).catch(error => {
         console.error('Failed to preload Crafter assets:', error);
+        // Continue anyway, the game has fallbacks
+      });
+    }
+    else if (activeMinigame === 'spokenWord') {
+      console.log('Preloading SpokenWord assets');
+      
+      // Preload spoken word assets
+      const assetPaths = [
+        '/assets/minigames/summer/spokenWord/paper-background.png',
+        '/assets/minigames/summer/spokenWord/theme-icons.png',
+        '/assets/minigames/summer/spokenWord/mastery-icons.png'
+      ];
+      
+      assetManager.preloadAssets(assetPaths, (loaded, total) => {
+        console.log(`Loaded ${loaded}/${total} SpokenWord assets`);
+      }).then(() => {
+        console.log('All SpokenWord assets preloaded');
+      }).catch(error => {
+        console.error('Failed to preload SpokenWord assets:', error);
         // Continue anyway, the game has fallbacks
       });
     }
@@ -122,6 +142,13 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     case 'crafter':
       return (
         <CrafterGame
+          onComplete={handleMinigameComplete}
+          onExit={handleExitMinigame}
+        />
+      );
+    case 'spokenWord':
+      return (
+        <SpokenWordGame
           onComplete={handleMinigameComplete}
           onExit={handleExitMinigame}
         />

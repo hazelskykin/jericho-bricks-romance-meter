@@ -1,7 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CharacterId } from '@/types/game';
-import { soundManager } from '@/utils/soundEffects';
+import { soundManager } from '@/utils/sound';
 
 export interface PoemTheme {
   id: string;
@@ -98,6 +98,30 @@ export function useSpokenWord(onComplete: (success: boolean) => void) {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [currentStanzaIndex, setCurrentStanzaIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [isTypingPoem, setIsTypingPoem] = useState(false);
+  
+  // Reset typing animation when entering results stage
+  useEffect(() => {
+    if (gameStage === 'results') {
+      setIsTypingPoem(true);
+      // Play typing sound
+      const typingSound = setTimeout(() => {
+        soundManager.play('spokenWord-typing');
+      }, 300);
+      
+      // After animation completes
+      const finishTyping = setTimeout(() => {
+        setIsTypingPoem(false);
+        // Play mastery reveal sound after typing
+        soundManager.play('spokenWord-mastered-ding');
+      }, 3000);
+      
+      return () => {
+        clearTimeout(typingSound);
+        clearTimeout(finishTyping);
+      };
+    }
+  }, [gameStage]);
   
   const handleThemeSelect = (themeId: string) => {
     setSelectedTheme(themeId);
@@ -106,8 +130,10 @@ export function useSpokenWord(onComplete: (success: boolean) => void) {
   };
 
   const handleOptionSelect = (stanzaId: string, optionId: string) => {
+    // Play line selection sound
+    soundManager.play('spokenWord-line-select');
+    
     setSelectedOptions(prev => ({ ...prev, [stanzaId]: optionId }));
-    soundManager.play('click');
     
     // If this is the last stanza, calculate score and show results
     if (stanzaId === 'stanza4' || currentStanzaIndex === DEFAULT_POEM_STANZAS.length - 1) {
@@ -178,9 +204,17 @@ export function useSpokenWord(onComplete: (success: boolean) => void) {
   };
   
   const handleContinue = () => {
-    // 70+ is considered a success (Lyricist or better)
-    const success = score >= 70;
-    onComplete(success);
+    // Play mastery sound if still on results screen
+    if (gameStage === 'results') {
+      soundManager.play('click');
+    }
+    
+    // Stop any ongoing sounds
+    setTimeout(() => {
+      // 70+ is considered a success (Lyricist or better)
+      const success = score >= 70;
+      onComplete(success);
+    }, 100);
   };
   
   return {
@@ -189,6 +223,7 @@ export function useSpokenWord(onComplete: (success: boolean) => void) {
     selectedOptions,
     currentStanzaIndex,
     score,
+    isTypingPoem,
     handleThemeSelect,
     handleOptionSelect,
     getRanking,
