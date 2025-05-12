@@ -1,6 +1,7 @@
 
 import { useCallback } from 'react';
 import { HiddenItem } from './types';
+import { soundManager } from '@/utils/sound';
 
 interface HandlersProps {
   gameState: {

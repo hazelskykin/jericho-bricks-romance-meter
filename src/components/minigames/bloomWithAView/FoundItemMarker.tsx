@@ -1,27 +1,28 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { HiddenItem } from '@/hooks/bloomWithAView/types';
+import { CheckCircle } from 'lucide-react';
 
 interface FoundItemMarkerProps {
   item: HiddenItem;
 }
 
 const FoundItemMarker: React.FC<FoundItemMarkerProps> = ({ item }) => {
+  // Only render for found items
   if (!item.found) return null;
   
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="absolute w-8 h-8 rounded-full bg-green-500 flex items-center justify-center z-20"
+    <div 
+      className="absolute z-30 flex items-center justify-center animate-in fade-in duration-500"
       style={{
-        left: item.position.x - 16,
-        top: item.position.y - 16
+        top: `${item.position.y - 15}px`,
+        left: `${item.position.x - 15}px`,
+        width: '30px',
+        height: '30px'
       }}
     >
-      <span className="text-white text-xs">✓</span>
-    </motion.div>
+      <CheckCircle className="w-full h-full text-green-500 bg-black/30 rounded-full p-0.5" />
+    </div>
   );
 };
 

@@ -56,11 +56,10 @@ export function useGameMinigames(
         toast.error('Minigame not completed successfully.');
       }
       
-      // Add a safety delay to prevent multiple completions
-      console.log(`Transitioning to next scene: ${returnSceneAfterMinigame}`);
-
       // Important: Clear the active minigame BEFORE transitioning scenes
       // This prevents multiple completions or auto-restarts
+      const returnScene = returnSceneAfterMinigame;
+      
       setMinigameState({
         activeMinigame: null,
         returnSceneAfterMinigame: '',
@@ -69,8 +68,9 @@ export function useGameMinigames(
       
       // Add a slight delay before transitioning to prevent multiple transitions
       setTimeout(() => {
+        console.log(`Transitioning to next scene: ${returnScene}`);
         // Navigate to the appropriate scene based on completion state
-        transitionToScene(returnSceneAfterMinigame);
+        transitionToScene(returnScene);
       }, 500);
     },
     [activeMinigame, returnSceneAfterMinigame, transitionToScene]
@@ -91,6 +91,9 @@ export function useGameMinigames(
       }
     };
     
+    // Store the scene to transition to before clearing state
+    const festivalActivitiesScene = getFestivalActivitiesScene();
+    
     // Reset minigame state
     setMinigameState({
       activeMinigame: null,
@@ -99,7 +102,6 @@ export function useGameMinigames(
     });
     
     // Return to the festival activities screen instead of progressing the story
-    const festivalActivitiesScene = getFestivalActivitiesScene();
     console.log(`Returning to festival activities: ${festivalActivitiesScene}`);
     
     // Add a slight delay before transitioning to avoid state conflicts

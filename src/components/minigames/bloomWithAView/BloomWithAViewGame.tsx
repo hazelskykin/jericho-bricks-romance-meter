@@ -39,6 +39,14 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
   const foundItemsCount = hiddenItems.filter(item => item.found).length;
   const totalItems = hiddenItems.length;
 
+  // Handle scene click - extracts the coordinates from the event
+  const handleGameSceneClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    handleSceneClick(x, y);
+  };
+
   // Start background music when component mounts with improved error handling
   useEffect(() => {
     console.log("🎵 Attempting to load and play BloomWithAView music...");
@@ -46,7 +54,7 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
     // Function to try to play the gameplay music
     const tryPlaySound = async () => {
       try {
-        console.log('🎵 Playing background music: bloomWithAView-loop-gameplay');
+        console.log('🎵 Playing background music: bloomWithAView-loop-gameplay.mp3');
         soundManager.playMusic('bloomWithAView-loop-gameplay.mp3', { loop: true, volume: 0.7 });
         console.log('🎵 Successfully started music');
       } catch (err) {
@@ -108,7 +116,7 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
             hiddenItems={hiddenItems}
             clickPosition={clickPosition}
             showHint={showHint}
-            onClick={handleSceneClick}
+            onClick={handleGameSceneClick}
             foundItemCount={foundItemsCount}
             totalItemCount={totalItems}
           />

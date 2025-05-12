@@ -48,12 +48,22 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
     });
   }, []);
 
+  // Handle click by converting it to x,y coordinates
+  const handleSceneClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Call the onClick prop with the click event directly
+    onClick(e);
+  };
+
   // Ensure we only render once assets are attempted to load
   return (
     <div className="relative w-full">
       <div 
         className="relative w-full h-[400px] rounded-lg border-2 border-purple-600/50 overflow-hidden cursor-pointer"
-        onClick={onClick}
+        onClick={handleSceneClick}
         style={{
           backgroundImage: `url(/assets/backgrounds/stonewich-cityscape.jpg)`, /* Fallback */
           backgroundSize: 'cover',
