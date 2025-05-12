@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Volume2, VolumeX, Music } from 'lucide-react';
-import { soundManager } from '@/utils/soundEffects';
+import { soundManager } from '@/utils/sound';
 
 interface SoundToggleProps {
   showMusicToggle?: boolean;

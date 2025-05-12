@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import BackgroundScene from '../BackgroundScene';
-import { playBackgroundMusicForScene } from '@/utils/soundEffects';
+import { playBackgroundMusicForScene } from '@/utils/sound';
 
 interface GameBackgroundSceneProps {
   backgroundId: string;

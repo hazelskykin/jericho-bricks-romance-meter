@@ -6,9 +6,8 @@ import { GameProvider } from '../context/GameContext';
 import AssetPreloader from './AssetPreloader';
 import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
-import { soundManager } from '@/utils/soundEffects';
 import { toast } from 'sonner';
-import { initializeGameSounds } from '@/utils/soundEffects';
+import { soundManager, initializeGameSounds, exposeSoundManagerToWindow } from '@/utils/sound';
 
 const Game: React.FC = () => {
   const [showMainMenu, setShowMainMenu] = useState(true);
@@ -51,7 +50,7 @@ const Game: React.FC = () => {
     if (!soundInitialized) {
       try {
         initializeGameSounds();
-        soundManager.exposeToWindow();
+        exposeSoundManagerToWindow();
         setSoundInitialized(true);
         console.log('Sound system initialized');
       } catch (error) {
