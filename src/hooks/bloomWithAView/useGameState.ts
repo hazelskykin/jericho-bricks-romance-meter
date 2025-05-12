@@ -1,36 +1,37 @@
+
 import { useState } from 'react';
 import { HiddenItem, GameState } from './types';
 
 export function useGameState(gameDuration: number): GameState {
-  // Initialize hidden items
+  // Initialize hidden items with the correct object names
   const [hiddenItems, setHiddenItems] = useState<HiddenItem[]>([
     {
-      id: 'rare-orchid',
-      name: 'Rare Orchid',
+      id: 'gardening-gloves',
+      name: 'Gardening Gloves',
       found: false,
       position: { x: 120, y: 150 }
     },
     {
-      id: 'garden-gnome',
-      name: 'Garden Gnome',
+      id: 'bee-drone',
+      name: 'Bee Drone',
       found: false,
       position: { x: 300, y: 320 }
+    },
+    {
+      id: 'seed-packet',
+      name: 'Seed Packet',
+      found: false,
+      position: { x: 180, y: 80 }
     },
     {
       id: 'butterfly',
       name: 'Butterfly',
       found: false,
-      position: { x: 180, y: 80 }
+      position: { x: 250, y: 250 }
     },
     {
       id: 'vintage-watering-can',
       name: 'Vintage Watering Can',
-      found: false,
-      position: { x: 250, y: 250 }
-    },
-    {
-      id: 'stone-sculpture',
-      name: 'Stone Sculpture',
       found: false,
       position: { x: 70, y: 200 }
     }

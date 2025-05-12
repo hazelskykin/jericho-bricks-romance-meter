@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { GameState } from './types';
 import { useGameStateSetters } from './useGameState';
+import { soundManager } from '@/utils/sound';
 
 interface GameHandlersProps {
   gameState: GameState;
@@ -131,7 +132,7 @@ export function useGameHandlers({
     } else {
       // Game is not complete, ask for confirmation
       if (window.confirm("Are you sure you want to exit? Your progress will be lost.")) {
-        soundManager.stopMusic(); // Stop music before exiting
+        soundManager.stopMusic(); // Now correctly using the imported soundManager
         onExit();
       }
     }

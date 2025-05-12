@@ -125,8 +125,8 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
               <Clock className="h-5 w-5 text-purple-400" />
               <span className="text-white text-lg font-medium">{timeRemaining}s</span>
               
-              {/* Sound toggle using component */}
-              <SoundToggle showMusicToggle={true} />
+              {/* Sound toggle using component - Fixed type error here */}
+              <SoundToggle showMusicToggle />
             </div>
           </div>
           
