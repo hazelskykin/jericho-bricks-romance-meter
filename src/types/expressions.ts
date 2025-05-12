@@ -8,24 +8,10 @@ export type CharacterMood =
   | 'angry' 
   | 'surprised' 
   | 'thoughtful' 
-  | 'flirty' 
-  | 'worried'
   | 'laughing'
   | 'shocked'
   | 'embarrassed'
-  | 'confident'
-  | 'determined'
-  | 'curious'
-  | 'nervous'
-  | 'concerned'
-  | 'reflective'
-  | 'pleased'
-  | 'proud'
-  | 'excited'
-  | 'sincere'
-  | 'grateful'
-  | 'serious'
-  | 'vulnerable';
+  | 'confident';
   
 export type MoodType = CharacterMood | 'normal';
 
