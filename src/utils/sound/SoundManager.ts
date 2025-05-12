@@ -1,3 +1,4 @@
+
 /**
  * Sound Manager Class
  * Core class handling sound effects and music playback
@@ -74,14 +75,54 @@ class SoundManager {
   
   // Get or create a sound element
   private getSoundElement(soundId: string): HTMLAudioElement | null {
-    // Always return the silent audio without attempting to load real files
-    return this.silentAudio;
+    // Check if sound is already cached
+    if (this.soundCache.has(soundId)) {
+      return this.soundCache.get(soundId) || null;
+    }
+    
+    // Check if we've tried and failed to load this sound before
+    if (this.failedSounds.has(soundId)) {
+      return this.silentAudio;
+    }
+    
+    try {
+      // For minigame-specific sounds, try to load and cache
+      const audio = new Audio(`/audio/${soundId}.mp3`);
+      this.soundCache.set(soundId, audio);
+      return audio;
+    } catch (error) {
+      console.error(`Failed to create audio for ${soundId}:`, error);
+      this.failedSounds.add(soundId);
+      return this.silentAudio;
+    }
   }
   
-  // Play a sound effect - just log without trying to play
+  // Play a sound effect
   public playSFX(soundId: string): void {
     if (this.isMuted) return;
-    console.log(`[SOUND] Would play sound effect: ${soundId} (bypassed)`);
+    
+    try {
+      const audio = this.getSoundElement(soundId);
+      if (!audio) {
+        console.log(`[SOUND] Would play sound effect: ${soundId} (no audio element)`);
+        return;
+      }
+      
+      // Reset the audio to beginning
+      audio.currentTime = 0;
+      
+      // Set volume
+      audio.volume = this.sfxVolume;
+      
+      // Play the sound
+      audio.play().catch(err => {
+        console.error(`Error playing sound ${soundId}:`, err);
+      });
+      
+      console.log(`[SOUND] Playing sound effect: ${soundId}`);
+    } catch (error) {
+      console.error(`Error playing sound ${soundId}:`, error);
+    }
   }
   
   // Play music track

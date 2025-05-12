@@ -1,12 +1,13 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import MinigameContainer from '../MinigameContainer';
 import BloomWithAViewScene from './BloomWithAViewScene';
 import BloomWithAViewItemList from './BloomWithAViewItemList';
 import GameStatusMessage from '../common/GameStatusMessage';
 import { Button } from '@/components/ui/button';
 import { useBloomWithAViewGame } from '@/hooks/useBloomWithAViewGame';
-import { Search, Clock } from 'lucide-react';
+import { Search, Clock, VolumeX, Volume2 } from 'lucide-react';
+import { soundManager } from '@/utils/sound';
 
 interface BloomWithAViewGameProps {
   onComplete: (success: boolean) => void;
@@ -29,9 +30,32 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
     handleExit
   } = useBloomWithAViewGame(onComplete, onExit);
   
+  // Sound toggle state
+  const [isMuted, setIsMuted] = React.useState(false);
+  
   // Calculate found items count
   const foundItemsCount = hiddenItems.filter(item => item.found).length;
   const totalItems = hiddenItems.length;
+
+  // Start background music when component mounts
+  useEffect(() => {
+    try {
+      soundManager.playMusic('bloomwithAView-loop-gameplay.mp3', { loop: true });
+      
+      // Cleanup function to stop music when component unmounts
+      return () => {
+        soundManager.stopMusic();
+      };
+    } catch (error) {
+      console.error('Failed to play background music:', error);
+    }
+  }, []);
+
+  // Toggle sound
+  const toggleSound = () => {
+    setIsMuted(!isMuted);
+    soundManager.setMuted(!isMuted);
+  };
 
   return (
     <MinigameContainer
@@ -51,6 +75,19 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-purple-400" />
               <span className="text-white text-lg font-medium">{timeRemaining}s</span>
+              
+              {/* Sound toggle button */}
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleSound}
+                className="ml-2"
+              >
+                {isMuted ? 
+                  <VolumeX className="h-5 w-5 text-purple-400" /> : 
+                  <Volume2 className="h-5 w-5 text-purple-400" />
+                }
+              </Button>
             </div>
           </div>
           
@@ -59,7 +96,8 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
             clickPosition={clickPosition}
             showHint={showHint}
             onClick={handleSceneClick}
-            backgroundImage="summer-transition" // Changed to a more colorful background
+            foundItemCount={foundItemsCount}
+            totalItemCount={totalItems}
           />
           
           <div className="mt-4 flex justify-between items-center">

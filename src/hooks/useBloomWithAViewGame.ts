@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { soundManager } from '@/utils/soundEffects';
+import { soundManager } from '@/utils/sound';
 
 export interface HiddenItem {
   id: string;
@@ -16,36 +16,36 @@ export interface HiddenItem {
 
 export function useBloomWithAViewGame(onComplete: (success: boolean) => void, onExit: () => void) {
   // Game config
-  const gameDuration = 60; // seconds
+  const gameDuration = 90; // seconds - increase from 60 to give more time
   
   // Game state
   const [hiddenItems, setHiddenItems] = useState<HiddenItem[]>([
     {
-      id: 'item-1',
+      id: 'rare-orchid',
       name: 'Rare Orchid',
       found: false,
-      position: { x: 380, y: 220 }
+      position: { x: 180, y: 220 }
     },
     {
-      id: 'item-2',
+      id: 'garden-gnome',
       name: 'Garden Gnome',
       found: false,
-      position: { x: 500, y: 350 }
+      position: { x: 300, y: 350 }
     },
     {
-      id: 'item-3',
+      id: 'butterfly',
       name: 'Butterfly',
       found: false,
-      position: { x: 200, y: 180 }
+      position: { x: 120, y: 180 }
     },
     {
-      id: 'item-4',
+      id: 'vintage-watering-can',
       name: 'Vintage Watering Can',
       found: false,
-      position: { x: 620, y: 300 }
+      position: { x: 320, y: 300 }
     },
     {
-      id: 'item-5',
+      id: 'stone-sculpture',
       name: 'Stone Sculpture',
       found: false,
       position: { x: 100, y: 250 }
@@ -67,10 +67,14 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     const y = event.clientY - rect.top;
     
     setClickPosition({ x, y });
-    soundManager.play('item-click');
+    
+    // Play click sound
+    soundManager.play('click');
     
     // Check if click is near any hidden items
     const itemSize = 60; // Increase clickable area size
+    let foundItem = false;
+    
     hiddenItems.forEach(item => {
       if (item.found) return; // Skip already found items
       
@@ -85,10 +89,17 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
           prev.map(i => i.id === item.id ? { ...i, found: true } : i)
         );
         
+        // Play success sound
         soundManager.play('item-found');
         toast.success(`You found the ${item.name}!`);
+        foundItem = true;
       }
     });
+    
+    if (!foundItem) {
+      // Play miss sound if no item was found
+      soundManager.play('item-miss');
+    }
   };
   
   // Show click feedback animation
@@ -169,7 +180,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     
     setShowHint(true);
     setHintCooldown(10); // 10 second cooldown
-    soundManager.play('hint-activate');
+    soundManager.play('hint');
     
     toast.info(`Hint: Look for the ${itemToHighlight.name}!`);
     
@@ -190,6 +201,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     } else {
       // Game is not complete, ask for confirmation
       if (window.confirm("Are you sure you want to exit? Your progress will be lost.")) {
+        soundManager.stopMusic(); // Stop music before exiting
         onExit();
       }
     }

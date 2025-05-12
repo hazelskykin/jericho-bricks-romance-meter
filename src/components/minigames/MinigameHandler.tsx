@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { MinigameType } from '@/types/minigames';
 import PlaceholderMinigame from './PlaceholderMinigame';
 import { toast } from 'sonner';
+import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
 
 interface MinigameHandlerProps {
   activeMinigame: MinigameType | null;
@@ -12,7 +13,7 @@ interface MinigameHandlerProps {
 
 /**
  * MinigameHandler component that manages the active minigame
- * Currently uses placeholders to ensure game progression works
+ * Currently implements BloomWithAView minigame, others use placeholders
  */
 const MinigameHandler: React.FC<MinigameHandlerProps> = ({ 
   activeMinigame, 
@@ -42,13 +43,24 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     return null;
   }
 
-  return (
-    <PlaceholderMinigame
-      minigameType={activeMinigame}
-      onComplete={completeMinigame}
-      onExit={exitMinigame}
-    />
-  );
+  // Render the appropriate minigame based on type
+  switch (activeMinigame) {
+    case 'bloomWithAView':
+      return (
+        <BloomWithAViewGame
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
+        />
+      );
+    default:
+      return (
+        <PlaceholderMinigame
+          minigameType={activeMinigame}
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
+        />
+      );
+  }
 };
 
 // Helper function to validate minigame types

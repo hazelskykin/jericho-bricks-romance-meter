@@ -1,63 +1,38 @@
 
 import React, { useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Volume2, VolumeX, Music } from 'lucide-react';
 import { soundManager } from '@/utils/sound';
 
-interface SoundToggleProps {
-  showMusicToggle?: boolean;
+export interface SoundToggleProps {
   className?: string;
-  size?: 'default' | 'sm' | 'lg' | 'icon';
 }
 
-export const SoundToggle: React.FC<SoundToggleProps> = ({ 
-  showMusicToggle = true,
-  className = '',
-  size = 'sm'
-}) => {
-  const [muted, setMuted] = useState(false);
-  const [musicMuted, setMusicMuted] = useState(false);
-  
-  const toggleMute = () => {
-    const newMuted = !muted;
-    setMuted(newMuted);
-    // Connect to the sound system
-    soundManager.setMuted(newMuted);
-    console.log(`Sound effects are now ${newMuted ? 'muted' : 'unmuted'}`);
+export const SoundToggle: React.FC<SoundToggleProps> = ({ className }) => {
+  const [isMuted, setIsMuted] = useState(false);
+
+  const toggleSound = () => {
+    const newMutedState = !isMuted;
+    setIsMuted(newMutedState);
+    
+    // Update sound manager
+    soundManager.setMuted(newMutedState);
   };
-  
-  const toggleMusic = () => {
-    const newMusicMuted = !musicMuted;
-    setMusicMuted(newMusicMuted);
-    // Connect to the sound system
-    soundManager.setMusicMuted(newMusicMuted);
-    console.log(`Music is now ${newMusicMuted ? 'muted' : 'unmuted'}`);
-  };
-  
+
   return (
-    <div className={`flex gap-2 ${className}`}>
-      <Button 
-        variant="outline" 
-        size={size}
-        onClick={toggleMute}
-        className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
-        title={muted ? "Unmute sound effects" : "Mute sound effects"}
-      >
-        {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-      </Button>
-      
-      {showMusicToggle && (
-        <Button 
-          variant="outline" 
-          size={size}
-          onClick={toggleMusic}
-          className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
-          title={musicMuted ? "Unmute music" : "Mute music"}
-        >
-          {musicMuted ? <VolumeX size={16} /> : <Music size={16} />}
-        </Button>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleSound}
+      className={className}
+      title={isMuted ? "Unmute sounds" : "Mute sounds"}
+    >
+      {isMuted ? (
+        <VolumeX className="h-5 w-5 text-gray-400" />
+      ) : (
+        <Volume2 className="h-5 w-5 text-purple-400" />
       )}
-    </div>
+    </Button>
   );
 };
 
