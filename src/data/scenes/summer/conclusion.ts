@@ -22,7 +22,7 @@ const summerConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Dr. Voss: Your team continues to exceed expectations in Stonewich, individual talents.",
+        text: "Dr. Voss: Your team continues to exceed expectations in Stonewich, as individual talents.",
       },
       {
         character: 'narrator',
@@ -55,7 +55,7 @@ const summerConclusionScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "Dr. Voss: And our competitors are taking notice of these deficiencies. Cybaton is facing more pressure to review its contracts and threats in many siloed services.",
+        text: "Dr. Voss: And our competitors are taking notice of these deficiencies. Cybaton is facing more pressure to review its contracts and threats in many siloed services, exacerbated by the decentralized distribution of microsystems.",
       },
       {
         character: 'narrator',
