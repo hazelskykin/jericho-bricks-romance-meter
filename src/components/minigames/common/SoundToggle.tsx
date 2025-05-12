@@ -18,7 +18,7 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({
   const toggleSound = () => {
     const newMutedState = !isSoundMuted;
     setIsSoundMuted(newMutedState);
-    // Fix: Use correct argument format
+    // Fix: Use the correct function - setMuted only takes one argument
     soundManager.setMuted(newMutedState);
     console.log(`Sound effects ${newMutedState ? 'muted' : 'unmuted'}`);
   };
@@ -26,8 +26,8 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({
   const toggleMusic = () => {
     const newMutedState = !isMusicMuted;
     setIsMusicMuted(newMutedState);
-    // Fix: Use correct argument format
-    soundManager.setMuted(newMutedState);
+    // Fix: Use the correct function for music - setMusicMuted instead of setMuted
+    soundManager.setMusicMuted(newMutedState);
     console.log(`Music ${newMutedState ? 'muted' : 'unmuted'}`);
   };
 
