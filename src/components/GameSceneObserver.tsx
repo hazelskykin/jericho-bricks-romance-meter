@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { useGame } from '@/context/GameContext';
 import SeasonTransition from './SeasonTransition';
@@ -50,7 +51,7 @@ const GameSceneObserver = () => {
       minigameTimerRef.current = setTimeout(() => {
         try {
           console.log(`GameSceneObserver: Starting minigame ${minigameType}`);
-          startMinigame(minigameType);
+          startMinigame(minigameType as MinigameType);
         } catch (error) {
           console.error("Error starting minigame:", error);
           toast.error(`Failed to start minigame: ${error}`);

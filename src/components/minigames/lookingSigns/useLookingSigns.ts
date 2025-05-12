@@ -61,8 +61,12 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
   const endGame = useCallback(() => {
     setGameOver(true);
     
-    // Determine if player won based on score
-    const success = score > incorrectScore;
+    // Calculate total signs sorted and accuracy
+    const totalSorted = score + incorrectScore;
+    const accuracy = totalSorted > 0 ? (score / totalSorted) * 100 : 0;
+    
+    // Determine if player won based on accuracy (51% or higher)
+    const success = accuracy >= 51;
     setGameResult(success ? 'success' : 'failure');
     
     // Show results

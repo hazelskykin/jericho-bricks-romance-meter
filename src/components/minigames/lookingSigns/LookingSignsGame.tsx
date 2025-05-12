@@ -59,12 +59,19 @@ const LookingSignsGame: React.FC<LookingSignsGameProps> = ({ onComplete, onExit 
     }
   };
 
+  const handleExit = () => {
+    // Ensure we exit to winter festival activities, not spring
+    console.log("Exiting minigame without completion");
+    console.log("Returning to festival activities: winter-festival-activities");
+    onExit();
+  };
+
   return (
     <MinigameContainer
       title="Looking Signs: Fortune Reading"
       instructions={getInstructions()}
       onComplete={() => handleGameComplete()}
-      onExit={onExit}
+      onExit={handleExit}
     >
       {gameStage === 'gameplay' && (
         <GameplayView 
