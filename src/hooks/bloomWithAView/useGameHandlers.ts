@@ -1,4 +1,3 @@
-
 import { useCallback } from 'react';
 import { HiddenItem } from './types';
 import { soundManager } from '@/utils/sound';
@@ -78,42 +77,6 @@ export function useGameHandlers({
     });
   }, [gameComplete, playSoundSafely, setClickPosition, setHiddenItems, setShowHint]);
   
-  // Handle hint button click
-  const handleHintClick = useCallback(() => {
-    if (gameComplete || gameState.hintCooldown > 0) return;
-    
-    // Enable hint mode
-    setShowHint(true);
-    
-    // Set the hint cooldown
-    setHintCooldown(10);
-    
-    // Start cooldown timer
-    const interval = setInterval(() => {
-      setHintCooldown(prev => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    
-    // Find an unfound item to highlight
-    setHiddenItems(currentItems => {
-      const unfoundItems = currentItems.filter(item => !item.found);
-      if (unfoundItems.length === 0) return currentItems;
-      
-      const randomIndex = Math.floor(Math.random() * unfoundItems.length);
-      
-      return currentItems.map(item => 
-        item.id === unfoundItems[randomIndex].id
-          ? { ...item, highlighted: true }
-          : { ...item, highlighted: false }
-      );
-    });
-  }, [gameComplete, gameState.hintCooldown, setHiddenItems, setHintCooldown, setShowHint]);
-  
   // Handle exit button click
   const handleExit = useCallback(() => {
     // Prevent multiple exit calls
@@ -137,7 +100,40 @@ export function useGameHandlers({
 
   return {
     handleSceneClick,
-    handleHintClick,
+    handleHintClick: useCallback(() => {
+      if (gameComplete || gameState.hintCooldown > 0) return;
+      
+      // Enable hint mode
+      setShowHint(true);
+      
+      // Set the hint cooldown
+      setHintCooldown(10);
+      
+      // Start cooldown timer
+      const interval = setInterval(() => {
+        setHintCooldown(prev => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      
+      // Find an unfound item to highlight
+      setHiddenItems(currentItems => {
+        const unfoundItems = currentItems.filter(item => !item.found);
+        if (unfoundItems.length === 0) return currentItems;
+        
+        const randomIndex = Math.floor(Math.random() * unfoundItems.length);
+        
+        return currentItems.map(item => 
+          item.id === unfoundItems[randomIndex].id
+            ? { ...item, highlighted: true }
+            : { ...item, highlighted: false }
+        );
+      });
+    }, [gameComplete, gameState.hintCooldown, setHiddenItems, setHintCooldown, setShowHint]),
     handleExit
   };
 }

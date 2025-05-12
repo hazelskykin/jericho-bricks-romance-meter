@@ -43,7 +43,6 @@ export function useGameTimer({
           // If all items are found, this is a successful completion
           if (allItemsFound && !completionCalled.current) {
             console.log("All items found! Game complete.");
-            playSoundSafely('win');
             
             // Mark game as complete to prevent multiple calls
             completionCalled.current = true;
@@ -58,7 +57,6 @@ export function useGameTimer({
           } else if (!completionCalled.current) {
             // Game over, didn't find all items
             console.log("Time's up! Items found: " + itemsCount + "/" + totalItems);
-            playSoundSafely('lose');
             
             // Mark game as complete to prevent multiple calls
             completionCalled.current = true;
@@ -90,7 +88,6 @@ export function useGameTimer({
     
     // All items found - game complete!
     console.log("All items found! Game complete.");
-    playSoundSafely('win');
     
     // Mark game as complete to prevent multiple calls
     completionCalled.current = true;
