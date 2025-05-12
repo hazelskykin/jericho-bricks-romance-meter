@@ -23,7 +23,7 @@ const minigameScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: 'That was interesting! I think I'm starting to understand this tradition better.',
+        text: "That was interesting! I think I'm starting to understand this tradition better.",
         mood: 'happy'
       }
     ],
