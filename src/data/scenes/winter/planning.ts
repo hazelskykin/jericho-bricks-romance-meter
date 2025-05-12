@@ -208,8 +208,12 @@ const winterPlanningScenes: Record<string, Scene> = {
     background: 'stonewich-office',
     dialogue: [
       {
+        character: 'narrator',
+        text: "You decide to check on Senara.",
+      },
+      {
         character: 'senara',
-        text: "I find myself distracted from the planning efforts required for the festival.",
+        text: "Hello, Maven. You have uncanny timing. I find myself distracted from the planning efforts required for the festival.",
         mood: 'sad',
       },
       {
