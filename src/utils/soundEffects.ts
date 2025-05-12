@@ -15,6 +15,7 @@ class SoundManager {
   private failedSounds: Set<string> = new Set();
   private silentAudio: HTMLAudioElement | null = null;
   private musicPlayer: HTMLAudioElement | null = null;
+  private currentBackgroundType: string | null = null;
   
   constructor() {
     console.log('Initialized Sound Manager');
@@ -26,7 +27,7 @@ class SoundManager {
   private createSilentAudio(): void {
     try {
       // Create a silent MP3 as fallback (Base64 encoded 0.1s of silence)
-      const audio = new Audio("data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=");
+      const audio = new Audio("data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPQQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=");
       this.silentAudio = audio;
     } catch (error) {
       console.error('Failed to create silent audio:', error);
@@ -124,12 +125,36 @@ class SoundManager {
   
   // Play background music based on scene background
   public playBackgroundMusicForScene(backgroundId: string): void {
+    // Extract the background type (e.g., "cybaton", "stonewich")
+    let newBackgroundType = null;
+    let musicTrack = null;
+    
     if (backgroundId.startsWith('cybaton-')) {
-      this.playMusic('bgm-cybaton.mp3');
+      newBackgroundType = 'cybaton';
+      musicTrack = 'bgm-cybaton.mp3';
     } else if (backgroundId.startsWith('stonewich-')) {
-      this.playMusic('bgm-stonewich.mp3');
+      newBackgroundType = 'stonewich';
+      musicTrack = 'bgm-stonewich.mp3';
     } else if (backgroundId === 'happy-ending-epilogue') {
-      this.playMusic('bgm-endgame.mp3');
+      newBackgroundType = 'epilogue';
+      musicTrack = 'bgm-endgame.mp3';
+    }
+    
+    // If background type changed or we're entering a new background type
+    if (newBackgroundType !== this.currentBackgroundType) {
+      // If we were playing music for a different background type, stop it
+      if (this.currentBackgroundType && (!newBackgroundType || this.currentBackgroundType !== newBackgroundType)) {
+        console.log(`[MUSIC] Stopping music due to background type change: ${this.currentBackgroundType} -> ${newBackgroundType}`);
+        this.stopMusic();
+      }
+      
+      // Update current background type
+      this.currentBackgroundType = newBackgroundType;
+      
+      // Play new music if applicable
+      if (musicTrack) {
+        this.playMusic(musicTrack);
+      }
     }
   }
   
