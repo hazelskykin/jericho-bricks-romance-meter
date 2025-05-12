@@ -6,21 +6,19 @@ interface FlowerTilesLayerProps {
   imageLoaded: boolean;
 }
 
-const FlowerTilesLayer: React.FC<FlowerTilesLayerProps> = ({
-  flowerTilesPath,
-  imageLoaded
-}) => {
+const FlowerTilesLayer: React.FC<FlowerTilesLayerProps> = ({ flowerTilesPath, imageLoaded }) => {
   if (!imageLoaded || !flowerTilesPath) return null;
   
+  // Create a flower tiles pattern using a semi-transparent div with background image
   return (
     <div 
-      className="absolute inset-0 z-15 pointer-events-none" 
+      className="absolute inset-0 z-20 pointer-events-none"
       style={{
         backgroundImage: `url(${flowerTilesPath})`,
-        backgroundSize: '400px auto', // Smaller size for flower tiles to partially reveal objects
+        backgroundSize: '125%', // Properly sized to create a nice pattern
         backgroundPosition: 'center',
-        opacity: 0.7, // Increased opacity to show flowers better
-        mixBlendMode: 'soft-light' // This blend mode allows objects to be partially visible
+        opacity: 0.85, // Semi-transparent to partially hide objects
+        mixBlendMode: 'normal'
       }}
     />
   );

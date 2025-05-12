@@ -60,32 +60,50 @@ export function useGameHandlers({
     setClickPosition({ x, y });
     
     // Play rustle sound effect when clicking in the garden
-    soundManager.playSFX('bloomWithAView-effect-rustle');
+    try {
+      soundManager.playSFX('bloomWithAView-effect-rustle');
+    } catch (err) {
+      console.warn("Failed to play rustle sound", err);
+    }
     
     // Check if click is near any hidden items
-    const itemSize = 60; // Increase clickable area size
+    const itemClickRadius = 60; // Increase clickable area size for better UX
     let foundItem = false;
     
-    hiddenItems.forEach(item => {
-      if (item.found) return; // Skip already found items
+    // Create a copy of hidden items to track newly found items
+    const newHiddenItems = [...hiddenItems];
+    let itemFound = false;
+    
+    for (let i = 0; i < newHiddenItems.length; i++) {
+      const item = newHiddenItems[i];
       
+      // Skip already found items
+      if (item.found) continue;
+      
+      // Calculate distance between click and item position
       const distance = Math.sqrt(
         Math.pow(x - item.position.x, 2) + 
         Math.pow(y - item.position.y, 2)
       );
       
-      if (distance < itemSize/2) {
+      if (distance < itemClickRadius/2) {
         // Found an item!
-        setHiddenItems(prev => markItemFound(item.id));
+        console.log(`Found item: ${item.name} at distance ${distance}`);
+        newHiddenItems[i] = { ...item, found: true };
+        itemFound = true;
         
         // Play success sound
         playSoundSafely('bloomWithAView-success');
         toast.success(`You found the ${item.name}!`);
         foundItem = true;
+        break; // Only find one item per click
       }
-    });
+    }
     
-    if (!foundItem) {
+    // Update state with newly found items
+    if (itemFound) {
+      setHiddenItems(newHiddenItems);
+    } else if (!foundItem) {
       // Play click sound if no item was found
       playSoundSafely('click');
     }
@@ -126,15 +144,11 @@ export function useGameHandlers({
   
   // Handle exit button properly
   const handleExit = () => {
-    if (gameComplete) {
-      // Game is already complete, so just exit
+    // Always ask for confirmation before exiting
+    if (window.confirm("Are you sure you want to exit? Your progress will be lost.")) {
+      // Stop music and exit
+      soundManager.stopMusic();
       onExit();
-    } else {
-      // Game is not complete, ask for confirmation
-      if (window.confirm("Are you sure you want to exit? Your progress will be lost.")) {
-        soundManager.stopMusic();
-        onExit();
-      }
     }
   };
 

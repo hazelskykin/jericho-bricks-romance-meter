@@ -37,14 +37,16 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
 
   // Load assets on component mount
   useEffect(() => {
+    console.log("Loading BloomWithAView assets...");
     loadBloomWithAViewAssets((bgPath, objectsPath, tilesPath, isDebugMode) => {
+      console.log(`Assets loaded: BG: ${bgPath}, Objects: ${objectsPath}, Tiles: ${tilesPath}, DebugMode: ${isDebugMode}`);
       setBgImagePath(bgPath);
       setObjectsImagePath(objectsPath);
       setFlowerTilesPath(tilesPath);
       setDebugMode(isDebugMode);
       setImageLoaded(true);
     });
-  }, [backgroundImage]);
+  }, []);
 
   return (
     <div className="relative w-full">
@@ -70,7 +72,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
         )}
         
         {/* Hidden object sprites - z-index 10 (middle layer) */}
-        {hiddenItems.map((item) => (
+        {imageLoaded && objectsImagePath && hiddenItems.map((item) => (
           <HiddenObject 
             key={`object-${item.id}`}
             item={item}
@@ -79,11 +81,13 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
           />
         ))}
         
-        {/* Flower tiles layer - properly sized and placed OVER hidden objects - z-index 15 (foreground) */}
-        <FlowerTilesLayer 
-          flowerTilesPath={flowerTilesPath}
-          imageLoaded={imageLoaded}
-        />
+        {/* Flower tiles layer - z-index 20 (top layer) */}
+        {imageLoaded && flowerTilesPath && (
+          <FlowerTilesLayer 
+            flowerTilesPath={flowerTilesPath}
+            imageLoaded={imageLoaded}
+          />
+        )}
 
         {/* Game progress indicator */}
         <GameProgressIndicator 

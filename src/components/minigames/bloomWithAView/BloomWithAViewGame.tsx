@@ -96,8 +96,6 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-purple-400" />
               <span className="text-white text-lg font-medium">{timeRemaining}s</span>
-              
-              <SoundToggle showMusicToggle={true} />
             </div>
           </div>
           
@@ -121,6 +119,11 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
             
             <div className="text-sm text-white/70">
               {showHint && "Hint active! Look for the highlighted item."}
+            </div>
+            
+            {/* Move sound toggle to bottom left corner */}
+            <div className="absolute bottom-4 left-4">
+              <SoundToggle showMusicToggle={true} />
             </div>
           </div>
         </div>

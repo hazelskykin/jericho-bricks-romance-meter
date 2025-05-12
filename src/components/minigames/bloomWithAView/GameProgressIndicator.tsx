@@ -11,8 +11,8 @@ const GameProgressIndicator: React.FC<GameProgressIndicatorProps> = ({
   totalItemCount
 }) => {
   return (
-    <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-2 rounded-lg z-20">
-      {foundItemCount} / {totalItemCount}
+    <div className="absolute top-4 left-4 bg-black/60 text-white px-4 py-2 rounded-lg z-20 shadow-lg">
+      <span className="font-medium">Found: {foundItemCount} / {totalItemCount}</span>
     </div>
   );
 };

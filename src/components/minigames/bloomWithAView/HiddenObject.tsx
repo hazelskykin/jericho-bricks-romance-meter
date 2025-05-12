@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { HiddenItem } from '@/hooks/bloomWithAView/types';
-import { getHiddenObjectStyle } from '@/utils/bloomWithAViewUtils';
+import { getObjectPosition } from '@/utils/bloomWithAViewUtils';
 
 interface HiddenObjectProps {
   item: HiddenItem;
@@ -9,25 +9,48 @@ interface HiddenObjectProps {
   debugMode: boolean;
 }
 
-const HiddenObject: React.FC<HiddenObjectProps> = ({ 
-  item, 
-  objectsImagePath, 
-  debugMode 
-}) => {
+const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, debugMode }) => {
+  // Skip rendering if the item is already found
   if (item.found) return null;
   
+  // Get styling for this item based on its position in the sprite sheet
+  const style = getObjectPosition(item.id, debugMode);
+  
+  // Use debug mode styling if needed
+  if (debugMode) {
+    // Debug mode uses colored squares
+    return (
+      <div 
+        className={`absolute z-10 rounded-md ${item.highlighted ? 'animate-pulse' : ''}`}
+        style={{
+          width: '60px',
+          height: '60px', 
+          top: `${item.position.y - 30}px`,
+          left: `${item.position.x - 30}px`,
+          backgroundColor: item.highlighted ? 'rgba(255, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.1)',
+          border: '2px dashed rgba(255, 255, 255, 0.5)',
+          pointerEvents: 'none'
+        }}
+      />
+    );
+  }
+  
+  // Normal mode - render actual sprite from sprite sheet
   return (
-    <div
-      className="absolute z-10"
-      style={getHiddenObjectStyle(item, objectsImagePath, debugMode)}
-    >
-      {/* If no sprite sheet is available, show item names for debugging */}
-      {(debugMode || !objectsImagePath) && (
-        <div className="absolute -top-6 left-0 right-0 text-center text-xs bg-black/70 text-white px-1 rounded">
-          {item.name}
-        </div>
-      )}
-    </div>
+    <div 
+      className={`absolute z-10 ${item.highlighted ? 'animate-pulse' : ''}`}
+      style={{
+        width: `${style.width}px`,
+        height: `${style.height}px`,
+        top: `${item.position.y - style.height/2}px`,
+        left: `${item.position.x - style.width/2}px`,
+        backgroundImage: `url(${objectsImagePath})`,
+        backgroundPosition: style.backgroundPosition,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'auto',
+        pointerEvents: 'none'
+      }}
+    />
   );
 };
 

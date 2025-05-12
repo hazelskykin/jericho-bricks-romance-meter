@@ -1,7 +1,7 @@
 
 import { useEffect } from 'react';
-import { GameState } from './types';
 import { toast } from 'sonner';
+import { GameState } from './types';
 import { soundManager } from '@/utils/sound';
 
 interface GameTimerProps {
@@ -17,78 +17,76 @@ export function useGameTimer({
   setGameComplete,
   onComplete
 }: GameTimerProps) {
-  const { timeRemaining, hiddenItems, gameComplete } = gameState;
+  const { hiddenItems, timeRemaining, gameComplete } = gameState;
 
-  // Timer effect to count down game time
+  // Function to safely play sounds that handles errors
+  const playSoundSafely = (soundId: string) => {
+    try {
+      soundManager.playSFX(soundId);
+    } catch (err) {
+      console.warn(`Failed to play sound: ${soundId}`, err);
+    }
+  };
+
+  // Handle timer countdown
   useEffect(() => {
-    // Skip if game is already complete
     if (gameComplete) return;
 
-    // Start timer
     const timer = setInterval(() => {
       setTimeRemaining(prev => {
-        const newTime = prev - 1;
-        
-        // Low time warning at 15 seconds
-        if (newTime === 15) {
-          toast.warning("Only 15 seconds left!");
-          playSoundSafely('click'); // Audio cue for low time
-        }
-        
-        // Game complete when timer reaches zero
-        if (newTime <= 0) {
-          handleGameComplete(false);
+        // Time's up - game over
+        if (prev <= 1) {
+          clearInterval(timer);
+          setGameComplete(true);
+          
+          // Check if all items were found
+          const allFound = hiddenItems.every(item => item.found);
+          
+          if (allFound) {
+            playSoundSafely('win');
+            // Add slight delay before reporting completion to prevent auto-restart
+            setTimeout(() => {
+              onComplete(true);
+            }, 2000);
+          } else {
+            playSoundSafely('lose');
+            // Add slight delay before reporting completion to prevent auto-restart
+            setTimeout(() => {
+              onComplete(false);
+            }, 2000);
+          }
+          
           return 0;
         }
         
-        return newTime;
+        return prev - 1;
       });
     }, 1000);
-    
+
     return () => clearInterval(timer);
-  }, [gameComplete]);
-
-  // Check if all items are found to end the game
-  useEffect(() => {
-    const allItemsFound = hiddenItems.every(item => item.found);
-    
-    if (allItemsFound && hiddenItems.length > 0 && !gameComplete) {
-      handleGameComplete(true);
-    }
-  }, [hiddenItems, gameComplete]);
-
-  // Handle game completion
-  const handleGameComplete = (success: boolean) => {
-    if (gameComplete) return; // Prevent duplicate calls
-    
-    setGameComplete(true);
-    
-    // Play appropriate sound
-    if (success) {
-      playSoundSafely('bloomWithAView-success');
-      toast.success("Congratulations! You found all the items!");
-    } else {
-      playSoundSafely('item-miss');
-      toast.error("Time's up!");
-    }
-    
-    // Notify parent component
-    setTimeout(() => {
-      onComplete(success);
-    }, 2000); // Give time for toast to be seen
-  };
+  }, [gameComplete, hiddenItems, setGameComplete, setTimeRemaining, onComplete]);
   
-  // Helper function to safely play sounds, handling any errors
-  const playSoundSafely = (soundId: string) => {
-    try {
-      console.log(`Playing sound: ${soundId}`);
+  // Check for early victory if all items are found
+  useEffect(() => {
+    if (gameComplete) return;
+    
+    const allItemsFound = hiddenItems.length > 0 && hiddenItems.every(item => item.found);
+    
+    if (allItemsFound) {
+      console.log('All items found! Game complete.');
+      setGameComplete(true);
+      playSoundSafely('win');
+      toast.success("You found all the items!", {
+        description: "Great job!",
+        duration: 3000
+      });
       
-      // Try the exact ID first
-      soundManager.playSFX(soundId);
-    } catch (error) {
-      console.warn(`Error playing sound ${soundId}:`, error);
+      // Add delay before triggering completion to prevent auto-restart
+      setTimeout(() => {
+        onComplete(true);
+      }, 2000);
     }
-  };
+  }, [hiddenItems, gameComplete, setGameComplete, onComplete]);
 
   return {
     playSoundSafely

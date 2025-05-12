@@ -50,6 +50,11 @@ const AffectionMeter: React.FC<AffectionMeterProps> = ({ character, isOpen }) =>
     }
   };
   
+  if (!character) {
+    console.warn('AffectionMeter received undefined character');
+    return null;
+  }
+  
   return (
     <div className="flex flex-col items-center">
       <motion.div 

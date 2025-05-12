@@ -83,15 +83,15 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
     // No action needed for background clicks in this view
   };
 
-  // Get appropriate background for the season
+  // Get appropriate background for the season - UPDATED to use correct seasonal backgrounds
   const getSeasonBackground = () => {
     switch (season) {
       case 'spring':
-        return 'stonewich-cityscape';
+        return 'spring-cityoverlook';
       case 'summer':
-        return 'stonewich-cityscape';
+        return 'summer-cityoverlook';
       case 'autumn':
-        return 'stonewich-cityscape';
+        return 'autumn-cityoverlook';
       case 'winter':
         return 'winter-cityoverlook';
       default:

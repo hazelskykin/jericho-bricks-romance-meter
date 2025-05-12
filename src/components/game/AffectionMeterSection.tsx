@@ -2,20 +2,23 @@
 import React from 'react';
 import { CharacterId } from '@/types/game';
 import AffectionMeter from '@/components/AffectionMeter';
+import { useGame } from '@/context/GameContext';
 
 interface AffectionMeterSectionProps {
   showAffection: boolean;
   toggleAffectionMeter: () => void;
-  characters: Record<string, any>;
 }
 
 const AffectionMeterSection: React.FC<AffectionMeterSectionProps> = ({ 
   showAffection, 
-  toggleAffectionMeter, 
-  characters 
+  toggleAffectionMeter 
 }) => {
+  // Access the game context to get character data
+  const { gameState } = useGame();
+  const { characters } = gameState;
+
   return (
-    <div className="absolute top-4 right-4 z-30">
+    <div className="absolute top-4 right-4 z-10">
       <button 
         onClick={toggleAffectionMeter} 
         className="bg-[#9b87f5] hover:bg-[#8B5CF6] p-2 rounded-full mb-2 shadow-md"
@@ -26,7 +29,7 @@ const AffectionMeterSection: React.FC<AffectionMeterSectionProps> = ({
       </button>
       
       {Object.entries(characters)
-        .filter(([id]) => id !== 'maven')
+        .filter(([id]) => id !== 'maven') // Filter out the protagonist
         .map(([id, character]) => (
           <div key={id} className="mb-2">
             <AffectionMeter 

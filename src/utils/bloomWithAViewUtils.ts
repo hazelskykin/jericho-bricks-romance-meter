@@ -1,118 +1,128 @@
 
-import { HiddenItem } from '@/hooks/bloomWithAView/types';
-import { assetManager } from '@/utils/assetManager';
-import { getAssetPath, fixAssetPath } from '@/utils/assetUtilities';
-import { toast } from 'sonner';
+import { fixAssetPath } from './assetManager';
 
-/**
- * Get background position for item in sprite sheet
- */
-export const getBackgroundPositionForItem = (id: string): string => {
-  const positions: Record<string, string> = {
-    'gardening-gloves': '0px 0px',    // First sprite
-    'bee-drone': '-50px 0px',         // Second sprite
-    'seed-packet': '-100px 0px',      // Third sprite
-    'butterfly': '-150px 0px',        // Fourth sprite
-    'vintage-watering-can': '-200px 0px' // Fifth sprite
+type AssetLoadCallback = (
+  backgroundPath: string,
+  objectsPath: string,
+  tilesPath: string,
+  debugMode: boolean
+) => void;
+
+export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
+  // Asset paths for the game
+  const bgPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.jpg');
+  const objectsPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/hidden-objects.png');
+  const tilesPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/flower-tiles.png');
+  
+  // Check if assets exist by preloading them
+  let debugMode = false;
+  let bgLoaded = false;
+  let objectsLoaded = false;
+  let tilesLoaded = false;
+  
+  // Function to check if all assets are loaded
+  const checkAllLoaded = () => {
+    if (bgLoaded && objectsLoaded && tilesLoaded) {
+      console.log('All BloomWithAView assets loaded successfully');
+      onLoad(bgPath, objectsPath, tilesPath, false);
+    } else if (debugMode) {
+      console.log('Using debug mode for BloomWithAView assets');
+      // Use fallback paths for debug mode
+      const fallbackBgPath = '/assets/backgrounds/stonewich-cityscape.jpg';
+      onLoad(
+        fallbackBgPath, 
+        '/assets/minigames/spring/bloomWithAView/hidden-objects.png', 
+        '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
+        true
+      );
+    }
   };
   
-  return positions[id] || '0px 0px'; // Default to first sprite if not found
-};
+  // Load background image
+  const bgImg = new Image();
+  bgImg.onload = () => {
+    bgLoaded = true;
+    checkAllLoaded();
+  };
+  bgImg.onerror = () => {
+    console.warn('Failed to load garden background image');
+    debugMode = true;
+    checkAllLoaded();
+  };
+  bgImg.src = bgPath;
+  
+  // Load objects image
+  const objectsImg = new Image();
+  objectsImg.onload = () => {
+    objectsLoaded = true;
+    checkAllLoaded();
+  };
+  objectsImg.onerror = () => {
+    console.warn('Failed to load hidden objects image');
+    debugMode = true;
+    checkAllLoaded();
+  };
+  objectsImg.src = objectsPath;
+  
+  // Load tiles image
+  const tilesImg = new Image();
+  tilesImg.onload = () => {
+    tilesLoaded = true;
+    checkAllLoaded();
+  };
+  tilesImg.onerror = () => {
+    console.warn('Failed to load flower tiles image');
+    debugMode = true;
+    checkAllLoaded();
+  };
+  tilesImg.src = tilesPath;
+  
+  // Set a timeout in case images take too long to load
+  setTimeout(() => {
+    if (!bgLoaded || !objectsLoaded || !tilesLoaded) {
+      console.warn('Timeout waiting for BloomWithAView assets to load');
+      debugMode = true;
+      checkAllLoaded();
+    }
+  }, 5000);
+}
 
-/**
- * Generate CSS for individual hidden object elements
- */
-export const getHiddenObjectStyle = (
-  item: HiddenItem, 
-  objectsImagePath: string, 
-  debugMode: boolean
-): React.CSSProperties => {
-  // When in debug mode or no sprite sheet, use basic styling
-  if (!objectsImagePath || debugMode) {
+// Get positioned and styled objects for each hidden item
+export function getObjectPosition(itemId: string, debugMode: boolean = false): { 
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  backgroundPosition: string;
+} {
+  // Position mapping for each item sprite in the sprite sheet
+  // Format: [x-position, y-position, width, height]
+  const positionMap: Record<string, [number, number, number, number]> = {
+    'gardening-gloves': [0, 0, 60, 60],
+    'bee-drone': [60, 0, 60, 60],
+    'seed-packet': [120, 0, 60, 60],
+    'butterfly': [180, 0, 60, 60],
+    'vintage-watering-can': [240, 0, 60, 60]
+  };
+  
+  const position = positionMap[itemId] || [0, 0, 60, 60];
+  
+  // For debug mode, use a simple colored div
+  if (debugMode) {
     return {
-      left: `${item.position.x - 25}px`,
-      top: `${item.position.y - 25}px`,
-      width: '50px',
-      height: '50px',
-      backgroundColor: 'rgba(255, 0, 255, 0.3)',
-      border: '2px dashed white',
-      borderRadius: '4px',
+      top: position[1],
+      left: position[0],
+      width: position[2],
+      height: position[3],
+      backgroundPosition: '0 0' // Not used in debug mode
     };
   }
   
-  // When using sprite sheet, position each object correctly
   return {
-    left: `${item.position.x - 25}px`, // Center the 50x50 sprite
-    top: `${item.position.y - 25}px`,
-    width: '50px',
-    height: '50px',
-    backgroundImage: `url(${objectsImagePath})`,
-    backgroundSize: '250px 50px', // The sprite sheet is 5 items wide (50px * 5) and 1 item tall
-    backgroundPosition: getBackgroundPositionForItem(item.id),
-    border: item.highlighted ? '2px dashed yellow' : 'none',
+    top: position[1],
+    left: position[0],
+    width: position[2],
+    height: position[3],
+    backgroundPosition: `-${position[0]}px -${position[1]}px`
   };
-};
-
-/**
- * Load assets for the Bloom With A View game
- */
-export const loadBloomWithAViewAssets = (
-  onAssetsLoaded: (
-    bgPath: string, 
-    objectsPath: string, 
-    tilesPath: string, 
-    debugMode: boolean
-  ) => void
-) => {
-  console.log("Attempting to load BloomWithAView assets...");
-  
-  // Only use the correct minigames folder paths
-  const assetPaths = [
-    // Garden background (PNG)
-    '/assets/minigames/spring/bloomWithAView/garden-background.png',
-    // Hidden objects
-    '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
-    // Flower tiles
-    '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
-  ];
-  
-  console.log("Attempting to load assets from paths:", assetPaths);
-  
-  // Use asset manager to preload assets
-  assetManager.preloadAssets(assetPaths, (loaded, total) => {
-    console.log(`Loaded ${loaded}/${total} BloomWithAView assets`);
-  }).then(() => {
-    console.log('Asset preloading complete');
-    
-    // Set the background image
-    const bgPath = '/assets/minigames/spring/bloomWithAView/garden-background.png';
-    
-    // Set the objects image (fixed path)
-    const objectsPath = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
-    
-    // Set the flower tiles image
-    const tilesPath = '/assets/minigames/spring/bloomWithAView/flower-tiles.png';
-    
-    // Mark all assets as loaded (no debug mode)
-    onAssetsLoaded(
-      fixAssetPath(bgPath), 
-      fixAssetPath(objectsPath), 
-      fixAssetPath(tilesPath), 
-      false
-    );
-  }).catch(error => {
-    console.error("Error loading assets:", error);
-    
-    // Use fallbacks and enable debug mode
-    toast.error("Failed to load game assets", {
-      description: "Using debug mode instead"
-    });
-    
-    onAssetsLoaded(
-      '/assets/backgrounds/stonewich-cityscape.jpg',
-      '',
-      '',
-      true
-    );
-  });
-};
+}
