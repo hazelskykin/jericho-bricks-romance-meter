@@ -116,6 +116,9 @@ export function useGameHandlers({
   
   // Handle exit button click
   const handleExit = useCallback(() => {
+    // Prevent multiple exit calls
+    if (gameState.gameExited) return;
+    
     console.log("Exit button clicked, marking game as exited");
     setGameExited(true);
     
@@ -130,7 +133,7 @@ export function useGameHandlers({
     setTimeout(() => {
       onExit();
     }, 100);
-  }, [onExit, setGameExited]);
+  }, [gameState.gameExited, onExit, setGameExited]);
 
   return {
     handleSceneClick,

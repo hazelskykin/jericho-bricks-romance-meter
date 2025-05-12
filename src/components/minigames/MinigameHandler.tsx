@@ -28,9 +28,9 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     if (activeMinigame === 'bloomWithAView') {
       console.log('Preloading BloomWithAView assets');
       
-      // Use asset manager to preload assets with specific paths - try both PNG and JPG
+      // Use asset manager to preload assets with specific paths
       const assetPaths = [
-        // Garden background (both PNG and JPG)
+        // Garden background (try both PNG and JPG)
         '/assets/minigames/spring/bloomWithAView/garden-background.png',
         '/assets/minigames/spring/bloomWithAView/garden-background.jpg',
         // Hidden objects assets
@@ -65,11 +65,11 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     }
   }, [activeMinigame, exitMinigame]);
   
-  // Handle minigame completion - ensure proper progression after game ends
+  // Handle minigame completion with proper completion flag
   const handleMinigameComplete = (success: boolean, score?: number) => {
     console.log(`Minigame ${activeMinigame} completed with success: ${success}, score: ${score}`);
     
-    // Add small delay to ensure proper transition
+    // Use a small delay to ensure proper transition and prevent multiple completions
     setTimeout(() => {
       completeMinigame(success, score);
     }, 500);

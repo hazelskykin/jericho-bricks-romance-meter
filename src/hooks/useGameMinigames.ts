@@ -1,5 +1,5 @@
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import { GameState } from '@/types/game';
 import { MinigameState, MinigameType } from '@/types/minigames';
 import { getNextSceneAfterMinigame } from '@/utils/minigameUtils';
@@ -17,6 +17,9 @@ export function useGameMinigames(
     pendingMinigame: null,
   });
   
+  // Add a completion flag to prevent multiple completion calls
+  const completionInProgress = useRef(false);
+  
   const { activeMinigame, returnSceneAfterMinigame } = minigameState;
   
   // Start a minigame
@@ -24,6 +27,9 @@ export function useGameMinigames(
     (minigameType: MinigameType) => {
       console.log(`Starting minigame: ${minigameType}`);
       const nextSceneAfterMinigame = getNextSceneAfterMinigame(minigameType);
+      
+      // Reset the completion flag when starting a new minigame
+      completionInProgress.current = false;
       
       // Set the active minigame
       setMinigameState({
@@ -41,11 +47,14 @@ export function useGameMinigames(
   // Complete a minigame with success/failure and optional score
   const completeMinigame = useCallback(
     (success: boolean, score?: number) => {
-      // Only proceed if there's an active minigame
-      if (!activeMinigame || !returnSceneAfterMinigame) {
-        console.warn('No active minigame to complete');
+      // Only proceed if there's an active minigame and not already completing
+      if (!activeMinigame || !returnSceneAfterMinigame || completionInProgress.current) {
+        console.warn('No active minigame to complete or completion already in progress');
         return;
       }
+      
+      // Set the completion flag to prevent multiple calls
+      completionInProgress.current = true;
       
       console.log(`Completing minigame: ${activeMinigame} with success: ${success}, score: ${score}`);
       
@@ -56,10 +65,10 @@ export function useGameMinigames(
         toast.error('Minigame not completed successfully.');
       }
       
-      // Important: Clear the active minigame BEFORE transitioning scenes
-      // This prevents multiple completions or auto-restarts
+      // Store the return scene before clearing state
       const returnScene = returnSceneAfterMinigame;
       
+      // Important: Clear the active minigame BEFORE transitioning scenes
       setMinigameState({
         activeMinigame: null,
         returnSceneAfterMinigame: '',
@@ -78,6 +87,12 @@ export function useGameMinigames(
 
   // Exit minigame without completion
   const exitMinigame = useCallback(() => {
+    // Prevent exit if completion is already in progress
+    if (completionInProgress.current) {
+      console.warn('Cannot exit: completion already in progress');
+      return;
+    }
+    
     console.log('Exiting minigame without completion');
     
     // Get the festival activities scene based on current season
@@ -90,6 +105,9 @@ export function useGameMinigames(
         default: return 'spring-festival-activities';
       }
     };
+    
+    // Mark completion as in progress to prevent any further state changes
+    completionInProgress.current = true;
     
     // Store the scene to transition to before clearing state
     const festivalActivitiesScene = getFestivalActivitiesScene();
@@ -107,6 +125,8 @@ export function useGameMinigames(
     // Add a slight delay before transitioning to avoid state conflicts
     setTimeout(() => {
       transitionToScene(festivalActivitiesScene);
+      // Reset the completion flag after transition
+      completionInProgress.current = false;
     }, 300);
   }, [gameState.currentSeason, transitionToScene]);
 
