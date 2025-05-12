@@ -1,19 +1,34 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import BackgroundScene from '../BackgroundScene';
+import { playBackgroundMusicForScene } from '@/utils/soundEffects';
 
 interface GameBackgroundSceneProps {
   backgroundId: string;
-  onBackgroundClick: () => void;
+  onBackgroundClick?: () => void;
 }
 
-const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({ 
-  backgroundId, 
-  onBackgroundClick 
+const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
+  backgroundId,
+  onBackgroundClick,
 }) => {
+  // Play background music when background changes
+  useEffect(() => {
+    if (backgroundId) {
+      playBackgroundMusicForScene(backgroundId);
+    }
+  }, [backgroundId]);
+  
   return (
-    <div onClick={onBackgroundClick} className="h-full w-full">
-      <BackgroundScene backgroundId={backgroundId} />
+    <div 
+      className="absolute inset-0 z-0" 
+      onClick={onBackgroundClick}
+      data-testid="game-background"
+    >
+      <BackgroundScene 
+        backgroundId={backgroundId} 
+        priority={true}
+      />
     </div>
   );
 };

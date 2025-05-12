@@ -10,6 +10,7 @@ import GameDialogueSystem from './GameDialogueSystem';
 import GameLoadingState from './GameLoadingState';
 import AffectionMeterSection from './AffectionMeterSection';
 import DialogHistorySection from './DialogHistorySection';
+import SoundToggle from '../minigames/common/SoundToggle';
 
 const StandardGameView: React.FC = () => {
   // Access game context with handlers
@@ -178,6 +179,11 @@ const StandardGameView: React.FC = () => {
         toggleAffectionMeter={toggleAffectionMeter}
         characters={gameState.characters}
       />
+      
+      {/* Sound Toggle */}
+      <div className="absolute top-4 right-4 z-50">
+        <SoundToggle />
+      </div>
       
       {/* Dialog Box or Choice Menu */}
       <GameDialogueSystem

@@ -210,6 +210,30 @@ const winterConclusionScenes: Record<string, Scene> = {
         nextSceneId: "winter-confession",
       }
     ]
+  },
+  
+  // Add the confession scene that transitions to the epilogue with end game music
+  'winter-confession': {
+    id: 'winter-confession',
+    background: 'happy-ending-epilogue', // This will trigger the endgame music
+    dialogue: [
+      {
+        character: 'maven',
+        text: "Before we all go our separate ways, there's something I need to say...",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'maven',
+        text: "This year has meant everything to me. Not just professionally, but personally.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "And there's one person who has become especially important to me.",
+        mood: 'embarrassed',
+      }
+    ],
+    nextSceneId: 'epilogue-route', // This will route to the appropriate epilogue based on affection
   }
 };
 

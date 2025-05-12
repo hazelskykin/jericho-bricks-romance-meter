@@ -1,14 +1,20 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Volume2, VolumeX, Music, MicOff } from 'lucide-react';
+import { Volume2, VolumeX, Music, MusicOff } from 'lucide-react';
 import { soundManager } from '@/utils/soundEffects';
 
 interface SoundToggleProps {
   showMusicToggle?: boolean;
+  className?: string;
+  size?: 'default' | 'sm' | 'lg' | 'icon';
 }
 
-export const SoundToggle: React.FC<SoundToggleProps> = ({ showMusicToggle = false }) => {
+export const SoundToggle: React.FC<SoundToggleProps> = ({ 
+  showMusicToggle = true,
+  className = '',
+  size = 'sm'
+}) => {
   const [muted, setMuted] = useState(false);
   const [musicMuted, setMusicMuted] = useState(false);
   
@@ -29,12 +35,13 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({ showMusicToggle = fals
   };
   
   return (
-    <div className="flex gap-2">
+    <div className={`flex gap-2 ${className}`}>
       <Button 
         variant="outline" 
-        size="sm"
+        size={size}
         onClick={toggleMute}
         className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
+        title={muted ? "Unmute sound effects" : "Mute sound effects"}
       >
         {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
       </Button>
@@ -42,13 +49,16 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({ showMusicToggle = fals
       {showMusicToggle && (
         <Button 
           variant="outline" 
-          size="sm"
+          size={size}
           onClick={toggleMusic}
           className="border-[#9b87f5]/30 hover:bg-[#9b87f5]/10"
+          title={musicMuted ? "Unmute music" : "Mute music"}
         >
-          {musicMuted ? <MicOff size={16} /> : <Music size={16} />}
+          {musicMuted ? <MusicOff size={16} /> : <Music size={16} />}
         </Button>
       )}
     </div>
   );
 };
+
+export default SoundToggle;
