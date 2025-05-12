@@ -1,6 +1,6 @@
 
-import { useCallback, useRef } from 'react';
-import { soundManager } from '@/utils/sound';
+import { useCallback, useEffect, useRef } from 'react';
+import { soundManager, pauseBackgroundMusic, resumeBackgroundMusic } from '@/utils/sound';
 
 export const useCrafterAudio = () => {
   const backgroundMusicRef = useRef<HTMLAudioElement | null>(null);
@@ -11,6 +11,9 @@ export const useCrafterAudio = () => {
     console.log('🎵 Initializing Crafter audio...');
     
     try {
+      // Pause any existing background music first
+      pauseBackgroundMusic();
+      
       // Start background music loop
       const musicElement = new Audio('/audio/crafter-loop-gameplay.mp3');
       musicElement.loop = true;
@@ -60,10 +63,19 @@ export const useCrafterAudio = () => {
     }
   }, []);
   
-  // Stop all sounds (for cleanup)
+  // Stop all sounds (for cleanup) and resume main game music
   const stopAllSounds = useCallback(() => {
     stopBackgroundMusic();
+    // Resume main game background music
+    resumeBackgroundMusic();
   }, [stopBackgroundMusic]);
+  
+  // Make sure background music is stopped and main music resumes when component unmounts
+  useEffect(() => {
+    return () => {
+      stopAllSounds();
+    };
+  }, [stopAllSounds]);
   
   return {
     initializeAudio,

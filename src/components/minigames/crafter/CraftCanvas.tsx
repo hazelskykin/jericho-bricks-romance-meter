@@ -50,7 +50,7 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
   return (
     <div 
       ref={canvasRef}
-      className={`relative w-64 h-64 ${interactive ? 'cursor-pointer' : ''}`}
+      className={`relative w-64 h-64 ${interactive ? 'cursor-pointer' : ''} bg-transparent`}
       onClick={handleCanvasClick}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
@@ -72,7 +72,8 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
             top: `${accent.position.y - 6}%`,
             backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
             backgroundPosition: getAccentPosition(accent.id),
-            backgroundSize: '500% 100%' // 5 sprites in one row
+            backgroundSize: '500% 100%', // 5 sprites in one row
+            imageRendering: 'pixelated' // This may help with image quality
           }}
         />
       ))}

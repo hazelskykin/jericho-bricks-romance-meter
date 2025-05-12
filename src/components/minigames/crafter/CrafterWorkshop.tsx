@@ -50,12 +50,14 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
         {gameStage === 'accent-placement' && (
           <div className="absolute inset-0 flex flex-col">
             <div className="flex-grow relative flex justify-center items-center">
-              <CraftCanvas 
-                baseMaterial={selectedBaseMaterial!} 
-                accents={placedAccents} 
-                onPlaceAccent={onAccentPlace}
-                interactive={true}
-              />
+              <div className="relative bg-transparent">
+                <CraftCanvas 
+                  baseMaterial={selectedBaseMaterial!} 
+                  accents={placedAccents} 
+                  onPlaceAccent={onAccentPlace}
+                  interactive={true}
+                />
+              </div>
             </div>
             <div className="p-4 bg-[#2A2045]/80 rounded-t-lg">
               <h3 className="text-lg font-semibold text-white mb-2">Select Accents</h3>
@@ -64,6 +66,7 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
                 <Button 
                   onClick={onFinishCraft}
                   className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white"
+                  disabled={placedAccents.length === 0}
                 >
                   Finish Craft
                 </Button>

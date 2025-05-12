@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGame } from '@/context/GameContext';
 import SeasonTransition from './SeasonTransition';
 import { MinigameType } from '@/types/minigames';
@@ -10,6 +10,8 @@ import { toast } from 'sonner';
  */
 const GameSceneObserver = () => {
   const { gameState, startMinigame, checkSeasonProgress } = useGame();
+  const lastTriggeredMinigame = useRef<string | null>(null);
+  const minigameTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Monitor scene changes to detect when to trigger minigames or season transitions
   useEffect(() => {
@@ -58,13 +60,27 @@ const GameSceneObserver = () => {
       const minigameType = minigameMappings[currentScene];
       console.log(`GameSceneObserver: Detected minigame trigger scene for ${minigameType}`);
       
+      // Prevent double-triggering of minigames
+      if (lastTriggeredMinigame.current === currentScene) {
+        console.log(`GameSceneObserver: Skipping duplicate minigame trigger for ${minigameType}`);
+        return;
+      }
+      
+      // Update the last triggered minigame reference
+      lastTriggeredMinigame.current = currentScene;
+      
       // Don't show toast if we're re-triggering the same minigame
       if (gameState.currentScene !== minigameType) {
         toast.info(`Starting minigame: ${minigameType}`);
       }
       
+      // Clear any existing timers
+      if (minigameTimerRef.current) {
+        clearTimeout(minigameTimerRef.current);
+      }
+      
       // Add a clearer delay to ensure state updates are processed in the right order
-      setTimeout(() => {
+      minigameTimerRef.current = setTimeout(() => {
         try {
           console.log(`GameSceneObserver: Starting minigame ${minigameType}`);
           startMinigame(minigameType);
@@ -72,11 +88,24 @@ const GameSceneObserver = () => {
           console.error("Error starting minigame:", error);
           toast.error(`Failed to start minigame: ${error}`);
         }
+        // Reset timer reference
+        minigameTimerRef.current = null;
       }, 500); // Delay to ensure state is ready
+    } else {
+      // Reset the last triggered minigame if we're on a different scene
+      lastTriggeredMinigame.current = null;
     }
     
     // Check for season transition scenes
     checkSeasonProgress(currentScene);
+    
+    // Cleanup function to clear any pending timers
+    return () => {
+      if (minigameTimerRef.current) {
+        clearTimeout(minigameTimerRef.current);
+        minigameTimerRef.current = null;
+      }
+    };
     
   }, [gameState.currentScene, startMinigame, checkSeasonProgress, gameState]);
 
