@@ -18,7 +18,7 @@ const AffectionMeterSection: React.FC<AffectionMeterSectionProps> = ({
   const { characters } = gameState;
 
   return (
-    <div className="absolute top-4 right-4 z-10">
+    <div className="absolute top-4 right-16 z-50">
       <button 
         onClick={toggleAffectionMeter} 
         className="bg-[#9b87f5] hover:bg-[#8B5CF6] p-2 rounded-full mb-2 shadow-md"

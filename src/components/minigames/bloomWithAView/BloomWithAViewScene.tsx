@@ -48,6 +48,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
     });
   }, []);
 
+  // Ensure we only render once assets are attempted to load
   return (
     <div className="relative w-full">
       <div 

@@ -1,6 +1,7 @@
 
 import { useCallback } from 'react';
 import { GameState, CharacterId } from '@/types/game';
+import { toast } from 'sonner';
 
 // Helper to determine affection level based on value
 const getAffectionLevel = (value: number): string => {
@@ -37,8 +38,19 @@ export function useGameCharacters(
       };
     });
     
-    // Toast notifications have been removed
-  }, [gameState.characters]);
+    // Re-enable toast notifications for affection changes
+    if (changeAmount > 0) {
+      toast.success(`${characterId.charAt(0).toUpperCase() + characterId.slice(1)}'s affection increased!`, {
+        position: 'bottom-right',
+        duration: 3000
+      });
+    } else if (changeAmount < 0) {
+      toast.error(`${characterId.charAt(0).toUpperCase() + characterId.slice(1)}'s affection decreased.`, {
+        position: 'bottom-right',
+        duration: 3000
+      });
+    }
+  }, [gameState.characters, setGameState]);
 
   return {
     updateCharacterAffection

@@ -5,7 +5,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Brooms Away minigame intro
   'spring-brooms-away-intro': {
     id: 'spring-brooms-away-intro',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -46,7 +46,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Scene that triggers the Brooms Away minigame
   'spring-brooms-away-start': {
     id: 'spring-brooms-away-start',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -60,7 +60,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Scene after completing Brooms Away
   'spring-brooms-away-complete': {
     id: 'spring-brooms-away-complete',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -92,7 +92,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Bloom With A View minigame intro
   'spring-bloom-view-intro': {
     id: 'spring-bloom-view-intro',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -133,7 +133,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Scene that triggers the Bloom With A View minigame
   'spring-bloom-view-start': {
     id: 'spring-bloom-view-start',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -147,7 +147,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Scene after completing Bloom With A View
   'spring-bloom-view-complete': {
     id: 'spring-bloom-view-complete',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -179,7 +179,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Mud Fling minigame intro
   'spring-mud-fling-intro': {
     id: 'spring-mud-fling-intro',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -221,7 +221,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Scene that triggers the Mud Fling minigame
   'spring-mud-fling-start': {
     id: 'spring-mud-fling-start',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -235,7 +235,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Scene after completing Mud Fling
   'spring-mud-fling-complete': {
     id: 'spring-mud-fling-complete',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -267,7 +267,7 @@ const springMinigameScenes: Record<string, Scene> = {
   // Common midway point after any minigame
   'spring-festival-midway': {
     id: 'spring-festival-midway',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',
@@ -303,13 +303,13 @@ const springMinigameScenes: Record<string, Scene> = {
         text: "As evening approaches, you join your teammates to enjoy the rest of the festivities, feeling like you're truly becoming part of Stonewich.",
       }
     ],
-    nextSceneId: 'spring-festival-end',
+    nextSceneId: 'spring-festival-activities',  // Changed from spring-festival-end to go back to activities
   },
   
   // Explicitly define spring-festival-end to avoid dead ends
   'spring-festival-end': {
     id: 'spring-festival-end',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook', // Changed from stonewich-cityscape
     dialogue: [
       {
         character: 'narrator',

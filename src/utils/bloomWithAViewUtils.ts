@@ -9,8 +9,8 @@ type AssetLoadCallback = (
 ) => void;
 
 export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
-  // Asset paths for the game
-  const bgPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.jpg');
+  // Asset paths for the game - fixing paths for PNG vs JPG
+  const bgPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.png');
   const objectsPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/hidden-objects.png');
   const tilesPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/flower-tiles.png');
   

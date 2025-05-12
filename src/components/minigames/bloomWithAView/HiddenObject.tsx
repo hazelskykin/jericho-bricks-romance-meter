@@ -23,12 +23,12 @@ const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, deb
       <div 
         className={`absolute z-10 rounded-md ${item.highlighted ? 'animate-pulse' : ''}`}
         style={{
-          width: '60px',
-          height: '60px', 
-          top: `${item.position.y - 30}px`,
-          left: `${item.position.x - 30}px`,
-          backgroundColor: item.highlighted ? 'rgba(255, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.1)',
-          border: '2px dashed rgba(255, 255, 255, 0.5)',
+          width: '80px',  // Increased size for better visibility
+          height: '80px', // Increased size for better visibility 
+          top: `${item.position.y - 40}px`,
+          left: `${item.position.x - 40}px`,
+          backgroundColor: item.highlighted ? 'rgba(255, 255, 0, 0.7)' : 'rgba(255, 0, 0, 0.2)',
+          border: '2px dashed rgba(255, 255, 255, 0.7)',
           pointerEvents: 'none'
         }}
       />

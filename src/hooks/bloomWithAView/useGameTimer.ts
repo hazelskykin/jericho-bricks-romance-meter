@@ -44,16 +44,16 @@ export function useGameTimer({
           
           if (allFound) {
             playSoundSafely('win');
-            // Add slight delay before reporting completion to prevent auto-restart
+            // Only call onComplete once, with longer delay to prevent auto-restart
             setTimeout(() => {
               onComplete(true);
-            }, 2000);
+            }, 3000);
           } else {
             playSoundSafely('lose');
-            // Add slight delay before reporting completion to prevent auto-restart
+            // Only call onComplete once, with longer delay to prevent auto-restart
             setTimeout(() => {
               onComplete(false);
-            }, 2000);
+            }, 3000);
           }
           
           return 0;
@@ -66,7 +66,7 @@ export function useGameTimer({
     return () => clearInterval(timer);
   }, [gameComplete, hiddenItems, setGameComplete, setTimeRemaining, onComplete]);
   
-  // Check for early victory if all items are found
+  // Check for early victory if all items are found, but only once
   useEffect(() => {
     if (gameComplete) return;
     
@@ -81,10 +81,13 @@ export function useGameTimer({
         duration: 3000
       });
       
-      // Add delay before triggering completion to prevent auto-restart
-      setTimeout(() => {
+      // Add significant delay before triggering completion to prevent auto-restart
+      // and use a state flag to ensure we only call onComplete once
+      const timer = setTimeout(() => {
         onComplete(true);
-      }, 2000);
+      }, 3000);
+      
+      return () => clearTimeout(timer);
     }
   }, [hiddenItems, gameComplete, setGameComplete, onComplete]);
 

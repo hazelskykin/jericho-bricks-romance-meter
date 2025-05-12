@@ -71,11 +71,10 @@ export function useGameHandlers({
     let foundItem = false;
     
     // Create a copy of hidden items to track newly found items
-    const newHiddenItems = [...hiddenItems];
-    let itemFound = false;
+    const updatedItems = [...hiddenItems];
     
-    for (let i = 0; i < newHiddenItems.length; i++) {
-      const item = newHiddenItems[i];
+    for (let i = 0; i < updatedItems.length; i++) {
+      const item = updatedItems[i];
       
       // Skip already found items
       if (item.found) continue;
@@ -86,25 +85,24 @@ export function useGameHandlers({
         Math.pow(y - item.position.y, 2)
       );
       
-      if (distance < itemClickRadius/2) {
+      if (distance < itemClickRadius) {
         // Found an item!
         console.log(`Found item: ${item.name} at distance ${distance}`);
-        newHiddenItems[i] = { ...item, found: true };
-        itemFound = true;
+        updatedItems[i] = { ...item, found: true };
         
         // Play success sound
         playSoundSafely('bloomWithAView-success');
         toast.success(`You found the ${item.name}!`);
         foundItem = true;
+        
+        // Update state with the found item
+        setHiddenItems(updatedItems);
         break; // Only find one item per click
       }
     }
     
-    // Update state with newly found items
-    if (itemFound) {
-      setHiddenItems(newHiddenItems);
-    } else if (!foundItem) {
-      // Play click sound if no item was found
+    // If no item was found, play click sound
+    if (!foundItem) {
       playSoundSafely('click');
     }
   };
