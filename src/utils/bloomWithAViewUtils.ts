@@ -11,7 +11,7 @@ type AssetLoadCallback = (
 export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
   console.log("Loading Bloom With A View assets...");
   
-  // Use a single, consistent path structure
+  // Use a single, consistent path structure - lowercase w
   const assetPaths = {
     bgPath: '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
     objectsPath: '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
@@ -108,7 +108,7 @@ export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
       debugMode = true;
       checkAllLoaded();
     }
-  }, 3000); // Reduced from 5000 to 3000ms
+  }, 3000); // 3 seconds timeout
 }
 
 // Get positioned and styled objects for each hidden item
@@ -116,7 +116,13 @@ export function getObjectPosition(itemId: string, debugMode: boolean = false): {
   width: number;
   height: number;
   backgroundPosition: string;
+  spriteSheetWidth: number;
+  spriteSheetHeight: number;
 } {
+  // These are the sprite sheet dimensions
+  const spriteSheetWidth = 300; // Total width of the sprite sheet
+  const spriteSheetHeight = 60; // Total height of the sprite sheet
+  
   // Position mapping for each item sprite in the sprite sheet
   // Format: [x-position, y-position, width, height]
   const positionMap: Record<string, [number, number, number, number]> = {
@@ -132,6 +138,8 @@ export function getObjectPosition(itemId: string, debugMode: boolean = false): {
   return {
     width: position[2],
     height: position[3],
-    backgroundPosition: `-${position[0]}px -${position[1]}px`
+    backgroundPosition: `-${position[0]}px -${position[1]}px`,
+    spriteSheetWidth,
+    spriteSheetHeight
   };
 }

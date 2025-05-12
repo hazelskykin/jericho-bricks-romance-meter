@@ -46,8 +46,8 @@ const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, deb
         left: `${item.position.x - style.width/2}px`,
         backgroundImage: `url(${objectsImagePath})`,
         backgroundPosition: style.backgroundPosition,
+        backgroundSize: `${style.spriteSheetWidth}px ${style.spriteSheetHeight}px`,
         backgroundRepeat: 'no-repeat',
-        backgroundSize: 'auto',
         pointerEvents: 'none',
         // Add subtle highlight in production mode too
         boxShadow: item.highlighted ? '0 0 15px 8px rgba(255, 255, 0, 0.3)' : 'none'

@@ -11,14 +11,20 @@ const FlowerTilesLayer: React.FC<FlowerTilesLayerProps> = ({ flowerTilesPath, im
   
   // Create an array of flower tiles with different positions
   const flowerTilePositions = [
-    { top: '10%', left: '15%', rotation: '0deg', size: '60px' },
-    { top: '25%', left: '75%', rotation: '45deg', size: '70px' },
+    // Tiles in the middle area
+    { top: '50%', left: '20%', rotation: '0deg', size: '60px' },
+    { top: '55%', left: '75%', rotation: '45deg', size: '70px' },
     { top: '60%', left: '20%', rotation: '15deg', size: '55px' },
-    { top: '40%', left: '60%', rotation: '-10deg', size: '65px' },
+    { top: '52%', left: '60%', rotation: '-10deg', size: '65px' },
     { top: '75%', left: '80%', rotation: '30deg', size: '60px' },
     { top: '85%', left: '40%', rotation: '-20deg', size: '50px' },
-    { top: '15%', left: '45%', rotation: '5deg', size: '55px' },
-    { top: '50%', left: '85%', rotation: '-5deg', size: '65px' },
+    { top: '65%', left: '45%', rotation: '5deg', size: '55px' },
+    { top: '70%', left: '85%', rotation: '-5deg', size: '65px' },
+    // Additional tiles - all below midpoint
+    { top: '58%', left: '35%', rotation: '12deg', size: '58px' },
+    { top: '67%', left: '55%', rotation: '-8deg', size: '62px' },
+    { top: '80%', left: '25%', rotation: '22deg', size: '54px' },
+    { top: '72%', left: '70%', rotation: '-15deg', size: '59px' },
   ];
 
   return (
@@ -61,7 +67,11 @@ function getBackgroundPosition(index: number): string {
     '33.33% 50%', // Middle-center flower
     '66.66% 50%', // Middle-right flower
     '0% 100%',    // Bottom-left flower
-    '33.33% 100%' // Bottom-center flower
+    '33.33% 100%', // Bottom-center flower
+    '66.66% 100%', // Bottom-right flower
+    '100% 0%',    // Far-right top flower
+    '100% 50%',   // Far-right middle flower
+    '100% 100%'   // Far-right bottom flower
   ];
   
   return positions[index % positions.length];

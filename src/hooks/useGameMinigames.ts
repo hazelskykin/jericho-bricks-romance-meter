@@ -20,6 +20,9 @@ export function useGameMinigames(
   // Add a completion flag to prevent multiple completion calls
   const completionInProgress = useRef(false);
   
+  // Track whether we've already handled a specific return scene
+  const handledReturnScenes = useRef<Set<string>>(new Set());
+  
   const { activeMinigame, returnSceneAfterMinigame } = minigameState;
   
   // Start a minigame
@@ -53,8 +56,25 @@ export function useGameMinigames(
         return;
       }
       
+      // Check if we've already handled this return scene
+      if (handledReturnScenes.current.has(returnSceneAfterMinigame)) {
+        console.warn(`Already handled return scene: ${returnSceneAfterMinigame}, skipping duplicate completion`);
+        
+        // Clear the active minigame state but don't trigger another navigation
+        setMinigameState({
+          activeMinigame: null,
+          returnSceneAfterMinigame: '',
+          pendingMinigame: null,
+        });
+        
+        return;
+      }
+      
       // Set the completion flag to prevent multiple calls
       completionInProgress.current = true;
+      
+      // Add this return scene to the handled set
+      handledReturnScenes.current.add(returnSceneAfterMinigame);
       
       console.log(`Completing minigame: ${activeMinigame} with success: ${success}, score: ${score}`);
       
@@ -80,6 +100,16 @@ export function useGameMinigames(
         console.log(`Transitioning to next scene: ${returnScene}`);
         // Navigate to the appropriate scene based on completion state
         transitionToScene(returnScene);
+        
+        // Reset the completion flag after successful transition
+        setTimeout(() => {
+          completionInProgress.current = false;
+          
+          // Clear handled scenes after a reasonable period to allow for future replays
+          setTimeout(() => {
+            handledReturnScenes.current.clear();
+          }, 5000);
+        }, 1000);
       }, 500);
     },
     [activeMinigame, returnSceneAfterMinigame, transitionToScene]
@@ -126,7 +156,14 @@ export function useGameMinigames(
     setTimeout(() => {
       transitionToScene(festivalActivitiesScene);
       // Reset the completion flag after transition
-      completionInProgress.current = false;
+      setTimeout(() => {
+        completionInProgress.current = false;
+        
+        // Clear handled scenes after a reasonable period to allow for future replays
+        setTimeout(() => {
+          handledReturnScenes.current.clear();
+        }, 5000);
+      }, 1000);
     }, 300);
   }, [gameState.currentSeason, transitionToScene]);
 

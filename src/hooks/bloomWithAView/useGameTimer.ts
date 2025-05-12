@@ -28,6 +28,18 @@ export function useGameTimer({
   // Use a ref to track if completion has already been called
   const completionCalled = useRef(false);
   
+  // Use a ref to track the completion timer to clear it if needed
+  const completionTimerRef = useRef<number | null>(null);
+  
+  // Clean up any pending timers when component unmounts
+  useEffect(() => {
+    return () => {
+      if (completionTimerRef.current) {
+        clearTimeout(completionTimerRef.current);
+      }
+    };
+  }, []);
+  
   // Effect for timer countdown
   useEffect(() => {
     // Don't start countdown if game is already complete
@@ -49,9 +61,10 @@ export function useGameTimer({
             setGameComplete(true);
             
             // Delay the completion to allow for visual feedback
-            setTimeout(() => {
+            completionTimerRef.current = window.setTimeout(() => {
               console.log("Game complete, calling onComplete handler");
               onComplete(true);
+              completionTimerRef.current = null;
             }, 500);
             return 0;
           } else if (!completionCalled.current) {
@@ -63,9 +76,10 @@ export function useGameTimer({
             setGameComplete(true);
             
             // Delay the completion to allow for visual feedback
-            setTimeout(() => {
+            completionTimerRef.current = window.setTimeout(() => {
               console.log("Game complete, calling onComplete handler");
               onComplete(false);
+              completionTimerRef.current = null;
             }, 500);
             return 0;
           }
@@ -75,7 +89,7 @@ export function useGameTimer({
       });
     }, 1000);
     
-    // Cleanup the timer on component unmount
+    // Cleanup the timer on component unmount or game completion
     return () => {
       clearInterval(timer);
     };
@@ -94,9 +108,10 @@ export function useGameTimer({
     setGameComplete(true);
     
     // Important: Add delay before completing to allow animations and sounds to play
-    setTimeout(() => {
+    completionTimerRef.current = window.setTimeout(() => {
       console.log("Game complete, calling onComplete handler");
       onComplete(true);
+      completionTimerRef.current = null;
     }, 500);
   }, [allItemsFound, gameState.gameComplete, onComplete, setGameComplete]);
   
