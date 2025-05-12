@@ -12,11 +12,11 @@ interface AffectionMeterProps {
 const AffectionMeter: React.FC<AffectionMeterProps> = ({ character, isOpen }) => {
   // Map affection value to level
   const getLevel = () => {
-    if (character.affection <= -5) return 'Hostile';
+    if (character.affection <= -3) return 'Hostile';
     if (character.affection <= -1) return 'Cold';
-    if (character.affection <= 5) return 'Neutral';
-    if (character.affection <= 15) return 'Friendly';
-    if (character.affection <= 25) return 'Close';
+    if (character.affection <= 3) return 'Neutral';
+    if (character.affection <= 5) return 'Friendly';
+    if (character.affection <= 8) return 'Close';
     return 'Romantic';
   };
   
