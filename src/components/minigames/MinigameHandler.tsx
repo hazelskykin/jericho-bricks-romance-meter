@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { MinigameType } from '@/types/minigames';
 import PlaceholderMinigame from './PlaceholderMinigame';
@@ -28,15 +27,14 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     if (activeMinigame === 'bloomWithAView') {
       console.log('Preloading BloomWithAView assets');
       
-      // Use asset manager to preload assets with specific paths
+      // Use asset manager to preload assets with specific paths - focusing on bloomwithAView (lowercase w)
       const assetPaths = [
-        // Garden background (try both PNG and JPG)
-        '/assets/minigames/spring/bloomWithAView/garden-background.png',
-        '/assets/minigames/spring/bloomWithAView/garden-background.jpg',
+        // Garden background (JPG version)
+        '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
         // Hidden objects assets
-        '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
+        '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
         // Flower tiles
-        '/assets/minigames/spring/bloomWithAView/flower-tiles.png'
+        '/assets/minigames/spring/bloomwithAView/flower-tiles.png'
       ];
       
       assetManager.preloadAssets(assetPaths, (loaded, total) => {

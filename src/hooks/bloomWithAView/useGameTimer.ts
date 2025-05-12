@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { soundManager } from '@/utils/sound';
 
@@ -25,6 +25,9 @@ export function useGameTimer({
   const itemsCount = gameState.hiddenItems.filter(item => item.found).length;
   const totalItems = gameState.hiddenItems.length;
   
+  // Use a ref to track if completion has already been called
+  const completionCalled = useRef(false);
+  
   // Effect for timer countdown
   useEffect(() => {
     // Don't start countdown if game is already complete
@@ -38,34 +41,37 @@ export function useGameTimer({
           clearInterval(timer);
           
           // If all items are found, this is a successful completion
-          if (allItemsFound) {
+          if (allItemsFound && !completionCalled.current) {
             console.log("All items found! Game complete.");
             playSoundSafely('win');
             
+            // Mark game as complete to prevent multiple calls
+            completionCalled.current = true;
+            setGameComplete(true);
+            
             // Delay the completion to allow for visual feedback
             setTimeout(() => {
-              if (!gameState.gameComplete) {
-                setGameComplete(true);
-                console.log("Game complete, calling onComplete handler");
-                onComplete(true);
-              }
+              console.log("Game complete, calling onComplete handler");
+              onComplete(true);
             }, 500);
             return 0;
-          } else {
+          } else if (!completionCalled.current) {
             // Game over, didn't find all items
             console.log("Time's up! Items found: " + itemsCount + "/" + totalItems);
             playSoundSafely('lose');
             
+            // Mark game as complete to prevent multiple calls
+            completionCalled.current = true;
+            setGameComplete(true);
+            
             // Delay the completion to allow for visual feedback
             setTimeout(() => {
-              if (!gameState.gameComplete) {
-                setGameComplete(true);
-                console.log("Game complete, calling onComplete handler");
-                onComplete(false);
-              }
+              console.log("Game complete, calling onComplete handler");
+              onComplete(false);
             }, 500);
             return 0;
           }
+          return 0;
         }
         return prevTime - 1;
       });
@@ -79,20 +85,21 @@ export function useGameTimer({
   
   // Effect to check for game completion by finding all items
   useEffect(() => {
-    // If the game is already marked complete or no items are found yet, do nothing
-    if (gameState.gameComplete || !allItemsFound) return;
+    // If the game is already marked complete or completion has been called, do nothing
+    if (gameState.gameComplete || !allItemsFound || completionCalled.current) return;
     
     // All items found - game complete!
     console.log("All items found! Game complete.");
     playSoundSafely('win');
     
+    // Mark game as complete to prevent multiple calls
+    completionCalled.current = true;
+    setGameComplete(true);
+    
     // Important: Add delay before completing to allow animations and sounds to play
     setTimeout(() => {
-      if (!gameState.gameComplete) {
-        setGameComplete(true);
-        console.log("Game complete, calling onComplete handler");
-        onComplete(true);
-      }
+      console.log("Game complete, calling onComplete handler");
+      onComplete(true);
     }, 500);
   }, [allItemsFound, gameState.gameComplete, onComplete, setGameComplete]);
   

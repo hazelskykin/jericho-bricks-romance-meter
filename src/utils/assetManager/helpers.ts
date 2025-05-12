@@ -19,11 +19,6 @@ export function fixPath(src: string): string {
     return src.replace('/locaton-icons.png', '/location-icons.png');
   }
   
-  // Fix BloomWithAView capitalization
-  if (src.includes('/spring/bloomwithAView/')) {
-    return src.replace('/spring/bloomwithAView/', '/spring/bloomWithAView/');
-  }
-  
   // Handle specific files that might have different names
   if (src.includes('/splashEffects_victoryEffect.png')) {
     return src.replace('/splashEffects_victoryEffect.png', '/splashVictory.png');
@@ -31,7 +26,7 @@ export function fixPath(src: string): string {
   
   // Handle cases where paths might be pointing to the wrong directory
   if (src.startsWith('/assets/minigrames/')) {
-    return src.replace('/assets/minigrames/', '/assets/minigames/');
+    console.warn('Detected reference to minigrames directory which will be deleted soon');
   }
   
   return src;

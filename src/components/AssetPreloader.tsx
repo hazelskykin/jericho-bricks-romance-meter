@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { assetManager } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
@@ -16,7 +15,7 @@ interface AssetPreloaderProps {
 const AssetPreloader: React.FC<AssetPreloaderProps> = ({ 
   onComplete, 
   priorityOnly = false,
-  skipMinigameAssets = false // Changed default to false so we load minigame assets
+  skipMinigameAssets = false // Default to false so we load minigame assets
 }) => {
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [loadingBackgrounds, setLoadingBackgrounds] = useState(true);
@@ -45,7 +44,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
     .filter(bg => !priorityOnly || (bg as BackgroundAsset).priority === true)
     .map(bg => (bg as BackgroundAsset).image);
     
-  // Extract minigame assets if not skipping
+  // Extract minigame assets if not skipping - focus on bloomwithAView paths
   const minigameAssetPaths = !skipMinigameAssets 
     ? minigameAssets
         .filter(asset => !priorityOnly || asset.priority === true)
