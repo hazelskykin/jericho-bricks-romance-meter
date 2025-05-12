@@ -30,6 +30,7 @@ export interface Scene {
   dialogue: DialogueLine[];
   choices?: DialogueChoice[];
   nextSceneId?: string;
+  minigame?: import('./minigames').MinigameType;
 }
 
 // Interface for backup scene state (for replay feature)

@@ -1,9 +1,10 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useGame } from '@/context/GameContext';
 import SeasonTransition from './SeasonTransition';
 import { MinigameType } from '@/types/minigames';
 import { toast } from 'sonner';
+import { Scene } from '@/types/game';
+import { allScenes } from '@/data/scenes';
 
 /**
  * Game scene observer component to handle minigame transitions and season changes
@@ -18,47 +19,13 @@ const GameSceneObserver = () => {
     const currentScene = gameState.currentScene;
     console.log(`GameSceneObserver: Current scene is ${currentScene}`);
     
-    // Check specific minigame trigger scenes - these MUST match the scene IDs in data files
-    const minigameMappings: Record<string, MinigameType> = {
-      // Spring minigames
-      'spring-brooms-away-start': 'broomsAway',
-      'spring-mud-fling-start': 'mudFling',
-      'spring-bloom-view-start': 'bloomWithAView',
-      
-      // Summer minigames
-      'summer-serenade-start': 'serenade',
-      'summer-spoken-word-start': 'spokenWord', 
-      'summer-whats-on-tap-start': 'whatsOnTap',
-      
-      // Autumn minigames
-      'autumn-tour-guide-start': 'tourGuide',
-      'autumn-crafter-start': 'crafter', // Make sure this entry exists
-      'autumn-memories-date-start': 'memoriesDate',
-      
-      // Winter minigames
-      'winter-charity-auction-start': 'charityAuction',
-      'winter-gala-dance-start': 'galaDance',
-      'winter-looking-signs-start': 'lookingSigns',
-      
-      // Direct mappings for easier debugging
-      'broomsAway': 'broomsAway',
-      'mudFling': 'mudFling',
-      'bloomWithAView': 'bloomWithAView',
-      'serenade': 'serenade',
-      'spokenWord': 'spokenWord',
-      'whatsOnTap': 'whatsOnTap',
-      'tourGuide': 'tourGuide',
-      'crafter': 'crafter',
-      'memoriesDate': 'memoriesDate',
-      'charityAuction': 'charityAuction',
-      'galaDance': 'galaDance',
-      'lookingSigns': 'lookingSigns'
-    };
+    // Get the current scene data
+    const sceneData: Scene | undefined = allScenes[currentScene];
     
-    // Handle minigame trigger scenes
-    if (currentScene in minigameMappings) {
-      const minigameType = minigameMappings[currentScene];
-      console.log(`GameSceneObserver: Detected minigame trigger scene for ${minigameType}`);
+    // Check if the scene has a minigame property - this is a cleaner, more direct approach
+    if (sceneData?.minigame) {
+      const minigameType = sceneData.minigame;
+      console.log(`GameSceneObserver: Detected minigame from scene property: ${minigameType}`);
       
       // Prevent double-triggering of minigames
       if (lastTriggeredMinigame.current === currentScene) {
@@ -92,8 +59,83 @@ const GameSceneObserver = () => {
         minigameTimerRef.current = null;
       }, 500); // Delay to ensure state is ready
     } else {
-      // Reset the last triggered minigame if we're on a different scene
-      lastTriggeredMinigame.current = null;
+      // Keep legacy approach for backward compatibility
+      const minigameMappings: Record<string, MinigameType> = {
+        // Spring minigames
+        'spring-brooms-away-start': 'broomsAway',
+        'spring-mud-fling-start': 'mudFling',
+        'spring-bloom-view-start': 'bloomWithAView',
+        
+        // Summer minigames
+        'summer-serenade-start': 'serenade',
+        'summer-spoken-word-start': 'spokenWord', 
+        'summer-whats-on-tap-start': 'whatsOnTap',
+        
+        // Autumn minigames
+        'autumn-tour-guide-start': 'tourGuide',
+        'autumn-crafter-start': 'crafter',
+        'autumn-memories-date-start': 'memoriesDate',
+        
+        // Winter minigames
+        'winter-charity-auction-start': 'charityAuction',
+        'winter-gala-dance-start': 'galaDance',
+        'winter-looking-signs-start': 'lookingSigns',
+        
+        // Direct mappings for easier debugging
+        'broomsAway': 'broomsAway',
+        'mudFling': 'mudFling',
+        'bloomWithAView': 'bloomWithAView',
+        'serenade': 'serenade',
+        'spokenWord': 'spokenWord',
+        'whatsOnTap': 'whatsOnTap',
+        'tourGuide': 'tourGuide',
+        'crafter': 'crafter',
+        'memoriesDate': 'memoriesDate',
+        'charityAuction': 'charityAuction',
+        'galaDance': 'galaDance',
+        'lookingSigns': 'lookingSigns'
+      };
+      
+      // Handle minigame trigger scenes
+      if (currentScene in minigameMappings) {
+        const minigameType = minigameMappings[currentScene];
+        console.log(`GameSceneObserver: Detected minigame trigger scene for ${minigameType}`);
+        
+        // Prevent double-triggering of minigames
+        if (lastTriggeredMinigame.current === currentScene) {
+          console.log(`GameSceneObserver: Skipping duplicate minigame trigger for ${minigameType}`);
+          return;
+        }
+        
+        // Update the last triggered minigame reference
+        lastTriggeredMinigame.current = currentScene;
+        
+        // Don't show toast if we're re-triggering the same minigame
+        if (gameState.currentScene !== minigameType) {
+          toast.info(`Starting minigame: ${minigameType}`);
+        }
+        
+        // Clear any existing timers
+        if (minigameTimerRef.current) {
+          clearTimeout(minigameTimerRef.current);
+        }
+        
+        // Add a clearer delay to ensure state updates are processed in the right order
+        minigameTimerRef.current = setTimeout(() => {
+          try {
+            console.log(`GameSceneObserver: Starting minigame ${minigameType}`);
+            startMinigame(minigameType);
+          } catch (error) {
+            console.error("Error starting minigame:", error);
+            toast.error(`Failed to start minigame: ${error}`);
+          }
+          // Reset timer reference
+          minigameTimerRef.current = null;
+        }, 500); // Delay to ensure state is ready
+      } else {
+        // Reset the last triggered minigame if we're on a different scene
+        lastTriggeredMinigame.current = null;
+      }
     }
     
     // Check for season transition scenes
