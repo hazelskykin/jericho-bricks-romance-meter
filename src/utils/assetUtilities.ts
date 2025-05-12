@@ -57,7 +57,7 @@ export function getFallbackAssetPath(originalPath: string): string {
   }
   
   // For minigame assets, always return a city background
-  if (originalPath.includes('/minigame') || originalPath.includes('/minigrames/')) {
+  if (originalPath.includes('/minigame')) {
     return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
@@ -83,9 +83,9 @@ export function getFallbackAssetPath(originalPath: string): string {
 export function fixAssetPath(path: string): string {
   if (!path) return '/assets/backgrounds/stonewich-cityscape.jpg';
   
-  // For any minigame asset, just return a cityscape background
-  if (path.includes('/minigames/') || path.includes('/minigrames/')) {
-    return '/assets/backgrounds/stonewich-cityscape.jpg';
+  // If a path includes minigrames, correct it to minigames
+  if (path.includes('/minigrames/')) {
+    return path.replace('/minigrames/', '/minigames/');
   }
   
   return path;

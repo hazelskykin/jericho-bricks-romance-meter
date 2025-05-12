@@ -28,41 +28,14 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     if (activeMinigame === 'bloomWithAView') {
       console.log('Preloading BloomWithAView assets');
       
-      // Explicitly check if files exist at multiple paths to handle case sensitivity and file extension issues
-      const checkFilePaths = async () => {
-        const paths = [
-          // Garden background - PNG is confirmed by the user
-          '/assets/minigames/spring/bloomWithAView/garden-background.png',
-          // Hidden objects sprite
-          '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
-          // Try other possible paths too
-          '/assets/minigames/spring/bloomwithAView/garden-background.png',
-          '/assets/minigames/spring/bloomwithAView/hidden_objects_sprites.png',
-          '/assets/backgrounds/garden-background.png',
-        ];
-        
-        console.log("Checking file paths:", paths);
-        
-        for (const path of paths) {
-          try {
-            const response = await fetch(path, { method: 'HEAD' });
-            console.log(`Path ${path}: ${response.ok ? 'EXISTS' : 'NOT FOUND'}`);
-          } catch (error) {
-            console.warn(`Error checking path ${path}:`, error);
-          }
-        }
-      };
-      
-      // Run the path checking
-      checkFilePaths();
-      
-      // Use asset manager to preload assets with specific paths
+      // Use asset manager to preload assets with specific paths - only using the correct minigames directory
       const assetPaths = [
-        // PNG background (as confirmed by user)
+        // Garden background (PNG)
         '/assets/minigames/spring/bloomWithAView/garden-background.png',
         // Hidden objects assets
         '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
-        '/assets/minigames/spring/bloomwithAView/hidden-objects.png'
+        // Flower tiles
+        '/assets/minigames/spring/bloomWithAView/flower-tiles.png'
       ];
       
       assetManager.preloadAssets(assetPaths, (loaded, total) => {

@@ -85,14 +85,6 @@ export function useGameTimer({
       
       // Try the exact ID first
       soundManager.playSFX(soundId);
-      
-      // If we're trying to play a rustle effect, make sure it works
-      if (soundId === 'bloomWithAView-effect-rustle') {
-        // Try alternate sound IDs if needed
-        setTimeout(() => {
-          soundManager.playSFX('bloomWithAView-ambience-birdsong');
-        }, 100);
-      }
     } catch (error) {
       console.warn(`Error playing sound ${soundId}:`, error);
     }

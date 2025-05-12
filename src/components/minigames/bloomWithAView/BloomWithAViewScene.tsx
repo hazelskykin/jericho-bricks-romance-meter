@@ -36,18 +36,14 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
   useEffect(() => {
     console.log("Attempting to load BloomWithAView assets...");
     
-    // Preload garden background, hidden objects, and flower tiles
+    // Only use the correct minigames folder paths
     const assetPaths = [
       // Garden background (PNG)
       '/assets/minigames/spring/bloomWithAView/garden-background.png',
-      '/assets/minigrames/spring/bloomwithAView/garden-background.png',
       // Hidden objects
       '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
-      '/assets/minigrames/spring/bloomwithAView/hidden-objects.png',
-      '/assets/minigrames/spring/bloomwithAView/hidden_objects_sprites.png',
       // Flower tiles
       '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
-      '/assets/minigrames/spring/bloomwithAView/flower-tiles.png',
     ];
     
     console.log("Attempting to load assets from paths:", assetPaths);
@@ -58,17 +54,17 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
     }).then(() => {
       console.log('Asset preloading complete');
       
-      // Try to set the background image
+      // Set the background image
       const bgPath = '/assets/minigames/spring/bloomWithAView/garden-background.png';
       console.log(`Setting background image to: ${bgPath}`);
       setBgImagePath(bgPath);
       
-      // Try to set the objects image (fixed path)
+      // Set the objects image (fixed path)
       const objectsPath = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
       console.log(`Setting objects image to: ${objectsPath}`);
       setObjectsImagePath(objectsPath);
       
-      // Try to set the flower tiles image
+      // Set the flower tiles image
       const tilesPath = '/assets/minigames/spring/bloomWithAView/flower-tiles.png';
       console.log(`Setting flower tiles image to: ${tilesPath}`);
       setFlowerTilesPath(tilesPath);
@@ -97,20 +93,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
       };
       bgImage.src = '/assets/minigames/spring/bloomWithAView/garden-background.png';
       
-      // Try loading from the minigrames folder (alternate path) if the main path fails
-      setTimeout(() => {
-        if (!imageLoaded) {
-          const altBgImage = new Image();
-          altBgImage.onload = () => {
-            console.log("Background image found at alternate path!");
-            setBgImagePath('/assets/minigrames/spring/bloomwithAView/garden-background.png');
-            setImageLoaded(true);
-          };
-          altBgImage.src = '/assets/minigrames/spring/bloomwithAView/garden-background.png';
-        }
-      }, 1000);
-      
-      // Check hidden objects image - updated path
+      // Check hidden objects image
       const objImage = new Image();
       objImage.onload = () => {
         console.log("Hidden objects image exists and loaded successfully!");
@@ -119,20 +102,8 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
         setObjectsImageLoaded(true);
       };
       objImage.onerror = () => {
-        console.error("Hidden objects image failed to load - trying alternative path");
-        // Try alternative path
-        const altObjImage = new Image();
-        altObjImage.onload = () => {
-          console.log("Alternative hidden objects image loaded successfully!");
-          setObjectsImagePath('/assets/minigrames/spring/bloomwithAView/hidden_objects_sprites.png');
-          setDebugMode(false);
-          setObjectsImageLoaded(true);
-        };
-        altObjImage.onerror = () => {
-          console.error("All hidden objects images failed to load - enabling debug mode");
-          setDebugMode(true);
-        };
-        altObjImage.src = '/assets/minigrames/spring/bloomwithAView/hidden_objects_sprites.png';
+        console.error("Hidden objects image failed to load - enabling debug mode");
+        setDebugMode(true);
       };
       objImage.src = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
       
@@ -143,14 +114,8 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
         setFlowerTilesPath('/assets/minigames/spring/bloomWithAView/flower-tiles.png');
       };
       tilesImage.onerror = () => {
-        console.error("Flower tiles image failed to load - trying alternative path");
-        // Try alternative path
-        const altTilesImage = new Image();
-        altTilesImage.onload = () => {
-          console.log("Alternative flower tiles image loaded successfully!");
-          setFlowerTilesPath('/assets/minigrames/spring/bloomwithAView/flower-tiles.png');
-        };
-        altTilesImage.src = '/assets/minigrames/spring/bloomwithAView/flower-tiles.png';
+        console.error("Flower tiles image failed to load - enabling debug mode");
+        setDebugMode(true);
       };
       tilesImage.src = '/assets/minigames/spring/bloomWithAView/flower-tiles.png';
     };
@@ -222,12 +187,26 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
           />
         )}
         
-        {/* Hidden object sprites (only visible until found) */}
+        {/* Flower tiles layer - properly sized and placed BEHIND hidden objects */}
+        {imageLoaded && flowerTilesPath && (
+          <div 
+            className="absolute inset-0 z-5 pointer-events-none" 
+            style={{
+              backgroundImage: `url(${flowerTilesPath})`,
+              backgroundSize: '500px auto',
+              backgroundPosition: 'center',
+              opacity: 0.6, // Reduced opacity to show objects better
+              mixBlendMode: 'normal'
+            }}
+          />
+        )}
+        
+        {/* Hidden object sprites (placed ABOVE flower tiles) */}
         {hiddenItems.map((item) => (
           !item.found && (
             <div
               key={`object-${item.id}`}
-              className={`absolute z-10`}
+              className="absolute z-10"
               style={getHiddenObjectStyle(item)}
             >
               {/* If no sprite sheet is available, show item names for debugging */}
@@ -239,20 +218,6 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
             </div>
           )
         ))}
-
-        {/* Flower tiles layer - now more visible and on top of objects */}
-        {imageLoaded && flowerTilesPath && (
-          <div 
-            className="absolute inset-0 z-15 pointer-events-none" 
-            style={{
-              backgroundImage: `url(${flowerTilesPath})`,
-              backgroundSize: '500px auto',
-              backgroundPosition: 'center',
-              opacity: 0.85, // Increased opacity
-              mixBlendMode: 'normal' // Changed from overlay to normal
-            }}
-          />
-        )}
 
         {/* Game progress indicator */}
         <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-2 rounded-lg z-20">

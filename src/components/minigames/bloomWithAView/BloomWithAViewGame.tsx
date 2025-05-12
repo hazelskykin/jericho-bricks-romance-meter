@@ -43,36 +43,18 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
   useEffect(() => {
     console.log("🎵 Attempting to load and play BloomWithAView music...");
     
-    // Function to try multiple sound paths until one works
+    // Function to try to play the gameplay music
     const tryPlaySound = async () => {
-      const musicPaths = [
-        'bloomWithAView-loop-gameplay',
-        'bloomwithAView-loop-gameplay',
-        'bloom-loop-gameplay',
-        'minigame-loop'
-      ];
-      
-      let success = false;
-      
-      // Try each music path
-      for (const path of musicPaths) {
-        try {
-          console.log(`🎵 Attempting to play music: ${path}`);
-          soundManager.playMusic(`${path}`, { loop: true, volume: 0.7 });
-          console.log(`🎵 Successfully started music with path: ${path}`);
-          success = true;
-          break;
-        } catch (err) {
-          console.warn(`Failed to play music ${path}:`, err);
-        }
-      }
-      
-      if (!success) {
-        console.error('Failed to play any background music');
+      try {
+        console.log('🎵 Playing background music: bloomWithAView-loop-gameplay');
+        soundManager.playMusic('bloomWithAView-loop-gameplay.mp3', { loop: true, volume: 0.7 });
+        console.log('🎵 Successfully started music');
+      } catch (err) {
+        console.warn('Failed to play music:', err);
         setSoundLoadAttempts(prev => prev + 1);
         
         if (soundLoadAttempts < 3) {
-          // Try again after a delay (sometimes the sound system needs initialization time)
+          // Try again after a delay
           setTimeout(() => {
             console.log("Retrying music playback...");
             tryPlaySound();
@@ -83,16 +65,6 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
             duration: 3000
           });
         }
-      }
-      
-      // Also try to play ambient sounds
-      try {
-        setTimeout(() => {
-          soundManager.playSFX('bloomWithAView-ambience-birdsong');
-          console.log("🎵 Playing ambient birdsong");
-        }, 1000);
-      } catch (ambientErr) {
-        console.warn("Could not play ambient sounds:", ambientErr);
       }
     };
     
@@ -125,8 +97,7 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
               <Clock className="h-5 w-5 text-purple-400" />
               <span className="text-white text-lg font-medium">{timeRemaining}s</span>
               
-              {/* Sound toggle using component - Fix the TypeScript error here */}
-              <SoundToggle />
+              <SoundToggle showMusicToggle={true} />
             </div>
           </div>
           

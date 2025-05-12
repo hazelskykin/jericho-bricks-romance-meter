@@ -77,7 +77,7 @@ const minigameAssets: MinigameAsset[] = [
   {
     id: 'bloom-background',
     name: 'Bloom With a View Background',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
+    src: '/assets/minigames/spring/bloomWithAView/garden-background.png',
     description: 'Garden background for Bloom With a View',
     priority: true,
     category: 'background'
@@ -85,14 +85,14 @@ const minigameAssets: MinigameAsset[] = [
   {
     id: 'bloom-tiles',
     name: 'Bloom Flower Tiles',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
+    src: '/assets/minigames/spring/bloomWithAView/flower-tiles.png',
     description: 'Flower tiles for Bloom With a View',
     category: 'item'
   },
   {
     id: 'bloom-hidden-objects',
     name: 'Bloom Hidden Objects',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
+    src: '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
     description: 'Hidden objects for Bloom With a View',
     category: 'item'
   },

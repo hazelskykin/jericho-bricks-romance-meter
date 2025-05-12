@@ -60,7 +60,7 @@ export function useGameHandlers({
     setClickPosition({ x, y });
     
     // Play rustle sound effect when clicking in the garden
-    playSoundSafely('bloomWithAView-effect-rustle');
+    soundManager.playSFX('bloomWithAView-effect-rustle');
     
     // Check if click is near any hidden items
     const itemSize = 60; // Increase clickable area size

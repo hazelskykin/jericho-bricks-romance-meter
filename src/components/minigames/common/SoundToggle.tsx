@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Music, Mic } from 'lucide-react';
+import { Volume2, VolumeX, Music, MusicOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { soundManager } from '@/utils/sound';
 
@@ -18,7 +18,6 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({
   const toggleSound = () => {
     const newMutedState = !isSoundMuted;
     setIsSoundMuted(newMutedState);
-    // Fix: Use the correct function - setMuted only takes one argument
     soundManager.setMuted(newMutedState);
     console.log(`Sound effects ${newMutedState ? 'muted' : 'unmuted'}`);
   };
@@ -26,7 +25,6 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({
   const toggleMusic = () => {
     const newMutedState = !isMusicMuted;
     setIsMusicMuted(newMutedState);
-    // Fix: Use the correct function for music - setMusicMuted instead of setMuted
     soundManager.setMusicMuted(newMutedState);
     console.log(`Music ${newMutedState ? 'muted' : 'unmuted'}`);
   };
@@ -56,7 +54,7 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({
           title={isMusicMuted ? "Unmute music" : "Mute music"}
         >
           {isMusicMuted ? (
-            <Mic className="h-4 w-4 text-purple-300" />
+            <MusicOff className="h-4 w-4 text-purple-300" />
           ) : (
             <Music className="h-4 w-4 text-purple-300" />
           )}
