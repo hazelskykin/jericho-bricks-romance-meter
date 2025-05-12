@@ -196,12 +196,12 @@ const winterConclusionScenes: Record<string, Scene> = {
       {
         character: 'senara',
         text: "We've built something meaningful here. Not just for the city, but for ourselves.",
-        mood: 'sincere',
+        mood: 'thoughtful',
       },
       {
         character: 'maven',
         text: "Whatever comes next, I'm grateful for this time with all of you.",
-        mood: 'grateful',
+        mood: 'happy',
       }
     ],
     choices: [
