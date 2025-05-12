@@ -1,1 +1,0 @@
-Gala Dance: Dance floor image, dance move icons, music tracks
