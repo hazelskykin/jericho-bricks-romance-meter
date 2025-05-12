@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -66,6 +65,8 @@ const sceneMapping: Record<string, string> = {
   'winter-charity-auction-intro': 'winter-charity-auction-intro',
   'winter-gala-dance-intro': 'winter-gala-dance-intro',
   'winter-looking-signs-intro': 'winter-looking-signs-intro',
+  'winter-looking-signs-start': 'winter-looking-signs-start', // Add mapping for start scene
+  'winter-looking-signs-complete': 'winter-looking-signs-complete', // Add mapping for complete scene
   'winter-conclusion': 'winter-conclusion',
 };
 
@@ -100,6 +101,10 @@ const sceneFallbacks: Record<string, string> = {
   // Fallbacks for autumn minigames
   'autumn-crafter-start': 'autumn-crafter-intro',
   'autumn-crafter-complete': 'autumn-festival-activities',
+  
+  // Add fallbacks for Looking Signs minigame scenes
+  'winter-looking-signs-start': 'winter-looking-signs-intro',
+  'winter-looking-signs-complete': 'winter-festival-activities',
 };
 
 /**

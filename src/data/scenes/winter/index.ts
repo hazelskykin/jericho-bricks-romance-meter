@@ -9,6 +9,7 @@ import teamFutureScenes from './teamfuture';
 import winterTransitions from './transitions';
 import seasonTransitionScenes from './transition';
 import festivalScenes from './festival';
+import minigameScenes from './minigames';
 
 const winter: Record<string, Scene> = {
   ...introScenes,
@@ -20,6 +21,7 @@ const winter: Record<string, Scene> = {
   ...winterTransitions,
   ...seasonTransitionScenes,
   ...festivalScenes,
+  ...minigameScenes,
 };
 
 export default winter;

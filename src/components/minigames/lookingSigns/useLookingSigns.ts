@@ -1,130 +1,109 @@
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { soundManager } from '@/utils/sound';
 
-// Types for sign items
 export type SignType = 'good' | 'bad';
 
 export interface SignItem {
-  id: number;
   type: SignType;
   index: number;
-  name: string;
 }
 
-// Define sign types
-const goodSigns: SignItem[] = [
-  { id: 1, type: 'good', index: 0, name: 'coin' },
-  { id: 2, type: 'good', index: 1, name: 'bird' },
-  { id: 3, type: 'good', index: 2, name: 'heart charm' },
-];
+export type GameStage = 'gameplay' | 'results';
+export type GameResult = 'success' | 'failure';
 
-const badSigns: SignItem[] = [
-  { id: 4, type: 'bad', index: 0, name: 'broken clock' },
-  { id: 5, type: 'bad', index: 1, name: 'black cat' },
-  { id: 6, type: 'bad', index: 2, name: 'evil eye' },
-];
-
-// All available signs
-const allSigns = [...goodSigns, ...badSigns];
-
-// Define game stages
-type GameStage = 'gameplay' | 'results';
-
-export function useLookingSigns(onComplete: (success: boolean) => void) {
+// Custom hook for Looking Signs minigame
+export const useLookingSigns = (onComplete: (success: boolean) => void) => {
   // Game state
   const [gameStage, setGameStage] = useState<GameStage>('gameplay');
   const [timeRemaining, setTimeRemaining] = useState(60); // 60 seconds
   const [currentSign, setCurrentSign] = useState<SignItem | null>(null);
   const [score, setScore] = useState(0);
   const [incorrectScore, setIncorrectScore] = useState(0);
-  const [gameResult, setGameResult] = useState<'win' | 'lose'>('lose');
-  const [gameEnded, setGameEnded] = useState(false);
-  
-  // Refs
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const gameCompleted = useRef(false);
-  
+  const [gameResult, setGameResult] = useState<GameResult>('failure');
+  const [gameOver, setGameOver] = useState(false);
+
   // Generate a random sign
   const generateRandomSign = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * allSigns.length);
-    return allSigns[randomIndex];
+    const type: SignType = Math.random() > 0.5 ? 'good' : 'bad';
+    const index = Math.floor(Math.random() * 3); // 0, 1, or 2 for the three signs of each type
+    return { type, index };
   }, []);
-  
-  // Initialize first sign
+
+  // Initialize with a random sign
   useEffect(() => {
-    setCurrentSign(generateRandomSign());
-  }, [generateRandomSign]);
-  
-  // Handle game timer
+    if (gameStage === 'gameplay' && !currentSign) {
+      setCurrentSign(generateRandomSign());
+      // Play sorting sound effect when sign appears
+      soundManager.playSoundEffect('lookingSigns-clue-found.mp3');
+    }
+  }, [gameStage, currentSign, generateRandomSign]);
+
+  // Timer countdown
   useEffect(() => {
-    if (gameStage !== 'gameplay') return;
-    
-    timerRef.current = setInterval(() => {
-      setTimeRemaining(prev => {
+    if (gameStage !== 'gameplay' || gameOver) return;
+
+    const timer = setInterval(() => {
+      setTimeRemaining((prev) => {
         if (prev <= 1) {
-          // End game when time runs out
-          clearInterval(timerRef.current!);
-          handleGameEnd();
+          clearInterval(timer);
+          endGame();
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
+
+    return () => clearInterval(timer);
+  }, [gameStage, gameOver]);
+
+  // End game function
+  const endGame = useCallback(() => {
+    setGameOver(true);
     
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [gameStage]);
-  
-  // Handle game end
-  const handleGameEnd = useCallback(() => {
+    // Determine if player won based on score
+    const success = score > incorrectScore;
+    setGameResult(success ? 'success' : 'failure');
+    
+    // Show results
     setGameStage('results');
-    const isWin = score > incorrectScore;
-    setGameResult(isWin ? 'win' : 'lose');
   }, [score, incorrectScore]);
-  
+
   // Handle sign sorting
   const handleSignSort = useCallback((direction: 'left' | 'right') => {
-    if (!currentSign) return;
-    
-    // Check if sort direction matches sign type
+    if (!currentSign || gameOver) return;
+
     const isCorrect = 
-      (direction === 'right' && currentSign.type === 'good') || 
-      (direction === 'left' && currentSign.type === 'bad');
-    
-    // Play appropriate sound
+      (currentSign.type === 'good' && direction === 'right') || 
+      (currentSign.type === 'bad' && direction === 'left');
+
+    // Play appropriate sound effect
     if (isCorrect) {
-      soundManager.play('lookingSigns-sign-sorted');
+      soundManager.playSoundEffect('lookingSigns-sign-sorted.mp3');
       setScore(prev => prev + 1);
     } else {
-      soundManager.play('lookingSigns-sort-wrong');
+      soundManager.playSoundEffect('lookingSigns-sort-wrong.mp3');
       setIncorrectScore(prev => prev + 1);
     }
     
-    // Generate new sign
+    // Generate next sign
     setCurrentSign(generateRandomSign());
-  }, [currentSign, generateRandomSign]);
-  
+  }, [currentSign, gameOver, generateRandomSign]);
+
   // Handle game completion
   const handleGameComplete = useCallback(() => {
-    if (gameCompleted.current) return;
-    gameCompleted.current = true;
-    
-    // Call onComplete with success flag based on game result
-    onComplete(gameResult === 'win');
-  }, [onComplete, gameResult]);
-  
+    const success = gameResult === 'success';
+    onComplete(success);
+  }, [gameResult, onComplete]);
+
   return {
     gameStage,
     timeRemaining,
     currentSign,
     score,
     incorrectScore,
-    gameResult,
     handleSignSort,
+    gameResult,
     handleGameComplete
   };
-}
+};
