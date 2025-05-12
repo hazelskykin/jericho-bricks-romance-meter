@@ -59,7 +59,7 @@ const winterConclusionScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "Thank you, Dr. Voss. This experience has transformed all of us.",
-        mood: 'grateful',
+        mood: 'happy',
       },
       {
         character: 'narrator',
