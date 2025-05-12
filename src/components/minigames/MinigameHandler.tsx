@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { MinigameType } from '@/types/minigames';
 import PlaceholderMinigame from './PlaceholderMinigame';
@@ -6,6 +5,7 @@ import { toast } from 'sonner';
 import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
 import CrafterGame from './crafter/CrafterGame';
 import SpokenWordGame from './spokenWord/SpokenWordGame';
+import LookingSignsGame from './lookingSigns/LookingSignsGame';
 import { assetManager } from '@/utils/assetManager';
 
 interface MinigameHandlerProps {
@@ -16,7 +16,7 @@ interface MinigameHandlerProps {
 
 /**
  * MinigameHandler component that manages the active minigame
- * Currently implements BloomWithAView, Crafter, and SpokenWord minigames, others use placeholders
+ * Currently implements BloomWithAView, Crafter, SpokenWord, and LookingSigns minigames, others use placeholders
  */
 const MinigameHandler: React.FC<MinigameHandlerProps> = ({ 
   activeMinigame, 
@@ -89,6 +89,24 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         // Continue anyway, the game has fallbacks
       });
     }
+    else if (activeMinigame === 'lookingSigns') {
+      console.log('Preloading LookingSigns assets');
+      
+      // Preload lookingSigns assets
+      const assetPaths = [
+        '/assets/minigames/winter/lookingSigns/signs-background.png',
+        '/assets/minigames/winter/lookingSigns/sign-clues.png'
+      ];
+      
+      assetManager.preloadAssets(assetPaths, (loaded, total) => {
+        console.log(`Loaded ${loaded}/${total} LookingSigns assets`);
+      }).then(() => {
+        console.log('All LookingSigns assets preloaded');
+      }).catch(error => {
+        console.error('Failed to preload LookingSigns assets:', error);
+        // Continue anyway, the game has fallbacks
+      });
+    }
     
     // Debug log when minigame changes
     if (activeMinigame) {
@@ -135,30 +153,37 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     case 'bloomWithAView':
       return (
         <BloomWithAViewGame
-          onComplete={handleMinigameComplete}
-          onExit={handleExitMinigame}
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
         />
       );
     case 'crafter':
       return (
         <CrafterGame
-          onComplete={handleMinigameComplete}
-          onExit={handleExitMinigame}
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
         />
       );
     case 'spokenWord':
       return (
         <SpokenWordGame
-          onComplete={handleMinigameComplete}
-          onExit={handleExitMinigame}
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
+        />
+      );
+    case 'lookingSigns':
+      return (
+        <LookingSignsGame
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
         />
       );
     default:
       return (
         <PlaceholderMinigame
           minigameType={activeMinigame}
-          onComplete={handleMinigameComplete}
-          onExit={handleExitMinigame}
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
         />
       );
   }
