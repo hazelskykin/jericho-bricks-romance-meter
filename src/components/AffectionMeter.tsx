@@ -14,9 +14,9 @@ const AffectionMeter: React.FC<AffectionMeterProps> = ({ character, isOpen }) =>
   const getLevel = () => {
     if (character.affection <= -5) return 'Hostile';
     if (character.affection <= -1) return 'Cold';
-    if (character.affection <= 2) return 'Neutral';
-    if (character.affection <= 5) return 'Friendly';
-    if (character.affection <= 10) return 'Close';
+    if (character.affection <= 5) return 'Neutral';
+    if (character.affection <= 15) return 'Friendly';
+    if (character.affection <= 25) return 'Close';
     return 'Romantic';
   };
   

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Music, MusicOff } from 'lucide-react';
+import { Volume2, VolumeX, Music, Volume } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { soundManager } from '@/utils/sound';
 
@@ -54,7 +54,7 @@ export const SoundToggle: React.FC<SoundToggleProps> = ({
           title={isMusicMuted ? "Unmute music" : "Mute music"}
         >
           {isMusicMuted ? (
-            <MusicOff className="h-4 w-4 text-purple-300" />
+            <Volume className="h-4 w-4 text-purple-300" />
           ) : (
             <Music className="h-4 w-4 text-purple-300" />
           )}

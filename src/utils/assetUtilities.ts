@@ -83,7 +83,7 @@ export function getFallbackAssetPath(originalPath: string): string {
 export function fixAssetPath(path: string): string {
   if (!path) return '/assets/backgrounds/stonewich-cityscape.jpg';
   
-  // If a path includes minigrames, correct it to minigames
+  // If a path incorrectly includes minigrames, correct it to minigames
   if (path.includes('/minigrames/')) {
     return path.replace('/minigrames/', '/minigames/');
   }

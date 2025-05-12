@@ -175,7 +175,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
           backgroundPosition: 'center'
         }}
       >
-        {/* Main background image */}
+        {/* Main background image - z-index 0 (furthest back) */}
         {imageLoaded && bgImagePath && (
           <div 
             className="absolute inset-0 z-0" 
@@ -187,21 +187,7 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
           />
         )}
         
-        {/* Flower tiles layer - properly sized and placed BEHIND hidden objects */}
-        {imageLoaded && flowerTilesPath && (
-          <div 
-            className="absolute inset-0 z-5 pointer-events-none" 
-            style={{
-              backgroundImage: `url(${flowerTilesPath})`,
-              backgroundSize: '500px auto',
-              backgroundPosition: 'center',
-              opacity: 0.6, // Reduced opacity to show objects better
-              mixBlendMode: 'normal'
-            }}
-          />
-        )}
-        
-        {/* Hidden object sprites (placed ABOVE flower tiles) */}
+        {/* Hidden object sprites - z-index 10 (middle layer) */}
         {hiddenItems.map((item) => (
           !item.found && (
             <div
@@ -218,6 +204,20 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
             </div>
           )
         ))}
+        
+        {/* Flower tiles layer - properly sized and placed OVER hidden objects - z-index 15 (foreground) */}
+        {imageLoaded && flowerTilesPath && (
+          <div 
+            className="absolute inset-0 z-15 pointer-events-none" 
+            style={{
+              backgroundImage: `url(${flowerTilesPath})`,
+              backgroundSize: '400px auto', // Smaller size for flower tiles to not fully cover objects
+              backgroundPosition: 'center',
+              opacity: 0.7, // Increased opacity to show flowers better
+              mixBlendMode: 'soft-light' // This blend mode allows objects to be partially visible
+            }}
+          />
+        )}
 
         {/* Game progress indicator */}
         <div className="absolute top-4 left-4 bg-black/50 text-white px-4 py-2 rounded-lg z-20">
