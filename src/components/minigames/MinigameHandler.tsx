@@ -22,7 +22,20 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
 }) => {
   console.log(`MinigameHandler rendering with activeMinigame: ${activeMinigame}`);
   
+  // Pre-load minigame assets when component mounts
   useEffect(() => {
+    if (activeMinigame === 'bloomWithAView') {
+      // Preload garden background
+      const bgImg = new Image();
+      bgImg.src = '/assets/minigames/spring/bloomWithAView/garden-background.jpg';
+      
+      // Preload hidden objects sprite sheet
+      const objectsImg = new Image();
+      objectsImg.src = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
+      
+      console.log('Preloading BloomWithAView assets');
+    }
+    
     // Debug log when minigame changes
     if (activeMinigame) {
       console.log(`MinigameHandler: Starting minigame ${activeMinigame}`);
