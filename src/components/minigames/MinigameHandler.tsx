@@ -4,6 +4,7 @@ import { MinigameType } from '@/types/minigames';
 import PlaceholderMinigame from './PlaceholderMinigame';
 import { toast } from 'sonner';
 import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
+import { assetManager } from '@/utils/assetManager';
 
 interface MinigameHandlerProps {
   activeMinigame: MinigameType | null;
@@ -25,15 +26,31 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   // Pre-load minigame assets when component mounts
   useEffect(() => {
     if (activeMinigame === 'bloomWithAView') {
-      // Preload garden background
-      const bgImg = new Image();
-      bgImg.src = '/assets/minigames/spring/bloomWithAView/garden-background.jpg';
-      
-      // Preload hidden objects sprite sheet
-      const objectsImg = new Image();
-      objectsImg.src = '/assets/minigames/spring/bloomWithAView/hidden-objects.png';
-      
+      // Preload assets with both potential paths to handle capitalization inconsistencies
       console.log('Preloading BloomWithAView assets');
+      
+      // Try multiple paths for garden background
+      const assetPaths = [
+        // Standard path
+        '/assets/minigames/spring/bloomWithAView/garden-background.jpg',
+        // Alternative capitalization
+        '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
+        // PNG alternative
+        '/assets/minigames/spring/bloomWithAView/garden-background.png',
+        '/assets/minigames/spring/bloomwithAView/garden-background.png',
+        // Hidden objects sprites
+        '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
+        '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
+        '/assets/minigames/spring/bloomWithAView/hidden_objects_sprites.png',
+        '/assets/minigames/spring/bloomwithAView/hidden_objects_sprites.png',
+      ];
+      
+      // Use asset manager to batch load assets
+      assetManager.preloadAssets(assetPaths, (loaded, total) => {
+        console.log(`Loaded ${loaded}/${total} BloomWithAView assets`);
+      }).then(() => {
+        console.log('All BloomWithAView assets preloaded');
+      });
     }
     
     // Debug log when minigame changes

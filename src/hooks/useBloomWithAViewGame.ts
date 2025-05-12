@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { soundManager } from '@/utils/sound';
@@ -57,6 +58,25 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
   const [gameComplete, setGameComplete] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(gameDuration);
   
+  // Play sound safely with fallbacks
+  const playSoundSafely = (soundId: string) => {
+    try {
+      console.log(`🔊 Attempting to play sound: ${soundId}`);
+      soundManager.playSFX(soundId);
+    } catch (error) {
+      console.error(`Failed to play sound ${soundId}:`, error);
+      
+      // Try alternative sound IDs with different capitalization
+      try {
+        const altSoundId = soundId.replace('bloomWithAView', 'bloomwithAView');
+        console.log(`🔊 Trying alternative sound ID: ${altSoundId}`);
+        soundManager.playSFX(altSoundId);
+      } catch (altError) {
+        console.error(`Failed to play alternative sound ${altError}`);
+      }
+    }
+  };
+  
   // Handle clicks on the garden scene
   const handleSceneClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (gameComplete) return;
@@ -68,7 +88,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     setClickPosition({ x, y });
     
     // Play click sound
-    soundManager.play('click');
+    playSoundSafely('click');
     
     // Check if click is near any hidden items
     const itemSize = 60; // Increase clickable area size
@@ -89,7 +109,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
         );
         
         // Play success sound
-        soundManager.play('item-found');
+        playSoundSafely('bloomWithAView-success');
         toast.success(`You found the ${item.name}!`);
         foundItem = true;
       }
@@ -97,7 +117,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     
     if (!foundItem) {
       // Play miss sound if no item was found
-      soundManager.play('item-miss');
+      playSoundSafely('item-miss');
     }
   };
   
@@ -126,7 +146,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     if (timeRemaining <= 0 && !gameComplete) {
       // Time's up, end the game
       setGameComplete(true);
-      soundManager.play('game-lose');
+      playSoundSafely('game-lose');
       toast.error("Time's up!");
       setTimeout(() => {
         onComplete(false);
@@ -149,7 +169,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     
     if (allFound && !gameComplete) {
       setGameComplete(true);
-      soundManager.play('game-win');
+      playSoundSafely('game-win');
       toast.success("You found all the hidden items!");
       setTimeout(() => {
         onComplete(true);
@@ -179,7 +199,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     
     setShowHint(true);
     setHintCooldown(10); // 10 second cooldown
-    soundManager.play('hint');
+    playSoundSafely('hint');
     
     toast.info(`Hint: Look for the ${itemToHighlight.name}!`);
     

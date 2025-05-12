@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HiddenItem } from '@/hooks/useBloomWithAViewGame';
 import { getAssetPath } from '@/utils/assetUtilities';
+import { toast } from 'sonner';
 
 interface BloomWithAViewSceneProps {
   hiddenItems: HiddenItem[];
@@ -24,46 +25,116 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
   totalItemCount
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [bgImagePath, setBgImagePath] = useState('');
   const [objectsImageLoaded, setObjectsImageLoaded] = useState(false);
+  const [objectsImagePath, setObjectsImagePath] = useState('');
 
   useEffect(() => {
-    // Preload the background image
-    const img = new Image();
-    img.src = `/assets/minigames/${backgroundImage}.jpg`;
-    img.onload = () => setImageLoaded(true);
-    img.onerror = (e) => {
-      console.error(`Failed to load background image: ${backgroundImage}`, e);
-      // Fall back to trying PNG format
-      const pngImg = new Image();
-      pngImg.src = `/assets/minigames/${backgroundImage}.png`;
-      pngImg.onload = () => setImageLoaded(true);
-      pngImg.onerror = () => {
-        console.error(`Failed to load PNG background image: ${backgroundImage}`);
-        // Use the fallback cityscape as last resort
-        setImageLoaded(true);
-      };
+    console.log("Attempting to load BloomWithAView assets...");
+    
+    // Try loading the background image with different paths and extensions
+    const tryLoadBackground = async () => {
+      const possibleBackgrounds = [
+        // Try direct paths first
+        `/assets/minigames/${backgroundImage}.jpg`,
+        `/assets/minigames/${backgroundImage}.png`,
+        // Try fixing capitalization issues
+        `/assets/minigames/spring/bloomwithAView/garden-background.jpg`,
+        `/assets/minigames/spring/bloomwithAView/garden-background.png`,
+        // Last resort - try loading from backgrounds directory
+        `/assets/backgrounds/garden-background.jpg`,
+        `/assets/backgrounds/garden-background.png`,
+        // Absolute fallback
+        `/assets/backgrounds/stonewich-cityscape.jpg`
+      ];
+      
+      // Try each path until one loads
+      for (const path of possibleBackgrounds) {
+        console.log(`Trying to load background: ${path}`);
+        try {
+          const img = new Image();
+          img.src = path;
+          
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            // Add a timeout to prevent hanging
+            setTimeout(reject, 3000);
+          });
+          
+          // If we get here, the image loaded successfully
+          console.log(`Successfully loaded background: ${path}`);
+          setBgImagePath(path);
+          setImageLoaded(true);
+          return;
+        } catch (e) {
+          console.warn(`Failed to load background from ${path}`);
+        }
+      }
+      
+      // If we get here, none of the paths worked
+      console.error("Could not load any background image");
+      // Set fallback and continue
+      setBgImagePath('/assets/backgrounds/stonewich-cityscape.jpg');
+      setImageLoaded(true);
     };
     
-    // Preload the hidden objects image
-    const objectsImg = new Image();
-    objectsImg.src = `/assets/minigames/spring/bloomWithAView/hidden-objects.png`;
-    objectsImg.onload = () => setObjectsImageLoaded(true);
-    objectsImg.onerror = () => {
-      console.error('Failed to load hidden objects image');
-      setObjectsImageLoaded(true); // Continue even if failed
+    // Try loading the hidden objects image with different paths
+    const tryLoadObjectsImage = async () => {
+      const possibleObjectImages = [
+        '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
+        '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
+        '/assets/minigames/spring/bloomWithAView/hidden_objects_sprites.png',
+        '/assets/minigames/spring/bloomwithAView/hidden_objects_sprites.png'
+      ];
+      
+      // Try each path until one loads
+      for (const path of possibleObjectImages) {
+        console.log(`Trying to load objects: ${path}`);
+        try {
+          const img = new Image();
+          img.src = path;
+          
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            // Add a timeout to prevent hanging
+            setTimeout(reject, 3000);
+          });
+          
+          // If we get here, the image loaded successfully
+          console.log(`Successfully loaded objects: ${path}`);
+          setObjectsImagePath(path);
+          setObjectsImageLoaded(true);
+          return;
+        } catch (e) {
+          console.warn(`Failed to load objects from ${path}`);
+        }
+      }
+      
+      // If we get here, we couldn't load the objects image
+      console.error("Could not load any hidden objects image");
+      setObjectsImageLoaded(true); // Continue anyway
     };
+    
+    // Load both assets
+    tryLoadBackground();
+    tryLoadObjectsImage();
   }, [backgroundImage]);
 
   // Generate CSS for the hidden object elements based on their position
   const getHiddenObjectStyle = (item: HiddenItem) => {
+    if (!objectsImagePath) return {};
+    
     return {
       left: `${item.position.x - 25}px`, // Adjust position to center
       top: `${item.position.y - 25}px`, // Adjust position to center
       width: '50px',
       height: '50px',
-      backgroundImage: "url('/assets/minigames/spring/bloomWithAView/hidden-objects.png')",
+      backgroundImage: `url('${objectsImagePath}')`,
       backgroundSize: '250px auto', // The sprite sheet is 5 items wide (50px * 5)
       backgroundPosition: getBackgroundPositionForItem(item.id),
+      border: item.highlighted ? '2px dashed yellow' : 'none',
     };
   };
 
@@ -92,25 +163,44 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
         }}
       >
         {/* Main background image */}
-        {imageLoaded && (
+        {imageLoaded && bgImagePath && (
           <div 
             className="absolute inset-0 z-0" 
             style={{
-              backgroundImage: `url(/assets/minigames/spring/bloomWithAView/garden-background.jpg)`,
+              backgroundImage: `url(${bgImagePath})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
           />
         )}
 
+        {/* Debug marker to show if we're in fallback mode */}
+        {!objectsImagePath && (
+          <div className="absolute top-16 left-4 bg-red-500 text-white px-4 py-2 rounded-lg z-40">
+            Missing sprite sheet - Using debug mode
+          </div>
+        )}
+
         {/* Hidden object sprites (only visible until found) */}
-        {objectsImageLoaded && hiddenItems.map((item) => (
+        {hiddenItems.map((item) => (
           !item.found && (
             <div
               key={`object-${item.id}`}
-              className="absolute z-10"
-              style={getHiddenObjectStyle(item)}
-            />
+              className={`absolute z-10 ${objectsImagePath ? '' : 'bg-purple-500/50 rounded-full border-2 border-white'}`}
+              style={objectsImagePath ? getHiddenObjectStyle(item) : {
+                left: `${item.position.x - 25}px`,
+                top: `${item.position.y - 25}px`,
+                width: '50px',
+                height: '50px',
+              }}
+            >
+              {/* If no sprite sheet is available, show item names for debugging */}
+              {!objectsImagePath && (
+                <div className="absolute -top-6 left-0 right-0 text-center text-xs bg-black/70 text-white px-1 rounded">
+                  {item.name}
+                </div>
+              )}
+            </div>
           )
         ))}
 

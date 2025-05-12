@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { useBloomWithAViewGame } from '@/hooks/useBloomWithAViewGame';
 import { Search, Clock, VolumeX, Volume2 } from 'lucide-react';
 import { soundManager } from '@/utils/sound';
+import { toast } from 'sonner';
+import SoundToggle from '../common/SoundToggle';
 
 interface BloomWithAViewGameProps {
   onComplete: (success: boolean) => void;
@@ -39,11 +41,41 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
 
   // Start background music when component mounts
   useEffect(() => {
+    console.log("🎵 Attempting to play BloomWithAView music...");
+    
     try {
-      soundManager.playMusic('bloomwithAView-loop-gameplay.mp3', { loop: true });
+      // Try to play BGM with multiple paths
+      const tryPlayMusic = async () => {
+        try {
+          soundManager.playMusic('bloomWithAView-loop-gameplay.mp3', { loop: true });
+          console.log("🎵 Successfully started music with path: bloomWithAView-loop-gameplay.mp3");
+          
+          // Also play ambient sounds for the garden
+          setTimeout(() => {
+            soundManager.playSFX('bloomWithAView-ambience-birdsong');
+            console.log("🎵 Playing ambient birdsong");
+          }, 1000);
+        } catch (musicError) {
+          // Try alternative capitalization
+          try {
+            console.log("🎵 First attempt failed, trying alternative music path...");
+            soundManager.playMusic('bloomwithAView-loop-gameplay.mp3', { loop: true });
+            console.log("🎵 Successfully started music with path: bloomwithAView-loop-gameplay.mp3");
+          } catch (altError) {
+            console.error('Failed to play background music:', altError);
+            toast.error("Could not play game music", {
+              description: "Sound effects may be limited",
+              duration: 3000
+            });
+          }
+        }
+      };
+      
+      tryPlayMusic();
       
       // Cleanup function to stop music when component unmounts
       return () => {
+        console.log("🎵 Stopping BloomWithAView music");
         soundManager.stopMusic();
       };
     } catch (error) {
@@ -55,6 +87,15 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
   const toggleSound = () => {
     setIsMuted(!isMuted);
     soundManager.setMuted(!isMuted);
+  };
+
+  // Play item found sound
+  const playItemFoundSound = () => {
+    try {
+      soundManager.playSFX('bloomWithAView-success');
+    } catch (error) {
+      console.error('Failed to play item found sound:', error);
+    }
   };
 
   return (
@@ -76,18 +117,8 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
               <Clock className="h-5 w-5 text-purple-400" />
               <span className="text-white text-lg font-medium">{timeRemaining}s</span>
               
-              {/* Sound toggle button */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={toggleSound}
-                className="ml-2"
-              >
-                {isMuted ? 
-                  <VolumeX className="h-5 w-5 text-purple-400" /> : 
-                  <Volume2 className="h-5 w-5 text-purple-400" />
-                }
-              </Button>
+              {/* Sound toggle using component */}
+              <SoundToggle showMusicToggle={true} />
             </div>
           </div>
           
