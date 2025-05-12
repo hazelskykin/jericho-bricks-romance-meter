@@ -65,17 +65,17 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
     handleSceneTransition(`${season}-festival-completion`);
   };
   
-  // Handle skip button click
+  // Handle skip button click - CRITICAL FIX
   const handleSkipFestival = () => {
-    // Set skipClicked to true first to prevent auto-selection
+    // Set skipClicked to true FIRST to prevent auto-selection
     setSkipClicked(true);
     console.log(`Skipping festival activities for ${season}`);
     toast.info(`Skipping ${season} festival activities`);
     
-    // Small delay to ensure the skip flag is set before navigation
+    // IMPORTANT: Add a small delay to ensure the skip flag is set before navigation
     setTimeout(() => {
       handleSceneTransition(`${season}-festival-completion`);
-    }, 50);
+    }, 100);
   };
 
   // Handle background click (no action needed, just preventing errors)
@@ -93,7 +93,7 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
       case 'autumn':
         return 'stonewich-cityscape';
       case 'winter':
-        return 'stonewich-cityscape';
+        return 'winter-cityoverlook';
       default:
         return 'stonewich-cityscape';
     }
@@ -101,8 +101,11 @@ const FestivalActivitiesView: React.FC<FestivalActivitiesViewProps> = ({
 
   // For winter season with current love interest, we can automatically route to the appropriate activity
   useEffect(() => {
-    // Don't auto-select if skip was clicked
-    if (skipClicked) return;
+    // CRITICAL FIX: Don't auto-select if skip was clicked
+    if (skipClicked) {
+      console.log('Skip was clicked, preventing auto-selection of activities');
+      return;
+    }
     
     if (season === 'winter' && gameState.currentLoveInterest) {
       // Give a slight delay to allow the component to render first

@@ -1,9 +1,26 @@
-
 import { Scene } from '@/types/game';
 
 //scene ID winter-festival-activities is the landing page where the intro scenes for the winter minigames are; winter-intro transitions there and the end of minigames also transitions back to it
 
 const winterActivityScenes: Record<string, Scene> = {
+  // Winter Festival Activities Scene (keep this entry to ensure scene exists)
+  'winter-festival-activities': {
+    id: 'winter-festival-activities',
+    background: 'winter-cityoverlook',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "With the Winter Gala & Games underway, there are several activities you could participate in.",
+      },
+      {
+        character: 'maven',
+        text: "Where should I focus my attention during the festival?",
+        mood: 'neutral',
+      }
+    ],
+    nextSceneId: 'winter-festival-completion'
+  },
+
   // Charity Auction activity
   'winter-charity-auction-intro': {
     id: 'winter-charity-auction-intro',
