@@ -35,7 +35,7 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
     if (gameStage === 'gameplay' && !currentSign) {
       setCurrentSign(generateRandomSign());
       // Play sorting sound effect when sign appears
-      soundManager.playSoundEffect('lookingSigns-clue-found.mp3');
+      soundManager.playSFX('lookingSigns-clue-found');
     }
   }, [gameStage, currentSign, generateRandomSign]);
 
@@ -79,10 +79,10 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
 
     // Play appropriate sound effect
     if (isCorrect) {
-      soundManager.playSoundEffect('lookingSigns-sign-sorted.mp3');
+      soundManager.playSFX('lookingSigns-sign-sorted');
       setScore(prev => prev + 1);
     } else {
-      soundManager.playSoundEffect('lookingSigns-sort-wrong.mp3');
+      soundManager.playSFX('lookingSigns-sort-wrong');
       setIncorrectScore(prev => prev + 1);
     }
     

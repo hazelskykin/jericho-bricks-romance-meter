@@ -3,11 +3,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Trophy, XCircle } from 'lucide-react';
+import { GameResult } from './useLookingSigns';
 
 interface ResultsViewProps {
   score: number;
   incorrectScore: number;
-  gameResult: 'win' | 'lose';
+  gameResult: 'success' | 'failure';
   onContinue: () => void;
 }
 
@@ -31,7 +32,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({
     >
       {/* Result Icon */}
       <div className="h-32 w-32 flex items-center justify-center rounded-full mb-4">
-        {gameResult === 'win' ? (
+        {gameResult === 'success' ? (
           <motion.div 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -62,14 +63,14 @@ const ResultsView: React.FC<ResultsViewProps> = ({
 
       {/* Result Title */}
       <h2 className="text-2xl font-bold mb-2 text-center">
-        {gameResult === 'win' 
+        {gameResult === 'success' 
           ? "Auspicious Fortune!" 
           : "Unfortunate Reading..."}
       </h2>
 
       {/* Result Message */}
       <p className="text-center text-gray-300 mb-4">
-        {gameResult === 'win'
+        {gameResult === 'success'
           ? "The signs favor your relationship! Your keen eye for fortune has impressed your companion."
           : "You've misread the signs... Better luck next time. Perhaps fortune isn't with you today."}
       </p>
@@ -102,7 +103,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({
 
       {/* Affection Change Message */}
       <p className="text-center italic text-sm">
-        {gameResult === 'win'
+        {gameResult === 'success'
           ? "Your companion seems impressed with your fortune-reading abilities."
           : "Your companion seems a bit disappointed with the results."}
       </p>
