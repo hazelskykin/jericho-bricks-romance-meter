@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -51,6 +52,11 @@ const sceneMapping: Record<string, string> = {
   'autumn-conclusion-debrief': 'autumn-conclusion-debrief',
   'autumn-conclusion': 'autumn-conclusion',
   
+  // Autumn minigames
+  'autumn-crafter-intro': 'autumn-crafter-intro',
+  'autumn-crafter-start': 'autumn-crafter-start',
+  'autumn-crafter-complete': 'autumn-crafter-complete',
+  
   // Winter scenes
   'winter-intro': 'winter-intro',
   'winter-planning': 'winter-planning',
@@ -90,6 +96,10 @@ const sceneFallbacks: Record<string, string> = {
   'summer-character-selection-2': 'summer-character-selection',
   'summer-character-selection-3': 'summer-character-selection',
   'summer-character-selection-4': 'summer-character-selection',
+  
+  // Fallbacks for autumn minigames
+  'autumn-crafter-start': 'autumn-crafter-intro',
+  'autumn-crafter-complete': 'autumn-festival-activities',
 };
 
 /**

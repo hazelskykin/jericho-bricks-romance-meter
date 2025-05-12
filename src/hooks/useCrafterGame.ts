@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 
@@ -29,17 +30,17 @@ const useCrafterGame = ({ onComplete }: UseCrafterGameProps) => {
     // Always use 'M' for Maven (protagonist)
     const protagonistInitial = 'M';
     
-    // Get the initial of the current love interest
+    // Get the initial of the current love interest, with fallback to 'S' for testing
     const loveInterestInitial = (() => {
       const { currentLoveInterest } = gameState;
-      if (!currentLoveInterest) return '?';
+      if (!currentLoveInterest) return 'S'; // Default to 'S' for testing
       
       switch (currentLoveInterest) {
         case 'xavier': return 'X';
         case 'navarre': return 'N';
         case 'etta': return 'E';
         case 'senara': return 'S';
-        default: return '?';
+        default: return 'S'; // Default to 'S' for testing
       }
     })();
     

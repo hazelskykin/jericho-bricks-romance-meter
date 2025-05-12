@@ -30,7 +30,7 @@ const GameSceneObserver = () => {
       
       // Autumn minigames
       'autumn-tour-guide-start': 'tourGuide',
-      'autumn-crafter-start': 'crafter',
+      'autumn-crafter-start': 'crafter', // Make sure this entry exists
       'autumn-memories-date-start': 'memoriesDate',
       
       // Winter minigames

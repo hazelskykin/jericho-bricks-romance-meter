@@ -34,9 +34,27 @@ const DevJumpTargets: React.FC<DevJumpTargetsProps> = ({ onJumpToScene }) => {
     { id: 'summer-planning', label: 'Summer Festival Planning', season: 'summer' },
     { id: 'summer-festival-activities', label: 'Summer Festival Activities', season: 'summer' },
     { id: 'autumn-festival-introduction', label: 'Autumn Festival', season: 'autumn' },
+    { id: 'autumn-festival-activities', label: 'Autumn Festival Activities', season: 'autumn' },
     { id: 'winter-planning', label: 'Winter Festival Planning', season: 'winter' },
     { id: 'winter-festival-intro', label: 'Winter Festival', season: 'winter' },
-    { id: 'winter-festival-activities', label: 'Winter Festival Activities', season: 'winter' }
+    { id: 'winter-festival-activities', label: 'Winter Festival Activities', season: 'winter' },
+    
+    // Minigames
+    { id: 'spring-bloom-view-start', label: 'Bloom With A View', season: 'spring' },
+    { id: 'spring-brooms-away-start', label: 'Brooms Away', season: 'spring' },
+    { id: 'spring-mud-fling-start', label: 'Mud Fling', season: 'spring' },
+    { id: 'summer-serenade-start', label: 'Serenade', season: 'summer' },
+    { id: 'summer-spoken-word-start', label: 'Spoken Word', season: 'summer' },
+    { id: 'summer-whats-on-tap-start', label: 'What\'s On Tap', season: 'summer' },
+    { id: 'autumn-crafter-start', label: 'Crafter', season: 'autumn' },
+    { id: 'autumn-tour-guide-start', label: 'Tour Guide', season: 'autumn' },
+    { id: 'autumn-memories-date-start', label: 'Memories Date', season: 'autumn' },
+    { id: 'winter-charity-auction-start', label: 'Charity Auction', season: 'winter' },
+    { id: 'winter-gala-dance-start', label: 'Gala Dance', season: 'winter' },
+    { id: 'winter-looking-signs-start', label: 'Looking Signs', season: 'winter' },
+    
+    // Direct minigame testing
+    { id: 'crafter', label: 'Crafter Game Direct', season: 'autumn' }
   ];
 
   // Enhanced jump function that also updates the season

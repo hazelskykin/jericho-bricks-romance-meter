@@ -1,206 +1,202 @@
-
 import { Scene } from '@/types/game';
 
 const activitiesScenes: Record<string, Scene> = {
-  'autumn-festival-introduction': {
-    id: 'autumn-festival-introduction',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "The day of the Autumn Heritage & Handicrafts Festival arrives. The streets are decorated with autumn leaves and historical artifacts, and the air is filled with excitement.",
-      },
-      {
-        character: 'maven',
-        text: "It's finally here! The festival looks amazing. I can't wait to explore everything it has to offer.",
-        mood: 'happy',
-      },
-      {
-        character: 'xavier',
-        text: "The technical systems are all ready to support the festival activities. We've added some special features this year to highlight the heritage exhibits.",
-        mood: 'happy',
-      },
-      {
-        character: 'navarre',
-        text: "I've been working with the local artisans to make sure they get prime placement. You wouldn't believe the politics involved in booth arrangement!",
-        mood: 'laughing',
-      },
-      {
-        character: 'etta',
-        text: "We've organized the day into three main activities. Maven, you should decide which one you want to participate in first.",
-        mood: 'neutral',
-      },
-    ],
-    nextSceneId: 'autumn-festival-activities',
-  },
-
   'autumn-festival-activities': {
     id: 'autumn-festival-activities',
-    background: 'stonewich-cityscape',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
-        text: "There's so much to do at the Heritage & Handicrafts Festival. What should I try first?",
-        mood: 'happy',
+        text: "The Autumn Festival is in full swing! There are several activities I could join. What should I check out first?",
+        mood: 'thoughtful',
       }
     ],
-    // This scene will be handled by FestivalActivitiesView component
-  },
-  
-  'autumn-tour-guide-intro': {
-    id: 'autumn-tour-guide-intro',
-    background: 'stonewich-cityscape',
-    dialogue: [
+    choices: [
       {
-        character: 'maven',
-        text: "I think I'll help with the tour guide station. It sounds like an interesting way to learn about Stonewich's history.",
-        mood: 'happy',
+        text: "Join the artisan workshop to create a handcrafted item",
+        nextSceneId: 'autumn-crafter-intro'
       },
       {
-        character: 'etta',
-        text: "Excellent choice. You'll be matching visitors with appropriate tour routes based on their interests and needs.",
-        mood: 'happy',
+        text: "Help guide tourists around the historic district",
+        nextSceneId: 'autumn-tour-guide-intro'
       },
       {
-        character: 'maven',
-        text: "I'm looking forward to it. Let's get started!",
-        mood: 'happy',
+        text: "Create a memory photo album of the festival",
+        nextSceneId: 'autumn-memories-intro'
       }
-    ],
-    nextSceneId: 'autumn-tour-guide-start',
+    ]
   },
   
   'autumn-crafter-intro': {
     id: 'autumn-crafter-intro',
-    background: 'stonewich-cityscape',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
-        text: "The crafting booth looks fascinating. I'd like to try making something myself.",
+        text: "The artisan workshop looks interesting. I've always wanted to try my hand at crafting something special.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "An excellent opportunity to experience the tactile aspect of creation. There's a psychological benefit to working with one's hands.",
-        mood: 'neutral',
+        text: "Crafting connects us to traditions that span generations. The techniques may evolve, but the spirit of creation remains the same.",
+        mood: 'thoughtful',
       },
       {
         character: 'maven',
-        text: "I wonder what I'll be able to create.",
+        text: "I'm excited to make something that blends traditional craft with my own personal touch.",
         mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-crafter-start',
+    nextSceneId: 'autumn-crafter-start'
   },
-  
-  'autumn-memories-date-intro': {
-    id: 'autumn-memories-date-intro',
-    background: 'stonewich-cityscape',
+
+  'autumn-crafter-start': {
+    id: 'autumn-crafter-start',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
-        text: "I'd like to spend some time making memories at the festival with someone special.",
-        mood: 'happy',
-      },
-      {
-        character: 'navarre',
-        text: "The 'Making Memories' photo booth is perfect for that. You can capture special moments and create customized photo keepsakes.",
-        mood: 'happy',
-      },
-      {
-        character: 'maven',
-        text: "That sounds wonderful. Let's go there together.",
+        text: "Time to get creative! Let's see what I can make...",
         mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-memories-date-start',
-  },
-  
-  'autumn-tour-guide-complete': {
-    id: 'autumn-tour-guide-complete',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'maven',
-        text: "That was really fulfilling. I helped so many visitors find the perfect tour for their interests.",
-        mood: 'happy',
-      },
-      {
-        character: 'etta',
-        text: "You did an excellent job. Your organizational skills are impressive.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'autumn-festival-completion',
+    nextSceneId: 'autumn-crafter-complete'
   },
   
   'autumn-crafter-complete': {
     id: 'autumn-crafter-complete',
-    background: 'stonewich-cityscape',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
-        text: "I can't believe I made this myself! It's not perfect, but I'm proud of it.",
+        text: "I'm really proud of what I created! It's something special that captures both tradition and innovation.",
         mood: 'happy',
       },
       {
         character: 'senara',
-        text: "The imperfections are what make handcrafted items special. They represent the unique human touch.",
-        mood: 'neutral',
+        text: "It's beautiful, Maven. You've captured the essence of what makes handcrafting so powerful - the personal connection to what you create.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Thank you! I think I understand a bit better now why preserving these traditions matters so much.",
+        mood: 'thoughtful',
       }
     ],
-    nextSceneId: 'autumn-festival-completion',
+    nextSceneId: 'autumn-festival-activities'
   },
-  
-  'autumn-memories-date-complete': {
-    id: 'autumn-memories-date-complete',
-    background: 'stonewich-cityscape',
+  'autumn-tour-guide-intro': {
+    id: 'autumn-tour-guide-intro',
+    background: 'autumn-cityoverlook',
     dialogue: [
       {
         character: 'maven',
-        text: "These photos turned out wonderful. I'll treasure these memories of our time together.",
+        text: "Guiding tourists could be a fun way to share the city's history and culture.",
         mood: 'happy',
-      }
-    ],
-    nextSceneId: 'autumn-festival-completion',
-  },
-  
-  'autumn-festival-completion': {
-    id: 'autumn-festival-completion',
-    background: 'stonewich-cityscape',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "As the day draws to a close, the Heritage & Handicrafts Festival is declared a great success. Visitors leave with new appreciation for Stonewich's cultural history and artisanal traditions.",
       },
       {
         character: 'xavier',
-        text: "The festival systems ran flawlessly. The digital heritage archive received a record number of uploads from participants.",
+        text: "Sharing our city's story is a great way to connect with others and celebrate our heritage.",
         mood: 'happy',
       },
       {
-        character: 'navarre',
-        text: "The local artisans are thrilled with the turnout and sales. Several of them have already asked about participating next year.",
+        character: 'maven',
+        text: "I'm excited to show off the hidden gems and historical landmarks of Stonewich.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'autumn-tour-guide-start'
+  },
+  'autumn-tour-guide-start': {
+    id: 'autumn-tour-guide-start',
+    background: 'autumn-cityoverlook',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "Let's start the tour and show these visitors what makes Stonewich so special!",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'autumn-tour-guide-complete'
+  },
+  'autumn-tour-guide-complete': {
+    id: 'autumn-tour-guide-complete',
+    background: 'autumn-cityoverlook',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "The tour was a success! I enjoyed sharing the history and culture of Stonewich with the visitors.",
+        mood: 'happy',
+      },
+      {
+        character: 'xavier',
+        text: "You did a great job, Maven! Your passion for the city really shines through.",
+        mood: 'happy',
+      },
+      {
+        character: 'maven',
+        text: "Thank you! It feels good to connect with others and celebrate our shared heritage.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'autumn-festival-activities'
+  },
+  'autumn-memories-intro': {
+    id: 'autumn-memories-intro',
+    background: 'autumn-cityoverlook',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "Creating a memory photo album sounds like a wonderful way to capture the spirit of the festival.",
         mood: 'happy',
       },
       {
         character: 'etta',
-        text: "Our metrics show excellent engagement across all demographics. The festival achieved all its community connection goals.",
-        mood: 'neutral',
-      },
-      {
-        character: 'senara',
-        text: "The qualitative feedback has been overwhelmingly positive. People particularly appreciated learning about the historical context of various crafts.",
-        mood: 'neutral',
+        text: "Photographs are powerful tools for preserving memories and sharing our experiences with others.",
+        mood: 'thoughtful',
       },
       {
         character: 'maven',
-        text: "It was a wonderful day. I feel like I understand Stonewich and its people so much better now.",
+        text: "I'm excited to create a visual story that celebrates the people and traditions of Stonewich.",
         mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-festivities-conclusion',
-  }
+    nextSceneId: 'autumn-memories-date-start'
+  },
+  'autumn-memories-date-start': {
+    id: 'autumn-memories-date-start',
+    background: 'autumn-cityoverlook',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "Let's start snapping some photos and create a beautiful memory album!",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'autumn-memories-date-complete'
+  },
+  'autumn-memories-date-complete': {
+    id: 'autumn-memories-date-complete',
+    background: 'autumn-cityoverlook',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "The memory photo album is complete! It's a beautiful collection of moments that capture the essence of the festival.",
+        mood: 'happy',
+      },
+      {
+        character: 'etta',
+        text: "This album is a testament to the power of community and the importance of preserving our shared memories.",
+        mood: 'thoughtful',
+      },
+      {
+        character: 'maven',
+        text: "I'm so glad I could contribute to this celebration of Stonewich's heritage.",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'autumn-festival-activities'
+  },
 };
 
 export default activitiesScenes;
