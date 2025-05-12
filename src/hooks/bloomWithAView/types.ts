@@ -1,22 +1,23 @@
 
-// Types shared across Bloom With A View minigame components
+export interface Position {
+  x: number;
+  y: number;
+}
 
 export interface HiddenItem {
   id: string;
   name: string;
   found: boolean;
-  position: {
-    x: number;
-    y: number;
-  };
-  highlighted?: boolean; // Property for hint highlighting
+  highlighted: boolean;
+  position: Position;
 }
 
 export interface GameState {
   hiddenItems: HiddenItem[];
-  clickPosition: { x: number, y: number } | null;
+  clickPosition: Position | null;
   showHint: boolean;
   hintCooldown: number;
   gameComplete: boolean;
   timeRemaining: number;
+  gameExited: boolean;
 }

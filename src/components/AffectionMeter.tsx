@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { Character } from '@/types/game';
@@ -54,6 +54,13 @@ const AffectionMeter: React.FC<AffectionMeterProps> = ({ character, isOpen }) =>
     console.warn('AffectionMeter received undefined character');
     return null;
   }
+  
+  // Log current affection value to help debug
+  useEffect(() => {
+    if (isOpen) {
+      console.log(`Rendering affection meter for ${character.id}: ${character.affection} (${getLevel()}) - Hearts: ${heartsToShow}`);
+    }
+  }, [character.affection, isOpen]);
   
   return (
     <div className="flex flex-col items-center">

@@ -98,7 +98,7 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
               <span className="text-white text-lg font-medium">{timeRemaining}s</span>
             </div>
             
-            {/* Move sound toggle back to top right corner */}
+            {/* Sound toggle at the top */}
             <div className="ml-4">
               <SoundToggle showMusicToggle={true} />
             </div>

@@ -10,8 +10,8 @@ import { HiddenItem } from './bloomWithAView/types';
 export type { HiddenItem };
 
 export function useBloomWithAViewGame(onComplete: (success: boolean) => void, onExit: () => void) {
-  // Game config
-  const gameDuration = 90; // seconds
+  // Game config - shortened to 30 seconds
+  const gameDuration = 30; // Changed from 90 to 30 seconds
   
   // Game state
   const gameState = useGameState(gameDuration);
@@ -23,6 +23,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
   const [hintCooldown, setHintCooldown] = useState(gameState.hintCooldown);
   const [gameComplete, setGameComplete] = useState(gameState.gameComplete);
   const [timeRemaining, setTimeRemaining] = useState(gameState.timeRemaining);
+  const [gameExited, setGameExited] = useState(gameState.gameExited);
   
   // Update the gameState reference with the latest state values
   const currentGameState = {
@@ -31,7 +32,8 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     showHint,
     hintCooldown,
     gameComplete,
-    timeRemaining
+    timeRemaining,
+    gameExited
   };
   
   // Use the timer hook to manage game timing
@@ -49,6 +51,7 @@ export function useBloomWithAViewGame(onComplete: (success: boolean) => void, on
     setClickPosition,
     setShowHint,
     setHintCooldown,
+    setGameExited,
     gameComplete,
     playSoundSafely,
     onExit

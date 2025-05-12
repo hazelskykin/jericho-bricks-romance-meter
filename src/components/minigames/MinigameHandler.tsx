@@ -28,10 +28,11 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     if (activeMinigame === 'bloomWithAView') {
       console.log('Preloading BloomWithAView assets');
       
-      // Use asset manager to preload assets with specific paths - only using the correct minigames directory
+      // Use asset manager to preload assets with specific paths - try both PNG and JPG
       const assetPaths = [
-        // Garden background (PNG)
+        // Garden background (both PNG and JPG)
         '/assets/minigames/spring/bloomWithAView/garden-background.png',
+        '/assets/minigames/spring/bloomWithAView/garden-background.jpg',
         // Hidden objects assets
         '/assets/minigames/spring/bloomWithAView/hidden-objects.png',
         // Flower tiles
@@ -64,6 +65,26 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     }
   }, [activeMinigame, exitMinigame]);
   
+  // Handle minigame completion - ensure proper progression after game ends
+  const handleMinigameComplete = (success: boolean, score?: number) => {
+    console.log(`Minigame ${activeMinigame} completed with success: ${success}, score: ${score}`);
+    
+    // Add small delay to ensure proper transition
+    setTimeout(() => {
+      completeMinigame(success, score);
+    }, 500);
+  };
+  
+  // Handle minigame exit - ensure proper cleanup
+  const handleExitMinigame = () => {
+    console.log(`Exiting minigame ${activeMinigame}`);
+    
+    // Add small delay to ensure proper transition
+    setTimeout(() => {
+      exitMinigame();
+    }, 100);
+  };
+  
   if (!activeMinigame) {
     return null;
   }
@@ -73,16 +94,16 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     case 'bloomWithAView':
       return (
         <BloomWithAViewGame
-          onComplete={completeMinigame}
-          onExit={exitMinigame}
+          onComplete={handleMinigameComplete}
+          onExit={handleExitMinigame}
         />
       );
     default:
       return (
         <PlaceholderMinigame
           minigameType={activeMinigame}
-          onComplete={completeMinigame}
-          onExit={exitMinigame}
+          onComplete={handleMinigameComplete}
+          onExit={handleExitMinigame}
         />
       );
   }

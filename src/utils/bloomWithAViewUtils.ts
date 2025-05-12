@@ -9,8 +9,9 @@ type AssetLoadCallback = (
 ) => void;
 
 export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
-  // Asset paths for the game - fixing paths for PNG vs JPG
-  const bgPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.png');
+  // Asset paths for the game - using both PNG and JPG paths to try both
+  const bgPathPng = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.png');
+  const bgPathJpg = fixAssetPath('/assets/minigames/spring/bloomWithAView/garden-background.jpg');
   const objectsPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/hidden-objects.png');
   const tilesPath = fixAssetPath('/assets/minigames/spring/bloomWithAView/flower-tiles.png');
   
@@ -24,7 +25,7 @@ export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
   const checkAllLoaded = () => {
     if (bgLoaded && objectsLoaded && tilesLoaded) {
       console.log('All BloomWithAView assets loaded successfully');
-      onLoad(bgPath, objectsPath, tilesPath, false);
+      onLoad(bgLoaded ? bgPathPng : bgPathJpg, objectsPath, tilesPath, false);
     } else if (debugMode) {
       console.log('Using debug mode for BloomWithAView assets');
       // Use fallback paths for debug mode
@@ -38,18 +39,30 @@ export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
     }
   };
   
-  // Load background image
-  const bgImg = new Image();
-  bgImg.onload = () => {
+  // Try loading PNG background first
+  const bgImgPng = new Image();
+  bgImgPng.onload = () => {
+    console.log('Successfully loaded garden background PNG');
     bgLoaded = true;
     checkAllLoaded();
   };
-  bgImg.onerror = () => {
-    console.warn('Failed to load garden background image');
-    debugMode = true;
-    checkAllLoaded();
+  bgImgPng.onerror = () => {
+    console.log('Failed to load garden background PNG, trying JPG...');
+    // Try the JPG version
+    const bgImgJpg = new Image();
+    bgImgJpg.onload = () => {
+      console.log('Successfully loaded garden background JPG');
+      bgLoaded = true;
+      checkAllLoaded();
+    };
+    bgImgJpg.onerror = () => {
+      console.warn('Failed to load garden background image (both PNG and JPG)');
+      debugMode = true;
+      checkAllLoaded();
+    };
+    bgImgJpg.src = bgPathJpg;
   };
-  bgImg.src = bgPath;
+  bgImgPng.src = bgPathPng;
   
   // Load objects image
   const objectsImg = new Image();

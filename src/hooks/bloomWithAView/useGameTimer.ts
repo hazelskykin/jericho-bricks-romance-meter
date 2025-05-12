@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { GameState } from './types';
 import { soundManager } from '@/utils/sound';
@@ -17,8 +17,9 @@ export function useGameTimer({
   setGameComplete,
   onComplete
 }: GameTimerProps) {
-  const { hiddenItems, timeRemaining, gameComplete } = gameState;
-
+  const { hiddenItems, timeRemaining, gameComplete, gameExited } = gameState;
+  const onCompleteCalled = useRef(false);
+  
   // Function to safely play sounds that handles errors
   const playSoundSafely = (soundId: string) => {
     try {
@@ -30,7 +31,7 @@ export function useGameTimer({
 
   // Handle timer countdown
   useEffect(() => {
-    if (gameComplete) return;
+    if (gameComplete || gameExited) return;
 
     const timer = setInterval(() => {
       setTimeRemaining(prev => {
@@ -44,16 +45,8 @@ export function useGameTimer({
           
           if (allFound) {
             playSoundSafely('win');
-            // Only call onComplete once, with longer delay to prevent auto-restart
-            setTimeout(() => {
-              onComplete(true);
-            }, 3000);
           } else {
             playSoundSafely('lose');
-            // Only call onComplete once, with longer delay to prevent auto-restart
-            setTimeout(() => {
-              onComplete(false);
-            }, 3000);
           }
           
           return 0;
@@ -64,11 +57,11 @@ export function useGameTimer({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [gameComplete, hiddenItems, setGameComplete, setTimeRemaining, onComplete]);
+  }, [gameComplete, gameExited, hiddenItems, setGameComplete, setTimeRemaining]);
   
-  // Check for early victory if all items are found, but only once
+  // Check for early victory if all items are found
   useEffect(() => {
-    if (gameComplete) return;
+    if (gameComplete || gameExited || onCompleteCalled.current) return;
     
     const allItemsFound = hiddenItems.length > 0 && hiddenItems.every(item => item.found);
     
@@ -76,20 +69,29 @@ export function useGameTimer({
       console.log('All items found! Game complete.');
       setGameComplete(true);
       playSoundSafely('win');
+      
+      // Use a toast only for the completion message
       toast.success("You found all the items!", {
         description: "Great job!",
         duration: 3000
       });
-      
-      // Add significant delay before triggering completion to prevent auto-restart
-      // and use a state flag to ensure we only call onComplete once
-      const timer = setTimeout(() => {
-        onComplete(true);
-      }, 3000);
-      
-      return () => clearTimeout(timer);
     }
-  }, [hiddenItems, gameComplete, setGameComplete, onComplete]);
+  }, [hiddenItems, gameComplete, gameExited, setGameComplete]);
+  
+  // Handle game completion and progression
+  useEffect(() => {
+    if (!gameComplete || onCompleteCalled.current) return;
+    
+    // Add delay before completing to show the success message
+    const timer = setTimeout(() => {
+      console.log("Game complete, calling onComplete handler");
+      const allItemsFound = hiddenItems.every(item => item.found);
+      onCompleteCalled.current = true; // Prevent multiple calls
+      onComplete(allItemsFound);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, [gameComplete, hiddenItems, onComplete]);
 
   return {
     playSoundSafely

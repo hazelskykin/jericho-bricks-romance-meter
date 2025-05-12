@@ -1,85 +1,73 @@
 
 import { useState } from 'react';
-import { HiddenItem, GameState } from './types';
+import { GameState, HiddenItem } from './types';
 
-export function useGameState(gameDuration: number): GameState {
-  // Initialize hidden items with the correct object names
-  const [hiddenItems, setHiddenItems] = useState<HiddenItem[]>([
-    {
-      id: 'gardening-gloves',
-      name: 'Gardening Gloves',
-      found: false,
-      position: { x: 120, y: 150 }
-    },
-    {
-      id: 'bee-drone',
-      name: 'Bee Drone',
-      found: false,
-      position: { x: 300, y: 320 }
-    },
-    {
-      id: 'seed-packet',
-      name: 'Seed Packet',
-      found: false,
-      position: { x: 180, y: 80 }
-    },
-    {
-      id: 'butterfly',
-      name: 'Butterfly',
-      found: false,
-      position: { x: 250, y: 250 }
-    },
-    {
-      id: 'vintage-watering-can',
-      name: 'Vintage Watering Can',
-      found: false,
-      position: { x: 70, y: 200 }
-    }
-  ]);
-  
-  // Other game state
-  const [clickPosition, setClickPosition] = useState<{x: number, y: number} | null>(null);
+// Initial hidden items for the game
+const initialHiddenItems: HiddenItem[] = [
+  {
+    id: 'gardening-gloves',
+    name: 'Gardening Gloves',
+    found: false,
+    highlighted: false,
+    position: { x: 400, y: 250 }
+  },
+  {
+    id: 'bee-drone',
+    name: 'Bee Drone',
+    found: false,
+    highlighted: false,
+    position: { x: 180, y: 300 }
+  },
+  {
+    id: 'seed-packet',
+    name: 'Seed Packet',
+    found: false,
+    highlighted: false,
+    position: { x: 600, y: 350 }
+  },
+  {
+    id: 'butterfly',
+    name: 'Butterfly',
+    found: false,
+    highlighted: false,
+    position: { x: 300, y: 150 }
+  },
+  {
+    id: 'vintage-watering-can',
+    name: 'Vintage Watering Can',
+    found: false,
+    highlighted: false,
+    position: { x: 500, y: 200 }
+  }
+];
+
+// Hook to manage the game state
+export function useGameState(initialDuration: number = 30) { // Changed default to 30 seconds
+  const [hiddenItems, setHiddenItems] = useState<HiddenItem[]>(initialHiddenItems);
+  const [clickPosition, setClickPosition] = useState<{ x: number, y: number } | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [hintCooldown, setHintCooldown] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(gameDuration);
+  const [timeRemaining, setTimeRemaining] = useState(initialDuration);
+  const [gameExited, setGameExited] = useState(false); // Track if game was manually exited
 
   return {
+    // Game state
     hiddenItems,
     clickPosition,
     showHint,
     hintCooldown,
     gameComplete,
-    timeRemaining
-  };
-}
-
-// Export setters separately to keep component interface clean
-export function useGameStateSetters(gameState: GameState) {
-  // These functions are defined here but will be used in other hooks
-  const updateHiddenItem = (itemId: string, updates: Partial<HiddenItem>) => {
-    const updatedItems = gameState.hiddenItems.map(item => 
-      item.id === itemId ? { ...item, ...updates } : item
-    );
-    return updatedItems;
-  };
-
-  const markItemFound = (itemId: string) => {
-    return updateHiddenItem(itemId, { found: true });
-  };
-  
-  const highlightItem = (itemId: string, highlighted: boolean = true) => {
-    return updateHiddenItem(itemId, { highlighted });
-  };
-  
-  const resetHighlights = () => {
-    return gameState.hiddenItems.map(item => ({ ...item, highlighted: false }));
-  };
-
-  return {
-    updateHiddenItem,
-    markItemFound,
-    highlightItem,
-    resetHighlights
+    timeRemaining,
+    gameExited,
+    
+    // State setters
+    setHiddenItems,
+    setClickPosition,
+    setShowHint,
+    setHintCooldown,
+    setGameComplete,
+    setTimeRemaining,
+    setGameExited
   };
 }

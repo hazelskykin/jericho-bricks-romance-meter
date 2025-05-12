@@ -1,16 +1,21 @@
 
-import { useEffect } from 'react';
-import { toast } from 'sonner';
-import { GameState } from './types';
-import { useGameStateSetters } from './useGameState';
-import { soundManager } from '@/utils/sound';
+import { useCallback } from 'react';
+import { HiddenItem } from './types';
 
-interface GameHandlersProps {
-  gameState: GameState;
-  setHiddenItems: React.Dispatch<React.SetStateAction<any[]>>;
-  setClickPosition: React.Dispatch<React.SetStateAction<{x: number, y: number} | null>>;
+interface HandlersProps {
+  gameState: {
+    hiddenItems: HiddenItem[];
+    clickPosition: { x: number, y: number } | null;
+    showHint: boolean;
+    hintCooldown: number;
+    gameComplete: boolean;
+    gameExited: boolean;
+  };
+  setHiddenItems: React.Dispatch<React.SetStateAction<HiddenItem[]>>;
+  setClickPosition: React.Dispatch<React.SetStateAction<{ x: number, y: number } | null>>;
   setShowHint: React.Dispatch<React.SetStateAction<boolean>>;
   setHintCooldown: React.Dispatch<React.SetStateAction<number>>;
+  setGameExited: React.Dispatch<React.SetStateAction<boolean>>;
   gameComplete: boolean;
   playSoundSafely: (soundId: string) => void;
   onExit: () => void;
@@ -22,133 +27,109 @@ export function useGameHandlers({
   setClickPosition,
   setShowHint,
   setHintCooldown,
+  setGameExited,
   gameComplete,
   playSoundSafely,
   onExit
-}: GameHandlersProps) {
-  const { hiddenItems, clickPosition, hintCooldown } = gameState;
-  const { markItemFound, highlightItem, resetHighlights } = useGameStateSetters(gameState);
-
-  // Show click feedback animation
-  useEffect(() => {
-    if (clickPosition) {
-      setTimeout(() => {
-        setClickPosition(null);
-      }, 500);
-    }
-  }, [clickPosition, setClickPosition]);
-  
-  // Handle hint cooldown
-  useEffect(() => {
-    if (hintCooldown > 0) {
-      const timer = setTimeout(() => {
-        setHintCooldown(prev => prev - 1);
-      }, 1000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [hintCooldown, setHintCooldown]);
-
-  // Handle clicks on the garden scene
-  const handleSceneClick = (event: React.MouseEvent<HTMLDivElement>) => {
+}: HandlersProps) {
+  // Handle click on the scene
+  const handleSceneClick = useCallback((x: number, y: number) => {
     if (gameComplete) return;
     
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    // Hide any active hint
+    setShowHint(false);
     
+    // Set click position for visual feedback
     setClickPosition({ x, y });
     
-    // Play rustle sound effect when clicking in the garden
-    try {
-      soundManager.playSFX('bloomWithAView-effect-rustle');
-    } catch (err) {
-      console.warn("Failed to play rustle sound", err);
-    }
+    // Clear click position after animation
+    setTimeout(() => setClickPosition(null), 300);
     
-    // Check if click is near any hidden items
-    const itemClickRadius = 60; // Increase clickable area size for better UX
-    let foundItem = false;
+    // Play click sound
+    playSoundSafely('bloomWithAView-effect-rustle');
     
-    // Create a copy of hidden items to track newly found items
-    const updatedItems = [...hiddenItems];
-    
-    for (let i = 0; i < updatedItems.length; i++) {
-      const item = updatedItems[i];
+    // Check if we hit any items
+    setHiddenItems(currentItems => {
+      let updatedItems = [...currentItems];
+      let foundItem = false;
       
-      // Skip already found items
-      if (item.found) continue;
-      
-      // Calculate distance between click and item position
-      const distance = Math.sqrt(
-        Math.pow(x - item.position.x, 2) + 
-        Math.pow(y - item.position.y, 2)
-      );
-      
-      if (distance < itemClickRadius) {
-        // Found an item!
-        console.log(`Found item: ${item.name} at distance ${distance}`);
-        updatedItems[i] = { ...item, found: true };
+      // Check each item
+      updatedItems = updatedItems.map(item => {
+        if (item.found) return item; // Skip already found items
         
-        // Play success sound
-        playSoundSafely('bloomWithAView-success');
-        toast.success(`You found the ${item.name}!`);
-        foundItem = true;
+        // Calculate distance between click and item
+        const dx = item.position.x - x;
+        const dy = item.position.y - y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Update state with the found item
-        setHiddenItems(updatedItems);
-        break; // Only find one item per click
-      }
-    }
-    
-    // If no item was found, play click sound
-    if (!foundItem) {
-      playSoundSafely('click');
-    }
-  };
+        // If click is close enough, mark as found
+        if (distance < 40) {
+          console.log(`Found item: ${item.name} at distance ${distance}`);
+          foundItem = true;
+          playSoundSafely('bloomWithAView-success');
+          return { ...item, found: true, highlighted: false };
+        }
+        
+        return { ...item, highlighted: false };
+      });
+      
+      return updatedItems;
+    });
+  }, [gameComplete, playSoundSafely, setClickPosition, setHiddenItems, setShowHint]);
   
-  // Handle hint button click - improved to highlight an unfound item
-  const handleHintClick = () => {
-    if (hintCooldown > 0 || gameComplete) return;
+  // Handle hint button click
+  const handleHintClick = useCallback(() => {
+    if (gameComplete || gameState.hintCooldown > 0) return;
     
-    // Find unfound items
-    const unfoundItems = hiddenItems.filter(item => !item.found);
-    if (unfoundItems.length === 0) return;
-    
-    // Select a random unfound item to highlight
-    const randomIndex = Math.floor(Math.random() * unfoundItems.length);
-    const itemToHighlight = unfoundItems[randomIndex];
-    
-    setHiddenItems(prev => 
-      prev.map(item => 
-        item.id === itemToHighlight.id 
-          ? { ...item, highlighted: true }
-          : item
-      )
-    );
-    
+    // Enable hint mode
     setShowHint(true);
-    setHintCooldown(10); // 10 second cooldown
-    playSoundSafely('hint');
     
-    toast.info(`Hint: Look for the ${itemToHighlight.name}!`);
+    // Set the hint cooldown
+    setHintCooldown(10);
     
-    // Remove highlight after 3 seconds
-    setTimeout(() => {
-      setShowHint(false);
-      setHiddenItems(prev => resetHighlights());
-    }, 3000);
-  };
+    // Start cooldown timer
+    const interval = setInterval(() => {
+      setHintCooldown(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    // Find an unfound item to highlight
+    setHiddenItems(currentItems => {
+      const unfoundItems = currentItems.filter(item => !item.found);
+      if (unfoundItems.length === 0) return currentItems;
+      
+      const randomIndex = Math.floor(Math.random() * unfoundItems.length);
+      
+      return currentItems.map(item => 
+        item.id === unfoundItems[randomIndex].id
+          ? { ...item, highlighted: true }
+          : { ...item, highlighted: false }
+      );
+    });
+  }, [gameComplete, gameState.hintCooldown, setHiddenItems, setHintCooldown, setShowHint]);
   
-  // Handle exit button properly
-  const handleExit = () => {
-    // Always ask for confirmation before exiting
-    if (window.confirm("Are you sure you want to exit? Your progress will be lost.")) {
-      // Stop music and exit
+  // Handle exit button click
+  const handleExit = useCallback(() => {
+    console.log("Exit button clicked, marking game as exited");
+    setGameExited(true);
+    
+    // Stop any sounds
+    try {
       soundManager.stopMusic();
-      onExit();
+    } catch (err) {
+      console.warn('Error stopping music:', err);
     }
-  };
+    
+    // Call the provided exit handler after a short delay
+    setTimeout(() => {
+      onExit();
+    }, 100);
+  }, [onExit, setGameExited]);
 
   return {
     handleSceneClick,
