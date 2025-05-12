@@ -1,145 +1,82 @@
 
-import { assetManager } from './assetManager';
+import { assetManager } from '@/utils/assetManager';
 
-type AssetLoadCallback = (
-  backgroundPath: string,
-  objectsPath: string,
-  tilesPath: string,
-  debugMode: boolean
-) => void;
+// Helper functions for Bloom With A View minigame
 
-export function loadBloomWithAViewAssets(onLoad: AssetLoadCallback): void {
-  console.log("Loading Bloom With A View assets...");
+/**
+ * Load assets for the Bloom With A View minigame
+ */
+export const loadBloomWithAViewAssets = (
+  onAssetsLoaded: (
+    backgroundPath: string,
+    debugMode: boolean
+  ) => void
+) => {
+  // Define asset paths
+  const bgPath = '/assets/minigames/spring/bloomwithAView/garden-background.jpg';
   
-  // Use a single, consistent path structure - lowercase w
-  const assetPaths = {
-    bgPath: '/assets/minigames/spring/bloomwithAView/garden-background.jpg',
-    objectsPath: '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
-    tilesPath: '/assets/minigames/spring/bloomwithAView/flower-tiles.png',
-  };
+  // Individual hidden object paths
+  const objectPaths = [
+    '/assets/minigames/spring/bloomwithAView/hidden-objects-wateringcan.png',
+    '/assets/minigames/spring/bloomwithAView/hidden-objects-gloves.png',
+    '/assets/minigames/spring/bloomwithAView/hidden-objects-beedrone.png',
+    '/assets/minigames/spring/bloomwithAView/hidden-objects-seedpacket.png',
+    '/assets/minigames/spring/bloomwithAView/hidden-objects-butterfly.png',
+  ];
   
-  // Track asset loading state
-  let debugMode = false;
-  let bgLoaded = false;
-  let objectsLoaded = false;
-  let tilesLoaded = false;
+  // Individual flower tile paths
+  const flowerTilePaths = [
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-1.png',
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-2.png',
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-3.png',
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-4.png',
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-5.png',
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-6.png',
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-7.png',
+    '/assets/minigames/spring/bloomwithAView/flower-tiles-8.png',
+  ];
   
-  // Successfully loaded paths
-  let bgPath = '';
-  let objPath = '';
-  let tilePath = '';
-  
-  // Function to check if all assets are loaded
-  const checkAllLoaded = () => {
-    if (bgLoaded && objectsLoaded && tilesLoaded) {
-      console.log(`All BloomWithAView assets loaded successfully`);
-      onLoad(bgPath, objPath, tilePath, false);
-    } else {
-      console.log('Using debug mode for BloomWithAView assets');
-      // Use fallback paths for debug mode
-      const fallbackBgPath = '/assets/backgrounds/stonewich-cityscape.jpg';
-      onLoad(fallbackBgPath, objPath || assetPaths.objectsPath, tilePath || assetPaths.tilesPath, true);
-    }
-  };
-  
-  // Load background image
-  const loadBackground = () => {
-    console.log(`Loading garden background from: ${assetPaths.bgPath}`);
-    const img = new Image();
-    img.onload = () => {
-      console.log(`Successfully loaded garden background`);
-      bgLoaded = true;
-      bgPath = assetPaths.bgPath;
-      checkAllLoaded();
-    };
-    img.onerror = () => {
-      console.warn('Failed to load garden background image');
-      debugMode = true;
-      checkAllLoaded();
-    };
-    img.src = assetPaths.bgPath;
-  };
-  
-  // Load objects sprite
-  const loadObjects = () => {
-    console.log(`Loading hidden objects from: ${assetPaths.objectsPath}`);
-    const img = new Image();
-    img.onload = () => {
-      console.log(`Successfully loaded hidden objects`);
-      objectsLoaded = true;
-      objPath = assetPaths.objectsPath;
-      checkAllLoaded();
-    };
-    img.onerror = () => {
-      console.warn('Failed to load hidden objects image');
-      debugMode = true;
-      checkAllLoaded();
-    };
-    img.src = assetPaths.objectsPath;
-  };
-  
-  // Load flower tiles
-  const loadTiles = () => {
-    console.log(`Loading flower tiles from: ${assetPaths.tilesPath}`);
-    const img = new Image();
-    img.onload = () => {
-      console.log(`Successfully loaded flower tiles`);
-      tilesLoaded = true;
-      tilePath = assetPaths.tilesPath;
-      checkAllLoaded();
-    };
-    img.onerror = () => {
-      console.warn('Failed to load flower tiles image');
-      debugMode = true;
-      checkAllLoaded();
-    };
-    img.src = assetPaths.tilesPath;
-  };
-  
-  // Load all assets
-  loadBackground();
-  loadObjects();
-  loadTiles();
-  
-  // Set a shorter timeout to avoid long waits when assets don't exist
-  setTimeout(() => {
-    if (!bgLoaded || !objectsLoaded || !tilesLoaded) {
-      console.warn('Timeout waiting for BloomWithAView assets to load');
-      debugMode = true;
-      checkAllLoaded();
-    }
-  }, 3000); // 3 seconds timeout
-}
+  // Combine all paths
+  const allPaths = [bgPath, ...objectPaths, ...flowerTilePaths];
 
-// Get positioned and styled objects for each hidden item
-export function getObjectPosition(itemId: string, debugMode: boolean = false): { 
-  width: number;
-  height: number;
-  backgroundPosition: string;
-  spriteSheetWidth: number;
-  spriteSheetHeight: number;
-} {
-  // These are the sprite sheet dimensions
-  const spriteSheetWidth = 300; // Total width of the sprite sheet
-  const spriteSheetHeight = 60; // Total height of the sprite sheet
-  
-  // Position mapping for each item sprite in the sprite sheet
-  // Format: [x-position, y-position, width, height]
-  const positionMap: Record<string, [number, number, number, number]> = {
-    'gardening-gloves': [0, 0, 60, 60],
-    'bee-drone': [60, 0, 60, 60],
-    'seed-packet': [120, 0, 60, 60],
-    'butterfly': [180, 0, 60, 60],
-    'vintage-watering-can': [240, 0, 60, 60]
-  };
-  
-  const position = positionMap[itemId] || [0, 0, 60, 60];
-  
+  // Preload all images
+  assetManager.preloadAssets(allPaths, (loaded, total) => {
+    console.log(`Loaded ${loaded}/${total} BloomWithAView assets`);
+  }).then(() => {
+    console.log('BloomWithAView assets loaded');
+    
+    // Check if we need to use debug mode (if our primary assets failed to load)
+    const debugMode = assetManager.didAssetFail(bgPath);
+    
+    // Call the callback with the paths
+    onAssetsLoaded(
+      bgPath,
+      debugMode
+    );
+  });
+};
+
+/**
+ * Get the size and position styling for a hidden object
+ */
+export const getObjectPosition = (itemId: string, debugMode: boolean) => {
+  // In debug mode, return larger sizes for better visibility
+  if (debugMode) {
+    return {
+      width: 80,
+      height: 80,
+      backgroundPosition: '0 0',
+      spriteSheetWidth: 80,
+      spriteSheetHeight: 80
+    };
+  }
+
+  // In normal mode, use these sizes for our individual images
   return {
-    width: position[2],
-    height: position[3],
-    backgroundPosition: `-${position[0]}px -${position[1]}px`,
-    spriteSheetWidth,
-    spriteSheetHeight
+    width: 60,
+    height: 60,
+    backgroundPosition: '0 0',
+    spriteSheetWidth: 60,
+    spriteSheetHeight: 60
   };
-}
+};

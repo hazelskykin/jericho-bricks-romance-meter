@@ -22,6 +22,7 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
   const [incorrectScore, setIncorrectScore] = useState(0);
   const [gameResult, setGameResult] = useState<GameResult>('failure');
   const [gameOver, setGameOver] = useState(false);
+  const [signAnimating, setSignAnimating] = useState(false);
 
   // Generate a random sign
   const generateRandomSign = useCallback(() => {
@@ -75,7 +76,7 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
 
   // Handle sign sorting
   const handleSignSort = useCallback((direction: 'left' | 'right') => {
-    if (!currentSign || gameOver) return;
+    if (!currentSign || gameOver || signAnimating) return;
 
     const isCorrect = 
       (currentSign.type === 'good' && direction === 'right') || 
@@ -90,9 +91,16 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
       setIncorrectScore(prev => prev + 1);
     }
     
-    // Generate next sign
-    setCurrentSign(generateRandomSign());
-  }, [currentSign, gameOver, generateRandomSign]);
+    // Set animating state to prevent multiple clicks
+    setSignAnimating(true);
+    
+    // Add delay before showing next sign
+    setTimeout(() => {
+      // Generate next sign
+      setCurrentSign(generateRandomSign());
+      setSignAnimating(false);
+    }, 600); // 600ms delay for visual feedback
+  }, [currentSign, gameOver, generateRandomSign, signAnimating]);
 
   // Handle game completion
   const handleGameComplete = useCallback(() => {
@@ -108,6 +116,7 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
     incorrectScore,
     handleSignSort,
     gameResult,
-    handleGameComplete
+    handleGameComplete,
+    signAnimating
   };
 };

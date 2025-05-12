@@ -21,15 +21,23 @@ const LookingSignsGame: React.FC<LookingSignsGameProps> = ({ onComplete, onExit 
     incorrectScore,
     handleSignSort,
     gameResult,
-    handleGameComplete
+    handleGameComplete,
+    signAnimating
   } = useLookingSigns(onComplete);
   
   // Preload assets when component mounts
   useEffect(() => {
-    // Define asset paths
+    // Define asset paths for individual sign images
     const assetPaths = [
       '/assets/minigames/winter/lookingSigns/signs-background.png',
-      '/assets/minigames/winter/lookingSigns/sign-clues.png'
+      // Good luck signs
+      '/assets/minigames/winter/lookingSigns/sign-clues-coin.png',
+      '/assets/minigames/winter/lookingSigns/sign-clues-bird.png',
+      '/assets/minigames/winter/lookingSigns/sign-clues-heartcharm.png',
+      // Bad luck signs
+      '/assets/minigames/winter/lookingSigns/sign-clues-brokenclock.png',
+      '/assets/minigames/winter/lookingSigns/sign-clues-blackcat.png',
+      '/assets/minigames/winter/lookingSigns/sign-clues-evileye.png'
     ];
     
     // Preload all assets
@@ -80,6 +88,7 @@ const LookingSignsGame: React.FC<LookingSignsGameProps> = ({ onComplete, onExit 
           score={score}
           incorrectScore={incorrectScore}
           onSortSign={handleSignSort}
+          signAnimating={signAnimating}
         />
       )}
 

@@ -9,13 +9,13 @@ interface AccentSelectorProps {
 }
 
 const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect, vertical = false, compact = false }) => {
-  // Fixed sprite positions with precise percentages to avoid overlap
+  // Now using individual image files instead of sprite positions
   const accents = [
-    { id: 'autumn-leaf', name: 'Autumn Leaf', position: '0% 0%' },
-    { id: 'button', name: 'Button', position: '20% 0%' },
-    { id: 'glass-shard', name: 'Glass Shard', position: '40% 0%' },
-    { id: 'gear-charm', name: 'Gear Charm', position: '60% 0%' },
-    { id: 'ribbon', name: 'Ribbon', position: '80% 0%' },
+    { id: 'autumn-leaf', name: 'Autumn Leaf', imagePath: '/assets/minigames/autumn/crafter/accents-leaf.png' },
+    { id: 'button', name: 'Button', imagePath: '/assets/minigames/autumn/crafter/accents-button.png' },
+    { id: 'glass-shard', name: 'Glass Shard', imagePath: '/assets/minigames/autumn/crafter/accents-glass.png' },
+    { id: 'gear-charm', name: 'Gear Charm', imagePath: '/assets/minigames/autumn/crafter/accents-gearcharm.png' },
+    { id: 'ribbon', name: 'Ribbon', imagePath: '/assets/minigames/autumn/crafter/accents-ribbon.png' },
   ];
 
   return (
@@ -32,11 +32,10 @@ const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect, vertical = fa
             <div 
               className={compact ? "w-10 h-10" : "w-12 h-12"}
               style={{ 
-                backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
-                backgroundPosition: accent.position,
-                backgroundSize: '500% 100%', // 5 sprites in a row
+                backgroundImage: `url(${accent.imagePath})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                imageRendering: 'pixelated'
               }}
             />
           </div>

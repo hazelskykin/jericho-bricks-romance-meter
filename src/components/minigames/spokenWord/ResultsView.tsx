@@ -25,6 +25,17 @@ const ResultsView: React.FC<ResultsViewProps> = ({
   const [showRanking, setShowRanking] = useState(false);
   const [typedPoem, setTypedPoem] = useState("");
   
+  // Get mastery icon path based on rank name
+  const getMasteryIconPath = (rankName: string): string => {
+    switch(rankName) {
+      case 'Laureate': return '/assets/minigames/summer/spokenWord/mastery-icons-laureate.png';
+      case 'Lyricist': return '/assets/minigames/summer/spokenWord/mastery-icons-lyricist.png';
+      case 'Wordsmith': return '/assets/minigames/summer/spokenWord/mastery-icons-wordsmith.png';
+      case 'Acolyte': return '/assets/minigames/summer/spokenWord/mastery-icons-acolyte.png';
+      default: return '/assets/minigames/summer/spokenWord/mastery-icons-acolyte.png';
+    }
+  };
+  
   // Animation for typing effect
   useEffect(() => {
     if (!compiledPoem) return;
@@ -52,17 +63,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({
       // Cleanup if needed
     };
   }, [compiledPoem]);
-  
-  // Get mastery icon position based on rank name
-  const getMasteryIconPosition = (rankName: string): string => {
-    switch(rankName) {
-      case 'Laureate': return '0% 0%';
-      case 'Lyricist': return '33.33% 0%';
-      case 'Wordsmith': return '66.66% 0%';
-      case 'Acolyte': return '100% 0%';
-      default: return '0% 0%';
-    }
-  };
 
   return (
     <div className="w-full max-w-2xl">
@@ -93,12 +93,9 @@ const ResultsView: React.FC<ResultsViewProps> = ({
         >
           <div className="flex flex-col items-center">
             <div 
-              className="w-24 h-24 mb-4"
+              className="w-24 h-24 mb-4 bg-contain bg-center bg-no-repeat"
               style={{ 
-                backgroundImage: 'url(/assets/minigames/summer/spokenWord/mastery-icons.png)',
-                backgroundPosition: getMasteryIconPosition(ranking.name),
-                backgroundSize: '400% 100%',
-                backgroundRepeat: 'no-repeat'
+                backgroundImage: `url(${getMasteryIconPath(ranking.name)})`,
               }}
             />
             

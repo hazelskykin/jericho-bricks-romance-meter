@@ -2,13 +2,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Trophy, XCircle } from 'lucide-react';
 import { GameResult } from './useLookingSigns';
+import { Check, X } from 'lucide-react';
 
 interface ResultsViewProps {
   score: number;
   incorrectScore: number;
-  gameResult: 'success' | 'failure';
+  gameResult: GameResult;
   onContinue: () => void;
 }
 
@@ -18,104 +18,75 @@ const ResultsView: React.FC<ResultsViewProps> = ({
   gameResult,
   onContinue
 }) => {
-  // Calculate total signs sorted
-  const totalSorted = score + incorrectScore;
-  // Calculate percentage of correct signs
-  const correctPercentage = totalSorted > 0 ? Math.round((score / totalSorted) * 100) : 0;
+  const totalSigns = score + incorrectScore;
+  const accuracy = totalSigns > 0 ? Math.round((score / totalSigns) * 100) : 0;
+  const isSuccess = gameResult === 'success';
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col items-center gap-6 max-w-md mx-auto py-6"
-    >
-      {/* Result Icon */}
-      <div className="h-32 w-32 flex items-center justify-center rounded-full mb-4">
-        {gameResult === 'success' ? (
-          <motion.div 
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-              delay: 0.2
-            }}
-          >
-            <Trophy className="h-24 w-24 text-yellow-400" />
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-              delay: 0.2
-            }}
-          >
-            <XCircle className="h-24 w-24 text-red-400" />
-          </motion.div>
-        )}
-      </div>
-
-      {/* Result Title */}
-      <h2 className="text-2xl font-bold mb-2 text-center">
-        {gameResult === 'success' 
-          ? "Auspicious Fortune!" 
-          : "Unfortunate Reading..."}
-      </h2>
-
-      {/* Result Message */}
-      <p className="text-center text-gray-300 mb-4">
-        {gameResult === 'success'
-          ? "The signs favor your relationship! Your keen eye for fortune has impressed your companion."
-          : "You've misread the signs... Better luck next time. Perhaps fortune isn't with you today."}
-      </p>
-
-      {/* Stats */}
-      <div className="w-full bg-[#1A1F2C]/60 p-6 rounded-lg mb-4">
-        <div className="grid grid-cols-2 gap-4 text-center">
-          <div>
-            <p className="text-gray-400">Good Signs</p>
-            <p className="text-2xl font-bold text-green-400">{score}</p>
-          </div>
-          <div>
-            <p className="text-gray-400">Bad Omens</p>
-            <p className="text-2xl font-bold text-red-400">{incorrectScore}</p>
-          </div>
-          <div className="col-span-2">
-            <p className="text-gray-400">Accuracy</p>
-            <div className="w-full bg-gray-700 h-4 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-purple-600 to-blue-500"
-                initial={{ width: 0 }}
-                animate={{ width: `${correctPercentage}%` }}
-                transition={{ duration: 1, delay: 0.5 }}
-              />
+    <div className="flex flex-col items-center gap-6 max-w-4xl mx-auto">
+      <div className="bg-gray-800/80 backdrop-blur-sm p-8 rounded-lg text-center w-full max-w-xl">
+        <motion.div 
+          className="mb-6 flex justify-center"
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {isSuccess ? (
+            <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center text-white">
+              <Check className="w-12 h-12" />
             </div>
-            <p className="mt-1 font-bold">{correctPercentage}%</p>
+          ) : (
+            <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-white">
+              <X className="w-12 h-12" />
+            </div>
+          )}
+        </motion.div>
+
+        <h2 className="text-2xl font-bold mb-2 text-white">
+          {isSuccess ? "A Fortunate Reading..." : "An Unfortunate Reading..."}
+        </h2>
+
+        <p className="text-gray-300 mb-6">
+          {isSuccess 
+            ? "You have successfully interpreted the signs. Your fortune is bright!" 
+            : "You have misinterpreted too many signs. Your fortune is clouded."}
+        </p>
+
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-gray-700/50 p-4 rounded-lg">
+            <div className="text-3xl font-bold text-green-400">{score}</div>
+            <div className="text-gray-400 text-sm">Correct</div>
+          </div>
+          
+          <div className="bg-gray-700/50 p-4 rounded-lg">
+            <div className="text-3xl font-bold text-red-400">{incorrectScore}</div>
+            <div className="text-gray-400 text-sm">Incorrect</div>
           </div>
         </div>
+
+        <div className="mb-6">
+          <div className="text-sm text-gray-400 mb-1">Accuracy</div>
+          <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
+            <div 
+              className={`h-full ${accuracy >= 51 ? 'bg-green-500' : 'bg-red-500'}`}
+              style={{ width: `${accuracy}%` }}
+            ></div>
+          </div>
+          <div className="text-right text-sm mt-1 text-gray-400">{accuracy}%</div>
+          <div className="text-xs mt-2 text-gray-500">
+            (51% accuracy or higher is needed to succeed)
+          </div>
+        </div>
+
+        <Button
+          className="px-8 py-2 text-lg"
+          onClick={onContinue}
+          variant={isSuccess ? "default" : "secondary"}
+        >
+          Continue
+        </Button>
       </div>
-
-      {/* Affection Change Message */}
-      <p className="text-center italic text-sm">
-        {gameResult === 'success'
-          ? "Your companion seems impressed with your fortune-reading abilities."
-          : "Your companion seems a bit disappointed with the results."}
-      </p>
-
-      {/* Continue Button */}
-      <Button
-        onClick={onContinue}
-        className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white px-8 py-2 mt-4"
-      >
-        Continue
-      </Button>
-    </motion.div>
+    </div>
   );
 };
 

@@ -2,29 +2,27 @@
 import React from 'react';
 
 interface FlowerTilesLayerProps {
-  flowerTilesPath: string;
   imageLoaded: boolean;
 }
 
-const FlowerTilesLayer: React.FC<FlowerTilesLayerProps> = ({ flowerTilesPath, imageLoaded }) => {
-  if (!imageLoaded || !flowerTilesPath) return null;
+const FlowerTilesLayer: React.FC<FlowerTilesLayerProps> = ({ imageLoaded }) => {
+  if (!imageLoaded) return null;
   
-  // Create an array of flower tiles with different positions
+  // Create an array of flower tiles with different positions and images
   const flowerTilePositions = [
-    // Tiles in the middle area
-    { top: '50%', left: '20%', rotation: '0deg', size: '60px' },
-    { top: '55%', left: '75%', rotation: '45deg', size: '70px' },
-    { top: '60%', left: '20%', rotation: '15deg', size: '55px' },
-    { top: '52%', left: '60%', rotation: '-10deg', size: '65px' },
-    { top: '75%', left: '80%', rotation: '30deg', size: '60px' },
-    { top: '85%', left: '40%', rotation: '-20deg', size: '50px' },
-    { top: '65%', left: '45%', rotation: '5deg', size: '55px' },
-    { top: '70%', left: '85%', rotation: '-5deg', size: '65px' },
+    { top: '50%', left: '20%', rotation: '0deg', size: '60px', imageIndex: 1 },
+    { top: '55%', left: '75%', rotation: '45deg', size: '70px', imageIndex: 2 },
+    { top: '60%', left: '20%', rotation: '15deg', size: '55px', imageIndex: 3 },
+    { top: '52%', left: '60%', rotation: '-10deg', size: '65px', imageIndex: 4 },
+    { top: '75%', left: '80%', rotation: '30deg', size: '60px', imageIndex: 5 },
+    { top: '85%', left: '40%', rotation: '-20deg', size: '50px', imageIndex: 6 },
+    { top: '65%', left: '45%', rotation: '5deg', size: '55px', imageIndex: 7 },
+    { top: '70%', left: '85%', rotation: '-5deg', size: '65px', imageIndex: 8 },
     // Additional tiles - all below midpoint
-    { top: '58%', left: '35%', rotation: '12deg', size: '58px' },
-    { top: '67%', left: '55%', rotation: '-8deg', size: '62px' },
-    { top: '80%', left: '25%', rotation: '22deg', size: '54px' },
-    { top: '72%', left: '70%', rotation: '-15deg', size: '59px' },
+    { top: '58%', left: '35%', rotation: '12deg', size: '58px', imageIndex: 1 },
+    { top: '67%', left: '55%', rotation: '-8deg', size: '62px', imageIndex: 2 },
+    { top: '80%', left: '25%', rotation: '22deg', size: '54px', imageIndex: 3 },
+    { top: '72%', left: '70%', rotation: '-15deg', size: '59px', imageIndex: 4 },
   ];
 
   return (
@@ -44,9 +42,10 @@ const FlowerTilesLayer: React.FC<FlowerTilesLayerProps> = ({ flowerTilesPath, im
             left: position.left,
             width: position.size,
             height: position.size,
-            backgroundImage: `url(${flowerTilesPath})`,
-            backgroundSize: '400%', // Displaying a portion of the sprite sheet
-            backgroundPosition: getBackgroundPosition(index), // Get different positions for each tile
+            backgroundImage: `url(/assets/minigames/spring/bloomwithAView/flower-tiles-${position.imageIndex}.png)`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             transform: `rotate(${position.rotation})`,
             opacity: 0.9
           }}
@@ -55,26 +54,5 @@ const FlowerTilesLayer: React.FC<FlowerTilesLayerProps> = ({ flowerTilesPath, im
     </div>
   );
 };
-
-// Helper function to get different background positions for the tiles
-function getBackgroundPosition(index: number): string {
-  // These positions correspond to different flower tiles in the sprite sheet
-  const positions = [
-    '0% 0%',      // Top-left flower
-    '33.33% 0%',  // Top-center flower
-    '66.66% 0%',  // Top-right flower
-    '0% 50%',     // Middle-left flower
-    '33.33% 50%', // Middle-center flower
-    '66.66% 50%', // Middle-right flower
-    '0% 100%',    // Bottom-left flower
-    '33.33% 100%', // Bottom-center flower
-    '66.66% 100%', // Bottom-right flower
-    '100% 0%',    // Far-right top flower
-    '100% 50%',   // Far-right middle flower
-    '100% 100%'   // Far-right bottom flower
-  ];
-  
-  return positions[index % positions.length];
-}
 
 export default FlowerTilesLayer;

@@ -1,20 +1,30 @@
 
 import React from 'react';
 import { HiddenItem } from '@/hooks/bloomWithAView/types';
-import { getObjectPosition } from '@/utils/bloomWithAViewUtils';
 
 interface HiddenObjectProps {
   item: HiddenItem;
-  objectsImagePath: string;
   debugMode: boolean;
 }
 
-const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, debugMode }) => {
+// Helper function to get image path for hidden objects
+const getHiddenObjectPath = (id: string): string => {
+  const objectImages: Record<string, string> = {
+    'watering-can': '/assets/minigames/spring/bloomwithAView/hidden-objects-wateringcan.png',
+    'gloves': '/assets/minigames/spring/bloomwithAView/hidden-objects-gloves.png',
+    'bee-drone': '/assets/minigames/spring/bloomwithAView/hidden-objects-beedrone.png',
+    'seed-packet': '/assets/minigames/spring/bloomwithAView/hidden-objects-seedpacket.png',
+    'butterfly': '/assets/minigames/spring/bloomwithAView/hidden-objects-butterfly.png',
+    // Fallback for any other IDs
+    'default': '/assets/minigames/spring/bloomwithAView/hidden-objects-butterfly.png'
+  };
+  
+  return objectImages[id] || objectImages['default'];
+};
+
+const HiddenObject: React.FC<HiddenObjectProps> = ({ item, debugMode }) => {
   // Skip rendering if the item is already found
   if (item.found) return null;
-  
-  // Get styling for this item based on its position in the sprite sheet
-  const style = getObjectPosition(item.id, debugMode);
   
   // Use debug mode styling if needed
   if (debugMode) {
@@ -35,18 +45,18 @@ const HiddenObject: React.FC<HiddenObjectProps> = ({ item, objectsImagePath, deb
     );
   }
   
-  // Normal mode - render actual sprite from sprite sheet with increased clickable area
+  // Normal mode - render actual image file with increased clickable area
   return (
     <div 
       className={`absolute z-10 ${item.highlighted ? 'animate-pulse' : ''}`}
       style={{
-        width: `${style.width}px`,
-        height: `${style.height}px`,
-        top: `${item.position.y - style.height/2}px`,
-        left: `${item.position.x - style.width/2}px`,
-        backgroundImage: `url(${objectsImagePath})`,
-        backgroundPosition: style.backgroundPosition,
-        backgroundSize: `${style.spriteSheetWidth}px ${style.spriteSheetHeight}px`,
+        width: '60px',
+        height: '60px',
+        top: `${item.position.y - 30}px`,
+        left: `${item.position.x - 30}px`,
+        backgroundImage: `url(${getHiddenObjectPath(item.id)})`,
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         pointerEvents: 'none',
         // Add subtle highlight in production mode too

@@ -9,14 +9,14 @@ interface ThemeSelectionViewProps {
 }
 
 const ThemeSelectionView: React.FC<ThemeSelectionViewProps> = ({ themes, onThemeSelect }) => {
-  // Get theme icon position based on theme id
-  const getThemeIconPosition = (themeId: string): string => {
+  // Get theme icon path based on theme id
+  const getThemeIconPath = (themeId: string): string => {
     switch(themeId) {
-      case 'nature': return '0% 0%';
-      case 'connection': return '33.33% 0%';
-      case 'ambition': return '66.66% 0%';
-      case 'knowledge': return '100% 0%';
-      default: return '0% 0%';
+      case 'nature': return '/assets/minigames/summer/spokenWord/theme-icons-nature.png';
+      case 'connection': return '/assets/minigames/summer/spokenWord/theme-icons-human.png';
+      case 'ambition': return '/assets/minigames/summer/spokenWord/theme-icons-technology.png';
+      case 'knowledge': return '/assets/minigames/summer/spokenWord/theme-icons-mysticism.png';
+      default: return '/assets/minigames/summer/spokenWord/theme-icons-nature.png';
     }
   };
 
@@ -41,11 +41,11 @@ const ThemeSelectionView: React.FC<ThemeSelectionViewProps> = ({ themes, onTheme
         >
           <div className="flex items-center gap-3">
             <div 
-              className="h-12 w-12 rounded-full flex items-center justify-center"
+              className="h-12 w-12 rounded-full flex items-center justify-center bg-cover"
               style={{ 
-                backgroundImage: 'url(/assets/minigames/summer/spokenWord/theme-icons.png)',
-                backgroundPosition: getThemeIconPosition(theme.id),
-                backgroundSize: '400% 100%', // 4 sprites in one row
+                backgroundImage: `url(${getThemeIconPath(theme.id)})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundColor: `${theme.color}20`
               }}

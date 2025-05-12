@@ -31,18 +31,14 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [bgImagePath, setBgImagePath] = useState('');
-  const [objectsImagePath, setObjectsImagePath] = useState('');
-  const [flowerTilesPath, setFlowerTilesPath] = useState('');
   const [debugMode, setDebugMode] = useState(false);
 
   // Load assets on component mount
   useEffect(() => {
     console.log("Loading BloomWithAView assets...");
-    loadBloomWithAViewAssets((bgPath, objectsPath, tilesPath, isDebugMode) => {
-      console.log(`Assets loaded: BG: ${bgPath}, Objects: ${objectsPath}, Tiles: ${tilesPath}, DebugMode: ${isDebugMode}`);
+    loadBloomWithAViewAssets((bgPath, isDebugMode) => {
+      console.log(`Assets loaded: BG: ${bgPath}, DebugMode: ${isDebugMode}`);
       setBgImagePath(bgPath);
-      setObjectsImagePath(objectsPath);
-      setFlowerTilesPath(tilesPath);
       setDebugMode(isDebugMode);
       setImageLoaded(true);
     });
@@ -83,19 +79,17 @@ const BloomWithAViewScene: React.FC<BloomWithAViewSceneProps> = ({
         )}
         
         {/* Hidden object sprites - z-index 10 (middle layer) */}
-        {imageLoaded && objectsImagePath && hiddenItems.map((item) => (
+        {imageLoaded && hiddenItems.map((item) => (
           <HiddenObject 
             key={`object-${item.id}`}
             item={item}
-            objectsImagePath={objectsImagePath}
             debugMode={debugMode}
           />
         ))}
         
         {/* Flower tiles layer - z-index 20 (top layer) */}
-        {imageLoaded && flowerTilesPath && (
+        {imageLoaded && (
           <FlowerTilesLayer 
-            flowerTilesPath={flowerTilesPath}
             imageLoaded={imageLoaded}
           />
         )}

@@ -13,90 +13,329 @@ const minigameAssets: MinigameAsset[] = [
     category: 'background'
   },
   {
-    id: 'bloom-objects',
-    name: 'Bloom Hidden Objects',
-    src: '/assets/minigames/spring/bloomwithAView/hidden-objects.png',
-    description: 'Hidden objects for Bloom With a View',
+    id: 'hidden-objects-wateringcan',
+    name: 'Watering Can',
+    src: '/assets/minigames/spring/bloomwithAView/hidden-objects-wateringcan.png',
+    description: 'Watering can hidden object',
     priority: true,
     category: 'item'
   },
   {
-    id: 'bloom-tiles',
-    name: 'Bloom Flower Tiles',
+    id: 'hidden-objects-gloves',
+    name: 'Gardening Gloves',
+    src: '/assets/minigames/spring/bloomwithAView/hidden-objects-gloves.png',
+    description: 'Gardening gloves hidden object',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'hidden-objects-beedrone',
+    name: 'Bee Drone',
+    src: '/assets/minigames/spring/bloomwithAView/hidden-objects-beedrone.png',
+    description: 'Bee drone hidden object',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'hidden-objects-seedpacket',
+    name: 'Seed Packet',
+    src: '/assets/minigames/spring/bloomwithAView/hidden-objects-seedpacket.png',
+    description: 'Seed packet hidden object',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'hidden-objects-butterfly',
+    name: 'Butterfly',
+    src: '/assets/minigames/spring/bloomwithAView/hidden-objects-butterfly.png',
+    description: 'Butterfly hidden object',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'flower-tiles',
+    name: 'Flower Tiles',
     src: '/assets/minigames/spring/bloomwithAView/flower-tiles.png',
     description: 'Flower tiles for Bloom With a View',
-    priority: true,
-    category: 'item'
-  },
-  
-  // Spring - Mud Fling assets
-  {
-    id: 'mud-arena',
-    name: 'Mud Fling Arena',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Use a fallback that exists
-    description: 'Background for mud fling arena',
     priority: false,
-    category: 'background'
-  },
-  {
-    id: 'mud-ball-sprites',
-    name: 'Mud Ball Sprites',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'Animation sprites for mud balls',
-    priority: true,
-    category: 'ui'
-  },
-  {
-    id: 'mud-splash-sprites',
-    name: 'Mud Splash Sprites',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'Animation sprites for mud splash effects',
-    category: 'effect'
-  },
-  {
-    id: 'mud-victory',
-    name: 'Mud Victory Splash',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'Victory splash for mud fling game',
-    category: 'ui'
+    category: 'item'
   },
   
-  // Spring - Brooms Away
+  // Individual flower tiles
   {
-    id: 'broom-background',
-    name: 'Brooms Away Background',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'Grid background for Brooms Away',
+    id: 'flower-tiles-1',
+    name: 'Flower Tile 1',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-1.png',
+    description: 'Individual flower tile 1',
     priority: true,
-    category: 'background'
-  },
-  {
-    id: 'broom-drone',
-    name: 'Broom Drone',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'Drone for Brooms Away',
-    category: 'character'
-  },
-  {
-    id: 'broom-drone-sprites',
-    name: 'Broom Drone Sprites',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'Sprite sheet for broom drone',
-    category: 'character'
-  },
-  {
-    id: 'broom-trash',
-    name: 'Broom Trash Items',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'Trash items for Brooms Away',
     category: 'item'
   },
   {
-    id: 'broom-ui',
-    name: 'Brooms Away UI',
-    src: '/assets/backgrounds/stonewich-cityscape.jpg', // Using fallback
-    description: 'UI elements for Brooms Away',
+    id: 'flower-tiles-2',
+    name: 'Flower Tile 2',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-2.png',
+    description: 'Individual flower tile 2',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'flower-tiles-3',
+    name: 'Flower Tile 3',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-3.png',
+    description: 'Individual flower tile 3',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'flower-tiles-4',
+    name: 'Flower Tile 4',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-4.png',
+    description: 'Individual flower tile 4',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'flower-tiles-5',
+    name: 'Flower Tile 5',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-5.png',
+    description: 'Individual flower tile 5',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'flower-tiles-6',
+    name: 'Flower Tile 6',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-6.png',
+    description: 'Individual flower tile 6',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'flower-tiles-7',
+    name: 'Flower Tile 7',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-7.png',
+    description: 'Individual flower tile 7',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'flower-tiles-8',
+    name: 'Flower Tile 8',
+    src: '/assets/minigames/spring/bloomwithAView/flower-tiles-8.png',
+    description: 'Individual flower tile 8',
+    priority: true,
+    category: 'item'
+  },
+  
+  // Winter - Looking Signs assets
+  {
+    id: 'signs-background',
+    name: 'Looking Signs Background',
+    src: '/assets/minigames/winter/lookingSigns/signs-background.png',
+    description: 'Background for Looking Signs minigame',
+    priority: true,
+    category: 'background'
+  },
+  // Good luck signs
+  {
+    id: 'sign-clues-coin',
+    name: 'Coin Sign',
+    src: '/assets/minigames/winter/lookingSigns/sign-clues-coin.png',
+    description: 'Good luck coin sign',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'sign-clues-bird',
+    name: 'Bird Sign',
+    src: '/assets/minigames/winter/lookingSigns/sign-clues-bird.png',
+    description: 'Good luck bird sign',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'sign-clues-heartcharm',
+    name: 'Heart Charm Sign',
+    src: '/assets/minigames/winter/lookingSigns/sign-clues-heartcharm.png',
+    description: 'Good luck heart charm sign',
+    priority: true,
+    category: 'item'
+  },
+  // Bad luck signs
+  {
+    id: 'sign-clues-brokenclock',
+    name: 'Broken Clock Sign',
+    src: '/assets/minigames/winter/lookingSigns/sign-clues-brokenclock.png',
+    description: 'Bad luck broken clock sign',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'sign-clues-blackcat',
+    name: 'Black Cat Sign',
+    src: '/assets/minigames/winter/lookingSigns/sign-clues-blackcat.png',
+    description: 'Bad luck black cat sign',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'sign-clues-evileye',
+    name: 'Evil Eye Sign',
+    src: '/assets/minigames/winter/lookingSigns/sign-clues-evileye.png',
+    description: 'Bad luck evil eye sign',
+    priority: true,
+    category: 'item'
+  },
+  
+  // Summer - Spoken Word assets
+  {
+    id: 'paper-background',
+    name: 'Paper Background',
+    src: '/assets/minigames/summer/spokenWord/paper-background.png',
+    description: 'Paper background for Spoken Word',
+    priority: true,
+    category: 'background'
+  },
+  // Theme icons
+  {
+    id: 'theme-icons-nature',
+    name: 'Nature Theme Icon',
+    src: '/assets/minigames/summer/spokenWord/theme-icons-nature.png',
+    description: 'Nature theme icon',
+    priority: true,
     category: 'ui'
+  },
+  {
+    id: 'theme-icons-human',
+    name: 'Human Connection Theme Icon',
+    src: '/assets/minigames/summer/spokenWord/theme-icons-human.png',
+    description: 'Human connection theme icon',
+    priority: true,
+    category: 'ui'
+  },
+  {
+    id: 'theme-icons-technology',
+    name: 'Technology Theme Icon',
+    src: '/assets/minigames/summer/spokenWord/theme-icons-technology.png',
+    description: 'Technology theme icon',
+    priority: true,
+    category: 'ui'
+  },
+  {
+    id: 'theme-icons-mysticism',
+    name: 'Mysticism Theme Icon',
+    src: '/assets/minigames/summer/spokenWord/theme-icons-mysticism.png',
+    description: 'Mysticism theme icon',
+    priority: true,
+    category: 'ui'
+  },
+  // Mastery icons
+  {
+    id: 'mastery-icons-laureate',
+    name: 'Laureate Mastery Icon',
+    src: '/assets/minigames/summer/spokenWord/mastery-icons-laureate.png',
+    description: 'Laureate mastery rank icon',
+    priority: true,
+    category: 'ui'
+  },
+  {
+    id: 'mastery-icons-lyricist',
+    name: 'Lyricist Mastery Icon',
+    src: '/assets/minigames/summer/spokenWord/mastery-icons-lyricist.png',
+    description: 'Lyricist mastery rank icon',
+    priority: true,
+    category: 'ui'
+  },
+  {
+    id: 'mastery-icons-wordsmith',
+    name: 'Wordsmith Mastery Icon',
+    src: '/assets/minigames/summer/spokenWord/mastery-icons-wordsmith.png',
+    description: 'Wordsmith mastery rank icon',
+    priority: true,
+    category: 'ui'
+  },
+  {
+    id: 'mastery-icons-acolyte',
+    name: 'Acolyte Mastery Icon',
+    src: '/assets/minigames/summer/spokenWord/mastery-icons-acolyte.png',
+    description: 'Acolyte mastery rank icon',
+    priority: true,
+    category: 'ui'
+  },
+  
+  // Autumn - Crafter assets
+  {
+    id: 'crafter-workshop-background',
+    name: 'Crafter Workshop Background',
+    src: '/assets/minigames/autumn/crafter/workshop-background.png',
+    description: 'Workshop background for Crafter minigame',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'crafter-fabric-base',
+    name: 'Fabric Base',
+    src: '/assets/minigames/autumn/crafter/fabricBase.png',
+    description: 'Fabric base material',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'crafter-metal-base',
+    name: 'Metal Base',
+    src: '/assets/minigames/autumn/crafter/metalBase.png',
+    description: 'Metal base material',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'crafter-wood-base',
+    name: 'Wood Base',
+    src: '/assets/minigames/autumn/crafter/woodBase.png',
+    description: 'Wood base material',
+    priority: true,
+    category: 'item'
+  },
+  // Accent items
+  {
+    id: 'crafter-accent-leaf',
+    name: 'Leaf Accent',
+    src: '/assets/minigames/autumn/crafter/accents-leaf.png',
+    description: 'Autumn leaf accent',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'crafter-accent-button',
+    name: 'Button Accent',
+    src: '/assets/minigames/autumn/crafter/accents-button.png',
+    description: 'Button accent',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'crafter-accent-glass',
+    name: 'Glass Shard Accent',
+    src: '/assets/minigames/autumn/crafter/accents-glass.png',
+    description: 'Glass shard accent',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'crafter-accent-gearcharm',
+    name: 'Gear Charm Accent',
+    src: '/assets/minigames/autumn/crafter/accents-gearcharm.png',
+    description: 'Gear charm accent',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'crafter-accent-ribbon',
+    name: 'Ribbon Accent',
+    src: '/assets/minigames/autumn/crafter/accents-ribbon.png',
+    description: 'Ribbon accent',
+    priority: true,
+    category: 'item'
   },
   
   // Fallback asset

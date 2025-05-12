@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { SignType, SignItem } from './useLookingSigns';
@@ -11,6 +11,7 @@ interface GameplayViewProps {
   score: number;
   incorrectScore: number;
   onSortSign: (direction: 'left' | 'right') => void;
+  signAnimating: boolean;
 }
 
 const GameplayView: React.FC<GameplayViewProps> = ({
@@ -18,15 +19,25 @@ const GameplayView: React.FC<GameplayViewProps> = ({
   timeRemaining,
   score,
   incorrectScore,
-  onSortSign
+  onSortSign,
+  signAnimating
 }) => {
-  // Helper function to get sprite position based on sign type and index
-  const getSignSpritePosition = (type: SignType, index: number): string => {
-    // Top row (0%) for good signs, bottom row (50%) for bad signs
-    const yPos = type === 'good' ? '0%' : '50%';
-    // Each sign takes up 33.33% width
-    const xPos = `${index * 33.33}%`;
-    return `${xPos} ${yPos}`;
+  // Helper function to get sign image path based on sign type and index
+  const getSignImagePath = (type: SignType, index: number): string => {
+    const signImages = {
+      good: [
+        '/assets/minigames/winter/lookingSigns/sign-clues-coin.png',
+        '/assets/minigames/winter/lookingSigns/sign-clues-bird.png',
+        '/assets/minigames/winter/lookingSigns/sign-clues-heartcharm.png'
+      ],
+      bad: [
+        '/assets/minigames/winter/lookingSigns/sign-clues-brokenclock.png',
+        '/assets/minigames/winter/lookingSigns/sign-clues-blackcat.png',
+        '/assets/minigames/winter/lookingSigns/sign-clues-evileye.png'
+      ]
+    };
+    
+    return signImages[type][index] || signImages.good[0];
   };
 
   return (
@@ -53,21 +64,22 @@ const GameplayView: React.FC<GameplayViewProps> = ({
           backgroundPosition: 'center'
         }}
       >
-        {/* Sign Display */}
-        {currentSign && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
-            className="w-40 h-40 bg-center bg-no-repeat"
-            style={{
-              backgroundImage: 'url(/assets/minigames/winter/lookingSigns/sign-clues.png)',
-              backgroundPosition: getSignSpritePosition(currentSign.type, currentSign.index),
-              backgroundSize: '300% 200%',
-            }}
-          />
-        )}
+        {/* Sign Display with Animation */}
+        <AnimatePresence mode="wait">
+          {currentSign && !signAnimating && (
+            <motion.div
+              key={`${currentSign.type}-${currentSign.index}-${Date.now()}`}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="w-40 h-40 bg-contain bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${getSignImagePath(currentSign.type, currentSign.index)})`,
+              }}
+            />
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Sorting Buttons */}
@@ -76,6 +88,7 @@ const GameplayView: React.FC<GameplayViewProps> = ({
           variant="destructive"
           className="w-40 h-16 text-xl flex items-center gap-2"
           onClick={() => onSortSign('left')}
+          disabled={signAnimating}
         >
           <ArrowLeft className="w-6 h-6" />
           Bad Omen
@@ -85,6 +98,7 @@ const GameplayView: React.FC<GameplayViewProps> = ({
           variant="default"
           className="w-40 h-16 text-xl bg-green-600 hover:bg-green-700 flex items-center gap-2"
           onClick={() => onSortSign('right')}
+          disabled={signAnimating}
         >
           Good Luck
           <ArrowRight className="w-6 h-6" />
