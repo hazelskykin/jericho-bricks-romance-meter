@@ -4,7 +4,7 @@ import { Scene } from '@/types/game';
 const springTransitionScenes: Record<string, Scene> = {
   'spring-selection': {
     id: 'spring-selection',
-    background: 'stonewich-cityscape',
+    background: 'spring-cityoverlook',
     dialogue: [
       {
         character: 'narrator',
