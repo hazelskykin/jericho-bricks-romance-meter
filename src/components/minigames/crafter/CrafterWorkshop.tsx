@@ -35,7 +35,7 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
   return (
     <div className="relative w-full h-full flex flex-col items-center">
       <div 
-        className="w-full h-full min-h-[550px] bg-contain bg-center bg-no-repeat relative"
+        className="w-full h-full min-h-[550px] bg-cover bg-center relative"
         style={{ backgroundImage: 'url(/assets/minigames/autumn/crafter/workshop-background.png)' }}
       >
         {/* Material Selection Stage */}
@@ -46,18 +46,31 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
           </div>
         )}
         
-        {/* Accent Placement Stage - Redesigned layout with accents on the sides */}
+        {/* Accent Placement Stage - Redesigned layout with accents on the left side in a grid */}
         {gameStage === 'accent-placement' && (
           <div className="absolute inset-0 flex">
-            {/* Left side accents panel */}
-            <div className="w-1/4 p-3 bg-[#1A1F2C]/80 flex flex-col items-center">
-              <h3 className="text-lg font-semibold text-white mb-2 text-center">Accents</h3>
-              <AccentSelector onSelect={onAccentSelect} vertical={true} />
+            {/* Left side accents grid */}
+            <div className="w-1/4 p-3 bg-[#1A1F2C]/80 flex flex-col">
+              <h3 className="text-sm font-semibold text-white mb-2 text-center">Accents</h3>
+              
+              {/* Grid of accents */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <AccentSelector onSelect={onAccentSelect} compact={true} />
+              </div>
+              
+              {/* View button */}
+              <Button 
+                onClick={onFinishCraft}
+                className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white mt-4 text-sm w-full"
+                disabled={placedAccents.length === 0}
+              >
+                View
+              </Button>
             </div>
             
             {/* Center craft canvas */}
             <div className="flex-grow flex flex-col items-center justify-center">
-              <div className="relative bg-transparent mb-4">
+              <div className="relative bg-transparent">
                 <CraftCanvas 
                   baseMaterial={selectedBaseMaterial!} 
                   accents={placedAccents} 
@@ -65,13 +78,6 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
                   interactive={true}
                 />
               </div>
-              <Button 
-                onClick={onFinishCraft}
-                className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white mt-4"
-                disabled={placedAccents.length === 0}
-              >
-                View Completed Craft
-              </Button>
             </div>
           </div>
         )}
@@ -111,7 +117,7 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
                   onClick={onExitWorkshop}
                   className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white"
                 >
-                  Leave Workshop
+                  Close
                 </Button>
               </div>
             </div>

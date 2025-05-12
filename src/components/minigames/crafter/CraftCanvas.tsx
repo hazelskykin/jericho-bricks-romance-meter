@@ -27,10 +27,10 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
   const getAccentPosition = (accentId: string): string => {
     const positionMap: Record<string, string> = {
       'autumn-leaf': '0% 0%',
-      'button': '25% 0%',
-      'glass-shard': '50% 0%',
-      'gear-charm': '75% 0%',
-      'ribbon': '100% 0%',
+      'button': '20% 0%',
+      'glass-shard': '40% 0%',
+      'gear-charm': '60% 0%',
+      'ribbon': '80% 0%',
     };
     
     return positionMap[accentId] || '0% 0%';
@@ -73,7 +73,7 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
             backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
             backgroundPosition: getAccentPosition(accent.id),
             backgroundSize: '500% 100%', // 5 sprites in one row
-            imageRendering: 'auto' // Better rendering quality
+            imageRendering: 'pixelated' // Better pixel-perfect rendering
           }}
         />
       ))}

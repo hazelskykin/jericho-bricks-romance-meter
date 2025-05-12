@@ -73,6 +73,12 @@ const CrafterGame: React.FC<CrafterGameProps> = ({ onComplete, onExit }) => {
     }
   };
 
+  // When completing the game, ensure music stops
+  const wrappedOnComplete = (success: boolean) => {
+    stopAllSounds(); // Stop all sounds
+    onComplete(success); // Call the original callback
+  };
+
   // Make sure to stop sounds if component is unmounted
   useEffect(() => {
     return () => {
@@ -84,7 +90,7 @@ const CrafterGame: React.FC<CrafterGameProps> = ({ onComplete, onExit }) => {
     <MinigameContainer
       title="Autumn Crafting Workshop"
       instructions="Create a unique craft by selecting a base material and adding decorative accents. When you're done, add a personal touch with your initials!"
-      onComplete={onComplete}
+      onComplete={wrappedOnComplete}
       onExit={handleExitWorkshop}
     >
       <CrafterWorkshop
