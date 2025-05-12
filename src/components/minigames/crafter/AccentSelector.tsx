@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 
 interface AccentSelectorProps {
   onSelect: (accent: string) => void;
+  vertical?: boolean;
 }
 
-const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect }) => {
-  // We'll use sprite positions to show different accents from one image
+const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect, vertical = false }) => {
+  // Refined sprite positions to avoid sprite bleed and fix proportions
   const accents = [
     { id: 'autumn-leaf', name: 'Autumn Leaf', position: '0% 0%' },
     { id: 'button', name: 'Button', position: '25% 0%' },
@@ -17,7 +18,7 @@ const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect }) => {
   ];
 
   return (
-    <div className="flex gap-4 overflow-x-auto pb-2 justify-center">
+    <div className={`flex ${vertical ? 'flex-col gap-4' : 'gap-4 overflow-x-auto pb-2 justify-center'}`}>
       {accents.map((accent) => (
         <motion.div 
           key={accent.id}
@@ -28,11 +29,12 @@ const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect }) => {
         >
           <div className="bg-[#1A1F2C]/70 p-2 rounded-lg border border-[#9b87f5] mb-1 hover:bg-[#2A2045]/70 transition-colors">
             <div 
-              className="w-16 h-16 bg-no-repeat"
+              className="w-16 h-16 bg-no-repeat bg-contain"
               style={{ 
                 backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
                 backgroundPosition: accent.position,
-                backgroundSize: '500% 100%' // 5 sprites in one row
+                backgroundSize: '500% 100%', // 5 sprites in one row
+                imageRendering: 'auto' // Better image rendering
               }}
             />
           </div>

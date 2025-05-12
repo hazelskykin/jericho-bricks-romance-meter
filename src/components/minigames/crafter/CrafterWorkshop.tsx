@@ -35,7 +35,7 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
   return (
     <div className="relative w-full h-full flex flex-col items-center">
       <div 
-        className="w-full h-[500px] bg-contain bg-center bg-no-repeat relative"
+        className="w-full h-full min-h-[550px] bg-contain bg-center bg-no-repeat relative"
         style={{ backgroundImage: 'url(/assets/minigames/autumn/crafter/workshop-background.png)' }}
       >
         {/* Material Selection Stage */}
@@ -46,11 +46,18 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
           </div>
         )}
         
-        {/* Accent Placement Stage */}
+        {/* Accent Placement Stage - Redesigned layout with accents on the sides */}
         {gameStage === 'accent-placement' && (
-          <div className="absolute inset-0 flex flex-col">
-            <div className="flex-grow relative flex justify-center items-center">
-              <div className="relative bg-transparent">
+          <div className="absolute inset-0 flex">
+            {/* Left side accents panel */}
+            <div className="w-1/4 p-3 bg-[#1A1F2C]/80 flex flex-col items-center">
+              <h3 className="text-lg font-semibold text-white mb-2 text-center">Accents</h3>
+              <AccentSelector onSelect={onAccentSelect} vertical={true} />
+            </div>
+            
+            {/* Center craft canvas */}
+            <div className="flex-grow flex flex-col items-center justify-center">
+              <div className="relative bg-transparent mb-4">
                 <CraftCanvas 
                   baseMaterial={selectedBaseMaterial!} 
                   accents={placedAccents} 
@@ -58,19 +65,13 @@ const CrafterWorkshop: React.FC<CrafterWorkshopProps> = ({
                   interactive={true}
                 />
               </div>
-            </div>
-            <div className="p-4 bg-[#2A2045]/80 rounded-t-lg">
-              <h3 className="text-lg font-semibold text-white mb-2">Select Accents</h3>
-              <AccentSelector onSelect={onAccentSelect} />
-              <div className="mt-4 flex justify-center">
-                <Button 
-                  onClick={onFinishCraft}
-                  className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white"
-                  disabled={placedAccents.length === 0}
-                >
-                  Finish Craft
-                </Button>
-              </div>
+              <Button 
+                onClick={onFinishCraft}
+                className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white mt-4"
+                disabled={placedAccents.length === 0}
+              >
+                View Completed Craft
+              </Button>
             </div>
           </div>
         )}

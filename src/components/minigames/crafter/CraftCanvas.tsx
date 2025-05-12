@@ -23,7 +23,7 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
   const canvasRef = useRef<HTMLDivElement>(null);
   const [hovering, setHovering] = useState(false);
   
-  // Get background position for an accent sprite
+  // Get background position for an accent sprite with improved precision
   const getAccentPosition = (accentId: string): string => {
     const positionMap: Record<string, string> = {
       'autumn-leaf': '0% 0%',
@@ -66,14 +66,14 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
       {accents.map((accent, index) => (
         <div 
           key={`${accent.id}-${index}`}
-          className="absolute w-12 h-12 bg-no-repeat"
+          className="absolute w-12 h-12 bg-no-repeat bg-contain"
           style={{ 
             left: `${accent.position.x - 6}%`, 
             top: `${accent.position.y - 6}%`,
             backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
             backgroundPosition: getAccentPosition(accent.id),
             backgroundSize: '500% 100%', // 5 sprites in one row
-            imageRendering: 'pixelated' // This may help with image quality
+            imageRendering: 'auto' // Better rendering quality
           }}
         />
       ))}

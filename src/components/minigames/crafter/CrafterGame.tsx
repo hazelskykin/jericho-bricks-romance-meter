@@ -67,17 +67,25 @@ const CrafterGame: React.FC<CrafterGameProps> = ({ onComplete, onExit }) => {
   };
   
   const handleExitWorkshop = () => {
+    stopAllSounds(); // Make sure to stop all sounds before exiting
     if (onExit) {
       onExit();
     }
   };
+
+  // Make sure to stop sounds if component is unmounted
+  useEffect(() => {
+    return () => {
+      stopAllSounds();
+    };
+  }, [stopAllSounds]);
   
   return (
     <MinigameContainer
       title="Autumn Crafting Workshop"
       instructions="Create a unique craft by selecting a base material and adding decorative accents. When you're done, add a personal touch with your initials!"
       onComplete={onComplete}
-      onExit={onExit}
+      onExit={handleExitWorkshop}
     >
       <CrafterWorkshop
         gameStage={gameStage}
