@@ -9,7 +9,7 @@ interface AccentSelectorProps {
 }
 
 const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect, vertical = false, compact = false }) => {
-  // Refined sprite positions to avoid sprite bleed and fix proportions
+  // Fixed sprite positions with precise percentages to avoid overlap
   const accents = [
     { id: 'autumn-leaf', name: 'Autumn Leaf', position: '0% 0%' },
     { id: 'button', name: 'Button', position: '20% 0%' },
@@ -30,12 +30,13 @@ const AccentSelector: React.FC<AccentSelectorProps> = ({ onSelect, vertical = fa
         >
           <div className="bg-[#1A1F2C]/70 p-2 rounded-lg border border-[#9b87f5] mb-1 hover:bg-[#2A2045]/70 transition-colors">
             <div 
-              className={compact ? "w-10 h-10 bg-no-repeat bg-contain" : "w-12 h-12 bg-no-repeat bg-contain"}
+              className={compact ? "w-10 h-10" : "w-12 h-12"}
               style={{ 
                 backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
                 backgroundPosition: accent.position,
-                backgroundSize: '500% 100%', // 5 sprites in one row
-                imageRendering: 'pixelated' // Better pixel-perfect rendering
+                backgroundSize: '500% 100%', // 5 sprites in a row
+                backgroundRepeat: 'no-repeat',
+                imageRendering: 'pixelated'
               }}
             />
           </div>

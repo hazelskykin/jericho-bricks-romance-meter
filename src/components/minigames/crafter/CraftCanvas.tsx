@@ -66,14 +66,15 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
       {accents.map((accent, index) => (
         <div 
           key={`${accent.id}-${index}`}
-          className="absolute w-12 h-12 bg-no-repeat bg-contain"
+          className="absolute w-12 h-12"
           style={{ 
             left: `${accent.position.x - 6}%`, 
             top: `${accent.position.y - 6}%`,
             backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
             backgroundPosition: getAccentPosition(accent.id),
             backgroundSize: '500% 100%', // 5 sprites in one row
-            imageRendering: 'pixelated' // Better pixel-perfect rendering
+            backgroundRepeat: 'no-repeat',
+            imageRendering: 'pixelated'
           }}
         />
       ))}

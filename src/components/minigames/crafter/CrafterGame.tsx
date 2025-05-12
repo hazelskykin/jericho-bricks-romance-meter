@@ -61,9 +61,15 @@ const CrafterGame: React.FC<CrafterGameProps> = ({ onComplete, onExit }) => {
   };
   
   const handleCompleteCraft = () => {
-    completeGame();
-    playSound('complete-fanfare');
-    toast.success("Craft completed successfully!");
+    // Stop all sounds before completing the game
+    stopAllSounds();
+    
+    // Add a short delay before calling completeGame to prevent audio overlap
+    setTimeout(() => {
+      completeGame();
+      playSound('complete-fanfare');
+      toast.success("Craft completed successfully!");
+    }, 100);
   };
   
   const handleExitWorkshop = () => {
@@ -76,7 +82,11 @@ const CrafterGame: React.FC<CrafterGameProps> = ({ onComplete, onExit }) => {
   // When completing the game, ensure music stops
   const wrappedOnComplete = (success: boolean) => {
     stopAllSounds(); // Stop all sounds
-    onComplete(success); // Call the original callback
+    
+    // Add a short delay before calling the original callback
+    setTimeout(() => {
+      onComplete(success);
+    }, 200);
   };
 
   // Make sure to stop sounds if component is unmounted

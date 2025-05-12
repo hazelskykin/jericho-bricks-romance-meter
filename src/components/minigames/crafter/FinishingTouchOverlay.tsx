@@ -37,7 +37,7 @@ const FinishingTouchOverlay: React.FC<FinishingTouchOverlayProps> = ({
         transition={{ duration: 0.5 }}
         className="bg-[#1A1F2C]/90 p-6 rounded-lg border-2 border-[#9b87f5] max-w-md text-center"
       >
-        <h2 className="text-2xl font-bold text-[#9b87f5] mb-4">Adding Finishing Touch</h2>
+        <h2 className="text-2xl font-bold text-[#9b87f5] mb-4">Completed Craft</h2>
         
         <div className="relative w-64 h-64 mx-auto mb-4">
           <CraftCanvas 
@@ -90,7 +90,7 @@ const FinishingTouchOverlay: React.FC<FinishingTouchOverlayProps> = ({
             onClick={onComplete}
             className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white"
           >
-            View Completed Craft
+            Close
           </Button>
         )}
       </motion.div>
