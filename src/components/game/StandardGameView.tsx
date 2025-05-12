@@ -106,7 +106,6 @@ const StandardGameView: React.FC = () => {
       <AffectionMeterSection 
         showAffection={showAffection}
         toggleAffectionMeter={toggleAffectionMeter}
-        characters={activeCharacter ? { [activeCharacter]: true } : {}}
       />
       
       {/* Sound Toggle */}

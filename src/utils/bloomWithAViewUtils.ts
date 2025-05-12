@@ -1,5 +1,5 @@
 
-import { fixAssetPath } from './assetManager';
+import { fixAssetPath } from './assetUtilities';
 
 type AssetLoadCallback = (
   backgroundPath: string,
