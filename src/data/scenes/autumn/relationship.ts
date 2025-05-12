@@ -517,7 +517,7 @@ const relationshipScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Maven. thanks for coming with me today.",
+        text: "Maven, thanks for coming with me today.",
         mood: 'happy',
       },
       {
