@@ -1,3 +1,4 @@
+
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -47,7 +48,13 @@ const sceneMapping: Record<string, string> = {
   'autumn-intro': 'autumn-intro',
   'autumn-festival-intro': 'autumn-festival-intro', 
   'autumn-festival-activities': 'autumn-festival-activities', // Explicit mapping to ensure it's found
+  'autumn-character': 'autumn-character-relationship',
+  'autumn-character-relationship': 'autumn-character-relationship',
   'autumn-character-path': 'autumn-character-relationship',
+  'autumn-xavier': 'autumn-xavier',
+  'autumn-navarre': 'autumn-navarre',
+  'autumn-etta': 'autumn-etta',
+  'autumn-senara': 'autumn-senara',
   'autumn-festival-completion': 'autumn-festival-completion',
   'autumn-conclusion-debrief': 'autumn-conclusion-debrief',
   'autumn-conclusion': 'autumn-conclusion',
@@ -88,6 +95,14 @@ const sceneFallbacks: Record<string, string> = {
   'autumn-festival-completion': 'autumn-intro', // Fallback for autumn festival completion
   'autumn-conclusion-debrief': 'autumn-intro', // Fallback for autumn conclusion
   'winter-festival-completion': 'winter-intro', // Fallback for winter festival completion
+  'autumn-character': 'autumn-intro', // Fallback for autumn character selection
+  'autumn-character-relationship': 'autumn-intro', // Fallback for autumn character relationship
+  'autumn-xavier': 'autumn-character-relationship', // Fallback for character specific scenes
+  'autumn-navarre': 'autumn-character-relationship',
+  'autumn-etta': 'autumn-character-relationship',
+  'autumn-senara': 'autumn-character-relationship',
+  'autumn-festival-intro': 'autumn-intro', // Fallback for autumn festival intro
+  'autumn-festival-activities': 'autumn-intro', // Fallback for autumn festival activities
   
   // Fallbacks for character selection with visit counts
   'spring-character-selection-1': 'spring-character-selection',
@@ -178,3 +193,4 @@ export const getCharacterSceneId = (scenePrefix: string, characterId: string): s
   console.log(`Generated character scene ID: ${sceneId}`);
   return sceneId;
 };
+

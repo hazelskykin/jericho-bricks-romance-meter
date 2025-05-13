@@ -24,9 +24,14 @@ const SpecialSceneRouter: React.FC = () => {
         'winter-planning-character': 'winter-festival-intro',
         'winter-confession-character': 'team-future-meeting'
       };
+      
       if (currentLoveInterest) {
-        const prefix = currentScene.replace('-character', '');
-        handleSceneTransition(`${prefix}-${currentLoveInterest}`);
+        if (currentScene === 'autumn-character') {
+          handleSceneTransition(`autumn-${currentLoveInterest}`);
+        } else {
+          const prefix = currentScene.replace('-character', '');
+          handleSceneTransition(`${prefix}-${currentLoveInterest}`);
+        }
       } else {
         handleSceneTransition(fallbackMap[currentScene]);
       }

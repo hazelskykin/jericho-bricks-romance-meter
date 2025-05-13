@@ -98,14 +98,19 @@ const SceneRenderer: React.FC<SceneRendererProps> = ({
     );
   }
 
-  // Handle festival activities
-  if (seasonalFestivalActivities[gameState.currentScene]) {
+  // Handle festival activities scenes with improved detection
+  const festivalScenes = ['spring-festival-activities', 'summer-festival-activities', 'autumn-festival-activities', 'winter-festival-activities'];
+  if (festivalScenes.includes(gameState.currentScene)) {
     const season = gameState.currentScene.split('-')[0];
+    const activities = seasonalFestivalActivities[gameState.currentScene] || [];
+    
+    console.log(`Rendering ${season} festival activities view with ${activities.length} activities`);
+    
     return (
       <>
         <FestivalActivitiesView 
           sceneId={gameState.currentScene}
-          activities={seasonalFestivalActivities[gameState.currentScene]} 
+          activities={activities} 
           season={season}
         />
         <DevJumpTargets onJumpToScene={handleSceneTransition} />
