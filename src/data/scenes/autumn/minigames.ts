@@ -80,6 +80,19 @@ const minigameScenes: Record<string, Scene> = {
       }
     ],
     nextSceneId: 'autumn-festival-activities'
+  },
+  
+  'autumn-memories-intro': {
+    id: 'autumn-memories-intro',
+    background: 'autumn-cityoverlook',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "We should take some photos together to remember this festival!",
+        mood: 'happy',
+      }
+    ],
+    nextSceneId: 'autumn-memories-date-start'
   }
 };
 

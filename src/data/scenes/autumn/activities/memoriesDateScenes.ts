@@ -12,13 +12,13 @@ const memoriesDateScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
-        character: 'etta',
-        text: "Photographs are powerful tools for preserving memories and sharing our experiences with others.",
+        character: 'senara',
+        text: "Photographs are a fascinating way to preserve moments in time. They let us study cultural expressions in their context.",
         mood: 'thoughtful',
       },
       {
         character: 'maven',
-        text: "I'm excited to create a visual story that celebrates the people and traditions of Stonewich.",
+        text: "I'd love to create a visual story that celebrates our time here together at the festival.",
         mood: 'happy',
       }
     ],
@@ -32,7 +32,7 @@ const memoriesDateScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: "Let's start snapping some photos and create a beautiful memory album!",
+        text: "Let's start taking some photos and create our memory album!",
         mood: 'happy',
       }
     ],
@@ -45,18 +45,23 @@ const memoriesDateScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'maven',
-        text: "The memory photo album is complete! It's a beautiful collection of moments that capture the essence of the festival.",
+        text: "The memory photo album is complete! I think these photos really capture our time together.",
         mood: 'happy',
       },
       {
-        character: 'etta',
-        text: "This album is a testament to the power of community and the importance of preserving our shared memories.",
+        character: 'senara',
+        text: "These images are quite... evocative. You have a good eye for composition.",
         mood: 'thoughtful',
       },
       {
         character: 'maven',
-        text: "I'm so glad I could contribute to this celebration of Stonewich's heritage.",
+        text: "I made something for you during the crafting workshop earlier. I thought you might like to have it as a memento of today.",
         mood: 'happy',
+      },
+      {
+        character: 'senara',
+        text: "A handcrafted gift? That's... unexpected. Thank you, Maven. I'll treasure it.",
+        mood: 'surprised',
       }
     ],
     nextSceneId: 'autumn-festival-activities'

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Camera, Image, Sticker, Heart } from 'lucide-react';
 import { useGame } from '@/context/GameContext';
 import { toast } from 'sonner';
-import { playSound } from '@/utils/soundEffects';
+import { soundManager } from '@/utils/sound';
 import { useMemoriesDateState } from '@/hooks/memoriesDate/useMemoriesDateState';
 
 interface MemoriesDateGameProps {
@@ -38,26 +38,26 @@ const MemoriesDateGame = ({ onComplete, onExit }: MemoriesDateGameProps) => {
     resizeFrame,
     takePhoto,
     resetSelection
-  } = useMemoriesDateState(gameState.currentLoveInterest);
+  } = useMemoriesDateState(gameState.currentLoveInterest || 'senara');
 
   // Play background music when the game starts
   useEffect(() => {
-    playSound('memoriesDate-loop-gameplay', true);
-    return () => playSound('memoriesDate-loop-gameplay', false);
+    soundManager.playSFX('memoriesDate-loop-gameplay', true);
+    return () => soundManager.stopSFX('memoriesDate-loop-gameplay');
   }, []);
 
   // Proceed to next step in the photo creation process
   const handleNextStep = () => {
     if (currentStep === 'location') {
       setCurrentStep('frame');
-      playSound('ui-click');
+      soundManager.playSFX('ui-click');
     } else if (currentStep === 'frame') {
       if (!selectedFrame) {
         toast.error("Please select a frame first!");
         return;
       }
       setCurrentStep('sticker');
-      playSound('ui-click');
+      soundManager.playSFX('ui-click');
     } else if (currentStep === 'sticker') {
       if (!selectedSticker) {
         toast.error("Please select a sticker first!");
@@ -65,14 +65,14 @@ const MemoriesDateGame = ({ onComplete, onExit }: MemoriesDateGameProps) => {
       }
       
       // Take the photo
-      playSound('memoriesDate-camera-click');
+      soundManager.playSFX('memoriesDate-camera-click');
       takePhoto();
       
       // Check if we've taken all 3 photos
       if (currentLocationIndex >= 2) {
         // Show gallery
         setCurrentStep('gallery');
-        playSound('memoriesDate-effect-twinkle');
+        soundManager.playSFX('memoriesDate-effect-twinkle');
       } else {
         // Move to next location
         setCurrentLocationIndex(prev => prev + 1);
