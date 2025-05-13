@@ -49,7 +49,7 @@ const MemoriesDateGame = ({ onComplete, onExit }: MemoriesDateGameProps) => {
     soundManager.playSFX('memoriesDate-loop-gameplay');
     return () => {
       try {
-        soundManager.stop('memoriesDate-loop-gameplay');
+        soundManager.stopSFX('memoriesDate-loop-gameplay');
       } catch (err) {
         console.error('Error stopping sound:', err);
       }

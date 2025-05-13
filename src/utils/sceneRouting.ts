@@ -45,9 +45,9 @@ const sceneMapping: Record<string, string> = {
   
   // Autumn scenes
   'autumn-intro': 'autumn-intro',
-  'autumn-festival-intro': 'autumn-festival-intro', // Map this alias to the correct scene
+  'autumn-festival-intro': 'autumn-festival-intro', 
+  'autumn-festival-activities': 'autumn-festival-activities', // Explicit mapping to ensure it's found
   'autumn-character-path': 'autumn-character-relationship',
-  'autumn-festival-activities': 'autumn-festival-activities',
   'autumn-festival-completion': 'autumn-festival-completion',
   'autumn-conclusion-debrief': 'autumn-conclusion-debrief',
   'autumn-conclusion': 'autumn-conclusion',
@@ -56,6 +56,8 @@ const sceneMapping: Record<string, string> = {
   'autumn-crafter-intro': 'autumn-crafter-intro',
   'autumn-crafter-start': 'autumn-crafter-start',
   'autumn-crafter-complete': 'autumn-crafter-complete',
+  'autumn-memories-date-start': 'autumn-memories-date-start',
+  'autumn-tour-guide-start': 'autumn-tour-guide-start',
   
   // Winter scenes
   'winter-intro': 'winter-intro',
@@ -102,6 +104,8 @@ const sceneFallbacks: Record<string, string> = {
   // Fallbacks for autumn minigames
   'autumn-crafter-start': 'autumn-crafter-intro',
   'autumn-crafter-complete': 'autumn-festival-activities',
+  'autumn-memories-date-start': 'autumn-festival-activities',
+  'autumn-tour-guide-start': 'autumn-festival-activities',
   
   // Add fallbacks for Looking Signs minigame scenes
   'winter-looking-signs-start': 'winter-looking-signs-intro',
