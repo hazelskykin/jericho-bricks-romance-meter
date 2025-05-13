@@ -9,6 +9,7 @@ import FrameSelectionStep from './FrameSelectionStep';
 import StickerSelectionStep from './StickerSelectionStep';
 import PhotoGalleryStep from './PhotoGalleryStep';
 import { useGame } from '@/context/GameContext';
+import { handleLoveInterestAffectionChange } from '@/utils/affectionUtils';
 
 interface MemoriesDateGameProps {
   onComplete: (success: boolean) => void;
@@ -18,7 +19,7 @@ interface MemoriesDateGameProps {
 type GameStep = 'location' | 'frame' | 'sticker' | 'gallery';
 
 const MemoriesDateGame = ({ onComplete, onExit }: MemoriesDateGameProps) => {
-  const { gameState } = useGame();
+  const { gameState, setGameState } = useGame();
   const [currentStep, setCurrentStep] = useState<GameStep>('location');
   const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
   
@@ -48,7 +49,7 @@ const MemoriesDateGame = ({ onComplete, onExit }: MemoriesDateGameProps) => {
     soundManager.playSFX('memoriesDate-loop-gameplay');
     return () => {
       try {
-        soundManager.play('ui-click'); // Use play method to stop the loop
+        soundManager.stop('memoriesDate-loop-gameplay');
       } catch (err) {
         console.error('Error stopping sound:', err);
       }
@@ -89,6 +90,21 @@ const MemoriesDateGame = ({ onComplete, onExit }: MemoriesDateGameProps) => {
         setCurrentStep('location');
       }
     } else if (currentStep === 'gallery') {
+      // Apply affection change for completing the minigame
+      if (gameState.currentLoveInterest) {
+        // Use the handleLoveInterestAffectionChange utility to award points
+        handleLoveInterestAffectionChange(
+          'memoriesDate',
+          gameState,
+          true, // success = true since they completed all photos
+          setGameState
+        );
+        
+        // Show success message with character name
+        const loveInterestName = gameState.characters[gameState.currentLoveInterest]?.name || gameState.currentLoveInterest;
+        toast.success(`${loveInterestName} appreciates the beautiful memories you've created together!`);
+      }
+      
       // Complete the minigame
       onComplete(true);
     }
