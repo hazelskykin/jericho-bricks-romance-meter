@@ -1,7 +1,6 @@
-
 import { useCallback } from 'react';
 import { useGame } from '@/context/GameContext';
-import { CharacterId, GameState } from '@/types/game';
+import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
 import { AffectionChangeToast } from '@/components/AffectionChangeToast';
 
@@ -10,7 +9,7 @@ import { AffectionChangeToast } from '@/components/AffectionChangeToast';
  */
 export const useAffection = () => {
   const { gameState, setGameState } = useGame();
-  
+
   /**
    * Modify a character's affection level
    * @param characterId The ID of the character
@@ -28,10 +27,10 @@ export const useAffection = () => {
       }
 
       console.log(`Modifying ${characterId}'s affection by ${amount}`);
-      
+
       // Calculate new affection value
       const newAffection = Math.max(0, Math.min(100, character.affection + amount));
-      
+
       // Update the character's affection
       setGameState((prev) => ({
         ...prev,
@@ -43,17 +42,16 @@ export const useAffection = () => {
           },
         },
       }));
-      
+
       // Show toast notification
-      const message = amount > 0 
-        ? `${character.name} liked that!` 
+      const message = amount > 0
+        ? `${character.name} liked that!`
         : `${character.name} didn't like that...`;
-      
-      // Use the AffectionChangeToast component
+
       toast.custom((t) => (
-        <AffectionChangeToast 
+        <AffectionChangeToast
           character={character}
-          amount={amount} 
+          amount={amount}
           message={message}
           onDismiss={() => toast.dismiss(t)}
         />
@@ -61,6 +59,6 @@ export const useAffection = () => {
     },
     [gameState.characters, setGameState]
   );
-  
+
   return { modifyAffection };
 };
