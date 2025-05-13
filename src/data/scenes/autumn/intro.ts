@@ -112,7 +112,7 @@ const introScenes: Record<string, Scene> = {
     id: 'autumn-character',
     background: 'autumn-cityoverlook',
     dialogue: [], // or minimal
-    nextSceneId: null // handled via dynamic route handler
+    nextSceneId: 'autumn-festival-intro' // Updated to point to the correct scene
   }
 };
 

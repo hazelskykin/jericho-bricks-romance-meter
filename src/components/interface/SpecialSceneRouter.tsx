@@ -20,7 +20,7 @@ const SpecialSceneRouter: React.FC = () => {
       handleSceneTransition(`happy-ending-${currentLoveInterest}`);
     } else if (['autumn-character', 'winter-planning-character', 'winter-confession-character'].includes(currentScene)) {
       const fallbackMap: Record<string, string> = {
-        'autumn-character': 'autumn-festival-introduction',
+        'autumn-character': 'autumn-festival-intro',
         'winter-planning-character': 'winter-festival-intro',
         'winter-confession-character': 'team-future-meeting'
       };

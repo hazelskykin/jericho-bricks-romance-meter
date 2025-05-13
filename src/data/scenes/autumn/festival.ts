@@ -12,40 +12,16 @@ const festivalScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
-        character: 'etta',
-        text: "This festival celebrates the traditional crafts and cultural heritage that have been passed down through generations in Stonewich.",
-        mood: 'neutral',
+        character: 'narrator',
+        text: "The festival celebrates the traditional crafts and cultural heritage that have been passed down through generations in Stonewich.",
       },
-      {
-        character: 'navarre',
-        text: "Look at all these artisans! There's everything from metalworking to textile arts. The perfect place to network and make connections.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "The historical value alone makes this worth documenting. These techniques represent centuries of accumulated knowledge.",
-        mood: 'thoughtful',
-      },
-      {
-        character: 'xavier',
-        text: "And the festival systems are running smoothly. The digital guide integration with the traditional demonstrations is working perfectly.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'autumn-festival-activities'
-  },
-  
-  'autumn-festival-introduction': {
-    id: 'autumn-festival-introduction',
-    background: 'autumn-cityoverlook',
-    dialogue: [
       {
         character: 'maven',
-        text: "The autumn festival is bustling with activity! There are crafters demonstrating traditional skills, history exhibits, and all kinds of seasonal treats.",
-        mood: 'happy'
+        text: "I'm excited to see all the different crafts and traditions on display. There's so much to explore!",
+        mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-festival-activities'
+    nextSceneId: 'autumn-festival-activities',
   },
   
   'autumn-festivities-conclusion': {
