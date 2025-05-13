@@ -95,7 +95,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I know I'm a natural Solvitor.",
+        text: "I know I'm a natural Solvitor. Ready to design, build and fix tech anytime.",
         mood: 'neutral',
       },
       {
@@ -105,7 +105,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus.",
+        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus, your guide to knowledge mundane and arcane.",
         mood: 'neutral',
       },
       {
@@ -185,7 +185,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I know I'm a natural Solvitor.",
+        text: "I know I'm a natural Solvitor. Ready to design, build and fix tech anytime.",
         mood: 'neutral',
       },
       {
@@ -195,7 +195,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus.",
+        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus, your guide to knowledge mundane and arcane.",
         mood: 'neutral',
       },
       {
@@ -275,7 +275,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "I know I'm a natural Solvitor.",
+        text: "I know I'm a natural Solvitor. Ready to design, build and fix tech anytime.",
         mood: 'neutral',
       },
       {
@@ -285,7 +285,7 @@ const initialMeetingScenes: Record<string, Scene> = {
       },
       {
         character: 'senara',
-        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus.",
+        text: "Of course. It was determined as part of our assessment results. I'll be your Gnarus, your guide to knowledge mundane and arcane.",
         mood: 'neutral',
       },
       {
