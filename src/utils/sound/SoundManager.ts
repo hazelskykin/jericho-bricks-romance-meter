@@ -1,4 +1,3 @@
-
 /**
  * Sound Manager Class
  * Core class handling sound effects and music playback
@@ -15,6 +14,7 @@ class SoundManager {
   private silentAudio: HTMLAudioElement | null = null;
   private musicPlayer: HTMLAudioElement | null = null;
   private currentBackgroundType: string | null = null;
+  private loopingSounds: Map<string, HTMLAudioElement> = new Map();
   
   constructor() {
     console.log('Initialized Sound Manager');
@@ -98,10 +98,15 @@ class SoundManager {
   }
   
   // Play a sound effect
-  public playSFX(soundId: string): void {
+  public playSFX(soundId: string, loop: boolean = false): void {
     if (this.isMuted) return;
     
     try {
+      // If we're already looping this sound, just return
+      if (loop && this.loopingSounds.has(soundId)) {
+        return;
+      }
+      
       const audio = this.getSoundElement(soundId);
       if (!audio) {
         console.log(`[SOUND] Would play sound effect: ${soundId} (no audio element)`);
@@ -111,17 +116,38 @@ class SoundManager {
       // Reset the audio to beginning
       audio.currentTime = 0;
       
-      // Set volume
+      // Set volume and loop property
       audio.volume = this.sfxVolume;
+      audio.loop = loop;
       
       // Play the sound
       audio.play().catch(err => {
         console.error(`Error playing sound ${soundId}:`, err);
       });
       
-      console.log(`[SOUND] Playing sound effect: ${soundId}`);
+      // Store looping sounds so we can stop them later
+      if (loop) {
+        this.loopingSounds.set(soundId, audio);
+      }
+      
+      console.log(`[SOUND] Playing sound effect: ${soundId}${loop ? ' (looping)' : ''}`);
     } catch (error) {
       console.error(`Error playing sound ${soundId}:`, error);
+    }
+  }
+  
+  // Stop a looping sound effect
+  public stopSFX(soundId: string): void {
+    try {
+      const loopingSound = this.loopingSounds.get(soundId);
+      if (loopingSound) {
+        loopingSound.pause();
+        loopingSound.currentTime = 0;
+        this.loopingSounds.delete(soundId);
+        console.log(`[SOUND] Stopped looping sound: ${soundId}`);
+      }
+    } catch (error) {
+      console.error(`Error stopping sound ${soundId}:`, error);
     }
   }
   
