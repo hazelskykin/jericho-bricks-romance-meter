@@ -11,8 +11,8 @@ const festivalActivities: Record<string, Scene> = {
         text: "Choose an autumn festival activity to explore."
       }
     ],
-    type: 'festival-activities',
-    // This is a special scene that will be handled by the FestivalActivitiesView component
+    nextSceneId: 'autumn-festival-completion' // Adding a proper next scene ID
+    // Removed the 'type' property which doesn't exist in Scene type
   }
 };
 

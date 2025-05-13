@@ -1,4 +1,3 @@
-
 import { toast } from 'sonner';
 
 // Scene mapping for transitions
@@ -44,18 +43,26 @@ const sceneMapping: Record<string, string> = {
   'season-transition-autumn': 'season-transition-autumn',
   'season-transition-winter': 'season-transition-winter',
   
-  // Autumn scenes
+  // Autumn scenes - ensure all scenes are properly mapped
   'autumn-intro': 'autumn-intro',
   'autumn-festival-intro': 'autumn-festival-intro', 
-  'autumn-festival-activities': 'autumn-festival-activities', // Explicit mapping to ensure it's found
+  'autumn-festival-activities': 'autumn-festival-activities',
+  'autumn-festival-completion': 'autumn-festival-completion',
   'autumn-character': 'autumn-character-relationship',
   'autumn-character-relationship': 'autumn-character-relationship',
-  'autumn-character-path': 'autumn-character-relationship',
+  
+  // Autumn character scenes - ensure all are mapped properly
   'autumn-xavier': 'autumn-xavier',
   'autumn-navarre': 'autumn-navarre',
   'autumn-etta': 'autumn-etta',
   'autumn-senara': 'autumn-senara',
-  'autumn-festival-completion': 'autumn-festival-completion',
+  
+  // Autumn resolution scenes
+  'autumn-xavier-resolution': 'autumn-xavier-resolution',
+  'autumn-navarre-resolution': 'autumn-navarre-resolution',
+  'autumn-etta-resolution': 'autumn-etta-resolution',
+  'autumn-senara-resolution': 'autumn-senara-resolution',
+  
   'autumn-conclusion-debrief': 'autumn-conclusion-debrief',
   'autumn-conclusion': 'autumn-conclusion',
   
@@ -92,17 +99,26 @@ const sceneFallbacks: Record<string, string> = {
   'summer-festival-completion': 'summer-planning', // Add fallback for festival completion
   'season-transition-autumn': 'autumn-intro', // Fallback for autumn transition
   'season-transition-winter': 'winter-intro', // Fallback for winter transition
-  'autumn-festival-completion': 'autumn-intro', // Fallback for autumn festival completion
-  'autumn-conclusion-debrief': 'autumn-intro', // Fallback for autumn conclusion
-  'winter-festival-completion': 'winter-intro', // Fallback for winter festival completion
-  'autumn-character': 'autumn-intro', // Fallback for autumn character selection
-  'autumn-character-relationship': 'autumn-intro', // Fallback for autumn character relationship
-  'autumn-xavier': 'autumn-character-relationship', // Fallback for character specific scenes
+  'autumn-festival-completion': 'autumn-intro',
+  'autumn-conclusion-debrief': 'autumn-intro',
+  'winter-festival-completion': 'winter-intro',
+  
+  // Autumn character fallbacks - ensure proper fallbacks
+  'autumn-character': 'autumn-intro',
+  'autumn-character-relationship': 'autumn-intro',
+  'autumn-xavier': 'autumn-character-relationship',
   'autumn-navarre': 'autumn-character-relationship',
   'autumn-etta': 'autumn-character-relationship',
   'autumn-senara': 'autumn-character-relationship',
-  'autumn-festival-intro': 'autumn-intro', // Fallback for autumn festival intro
-  'autumn-festival-activities': 'autumn-intro', // Fallback for autumn festival activities
+  
+  // Autumn resolution fallbacks
+  'autumn-xavier-resolution': 'autumn-festival-intro',
+  'autumn-navarre-resolution': 'autumn-festival-intro',
+  'autumn-etta-resolution': 'autumn-festival-intro',
+  'autumn-senara-resolution': 'autumn-festival-intro',
+  
+  'autumn-festival-intro': 'autumn-intro',
+  'autumn-festival-activities': 'autumn-festival-intro',
   
   // Fallbacks for character selection with visit counts
   'spring-character-selection-1': 'spring-character-selection',
@@ -193,4 +209,3 @@ export const getCharacterSceneId = (scenePrefix: string, characterId: string): s
   console.log(`Generated character scene ID: ${sceneId}`);
   return sceneId;
 };
-

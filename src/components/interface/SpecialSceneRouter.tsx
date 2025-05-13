@@ -19,6 +19,8 @@ const SpecialSceneRouter: React.FC = () => {
     } else if (currentScene === 'happy-ending-character' && currentLoveInterest) {
       handleSceneTransition(`happy-ending-${currentLoveInterest}`);
     } else if (['autumn-character', 'winter-planning-character', 'winter-confession-character'].includes(currentScene)) {
+      console.log(`Special character scene routing for: ${currentScene} with interest: ${currentLoveInterest}`);
+      
       const fallbackMap: Record<string, string> = {
         'autumn-character': 'autumn-festival-intro',
         'winter-planning-character': 'winter-festival-intro',
@@ -27,6 +29,7 @@ const SpecialSceneRouter: React.FC = () => {
       
       if (currentLoveInterest) {
         if (currentScene === 'autumn-character') {
+          console.log(`Routing to autumn scene for: ${currentLoveInterest}`);
           handleSceneTransition(`autumn-${currentLoveInterest}`);
         } else {
           const prefix = currentScene.replace('-character', '');

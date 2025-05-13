@@ -1,187 +1,204 @@
 
-import { useState, useEffect } from 'react';
-import MinigameContainer from '../common/MinigameContainer';
-import { toast } from 'sonner';
-import { soundManager } from '@/utils/sound';
-import { useMemoriesDateState } from '@/hooks/memoriesDate/useMemoriesDateState';
+import React, { useState, useEffect } from 'react';
 import LocationSelectionStep from './LocationSelectionStep';
 import FrameSelectionStep from './FrameSelectionStep';
 import StickerSelectionStep from './StickerSelectionStep';
 import PhotoGalleryStep from './PhotoGalleryStep';
+import { Button } from '@/components/ui/button';
+import { SoundManager } from '@/utils/sound';
+import { useAffection } from '@/hooks/useAffection';
 import { useGame } from '@/context/GameContext';
-import { handleLoveInterestAffectionChange } from '@/utils/affectionUtils';
+
+// Load sound manager
+const soundManager = SoundManager.getInstance();
+
+// Interfaces for the game data
+interface Photo {
+  location: string;
+  frame: string;
+  stickers: string[];
+  completed: boolean;
+}
 
 interface MemoriesDateGameProps {
   onComplete: (success: boolean) => void;
   onExit: () => void;
 }
 
-type GameStep = 'location' | 'frame' | 'sticker' | 'gallery';
-
-const MemoriesDateGame = ({ onComplete, onExit }: MemoriesDateGameProps) => {
-  const { gameState, setGameState } = useGame();
-  const [currentStep, setCurrentStep] = useState<GameStep>('location');
-  const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
+const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit }) => {
+  const { modifyAffection } = useAffection();
+  const { gameState } = useGame();
+  const [currentStep, setCurrentStep] = useState<'location' | 'frame' | 'sticker' | 'gallery'>('location');
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
-  // Get game state from our custom hook
-  const {
-    locations,
-    frames,
-    stickers,
-    selectedFrame,
-    selectedSticker,
-    photos,
-    framePosition,
-    stickerPosition,
-    frameSize,
-    selectLocation,
-    selectFrame,
-    selectSticker,
-    moveFrame,
-    moveSticker,
-    resizeFrame,
-    takePhoto,
-    resetSelection
-  } = useMemoriesDateState(gameState.currentLoveInterest || 'senara');
+  // Initialize with 3 empty photos
+  const [photos, setPhotos] = useState<Photo[]>([
+    { location: '', frame: '', stickers: [], completed: false },
+    { location: '', frame: '', stickers: [], completed: false },
+    { location: '', frame: '', stickers: [], completed: false },
+  ]);
 
-  // Play background music when the game starts
+  // Setup game music
   useEffect(() => {
     soundManager.playSFX('memoriesDate-loop-gameplay');
+    
+    // Cleanup when component unmounts
     return () => {
-      try {
-        soundManager.stopSFX('memoriesDate-loop-gameplay');
-      } catch (err) {
-        console.error('Error stopping sound:', err);
-      }
+      soundManager.stopSFX(); // Using stopSFX() instead of stop()
     };
   }, []);
 
-  // Proceed to next step in the photo creation process
-  const handleNextStep = () => {
-    if (currentStep === 'location') {
-      setCurrentStep('frame');
-      soundManager.playSFX('ui-click');
-    } else if (currentStep === 'frame') {
-      if (!selectedFrame) {
-        toast.error("Please select a frame first!");
-        return;
+  const handleLocationSelect = (location: string) => {
+    soundManager.playSFX('memoriesDate-camera-click');
+    setPhotos(prev => {
+      const updated = [...prev];
+      updated[activePhotoIndex] = { ...updated[activePhotoIndex], location };
+      return updated;
+    });
+    setCurrentStep('frame');
+  };
+
+  const handleFrameSelect = (frame: string) => {
+    soundManager.playSFX('memoriesDate-frame-select');
+    setPhotos(prev => {
+      const updated = [...prev];
+      updated[activePhotoIndex] = { ...updated[activePhotoIndex], frame };
+      return updated;
+    });
+    setCurrentStep('sticker');
+  };
+
+  const handleStickerSelect = (sticker: string) => {
+    soundManager.playSFX('memoriesDate-sticker-select');
+    setPhotos(prev => {
+      const updated = [...prev];
+      const currentStickers = [...updated[activePhotoIndex].stickers];
+      // Only add sticker if we don't already have it
+      if (!currentStickers.includes(sticker)) {
+        currentStickers.push(sticker);
       }
-      setCurrentStep('sticker');
-      soundManager.playSFX('ui-click');
-    } else if (currentStep === 'sticker') {
-      if (!selectedSticker) {
-        toast.error("Please select a sticker first!");
-        return;
-      }
+      updated[activePhotoIndex] = { ...updated[activePhotoIndex], stickers: currentStickers };
+      return updated;
+    });
+  };
+
+  const handlePhotoComplete = () => {
+    soundManager.playSFX('memoriesDate-effect-twinkle');
+    
+    // Mark photo as completed
+    setPhotos(prev => {
+      const updated = [...prev];
+      updated[activePhotoIndex] = { ...updated[activePhotoIndex], completed: true };
+      return updated;
+    });
+    
+    // Check if all photos are done
+    const nextIncompleteIndex = photos.findIndex((photo, index) => 
+      index !== activePhotoIndex && !photo.completed);
       
-      // Take the photo
-      soundManager.playSFX('memoriesDate-camera-click');
-      takePhoto();
-      
-      // Check if we've taken all 3 photos
-      if (currentLocationIndex >= 2) {
-        // Show gallery
-        setCurrentStep('gallery');
-        soundManager.playSFX('memoriesDate-effect-twinkle');
-      } else {
-        // Move to next location
-        setCurrentLocationIndex(prev => prev + 1);
-        resetSelection();
-        setCurrentStep('location');
-      }
-    } else if (currentStep === 'gallery') {
-      // Apply affection change for completing the minigame
-      if (gameState.currentLoveInterest) {
-        // Use the handleLoveInterestAffectionChange utility to award points
-        handleLoveInterestAffectionChange(
-          'memoriesDate',
-          gameState,
-          true, // success = true since they completed all photos
-          setGameState
-        );
+    if (nextIncompleteIndex === -1) {
+      // All photos completed
+      if (photos.every((photo, index) => 
+        index === activePhotoIndex || photo.completed)) {
         
-        // Show success message with character name
-        const loveInterestName = gameState.characters[gameState.currentLoveInterest]?.name || gameState.currentLoveInterest;
-        toast.success(`${loveInterestName} appreciates the beautiful memories you've created together!`);
+        // Award affection points to current love interest if one is selected
+        if (gameState.currentLoveInterest) {
+          // Award 5 affection points to the current love interest for completing the memory book
+          modifyAffection(gameState.currentLoveInterest, 5);
+          setSuccessMessage(`Created a beautiful memory book with ${gameState.characters[gameState.currentLoveInterest].name}!`);
+        } else {
+          setSuccessMessage("You've created a beautiful memory book!");
+        }
+        
+        // Show gallery of completed photos
+        setCurrentStep('gallery');
       }
-      
-      // Complete the minigame
-      onComplete(true);
+    } else {
+      // Move to next incomplete photo
+      setActivePhotoIndex(nextIncompleteIndex);
+      setCurrentStep('location');
     }
   };
 
-  // Render the current step of the photo creation process
-  const renderCurrentStep = () => {
-    switch (currentStep) {
-      case 'location':
-        return (
-          <LocationSelectionStep
-            locations={locations}
-            currentLocationIndex={currentLocationIndex}
-            selectLocation={selectLocation}
-            onNext={handleNextStep}
-          />
-        );
-        
-      case 'frame':
-        return (
-          <FrameSelectionStep
-            locations={locations}
-            currentLocationIndex={currentLocationIndex}
-            frames={frames}
-            selectedFrame={selectedFrame}
-            framePosition={framePosition}
-            frameSize={frameSize}
-            moveFrame={moveFrame}
-            selectFrame={selectFrame}
-            resizeFrame={resizeFrame}
-            onNext={handleNextStep}
-            onBack={() => setCurrentStep('location')}
-          />
-        );
-        
-      case 'sticker':
-        return (
-          <StickerSelectionStep
-            locations={locations}
-            currentLocationIndex={currentLocationIndex}
-            selectedFrame={selectedFrame}
-            selectedSticker={selectedSticker}
-            stickers={stickers}
-            framePosition={framePosition}
-            stickerPosition={stickerPosition}
-            frameSize={frameSize}
-            moveSticker={moveSticker}
-            selectSticker={selectSticker}
-            onNext={handleNextStep}
-            onBack={() => setCurrentStep('frame')}
-          />
-        );
-        
-      case 'gallery':
-        return (
-          <PhotoGalleryStep
-            photos={photos}
-            onComplete={handleNextStep}
-          />
-        );
-        
-      default:
-        return null;
-    }
+  const handleFinish = () => {
+    soundManager.stopSFX();
+    onComplete(true);
   };
 
   return (
-    <MinigameContainer
-      title="Memories Date"
-      instructions="Create beautiful photo memories at three locations around the festival. Choose a frame, position it, add a sticker, and take the perfect photo with your love interest."
-      onComplete={onComplete}
-      onExit={onExit}
-    >
-      <div className="flex flex-col items-center justify-center p-4">
-        {renderCurrentStep()}
+    <div className="flex flex-col h-full w-full bg-gray-900 text-white p-4 rounded-lg">
+      <div className="text-center mb-4">
+        <h2 className="text-2xl font-bold mb-2">Memories Date</h2>
+        <p className="text-gray-400">
+          {currentStep === 'gallery' 
+            ? "Your memory book is complete!" 
+            : "Create memories together by making a photo album"
+          }
+        </p>
+        {successMessage && currentStep === 'gallery' && (
+          <p className="text-green-400 mt-2">{successMessage}</p>
+        )}
       </div>
-    </MinigameContainer>
+
+      {currentStep === 'location' && (
+        <LocationSelectionStep onSelectLocation={handleLocationSelect} />
+      )}
+
+      {currentStep === 'frame' && (
+        <FrameSelectionStep onSelectFrame={handleFrameSelect} />
+      )}
+
+      {currentStep === 'sticker' && (
+        <StickerSelectionStep 
+          onSelectSticker={handleStickerSelect}
+          onComplete={handlePhotoComplete}
+          currentStickers={photos[activePhotoIndex]?.stickers || []}
+        />
+      )}
+
+      {currentStep === 'gallery' && (
+        <PhotoGalleryStep 
+          photos={photos} 
+          onFinish={handleFinish}
+        />
+      )}
+
+      <div className="flex justify-between mt-4">
+        <Button 
+          variant="outline" 
+          onClick={onExit}
+          className="bg-red-800 hover:bg-red-700 text-white"
+        >
+          Exit
+        </Button>
+        
+        <div className="flex space-x-2">
+          {photos.map((photo, index) => (
+            <div 
+              key={index} 
+              className={`w-3 h-3 rounded-full ${
+                activePhotoIndex === index 
+                  ? 'bg-purple-500' 
+                  : photo.completed 
+                    ? 'bg-green-500' 
+                    : 'bg-gray-500'
+              }`} 
+            />
+          ))}
+        </div>
+
+        {currentStep === 'sticker' && (
+          <Button
+            variant="default"
+            onClick={handlePhotoComplete}
+            className="bg-purple-700 hover:bg-purple-600"
+          >
+            Complete Photo
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 

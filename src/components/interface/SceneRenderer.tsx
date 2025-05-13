@@ -1,4 +1,3 @@
-
 import React from 'react';
 import StandardGameView from '../game/StandardGameView';
 import CharacterSelectionView from './CharacterSelectionView';
@@ -39,6 +38,7 @@ const SceneRenderer: React.FC<SceneRendererProps> = ({
   // Festival activities data
   const seasonalFestivalActivities = getFestivalActivities(gameState);
 
+  // Handle start screen
   if (gameState.currentScene === 'start') {
     return (
       <>
@@ -48,6 +48,7 @@ const SceneRenderer: React.FC<SceneRendererProps> = ({
     );
   }
 
+  // Handle about screen
   if (gameState.currentScene === 'about') {
     return <AboutScreen />;
   }
