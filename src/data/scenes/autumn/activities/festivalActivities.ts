@@ -11,8 +11,7 @@ const festivalActivities: Record<string, Scene> = {
         text: "Choose an autumn festival activity to explore."
       }
     ],
-    nextSceneId: 'autumn-festival-completion' // Adding a proper next scene ID
-    // Removed the 'type' property which doesn't exist in Scene type
+    nextSceneId: 'autumn-festival-completion'
   }
 };
 
