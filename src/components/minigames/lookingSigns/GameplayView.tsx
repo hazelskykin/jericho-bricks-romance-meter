@@ -57,7 +57,7 @@ const GameplayView: React.FC<GameplayViewProps> = ({
 
       {/* Game Area with Background */}
       <div 
-        className="w-full h-80 relative rounded-lg overflow-hidden flex items-center justify-center"
+        className="w-full h-80 relative rounded-lg overflow-hidden flex flex-col items-center justify-center"
         style={{
           backgroundImage: 'url(/assets/minigames/winter/lookingSigns/signs-background.png)',
           backgroundSize: 'cover',
@@ -69,40 +69,40 @@ const GameplayView: React.FC<GameplayViewProps> = ({
           {currentSign && !signAnimating && (
             <motion.div
               key={`${currentSign.type}-${currentSign.index}-${Date.now()}`}
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: -20 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.4 }}
-              className="w-40 h-40 bg-contain bg-center bg-no-repeat"
+              className="w-40 h-40 bg-contain bg-center bg-no-repeat mb-4"
               style={{
                 backgroundImage: `url(${getSignImagePath(currentSign.type, currentSign.index)})`,
               }}
             />
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Sorting Buttons */}
-      <div className="flex justify-center gap-12 mt-4">
-        <Button
-          variant="destructive"
-          className="w-40 h-16 text-xl flex items-center gap-2"
-          onClick={() => onSortSign('left')}
-          disabled={signAnimating}
-        >
-          <ArrowLeft className="w-6 h-6" />
-          Bad Omen
-        </Button>
         
-        <Button
-          variant="default"
-          className="w-40 h-16 text-xl bg-green-600 hover:bg-green-700 flex items-center gap-2"
-          onClick={() => onSortSign('right')}
-          disabled={signAnimating}
-        >
-          Good Luck
-          <ArrowRight className="w-6 h-6" />
-        </Button>
+        {/* Sorting Buttons - Moved closer to the sign */}
+        <div className="flex justify-center gap-12 mt-2">
+          <Button
+            variant="destructive"
+            className="w-40 h-16 text-xl flex items-center gap-2"
+            onClick={() => onSortSign('left')}
+            disabled={signAnimating}
+          >
+            <ArrowLeft className="w-6 h-6" />
+            Bad Omen
+          </Button>
+          
+          <Button
+            variant="default"
+            className="w-40 h-16 text-xl bg-green-600 hover:bg-green-700 flex items-center gap-2"
+            onClick={() => onSortSign('right')}
+            disabled={signAnimating}
+          >
+            Good Luck
+            <ArrowRight className="w-6 h-6" />
+          </Button>
+        </div>
       </div>
     </div>
   );

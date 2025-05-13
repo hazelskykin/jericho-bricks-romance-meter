@@ -156,7 +156,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-festival-introduction',
+    nextSceneId: 'autumn-festival-intro',
   },
 
   // Navarre's autumn route
@@ -330,7 +330,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'embarrassed',
       }
     ],
-    nextSceneId: 'autumn-festival-introduction',
+    nextSceneId: 'autumn-festival-intro',
   },
 
   // Etta's autumn route
@@ -503,7 +503,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'happy',
       }
     ],
-    nextSceneId: 'autumn-festival-introduction',
+    nextSceneId: 'autumn-festival-intro',
   },
 
   // Senara's autumn route
@@ -705,7 +705,7 @@ const relationshipScenes: Record<string, Scene> = {
         mood: 'embarrassed',
       }
     ],
-    nextSceneId: 'autumn-festival-introduction',
+    nextSceneId: 'autumn-festival-intro',
   },
 
   'autumn-conclusion': {

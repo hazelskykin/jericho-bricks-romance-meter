@@ -1,73 +1,62 @@
 
 import { useState } from 'react';
-import { GameState, HiddenItem } from './types';
+import { HiddenItem } from './types';
 
-// Initial hidden items for the game
+// Initial hidden items (5 items to find)
 const initialHiddenItems: HiddenItem[] = [
   {
-    id: 'gardening-gloves',
-    name: 'Gardening Gloves',
-    found: false,
-    highlighted: false,
-    position: { x: 400, y: 250 }
+    id: 'wateringcan',
+    name: 'Watering Can',
+    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-wateringcan.png',
+    position: { x: 75, y: 60 },
+    found: false
   },
   {
-    id: 'bee-drone',
+    id: 'gloves',
+    name: 'Garden Gloves',
+    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-gloves.png',
+    position: { x: 25, y: 75 },
+    found: false
+  },
+  {
+    id: 'beedrone',
     name: 'Bee Drone',
-    found: false,
-    highlighted: false,
-    position: { x: 180, y: 300 }
+    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-beedrone.png',
+    position: { x: 55, y: 25 },
+    found: false
   },
   {
-    id: 'seed-packet',
+    id: 'seedpacket',
     name: 'Seed Packet',
-    found: false,
-    highlighted: false,
-    position: { x: 600, y: 350 }
+    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-seedpacket.png',
+    position: { x: 15, y: 40 },
+    found: false
   },
   {
     id: 'butterfly',
     name: 'Butterfly',
-    found: false,
-    highlighted: false,
-    position: { x: 300, y: 150 }
-  },
-  {
-    id: 'vintage-watering-can',
-    name: 'Vintage Watering Can',
-    found: false,
-    highlighted: false,
-    position: { x: 500, y: 200 }
+    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-butterfly.png',
+    position: { x: 85, y: 35 },
+    found: false
   }
 ];
 
-// Hook to manage the game state
-export function useGameState(initialDuration: number = 30) { // Changed default to 30 seconds
-  const [hiddenItems, setHiddenItems] = useState<HiddenItem[]>(initialHiddenItems);
+// Game state hook
+export function useGameState() {
+  // Game state
+  const [hiddenItems] = useState<HiddenItem[]>(initialHiddenItems);
   const [clickPosition, setClickPosition] = useState<{ x: number, y: number } | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [hintCooldown, setHintCooldown] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(initialDuration);
-  const [gameExited, setGameExited] = useState(false); // Track if game was manually exited
-
+  const [gameExited, setGameExited] = useState(false);
+  
   return {
-    // Game state
     hiddenItems,
     clickPosition,
     showHint,
     hintCooldown,
     gameComplete,
-    timeRemaining,
-    gameExited,
-    
-    // State setters
-    setHiddenItems,
-    setClickPosition,
-    setShowHint,
-    setHintCooldown,
-    setGameComplete,
-    setTimeRemaining,
-    setGameExited
+    gameExited
   };
 }

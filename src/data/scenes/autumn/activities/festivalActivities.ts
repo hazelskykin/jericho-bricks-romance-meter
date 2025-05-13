@@ -24,6 +24,10 @@ const festivalActivities: Record<string, Scene> = {
       {
         text: "Create a memory photo album of the festival",
         nextSceneId: 'autumn-memories-intro'
+      },
+      {
+        text: "Skip activities",
+        nextSceneId: 'autumn-festivities-conclusion'
       }
     ]
   }

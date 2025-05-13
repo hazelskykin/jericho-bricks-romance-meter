@@ -23,17 +23,17 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
   const canvasRef = useRef<HTMLDivElement>(null);
   const [hovering, setHovering] = useState(false);
   
-  // Get background position for an accent sprite with improved precision
-  const getAccentPosition = (accentId: string): string => {
-    const positionMap: Record<string, string> = {
-      'autumn-leaf': '0% 0%',
-      'button': '20% 0%',
-      'glass-shard': '40% 0%',
-      'gear-charm': '60% 0%',
-      'ribbon': '80% 0%',
+  // Get image path for an accent based on the ID
+  const getAccentImagePath = (accentId: string): string => {
+    const pathMap: Record<string, string> = {
+      'autumn-leaf': '/assets/minigames/autumn/crafter/accents-leaf.png',
+      'button': '/assets/minigames/autumn/crafter/accents-button.png',
+      'glass-shard': '/assets/minigames/autumn/crafter/accents-glass.png',
+      'gear-charm': '/assets/minigames/autumn/crafter/accents-gearcharm.png',
+      'ribbon': '/assets/minigames/autumn/crafter/accents-ribbon.png',
     };
     
-    return positionMap[accentId] || '0% 0%';
+    return pathMap[accentId] || '/assets/minigames/autumn/crafter/accents-leaf.png';
   };
   
   // Handle click on the canvas to place an accent
@@ -62,7 +62,7 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
         className="absolute inset-0 w-full h-full object-contain"
       />
       
-      {/* Placed Accents */}
+      {/* Placed Accents - Now using individual image files */}
       {accents.map((accent, index) => (
         <div 
           key={`${accent.id}-${index}`}
@@ -70,13 +70,14 @@ const CraftCanvas: React.FC<CraftCanvasProps> = ({
           style={{ 
             left: `${accent.position.x - 6}%`, 
             top: `${accent.position.y - 6}%`,
-            backgroundImage: 'url(/assets/minigames/autumn/crafter/accents.png)',
-            backgroundPosition: getAccentPosition(accent.id),
-            backgroundSize: '500% 100%', // 5 sprites in one row
-            backgroundRepeat: 'no-repeat',
-            imageRendering: 'pixelated'
           }}
-        />
+        >
+          <img 
+            src={getAccentImagePath(accent.id)} 
+            alt={accent.id}
+            className="w-full h-full object-contain" 
+          />
+        </div>
       ))}
       
       {/* Initials (shown when craft is complete) */}

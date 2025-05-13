@@ -82,7 +82,7 @@ export function useRouteCompletion(
     // Keep completed routes and Versa unlock status, but reset current game state
     setGameState(prev => ({
       ...prev,
-      currentScene: 'intro',
+      currentScene: type === 'incomplete' ? 'game-end-try-again' : 'intro',
       dialogueIndex: 0,
       characters: { ...prev.characters },
       sceneHistory: ['start'],

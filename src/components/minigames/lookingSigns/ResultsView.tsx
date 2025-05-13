@@ -43,12 +43,12 @@ const ResultsView: React.FC<ResultsViewProps> = ({
         </motion.div>
 
         <h2 className="text-2xl font-bold mb-2 text-white">
-          {isSuccess ? "A Fortunate Reading..." : "An Unfortunate Reading..."}
+          {isSuccess ? "Favorable Fortune" : "An Unfortunate Reading..."}
         </h2>
 
         <p className="text-gray-300 mb-6">
           {isSuccess 
-            ? "You have successfully interpreted the signs. Your fortune is bright!" 
+            ? "Your accurate interpretation of the signs shows you can discern true meaning. Your fortune is bright!" 
             : "You have misinterpreted too many signs. Your fortune is clouded."}
         </p>
 

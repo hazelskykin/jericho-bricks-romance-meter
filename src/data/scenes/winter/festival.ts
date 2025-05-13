@@ -1,77 +1,90 @@
 
-import { Scene } from '@/types/game';
+import { Scene } from '../../types/game';
 
-const winterFestivalScenes: Record<string, Scene> = {
+const festivalScenes: Record<string, Scene> = {
   'winter-festival-intro': {
     id: 'winter-festival-intro',
-    background: 'stonewich-office',
+    background: 'winter-festival',
     dialogue: [
       {
-        character: 'narrator',
-        text: "The day of the Winter Gala & Games arrives. Stonewich is transformed, streets glittering with lights and decorations.",
-      },
-      {
         character: 'maven',
-        text: "It's beautiful. All our planning has really paid off.",
-        mood: 'happy',
-      },
-      {
-        character: 'etta',
-        text: "All the arrangements have been made, and the teams are executing smoothly.",
-        mood: 'happy',
-      },
-      {
-        character: 'senara',
-        text: "Let's make this a night to remember.",
-        mood: 'happy',
-      }
-    ],
-    nextSceneId: 'winter-festival-activities'
-  },
-  
- 'winter-festival-activities': {
-    id: 'winter-festival-activities',
-    background: 'winter-cityoverlook',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "With the Winter Gala & Games underway, there are several activities you could participate in.",
-      },
-      {
-        character: 'maven',
-        text: "Where should I focus my attention during the festival?",
-        mood: 'neutral',
-      }
-    ],
-    nextSceneId: 'winter-festival-completion'
-  },
-  
-  'winter-festival-completion': {
-    id: 'winter-festival-completion',
-    background: 'winter-cityoverlook',
-    dialogue: [
-      {
-        character: 'narrator',
-        text: "As the Winter Gala & Games draws to a close, the city of Stonewich seems to glow with renewed energy and purpose.",
-      },
-      {
-        character: 'etta',
-        text: "I have to admit, this year's festival exceeded even my expectations. The team performed admirably.",
-        mood: 'happy',
-      },
-      {
-        character: 'maven',
-        text: "It feels like we've accomplished something special here, doesn't it?",
+        text: "The Winter Games & Gala is Stonewich's biggest celebration of the year! The entire city is decorated with lights and there's a festive atmosphere everywhere.",
         mood: 'happy',
       },
       {
         character: 'navarre',
-        text: "We certainly have. The people of Stonewich are going to remember this winter for years to come.",
+        text: "Everyone who's anyone in the city attends the gala. It's the perfect opportunity to make connections and celebrate our accomplishments.",
         mood: 'happy',
       },
+      {
+        character: 'senara',
+        text: "The Winter Festival also has deep cultural significance. It combines ancient traditions with modern celebrations.",
+        mood: 'neutral',
+      }
     ],
-    nextSceneId: 'winter-review-preparation'
+    nextSceneId: 'winter-festival-activities',
+  },
+  'winter-festival-activities': {
+    id: 'winter-festival-activities',
+    background: 'winter-festival',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "There are so many activities happening during the Winter Games & Gala. What should I check out first?",
+        mood: 'thoughtful',
+      }
+    ],
+    choices: [
+      {
+        text: "Participate in the Charity Auction",
+        nextSceneId: 'winter-charity-auction-intro',
+      },
+      {
+        text: "Join the Gala Dance",
+        nextSceneId: 'winter-gala-dance-intro',
+      },
+      {
+        text: "Try Looking for Signs fortune reading",
+        nextSceneId: 'winter-looking-signs-intro',
+      },
+      {
+        text: "Skip activities",
+        nextSceneId: 'winter-festival-conclusion',
+      }
+    ],
+  },
+  'winter-festival-conclusion': {
+    id: 'winter-festival-conclusion',
+    background: 'winter-festival',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "The Winter Festival was incredible! I've never experienced anything quite like it.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "As the festival comes to a close, the team prepares for their final evaluations and the end of their training year."
+      }
+    ],
+    nextSceneId: 'winter-conclusion',
+  },
+  'winter-conclusion': {
+    id: 'winter-conclusion',
+    background: 'winter-cityoverlook',
+    dialogue: [
+      {
+        character: 'maven',
+        text: "I can't believe our year in Stonewich is almost over. It feels like we just arrived yesterday.",
+        mood: 'sad',
+      },
+      {
+        character: 'narrator',
+        text: "The team gathers for their final evaluation meeting with Cybaton representatives.",
+      }
+    ],
+    nextSceneId: 'winter-ending',
   },
 };
 
-export default winterFestivalScenes;
+export default festivalScenes;

@@ -6,7 +6,7 @@ import BloomWithAViewItemList from './BloomWithAViewItemList';
 import GameStatusMessage from '../common/GameStatusMessage';
 import { Button } from '@/components/ui/button';
 import { useBloomWithAViewGame } from '@/hooks/useBloomWithAViewGame';
-import { Search, Clock } from 'lucide-react';
+import { Search, CheckCircle } from 'lucide-react';
 import { soundManager } from '@/utils/sound';
 import { toast } from 'sonner';
 import SoundToggle from '../common/SoundToggle';
@@ -29,21 +29,28 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
     showHint,
     hintCooldown,
     gameComplete,
-    timeRemaining,
     handleSceneClick,
     handleHintClick,
-    handleExit
+    handleExit,
+    checkCompletion
   } = useBloomWithAViewGame(onComplete, onExit);
   
   // Calculate found items count
   const foundItemsCount = hiddenItems.filter(item => item.found).length;
   const totalItems = hiddenItems.length;
 
+  // Check completion on found items change
+  useEffect(() => {
+    if (foundItemsCount === totalItems) {
+      checkCompletion();
+    }
+  }, [foundItemsCount, totalItems, checkCompletion]);
+
   // Handle scene click - extracts the coordinates from the event
   const handleGameSceneClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
     handleSceneClick(x, y);
   };
 
@@ -84,7 +91,12 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
       console.log("🎵 Stopping BloomWithAView music");
       soundManager.stopMusic();
     };
-  }, []);
+  }, [soundLoadAttempts]);
+
+  // Handle completion
+  const handleCompleteGame = () => {
+    onComplete(true);
+  };
 
   return (
     <MinigameContainer
@@ -101,13 +113,9 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
               <Search className="h-5 w-5 text-purple-400" />
               <span className="text-white text-lg font-medium">Found: {foundItemsCount}/{totalItems}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-purple-400" />
-              <span className="text-white text-lg font-medium">{timeRemaining}s</span>
-            </div>
             
             {/* Sound toggle at the top */}
-            <div className="ml-4">
+            <div>
               <SoundToggle showMusicToggle={true} />
             </div>
           </div>
@@ -145,11 +153,18 @@ const BloomWithAViewGame: React.FC<BloomWithAViewGameProps> = ({
       </div>
       
       {gameComplete && (
-        <GameStatusMessage 
-          status={foundItemsCount === totalItems ? 'won' : 'lost'}
-          winMessage="Congratulations! You found all the hidden items in the garden!"
-          loseMessage="Time's up! Better luck next time."
-        />
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-8 rounded-lg max-w-md text-center">
+            <div className="mb-4 flex justify-center">
+              <CheckCircle className="w-16 h-16 text-green-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-4">Success!</h2>
+            <p className="text-gray-300 mb-6">You've found all the hidden items!</p>
+            <Button onClick={handleCompleteGame} className="px-8">
+              Close
+            </Button>
+          </div>
+        </div>
       )}
     </MinigameContainer>
   );

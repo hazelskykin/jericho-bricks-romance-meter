@@ -99,7 +99,7 @@ export const useLookingSigns = (onComplete: (success: boolean) => void) => {
       // Generate next sign
       setCurrentSign(generateRandomSign());
       setSignAnimating(false);
-    }, 600); // 600ms delay for visual feedback
+    }, 1000); // Increased delay to 1000ms (1 second) for better visibility
   }, [currentSign, gameOver, generateRandomSign, signAnimating]);
 
   // Handle game completion

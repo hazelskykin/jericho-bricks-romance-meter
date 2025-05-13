@@ -89,24 +89,7 @@ const PoemCreationView: React.FC<PoemCreationViewProps> = ({
           >
             <p className="text-white">{option.text}</p>
             
-            {/* Show theme tags */}
-            <div className="flex flex-wrap mt-2 gap-1">
-              {option.themes.map(themeId => {
-                const theme = themes.find(t => t.id === themeId);
-                return theme ? (
-                  <span 
-                    key={`${option.id}-${themeId}`} 
-                    className="text-xs px-2 py-1 rounded"
-                    style={{ 
-                      backgroundColor: `${theme.color}30`,
-                      color: theme.color
-                    }}
-                  >
-                    {theme.name}
-                  </span>
-                ) : null;
-              })}
-            </div>
+            {/* Theme tags are now hidden */}
           </motion.div>
         ))}
       </div>

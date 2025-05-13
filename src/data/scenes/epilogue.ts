@@ -1,5 +1,4 @@
-
-import { Scene } from '@/types/game';
+import { Scene } from '../types/game';
 
 const epilogueScenes: Record<string, Scene> = {
   'epilogue-intro': {
@@ -99,6 +98,19 @@ const epilogueScenes: Record<string, Scene> = {
       }
     ]
   },
+
+  // Game End - Try Again Screen
+  'game-end-try-again': {
+    id: 'game-end-try-again',
+    background: 'cybaton-office',
+    dialogue: [
+      {
+        character: 'narrator',
+        text: "Game End - Cybaton has disbanded your team due to insufficient levels of team chemistry and commitment. Try again to boost your relationships and to connect with someone special."
+      }
+    ],
+    nextSceneId: 'start'
+  }
 };
 
 export default epilogueScenes;
