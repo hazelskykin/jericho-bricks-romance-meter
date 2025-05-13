@@ -434,15 +434,6 @@ const characterVisitScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: "You work with Etta to create a two-phase plan for the festival with new activities designed for cleaning and higher volunteer engagement.",
-      },
-      {
-        character: 'etta',
-        text: "This is a novel approach and may save some budget on cleaners, but there are risks here too if volunteers don't show up. Your idea is innovative.",
-        mood: 'happy',
-      },
-      {
-        character: 'narrator',
         text: "Despite her remarks about risks, she does incorporate some of your suggestions. You feel a quiet pride in providing a practical approach to achieveing the outcomes desired."
       },
     ],
