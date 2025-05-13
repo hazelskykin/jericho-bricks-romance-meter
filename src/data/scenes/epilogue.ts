@@ -1,4 +1,5 @@
-import { Scene } from '../types/game';
+
+import { Scene } from '@/types/game';
 
 const epilogueScenes: Record<string, Scene> = {
   'epilogue-intro': {

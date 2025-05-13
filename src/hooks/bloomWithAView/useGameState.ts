@@ -7,35 +7,35 @@ const initialHiddenItems: HiddenItem[] = [
   {
     id: 'wateringcan',
     name: 'Watering Can',
-    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-wateringcan.png',
+    imagePath: '/assets/minigames/spring/bloomwithAView/hidden-objects-wateringcan.png',
     position: { x: 75, y: 60 },
     found: false
   },
   {
     id: 'gloves',
     name: 'Garden Gloves',
-    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-gloves.png',
+    imagePath: '/assets/minigames/spring/bloomwithAView/hidden-objects-gloves.png',
     position: { x: 25, y: 75 },
     found: false
   },
   {
     id: 'beedrone',
     name: 'Bee Drone',
-    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-beedrone.png',
+    imagePath: '/assets/minigames/spring/bloomwithAView/hidden-objects-beedrone.png',
     position: { x: 55, y: 25 },
     found: false
   },
   {
     id: 'seedpacket',
     name: 'Seed Packet',
-    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-seedpacket.png',
+    imagePath: '/assets/minigames/spring/bloomwithAView/hidden-objects-seedpacket.png',
     position: { x: 15, y: 40 },
     found: false
   },
   {
     id: 'butterfly',
     name: 'Butterfly',
-    imagePath: '/assets/minigames/spring/bloomWithAView/hidden-objects-butterfly.png',
+    imagePath: '/assets/minigames/spring/bloomwithAView/hidden-objects-butterfly.png',
     position: { x: 85, y: 35 },
     found: false
   }

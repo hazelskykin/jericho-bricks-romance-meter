@@ -1,5 +1,5 @@
 
-import { Scene } from '../../types/game';
+import { Scene } from '@/types/game';
 
 const festivalScenes: Record<string, Scene> = {
   'winter-festival-intro': {

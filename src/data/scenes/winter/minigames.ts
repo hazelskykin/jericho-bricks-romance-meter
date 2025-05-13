@@ -1,5 +1,5 @@
 
-import { Scene } from '../../../types/game';
+import { Scene } from '@/types/game';
 
 // Winter minigame scenes
 const minigameScenes: Record<string, Scene> = {
@@ -16,7 +16,7 @@ const minigameScenes: Record<string, Scene> = {
       {
         character: 'maven',
         text: "How does it work?",
-        mood: 'curious'
+        mood: 'thoughtful' // Changed from 'curious' to 'thoughtful' as it's in the allowed types
       },
       {
         character: 'senara',

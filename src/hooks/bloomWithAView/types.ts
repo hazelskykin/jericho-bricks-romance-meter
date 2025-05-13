@@ -8,8 +8,9 @@ export interface HiddenItem {
   id: string;
   name: string;
   found: boolean;
-  highlighted: boolean;
+  highlighted?: boolean;
   position: Position;
+  imagePath: string;
 }
 
 export interface GameState {
@@ -18,6 +19,5 @@ export interface GameState {
   showHint: boolean;
   hintCooldown: number;
   gameComplete: boolean;
-  timeRemaining: number;
   gameExited: boolean;
 }
