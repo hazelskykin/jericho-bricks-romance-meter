@@ -1,4 +1,3 @@
-
 import { MinigameAsset } from '@/types/assets';
 
 // Define minigame assets with proper types and working fallbacks
@@ -334,6 +333,90 @@ const minigameAssets: MinigameAsset[] = [
     name: 'Ribbon Accent',
     src: '/assets/minigames/autumn/crafter/accents-ribbon.png',
     description: 'Ribbon accent',
+    priority: true,
+    category: 'item'
+  },
+  
+  // Autumn - Memories Date assets
+  {
+    id: 'memories-market-backdrop',
+    name: 'Market Backdrop',
+    src: '/assets/minigames/autumn/memoriesDate/market-backdrop.png',
+    description: 'Market backdrop for Memories Date',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'memories-overlook-backdrop',
+    name: 'City Overlook Backdrop',
+    src: '/assets/minigames/autumn/memoriesDate/overlook-backdrop.png',
+    description: 'City overlook backdrop for Memories Date',
+    priority: true,
+    category: 'background'
+  },
+  {
+    id: 'memories-boardwalk-backdrop',
+    name: 'Boardwalk Backdrop',
+    src: '/assets/minigames/autumn/memoriesDate/boardwalk-backdrop.png',
+    description: 'Boardwalk backdrop for Memories Date',
+    priority: true,
+    category: 'background'
+  },
+  // Photo frames
+  {
+    id: 'memories-frame-neon',
+    name: 'Neon Frame',
+    src: '/assets/minigames/autumn/memoriesDate/frames-neon.png',
+    description: 'Neon photo frame',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'memories-frame-gears',
+    name: 'Gear Frame',
+    src: '/assets/minigames/autumn/memoriesDate/frames-gears.png',
+    description: 'Gear-themed photo frame',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'memories-frame-circle',
+    name: 'Circle Frame',
+    src: '/assets/minigames/autumn/memoriesDate/frames-circle.png',
+    description: 'Circle-shaped photo frame',
+    priority: true,
+    category: 'item'
+  },
+  // Stickers
+  {
+    id: 'memories-sticker-bestday',
+    name: 'Best Day Sticker',
+    src: '/assets/minigames/autumn/memoriesDate/stickers-bestday.png',
+    description: 'Best Day Ever sticker',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'memories-sticker-kitten',
+    name: 'Kitten Sticker',
+    src: '/assets/minigames/autumn/memoriesDate/stickers-kitten.png',
+    description: 'Cute kitten sticker',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'memories-sticker-sparklehearts',
+    name: 'Sparkle Hearts Sticker',
+    src: '/assets/minigames/autumn/memoriesDate/stickers-sparklehearts.png',
+    description: 'Sparkly hearts sticker',
+    priority: true,
+    category: 'item'
+  },
+  {
+    id: 'memories-sticker-sparklegears',
+    name: 'Sparkle Gears Sticker',
+    src: '/assets/minigames/autumn/memoriesDate/stickers-sparklegears.png',
+    description: 'Sparkly gears sticker',
     priority: true,
     category: 'item'
   },

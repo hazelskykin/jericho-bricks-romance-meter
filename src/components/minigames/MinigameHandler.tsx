@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { MinigameType } from '@/types/minigames';
 import PlaceholderMinigame from './PlaceholderMinigame';
@@ -6,6 +7,7 @@ import BloomWithAViewGame from './bloomWithAView/BloomWithAViewGame';
 import CrafterGame from './crafter/CrafterGame';
 import SpokenWordGame from './spokenWord/SpokenWordGame';
 import LookingSignsGame from './lookingSigns/LookingSignsGame';
+import MemoriesDateGame from './memoriesDate/MemoriesDateGame';
 import { assetManager } from '@/utils/assetManager';
 
 interface MinigameHandlerProps {
@@ -16,7 +18,7 @@ interface MinigameHandlerProps {
 
 /**
  * MinigameHandler component that manages the active minigame
- * Currently implements BloomWithAView, Crafter, SpokenWord, and LookingSigns minigames, others use placeholders
+ * Currently implements BloomWithAView, Crafter, SpokenWord, LookingSigns, and MemoriesDate minigames, others use placeholders
  */
 const MinigameHandler: React.FC<MinigameHandlerProps> = ({ 
   activeMinigame, 
@@ -107,6 +109,32 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         // Continue anyway, the game has fallbacks
       });
     }
+    else if (activeMinigame === 'memoriesDate') {
+      console.log('Preloading MemoriesDate assets');
+      
+      // Preload memoriesDate assets
+      const assetPaths = [
+        '/assets/minigames/autumn/memoriesDate/market-backdrop.png',
+        '/assets/minigames/autumn/memoriesDate/overlook-backdrop.png',
+        '/assets/minigames/autumn/memoriesDate/boardwalk-backdrop.png',
+        '/assets/minigames/autumn/memoriesDate/frames-neon.png',
+        '/assets/minigames/autumn/memoriesDate/frames-gears.png',
+        '/assets/minigames/autumn/memoriesDate/frames-circle.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-bestday.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-kitten.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-sparklehearts.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-sparklegears.png'
+      ];
+      
+      assetManager.preloadAssets(assetPaths, (loaded, total) => {
+        console.log(`Loaded ${loaded}/${total} MemoriesDate assets`);
+      }).then(() => {
+        console.log('All MemoriesDate assets preloaded');
+      }).catch(error => {
+        console.error('Failed to preload MemoriesDate assets:', error);
+        // Continue anyway, the game has fallbacks
+      });
+    }
     
     // Debug log when minigame changes
     if (activeMinigame) {
@@ -174,6 +202,13 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     case 'lookingSigns':
       return (
         <LookingSignsGame
+          onComplete={completeMinigame}
+          onExit={exitMinigame}
+        />
+      );
+    case 'memoriesDate':
+      return (
+        <MemoriesDateGame
           onComplete={completeMinigame}
           onExit={exitMinigame}
         />
