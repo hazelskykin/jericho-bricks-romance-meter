@@ -44,8 +44,9 @@ const sceneMapping: Record<string, string> = {
   'season-transition-winter': 'season-transition-winter',
   
   // Autumn scenes
+  'autumn-intro': 'autumn-intro',
+  'autumn-festival-intro': 'autumn-festival-intro', // Map this alias to the correct scene
   'autumn-character-path': 'autumn-character-relationship',
-  'autumn-festival-introduction': 'autumn-festival-introduction',
   'autumn-festival-activities': 'autumn-festival-activities',
   'autumn-festival-completion': 'autumn-festival-completion',
   'autumn-conclusion-debrief': 'autumn-conclusion-debrief',
@@ -65,8 +66,8 @@ const sceneMapping: Record<string, string> = {
   'winter-charity-auction-intro': 'winter-charity-auction-intro',
   'winter-gala-dance-intro': 'winter-gala-dance-intro',
   'winter-looking-signs-intro': 'winter-looking-signs-intro',
-  'winter-looking-signs-start': 'winter-looking-signs-start', // Add mapping for start scene
-  'winter-looking-signs-complete': 'winter-looking-signs-complete', // Add mapping for complete scene
+  'winter-looking-signs-start': 'winter-looking-signs-intro', // Add mapping for start scene
+  'winter-looking-signs-complete': 'winter-looking-signs-intro', // Add mapping for complete scene
   'winter-conclusion': 'winter-conclusion',
 };
 

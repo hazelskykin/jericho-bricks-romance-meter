@@ -11,9 +11,10 @@ import { allScenes } from '@/data/scenes';
  * Game scene observer component to handle minigame transitions and season changes
  */
 const GameSceneObserver = () => {
-  const { gameState, startMinigame, checkSeasonProgress } = useGame();
+  const { gameState, startMinigame, checkSeasonProgress, handleSceneTransition } = useGame();
   const lastTriggeredMinigame = useRef<string | null>(null);
   const minigameTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastSceneId = useRef<string | null>(null);
 
   // Monitor scene changes to detect when to trigger minigames or season transitions
   useEffect(() => {
@@ -23,7 +24,24 @@ const GameSceneObserver = () => {
     // Get the current scene data
     const sceneData: Scene | undefined = allScenes[currentScene];
     
-    // Check if the scene has a minigame property - this is a cleaner, more direct approach
+    // Special handling for summer conclusion to autumn transition
+    if (currentScene === 'summer-conclusion-debrief') {
+      const dialogueComplete = gameState.dialogueIndex >= (sceneData?.dialogue?.length || 0) - 1;
+      
+      if (dialogueComplete && lastSceneId.current === currentScene) {
+        console.log('Summer conclusion dialogue complete, forcing transition to autumn');
+        // Short delay to ensure state is ready
+        const timer = setTimeout(() => {
+          handleSceneTransition('season-transition-autumn');
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }
+
+    // Store current scene for comparison on next render
+    lastSceneId.current = currentScene;
+    
+    // Check if the scene has a minigame property 
     if (sceneData?.minigame) {
       const minigameType = sceneData.minigame;
       console.log(`GameSceneObserver: Detected minigame from scene property: ${minigameType}`);
@@ -150,7 +168,7 @@ const GameSceneObserver = () => {
       }
     };
     
-  }, [gameState.currentScene, startMinigame, checkSeasonProgress, gameState]);
+  }, [gameState.currentScene, gameState.dialogueIndex, startMinigame, checkSeasonProgress, handleSceneTransition]);
 
   // Render season transition screens when needed
   const renderSeasonTransition = () => {

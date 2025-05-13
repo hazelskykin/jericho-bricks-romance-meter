@@ -10,6 +10,8 @@ export function useAutumnSeasonHandlers(
 ) {
   // Autumn season transition
   const handleAutumnTransition = useCallback(() => {
+    console.log('Explicitly handling autumn transition');
+    
     // At the end of summer, identify the character with highest affection
     const topCharacter = Object.entries(gameState.characters)
       .filter(([charId]) => 

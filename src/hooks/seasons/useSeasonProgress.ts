@@ -38,6 +38,15 @@ export function useSeasonProgress(handleSeasonTransition: (newSeason: string) =>
       console.log('Season transition scene detected: winter');
       handleSeasonTransition('winter');
     }
+    
+    // New check for conclusion transitions
+    if (sceneId === 'summer-conclusion-debrief' && !window.preventSeasonCheck) {
+      console.log('Summer conclusion scene detected, ensuring correct transition');
+      // Set a flag to prevent multiple transitions
+      window.preventSeasonCheck = true;
+      // Clear the flag after a short delay
+      setTimeout(() => { window.preventSeasonCheck = false; }, 2000);
+    }
   }, [handleSeasonTransition]);
 
   return {
