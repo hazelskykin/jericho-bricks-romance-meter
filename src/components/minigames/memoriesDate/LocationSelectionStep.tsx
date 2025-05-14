@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { Image } from 'lucide-react';
 import { PhotoLocation } from '@/hooks/memoriesDate/useMemoriesDateState';
 import { soundManager } from '@/utils/sound';
@@ -9,14 +8,12 @@ interface LocationSelectionStepProps {
   locations: PhotoLocation[];
   currentLocationIndex: number;
   selectLocation: (index: number) => void;
-  onNext: () => void;
 }
 
 const LocationSelectionStep: React.FC<LocationSelectionStepProps> = ({
   locations,
   currentLocationIndex,
   selectLocation,
-  onNext,
 }) => {
   return (
     <div className="flex flex-col items-center">
@@ -28,7 +25,7 @@ const LocationSelectionStep: React.FC<LocationSelectionStepProps> = ({
             className={`relative p-1 border-2 ${currentLocationIndex === index ? 'border-[#9b87f5]' : 'border-transparent'}`}
             onClick={() => {
               selectLocation(index);
-              soundManager.playSFX('ui-click');
+              soundManager.playSFX('ui-click', false);
             }}
           >
             <img 
@@ -40,9 +37,6 @@ const LocationSelectionStep: React.FC<LocationSelectionStepProps> = ({
           </button>
         ))}
       </div>
-      <Button onClick={onNext} className="mt-4">
-        Next: Choose Frame <Image className="ml-2 w-4 h-4" />
-      </Button>
     </div>
   );
 };
