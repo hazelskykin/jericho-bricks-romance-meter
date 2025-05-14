@@ -43,7 +43,7 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
 
   // Setup game music
   useEffect(() => {
-    soundManager.playSFX('memoriesDate-loop-gameplay');
+    soundManager.playSFX('memoriesDate-loop-gameplay', true);
     
     // Cleanup when component unmounts
     return () => {
@@ -52,7 +52,7 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
   }, []);
 
   const handleLocationSelect = (index: number) => {
-    soundManager.playSFX('memoriesDate-camera-click');
+    soundManager.playSFX('memoriesDate-camera-click', true);
     setSelectedLocationIndex(index);
     setPhotos(prev => {
       const updated = [...prev];
@@ -63,7 +63,7 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
   };
 
   const handleFrameSelect = (frameId: string) => {
-    soundManager.playSFX('memoriesDate-frame-select');
+    soundManager.playSFX('memoriesDate-frame-select', true);
     setPhotos(prev => {
       const updated = [...prev];
       updated[activePhotoIndex] = { ...updated[activePhotoIndex], frame: frameId };
@@ -73,7 +73,7 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
   };
 
   const handleStickerSelect = (stickerId: string) => {
-    soundManager.playSFX('memoriesDate-sticker-select');
+    soundManager.playSFX('memoriesDate-sticker-select', true);
     setPhotos(prev => {
       const updated = [...prev];
       const currentStickers = [...updated[activePhotoIndex].stickers];
@@ -87,7 +87,7 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
   };
 
   const handlePhotoComplete = () => {
-    soundManager.playSFX('memoriesDate-effect-twinkle');
+    soundManager.playSFX('memoriesDate-effect-twinkle', true);
     
     // Mark photo as completed
     setPhotos(prev => {

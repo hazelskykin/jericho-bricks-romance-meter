@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Photo } from 'lucide-react';
+import { Image } from 'lucide-react';
 import { PhotoFrame } from '@/hooks/memoriesDate/useMemoriesDateState';
 import { soundManager } from '@/utils/sound';
 

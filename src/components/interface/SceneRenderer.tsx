@@ -104,6 +104,7 @@ const SceneRenderer: React.FC<SceneRendererProps> = ({
   const festivalScenes = ['spring-festival-activities', 'summer-festival-activities', 'autumn-festival-activities', 'winter-festival-activities'];
   if (festivalScenes.includes(gameState.currentScene)) {
     const season = gameState.currentScene.split('-')[0];
+    // Cast the activities to ensure TypeScript compatibility
     const activities = seasonalFestivalActivities[gameState.currentScene] || [];
     
     console.log(`Rendering ${season} festival activities view with ${activities.length} activities`);
@@ -112,7 +113,10 @@ const SceneRenderer: React.FC<SceneRendererProps> = ({
       <>
         <FestivalActivitiesView 
           sceneId={gameState.currentScene}
-          activities={activities}
+          activities={activities.map(activity => ({
+            ...activity,
+            available: activity.available !== undefined ? activity.available : true
+          }))}
           season={season}
         />
         <DevJumpTargets onJumpToScene={handleSceneTransition} />
