@@ -30,6 +30,7 @@ export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
 
   // Setup game music
   useEffect(() => {
+    // Fixed: Added false as second argument to playSFX
     soundManager.playSFX('memoriesDate-loop-gameplay', true);
     
     // Cleanup when component unmounts
@@ -40,7 +41,7 @@ export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
 
   // Location selection handler
   const handleLocationSelect = (index: number) => {
-    soundManager.playSFX('memoriesDate-camera-click', true);
+    soundManager.playSFX('memoriesDate-camera-click', false);
     setSelectedLocationIndex(index);
     setPhotos(prev => {
       const updated = [...prev];
@@ -52,7 +53,7 @@ export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
 
   // Frame selection handler
   const handleFrameSelect = (frameId: string) => {
-    soundManager.playSFX('memoriesDate-frame-select', true);
+    soundManager.playSFX('memoriesDate-frame-select', false);
     setPhotos(prev => {
       const updated = [...prev];
       updated[activePhotoIndex] = { ...updated[activePhotoIndex], frame: frameId };
@@ -63,7 +64,7 @@ export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
 
   // Sticker selection handler
   const handleStickerSelect = (stickerId: string) => {
-    soundManager.playSFX('memoriesDate-sticker-select', true);
+    soundManager.playSFX('memoriesDate-sticker-select', false);
     setPhotos(prev => {
       const updated = [...prev];
       const currentStickers = [...updated[activePhotoIndex].stickers];
@@ -78,7 +79,7 @@ export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
 
   // Photo completion handler
   const handlePhotoComplete = () => {
-    soundManager.playSFX('memoriesDate-effect-twinkle', true);
+    soundManager.playSFX('memoriesDate-effect-twinkle', false);
     
     // Mark photo as completed
     setPhotos(prev => {
