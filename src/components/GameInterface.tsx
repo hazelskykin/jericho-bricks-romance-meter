@@ -4,6 +4,7 @@ import { useGame } from '@/context/GameContext';
 import { allScenes } from '@/data/scenes';
 import SceneRenderer from './interface/SceneRenderer';
 import SpecialSceneRouter from './interface/SpecialSceneRouter';
+import SceneTransition from './SceneTransition';
 
 interface GameInterfaceProps {
   initialSceneId?: string;
@@ -18,7 +19,9 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     activeMinigame,
     completeMinigame,
     exitMinigame,
-    handleSceneTransition
+    handleSceneTransition,
+    isTransitioning,
+    transitionDuration
   } = useGame();
   
   const [initialized, setInitialized] = useState(false);
@@ -45,6 +48,10 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
 
   return (
     <>
+      <SceneTransition 
+        isTransitioning={isTransitioning} 
+        duration={transitionDuration} 
+      />
       <SpecialSceneRouter />
       <SceneRenderer 
         gameState={gameState}

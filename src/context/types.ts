@@ -21,4 +21,6 @@ export interface GameContextValue {
   handleDialogueClick: () => void;
   handleChoiceClick: (choiceIndex: number) => void;
   replayCurrentScene: () => void;
+  isTransitioning: boolean;
+  transitionDuration: number;
 }

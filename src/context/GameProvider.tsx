@@ -53,7 +53,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [gameState, setGameState] = useState<GameState>(initialGameState);
   
   // Initialize game scenes hook
-  const { currentSceneId, transitionToScene, currentScene } = useGameScenes({ 
+  const { 
+    currentSceneId, 
+    transitionToScene, 
+    currentScene, 
+    isTransitioning,
+    transitionDuration
+  } = useGameScenes({ 
     initialScene: initialGameState.currentScene 
   });
   
@@ -97,7 +103,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     handleSeasonTransition,
     completeCharacterRoute,
     completeVersaRoute,
-    handleGameReset: originalHandleGameReset, // Rename to avoid confusion
+    handleGameReset: originalHandleGameReset, 
     checkSeasonProgress
   } = useGameSeasons(gameState, setGameState, transitionToScene);
   
@@ -130,7 +136,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     routeToEpilogue,
     handleDialogueClick,
     handleChoiceClick,
-    replayCurrentScene
+    replayCurrentScene,
+    isTransitioning,
+    transitionDuration
   };
 
   return (

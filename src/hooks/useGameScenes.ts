@@ -13,7 +13,9 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
   const [previousSceneId, setPreviousSceneId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [transitionEffect, setTransitionEffect] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionInProgress = useRef<boolean>(false);
+  const transitionDuration = 300; // milliseconds
 
   // Debug: Log all available scenes 
   useEffect(() => {
@@ -40,6 +42,8 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
         return;
       }
       
+      // Start transition effect
+      setIsTransitioning(true);
       transitionInProgress.current = true;
       setLoading(true);
       console.log(`Attempting to transition from scene [${currentSceneId}] to [${sceneId}]`);
@@ -50,78 +54,86 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
         console.log('This scene exists in allScenes:', Boolean(allScenes['summer-character-selection']));
       }
       
-      try {
-        // Map scene ID if needed
-        const mappedSceneId = mapSceneId(sceneId);
-        
-        // Debug: Check if the scene exists
-        console.log(`Checking if scene [${mappedSceneId}] exists:`, Boolean(allScenes[mappedSceneId]));
-        
-        // Check if scene exists
-        if (allScenes[mappedSceneId]) {
-          setPreviousSceneId(currentSceneId);
-          setCurrentSceneId(mappedSceneId);
+      // Delay the actual scene change to allow for transition animation
+      setTimeout(() => {
+        try {
+          // Map scene ID if needed
+          const mappedSceneId = mapSceneId(sceneId);
           
-          if (effect) {
-            setTransitionEffect(effect);
-          }
+          // Debug: Check if the scene exists
+          console.log(`Checking if scene [${mappedSceneId}] exists:`, Boolean(allScenes[mappedSceneId]));
           
-          console.log(`Scene transition complete, now at [${mappedSceneId}]`);
-        } else {
-          // Special case for intro scenes to ensure they're found
-          if (mappedSceneId === 'intro' || mappedSceneId === 'prologue-intro') {
-            console.log(`Special handling for intro scene: using 'intro'`);
+          // Check if scene exists
+          if (allScenes[mappedSceneId]) {
             setPreviousSceneId(currentSceneId);
-            setCurrentSceneId('intro');
-          }
-          // Special case for about scene
-          else if (mappedSceneId === 'about') {
-            console.log(`Special handling for about scene`);
-            setPreviousSceneId(currentSceneId);
-            setCurrentSceneId('about');
-          }
-          // Special case for summer character selection
-          else if (mappedSceneId === 'summer-character-selection') {
-            console.log('Special handling for summer character selection scene');
-            // Try to force a transition to the character selection
-            setPreviousSceneId(currentSceneId);
-            // Use a different approach - try to use the GameInterface's direct rendering
-            setCurrentSceneId('summer-character-selection');
-            toast.info('Transitioning to summer character selection');
-          }
-          // Try to handle the error with a fallback
-          else {
-            const fallbackScene = handleSceneError(mappedSceneId);
+            setCurrentSceneId(mappedSceneId);
             
-            if (fallbackScene && allScenes[fallbackScene]) {
-              console.log(`Using fallback scene [${fallbackScene}]`);
+            if (effect) {
+              setTransitionEffect(effect);
+            }
+            
+            console.log(`Scene transition complete, now at [${mappedSceneId}]`);
+          } else {
+            // Special case for intro scenes to ensure they're found
+            if (mappedSceneId === 'intro' || mappedSceneId === 'prologue-intro') {
+              console.log(`Special handling for intro scene: using 'intro'`);
               setPreviousSceneId(currentSceneId);
-              setCurrentSceneId(fallbackScene);
-            } else {
-              console.error(`No fallback found for scene [${mappedSceneId}]`);
-              toast.error(`Failed to find scene "${mappedSceneId}" or a suitable fallback`);
+              setCurrentSceneId('intro');
+            }
+            // Special case for about scene
+            else if (mappedSceneId === 'about') {
+              console.log(`Special handling for about scene`);
+              setPreviousSceneId(currentSceneId);
+              setCurrentSceneId('about');
+            }
+            // Special case for summer character selection
+            else if (mappedSceneId === 'summer-character-selection') {
+              console.log('Special handling for summer character selection scene');
+              // Try to force a transition to the character selection
+              setPreviousSceneId(currentSceneId);
+              // Use a different approach - try to use the GameInterface's direct rendering
+              setCurrentSceneId('summer-character-selection');
+              toast.info('Transitioning to summer character selection');
+            }
+            // Try to handle the error with a fallback
+            else {
+              const fallbackScene = handleSceneError(mappedSceneId);
               
-              // Default to start as ultimate fallback
-              setPreviousSceneId(currentSceneId);
-              setCurrentSceneId('start');
+              if (fallbackScene && allScenes[fallbackScene]) {
+                console.log(`Using fallback scene [${fallbackScene}]`);
+                setPreviousSceneId(currentSceneId);
+                setCurrentSceneId(fallbackScene);
+              } else {
+                console.error(`No fallback found for scene [${mappedSceneId}]`);
+                toast.error(`Failed to find scene "${mappedSceneId}" or a suitable fallback`);
+                
+                // Default to start as ultimate fallback
+                setPreviousSceneId(currentSceneId);
+                setCurrentSceneId('start');
+              }
             }
           }
+        } catch (error) {
+          console.error('Error during scene transition:', error);
+          toast.error('An error occurred during scene transition');
+          
+          // Default to start as ultimate fallback
+          setPreviousSceneId(currentSceneId);
+          setCurrentSceneId('start');
+        } finally {
+          setLoading(false);
+          
+          // Remove the transition effect after it completes
+          setTimeout(() => {
+            setIsTransitioning(false);
+            
+            // Add a short delay before allowing another transition
+            setTimeout(() => {
+              transitionInProgress.current = false;
+            }, 200);
+          }, transitionDuration);
         }
-      } catch (error) {
-        console.error('Error during scene transition:', error);
-        toast.error('An error occurred during scene transition');
-        
-        // Default to start as ultimate fallback
-        setPreviousSceneId(currentSceneId);
-        setCurrentSceneId('start');
-      } finally {
-        setLoading(false);
-        
-        // Add a short delay before allowing another transition
-        setTimeout(() => {
-          transitionInProgress.current = false;
-        }, 200);
-      }
+      }, transitionDuration / 2); // Start scene change halfway through the fade
     },
     [currentSceneId]
   );
@@ -156,6 +168,8 @@ const useGameScenes = ({ initialScene = 'start' }: UseGameScenesProps = {}) => {
     loading,
     transitionEffect,
     setTransitionEffect,
+    isTransitioning,
+    transitionDuration
   };
 };
 
