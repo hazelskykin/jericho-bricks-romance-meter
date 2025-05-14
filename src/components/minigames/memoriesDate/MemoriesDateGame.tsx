@@ -5,12 +5,10 @@ import FrameSelectionStep from './FrameSelectionStep';
 import StickerSelectionStep from './StickerSelectionStep';
 import PhotoGalleryStep from './PhotoGalleryStep';
 import { Button } from '@/components/ui/button';
-import { SoundManager } from '@/utils/sound';
+import { soundManager } from '@/utils/sound';
 import { useAffection } from '@/hooks/useAffection';
 import { useGame } from '@/context/GameContext';
-
-// Load sound manager
-const soundManager = SoundManager.getInstance();
+import { useMemoriesDateState, PhotoLocation, PhotoFrame, PhotoSticker } from '@/hooks/memoriesDate/useMemoriesDateState';
 
 // Interfaces for the game data
 interface Photo {
@@ -31,6 +29,10 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
   const [currentStep, setCurrentStep] = useState<'location' | 'frame' | 'sticker' | 'gallery'>('location');
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [selectedLocationIndex, setSelectedLocationIndex] = useState(0);
+  
+  // Use the custom hook to get locations, frames, and stickers
+  const memoriesDateState = useMemoriesDateState(gameState.currentLoveInterest);
   
   // Initialize with 3 empty photos
   const [photos, setPhotos] = useState<Photo[]>([
@@ -45,38 +47,39 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
     
     // Cleanup when component unmounts
     return () => {
-      soundManager.stopSFX(); // Using stopSFX() instead of stop()
+      soundManager.stopSFX();
     };
   }, []);
 
-  const handleLocationSelect = (location: string) => {
+  const handleLocationSelect = (index: number) => {
     soundManager.playSFX('memoriesDate-camera-click');
+    setSelectedLocationIndex(index);
     setPhotos(prev => {
       const updated = [...prev];
-      updated[activePhotoIndex] = { ...updated[activePhotoIndex], location };
+      updated[activePhotoIndex] = { ...updated[activePhotoIndex], location: memoriesDateState.locations[index].id };
       return updated;
     });
     setCurrentStep('frame');
   };
 
-  const handleFrameSelect = (frame: string) => {
+  const handleFrameSelect = (frameId: string) => {
     soundManager.playSFX('memoriesDate-frame-select');
     setPhotos(prev => {
       const updated = [...prev];
-      updated[activePhotoIndex] = { ...updated[activePhotoIndex], frame };
+      updated[activePhotoIndex] = { ...updated[activePhotoIndex], frame: frameId };
       return updated;
     });
     setCurrentStep('sticker');
   };
 
-  const handleStickerSelect = (sticker: string) => {
+  const handleStickerSelect = (stickerId: string) => {
     soundManager.playSFX('memoriesDate-sticker-select');
     setPhotos(prev => {
       const updated = [...prev];
       const currentStickers = [...updated[activePhotoIndex].stickers];
       // Only add sticker if we don't already have it
-      if (!currentStickers.includes(sticker)) {
-        currentStickers.push(sticker);
+      if (!currentStickers.includes(stickerId)) {
+        currentStickers.push(stickerId);
       }
       updated[activePhotoIndex] = { ...updated[activePhotoIndex], stickers: currentStickers };
       return updated;
@@ -142,16 +145,25 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
       </div>
 
       {currentStep === 'location' && (
-        <LocationSelectionStep onSelectLocation={handleLocationSelect} />
+        <LocationSelectionStep 
+          locations={memoriesDateState.locations}
+          currentLocationIndex={selectedLocationIndex}
+          selectLocation={handleLocationSelect}
+          onNext={() => setCurrentStep('frame')}
+        />
       )}
 
       {currentStep === 'frame' && (
-        <FrameSelectionStep onSelectFrame={handleFrameSelect} />
+        <FrameSelectionStep 
+          frames={memoriesDateState.frames}
+          selectFrame={handleFrameSelect}
+        />
       )}
 
       {currentStep === 'sticker' && (
         <StickerSelectionStep 
-          onSelectSticker={handleStickerSelect}
+          stickers={memoriesDateState.stickers}
+          selectSticker={handleStickerSelect}
           onComplete={handlePhotoComplete}
           currentStickers={photos[activePhotoIndex]?.stickers || []}
         />
@@ -159,7 +171,15 @@ const MemoriesDateGame: React.FC<MemoriesDateGameProps> = ({ onComplete, onExit 
 
       {currentStep === 'gallery' && (
         <PhotoGalleryStep 
-          photos={photos} 
+          photos={photos.map(photo => ({
+            location: memoriesDateState.locations.find(l => l.id === photo.location) || memoriesDateState.locations[0],
+            frame: memoriesDateState.frames.find(f => f.id === photo.frame) || memoriesDateState.frames[0],
+            sticker: memoriesDateState.stickers.find(s => photo.stickers[0] === s.id) || memoriesDateState.stickers[0],
+            framePosition: { x: 50, y: 50 },
+            stickerPosition: { x: 100, y: 100 },
+            frameSize: 200,
+            loveInterest: gameState.currentLoveInterest || 'maven'
+          }))} 
           onFinish={handleFinish}
         />
       )}

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Character } from '@/types/game';
 import { motion } from 'framer-motion';
+import characterChibis from '@/data/characterChibis';
 
 interface AffectionChangeToastProps {
   character: Character;
@@ -32,6 +33,8 @@ export const AffectionChangeToast: React.FC<AffectionChangeToastProps> = ({
   };
 
   const characterColor = getCharacterColor();
+  // Get the character's chibi image from characterChibis
+  const chibiImage = characterChibis[character.id]?.image;
   
   return (
     <motion.div
@@ -42,9 +45,9 @@ export const AffectionChangeToast: React.FC<AffectionChangeToastProps> = ({
       style={{ borderColor: characterColor }}
     >
       <div className="flex-shrink-0 mr-3">
-        {character.chibi && (
+        {chibiImage && (
           <img 
-            src={`/assets/characters/${character.id}-chibi.png`}
+            src={chibiImage}
             alt={character.name}
             className="w-12 h-12 rounded-full"
           />

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import StandardGameView from '../game/StandardGameView';
 import CharacterSelectionView from './CharacterSelectionView';
@@ -111,7 +112,7 @@ const SceneRenderer: React.FC<SceneRendererProps> = ({
       <>
         <FestivalActivitiesView 
           sceneId={gameState.currentScene}
-          activities={activities} 
+          activities={activities}
           season={season}
         />
         <DevJumpTargets onJumpToScene={handleSceneTransition} />

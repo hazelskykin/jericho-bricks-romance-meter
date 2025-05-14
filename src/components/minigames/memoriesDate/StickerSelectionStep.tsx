@@ -1,123 +1,73 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Camera } from 'lucide-react';
-import { PhotoFrame, PhotoLocation, PhotoSticker, Position } from '@/hooks/memoriesDate/useMemoriesDateState';
+import { Sticker } from 'lucide-react';
+import { PhotoSticker } from '@/hooks/memoriesDate/useMemoriesDateState';
 import { soundManager } from '@/utils/sound';
 
 interface StickerSelectionStepProps {
-  locations: PhotoLocation[];
-  currentLocationIndex: number;
-  selectedFrame: PhotoFrame | null;
-  selectedSticker: PhotoSticker | null;
   stickers: PhotoSticker[];
-  framePosition: Position;
-  stickerPosition: Position;
-  frameSize: number;
-  moveSticker: (x: number, y: number) => void;
-  selectSticker: (sticker: PhotoSticker) => void;
-  onNext: () => void;
-  onBack: () => void;
+  selectSticker: (stickerId: string) => void;
+  onComplete: () => void;
+  currentStickers: string[];
 }
 
 const StickerSelectionStep: React.FC<StickerSelectionStepProps> = ({
-  locations,
-  currentLocationIndex,
-  selectedFrame,
-  selectedSticker,
   stickers,
-  framePosition,
-  stickerPosition,
-  frameSize,
-  moveSticker,
   selectSticker,
-  onNext,
-  onBack,
+  onComplete,
+  currentStickers
 }) => {
   return (
     <div className="flex flex-col items-center">
-      <h3 className="text-xl mb-4">Add a sticker</h3>
-      <div className="relative w-full max-w-lg h-64 bg-gray-800 overflow-hidden mb-4">
-        {/* Background */}
-        <img 
-          src={locations[currentLocationIndex].src} 
-          alt="Background" 
-          className="absolute inset-0 w-full h-full object-cover" 
-        />
-        
-        {/* Frame */}
-        {selectedFrame && (
-          <div
-            className="absolute"
-            style={{ 
-              left: framePosition.x, 
-              top: framePosition.y,
-              width: `${frameSize}px`,
-              height: `${frameSize * 0.75}px`
-            }}
-          >
-            <img 
-              src={selectedFrame.src} 
-              alt="Frame" 
-              className="w-full h-full object-contain" 
-            />
-          </div>
-        )}
-        
-        {/* Draggable sticker */}
-        {selectedSticker && (
-          <motion.div
-            className="absolute cursor-move z-10"
-            drag
-            dragMomentum={false}
-            dragConstraints={{ 
-              left: framePosition.x, 
-              right: framePosition.x + frameSize, 
-              top: framePosition.y, 
-              bottom: framePosition.y + frameSize * 0.75
-            }}
-            style={{ 
-              x: stickerPosition.x, 
-              y: stickerPosition.y,
-              width: '60px',
-              height: '60px'
-            }}
-            onDrag={(_, info) => moveSticker(info.point.x, info.point.y)}
-          >
-            <img 
-              src={selectedSticker.src} 
-              alt="Sticker" 
-              className="w-full h-full object-contain" 
-            />
-          </motion.div>
-        )}
+      <h3 className="text-xl mb-4">Add stickers to your photo</h3>
+      
+      <div className="mb-6 w-full max-w-md bg-gray-800 rounded-lg p-4">
+        <div className="text-center mb-2">Selected stickers:</div>
+        <div className="flex flex-wrap gap-2 justify-center">
+          {currentStickers.length === 0 ? (
+            <span className="text-gray-500">No stickers selected yet</span>
+          ) : (
+            currentStickers.map((stickerId, index) => {
+              const sticker = stickers.find(s => s.id === stickerId);
+              return sticker ? (
+                <div key={index} className="flex items-center bg-gray-700 rounded px-2 py-1">
+                  <span className="text-xs">{sticker.name}</span>
+                </div>
+              ) : null;
+            })
+          )}
+        </div>
       </div>
       
-      {/* Sticker selection */}
-      <div className="flex gap-4 mb-4">
+      <div className="grid grid-cols-2 gap-4 mb-6">
         {stickers.map((sticker) => (
           <button
             key={sticker.id}
-            className={`p-1 border-2 ${selectedSticker?.id === sticker.id ? 'border-[#9b87f5]' : 'border-transparent'}`}
+            className={`relative p-1 border-2 ${
+              currentStickers.includes(sticker.id) ? 'border-[#9b87f5]' : 'border-transparent'
+            } hover:border-[#7e69AB] transition-colors`}
             onClick={() => {
-              selectSticker(sticker);
+              selectSticker(sticker.id);
               soundManager.playSFX('memoriesDate-sticker-select');
             }}
           >
-            <img src={sticker.src} alt={sticker.name} className="w-12 h-12 object-contain" />
+            <img 
+              src={sticker.src} 
+              alt={sticker.name} 
+              className="w-32 h-32 object-contain rounded" 
+            />
+            <div className="mt-1 text-center text-sm">{sticker.name}</div>
           </button>
         ))}
       </div>
       
-      <div className="flex gap-2">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
-        <Button onClick={onNext}>
-          Take Photo <Camera className="ml-2 w-4 h-4" />
-        </Button>
-      </div>
+      <Button 
+        onClick={onComplete}
+        className="bg-purple-700 hover:bg-purple-600 mt-4"
+      >
+        Complete Photo <Sticker className="ml-2 w-4 h-4" />
+      </Button>
     </div>
   );
 };
