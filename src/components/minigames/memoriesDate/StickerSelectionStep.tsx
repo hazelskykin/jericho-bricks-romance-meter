@@ -9,7 +9,7 @@ interface StickerSelectionStepProps {
   stickers: PhotoSticker[];
   selectSticker: (stickerId: string) => void;
   onComplete: () => void;
-  currentStickers: string[];
+  currentStickers: PhotoSticker[];
 }
 
 const StickerSelectionStep: React.FC<StickerSelectionStepProps> = ({
@@ -28,14 +28,11 @@ const StickerSelectionStep: React.FC<StickerSelectionStepProps> = ({
           {currentStickers.length === 0 ? (
             <span className="text-gray-500">No stickers selected yet</span>
           ) : (
-            currentStickers.map((stickerId, index) => {
-              const sticker = stickers.find(s => s.id === stickerId);
-              return sticker ? (
-                <div key={index} className="flex items-center bg-gray-700 rounded px-2 py-1">
-                  <span className="text-xs">{sticker.name}</span>
-                </div>
-              ) : null;
-            })
+            currentStickers.map((sticker, index) => (
+              <div key={index} className="flex items-center bg-gray-700 rounded px-2 py-1">
+                <span className="text-xs">{sticker.name}</span>
+              </div>
+            ))
           )}
         </div>
       </div>
@@ -45,11 +42,11 @@ const StickerSelectionStep: React.FC<StickerSelectionStepProps> = ({
           <button
             key={sticker.id}
             className={`relative p-1 border-2 ${
-              currentStickers.includes(sticker.id) ? 'border-[#9b87f5]' : 'border-transparent'
+              currentStickers.some(s => s.id === sticker.id) ? 'border-[#9b87f5]' : 'border-transparent'
             } hover:border-[#7e69AB] transition-colors`}
             onClick={() => {
               selectSticker(sticker.id);
-              soundManager.playSFX('memoriesDate-sticker-select');
+              soundManager.playSFX('memoriesDate-sticker-select', false);
             }}
           >
             <img 

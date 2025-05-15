@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Camera, Check, Heart } from 'lucide-react';
-import { Photo } from '@/hooks/memoriesDate/useMemoriesDateState';
+import { Photo } from '@/hooks/memoriesDate/useMemoriesDateGame';
 
 interface PhotoGalleryStepProps {
   photos: Photo[];

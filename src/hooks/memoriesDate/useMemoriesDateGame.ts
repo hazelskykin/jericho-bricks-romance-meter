@@ -14,6 +14,18 @@ export interface MemoriesPhoto {
   completed: boolean;
 }
 
+// Define the Photo interface for final display photos
+export interface Photo {
+  id: string;
+  location: PhotoLocation;
+  frame: PhotoFrame;
+  sticker: PhotoSticker;
+  framePosition: { x: number; y: number };
+  stickerPosition: { x: number; y: number };
+  frameSize: number;
+  loveInterest?: CharacterId;
+}
+
 export const useMemoriesDateGame = (onComplete: (success: boolean) => void) => {
   // Game state management
   const [currentStep, setCurrentStep] = useState<'location' | 'frame' | 'sticker' | 'gallery'>('location');
@@ -123,7 +135,22 @@ export const useMemoriesDateGame = (onComplete: (success: boolean) => void) => {
 
   // Get display photos for gallery
   const getDisplayPhotos = () => {
-    return photos.filter(photo => photo.completed);
+    // Convert MemoriesPhoto objects to Photo objects for gallery display
+    return photos.filter(photo => photo.completed).map(photo => {
+      // Use first sticker in the stickers array as the main sticker for display
+      const mainSticker = photo.stickers.length > 0 ? photo.stickers[0] : memoriesDateState.stickers[0];
+      
+      return {
+        id: photo.id,
+        location: photo.location,
+        frame: photo.frame,
+        sticker: mainSticker,
+        framePosition: { x: 50, y: 50 }, // Center position
+        stickerPosition: { x: Math.random() * 70 + 15, y: Math.random() * 70 + 15 }, // Random position
+        frameSize: 100, // Default size
+        loveInterest: undefined // Optional
+      };
+    });
   };
 
   return {
