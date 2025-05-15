@@ -65,8 +65,16 @@ const Game: React.FC = () => {
   const handleStartGame = () => {
     console.log('Starting new game');
     
-    // Log sound effect instead of playing to avoid errors
-    console.log('[SOUND] ui-click');
+    try {
+      // Play sound effect if sound system is ready
+      if (soundInitialized) {
+        soundManager.playSFX('ui-click', false);
+      } else {
+        console.log('[SOUND] ui-click');
+      }
+    } catch (error) {
+      console.warn('Failed to play sound:', error);
+    }
     
     // First mark the game as started to trigger menu hiding
     setGameStarted(true);
@@ -89,7 +97,12 @@ const Game: React.FC = () => {
 
   // Handle game reset
   const handleResetGame = () => {
-    console.log('[SOUND] ui-click');
+    try {
+      soundManager.playSFX('ui-click', false);
+    } catch (error) {
+      console.log('[SOUND] ui-click');
+      console.warn('Failed to play sound:', error);
+    }
     
     setShowMainMenu(true);
     setGameStarted(false);
@@ -100,7 +113,13 @@ const Game: React.FC = () => {
   // Handle about button click
   const handleAbout = () => {
     console.log('Showing about screen');
-    console.log('[SOUND] ui-click');
+    
+    try {
+      soundManager.playSFX('ui-click', false);
+    } catch (error) {
+      console.log('[SOUND] ui-click');
+      console.warn('Failed to play sound:', error);
+    }
     
     transitionToScene('about');
   };
@@ -111,7 +130,7 @@ const Game: React.FC = () => {
       <AssetPreloader 
         onComplete={() => setPriorityAssetsLoaded(true)}
         priorityOnly={true}
-        skipMinigameAssets={false} // Update to load minigame assets
+        skipMinigameAssets={true} // Skip minigame assets during initial load
       />
     );
   }
@@ -152,7 +171,7 @@ const Game: React.FC = () => {
               setAssetsLoaded(true);
               setLoadingComplete(true);
             }}
-            skipMinigameAssets={false} // Update to load minigame assets
+            skipMinigameAssets={true} // Skip minigame assets during background load
           />
         </div>
       )}

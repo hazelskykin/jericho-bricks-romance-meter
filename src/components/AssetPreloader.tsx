@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { assetManager } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
@@ -15,7 +16,7 @@ interface AssetPreloaderProps {
 const AssetPreloader: React.FC<AssetPreloaderProps> = ({ 
   onComplete, 
   priorityOnly = false,
-  skipMinigameAssets = false // Default to false so we load minigame assets
+  skipMinigameAssets = true // Default to true so we DON'T load minigame assets at start
 }) => {
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [loadingBackgrounds, setLoadingBackgrounds] = useState(true);
@@ -44,7 +45,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
     .filter(bg => !priorityOnly || (bg as BackgroundAsset).priority === true)
     .map(bg => (bg as BackgroundAsset).image);
     
-  // Extract minigame assets if not skipping - focus on bloomwithAView paths
+  // Extract minigame assets if not skipping - focus on priority assets only
   const minigameAssetPaths = !skipMinigameAssets 
     ? minigameAssets
         .filter(asset => !priorityOnly || asset.priority === true)
@@ -112,8 +113,8 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
   }, [loadingCharacters, loadingBackgrounds, loadingMinigameAssets, onComplete]);
 
   // Calculate overall progress
-  const totalAssets = totalCharacters + totalBackgrounds + totalMinigameAssets;
-  const loadedAssets = loadedCharacters + loadedBackgrounds + loadedMinigameAssets;
+  const totalAssets = totalCharacters + totalBackgrounds + (skipMinigameAssets ? 0 : totalMinigameAssets);
+  const loadedAssets = loadedCharacters + loadedBackgrounds + (skipMinigameAssets ? 0 : loadedMinigameAssets);
   const progress = totalAssets > 0 ? Math.min(100, Math.round((loadedAssets / totalAssets) * 100)) : 100;
 
   return (

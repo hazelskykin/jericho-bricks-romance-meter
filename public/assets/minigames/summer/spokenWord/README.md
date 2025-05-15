@@ -1,1 +1,2 @@
-Spoken Word: Paper background, theme icons
+
+Spoken Word: Paper background, theme icons, mastery icons

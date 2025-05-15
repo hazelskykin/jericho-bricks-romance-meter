@@ -54,13 +54,13 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     else if (activeMinigame === 'crafter') {
       console.log('Preloading Crafter assets');
       
-      // Preload crafter assets
+      // Preload crafter assets - use the combined sprite sheet rather than individual files
       const assetPaths = [
         '/assets/minigames/autumn/crafter/workshop-background.png',
         '/assets/minigames/autumn/crafter/fabricBase.png',
         '/assets/minigames/autumn/crafter/metalBase.png',
         '/assets/minigames/autumn/crafter/woodBase.png',
-        '/assets/minigames/autumn/crafter/accents.png'
+        '/assets/minigames/autumn/crafter/accents.png' // Use combined sprite sheet instead of individual files
       ];
       
       assetManager.preloadAssets(assetPaths, (loaded, total) => {
@@ -75,7 +75,7 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
     else if (activeMinigame === 'spokenWord') {
       console.log('Preloading SpokenWord assets');
       
-      // Preload spoken word assets
+      // Preload spoken word assets - use sprite sheets instead of individual files
       const assetPaths = [
         '/assets/minigames/summer/spokenWord/paper-background.png',
         '/assets/minigames/summer/spokenWord/theme-icons.png',

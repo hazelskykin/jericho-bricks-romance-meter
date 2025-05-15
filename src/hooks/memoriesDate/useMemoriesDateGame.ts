@@ -1,154 +1,88 @@
-
-import { useState, useEffect } from 'react';
-import { useAffection } from '@/hooks/useAffection';
-import { useGame } from '@/context/GameContext';
-import { useMemoriesDateState } from '@/hooks/memoriesDate/useMemoriesDateState';
+import { useEffect, useState } from 'react';
 import { soundManager } from '@/utils/sound';
 
-export interface MemoriesPhoto {
-  location: string;
-  frame: string;
-  stickers: string[];
-  completed: boolean;
-}
+export const useMemoriesDateGame = (onComplete: (success: boolean) => void) => {
+  const [selectedBackdrop, setSelectedBackdrop] = useState<string | null>(null);
+  const [selectedFrame, setSelectedFrame] = useState<string | null>(null);
+  const [selectedSticker, setSelectedSticker] = useState<string | null>(null);
+  const [photoElements, setPhotoElements] = useState<any[]>([]);
+  const [isCompleted, setIsCompleted] = useState(false);
 
-export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
-  const { modifyAffection } = useAffection();
-  const { gameState } = useGame();
-  const [currentStep, setCurrentStep] = useState<'location' | 'frame' | 'sticker' | 'gallery'>('location');
-  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [selectedLocationIndex, setSelectedLocationIndex] = useState(0);
-  const memoriesDateState = useMemoriesDateState(gameState.currentLoveInterest);
-  
-  // Initialize with 3 empty photos
-  const [photos, setPhotos] = useState<MemoriesPhoto[]>([
-    { location: '', frame: '', stickers: [], completed: false },
-    { location: '', frame: '', stickers: [], completed: false },
-    { location: '', frame: '', stickers: [], completed: false },
-  ]);
+  // Backdrops
+  const backdrops = [
+    { id: 'market', name: 'Market', image: '/assets/minigames/autumn/memoriesDate/market-backdrop.png' },
+    { id: 'overlook', name: 'Overlook', image: '/assets/minigames/autumn/memoriesDate/overlook-backdrop.png' },
+    { id: 'boardwalk', name: 'Boardwalk', image: '/assets/minigames/autumn/memoriesDate/boardwalk-backdrop.png' },
+  ];
+
+  // Frames
+  const frames = [
+    { id: 'neon', name: 'Neon', image: '/assets/minigames/autumn/memoriesDate/frames-neon.png' },
+    { id: 'gears', name: 'Gears', image: '/assets/minigames/autumn/memoriesDate/frames-gears.png' },
+    { id: 'circle', name: 'Circle', image: '/assets/minigames/autumn/memoriesDate/frames-circle.png' },
+  ];
+
+  // Stickers
+  const stickers = [
+    { id: 'bestday', name: 'Best Day', image: '/assets/minigames/autumn/memoriesDate/stickers-bestday.png' },
+    { id: 'kitten', name: 'Kitten', image: '/assets/minigames/autumn/memoriesDate/stickers-kitten.png' },
+    { id: 'sparklehearts', name: 'Sparkle Hearts', image: '/assets/minigames/autumn/memoriesDate/stickers-sparklehearts.png' },
+    { id: 'sparklegears', name: 'Sparkle Gears', image: '/assets/minigames/autumn/memoriesDate/stickers-sparklegears.png' },
+  ];
 
   // Setup game music
   useEffect(() => {
-    // Add true parameter to indicate looping
+    // Adding required true parameter for loop argument
     soundManager.playSFX('memoriesDate-loop-gameplay', true);
     
     // Cleanup when component unmounts
     return () => {
-      soundManager.stopSFX();
+      soundManager.stopSFX('memoriesDate-loop-gameplay');
     };
   }, []);
 
-  // Location selection handler
-  const handleLocationSelect = (index: number) => {
-    // Add false parameter to indicate non-looping
-    soundManager.playSFX('memoriesDate-camera-click', false);
-    setSelectedLocationIndex(index);
-    setPhotos(prev => {
-      const updated = [...prev];
-      updated[activePhotoIndex] = { ...updated[activePhotoIndex], location: memoriesDateState.locations[index].id };
-      return updated;
-    });
-    setCurrentStep('frame');
+  // Handle backdrop selection
+  const handleBackdropSelect = (backdrop: string) => {
+    setSelectedBackdrop(backdrop);
   };
 
-  // Frame selection handler
-  const handleFrameSelect = (frameId: string) => {
-    soundManager.playSFX('memoriesDate-frame-select', false);
-    setPhotos(prev => {
-      const updated = [...prev];
-      updated[activePhotoIndex] = { ...updated[activePhotoIndex], frame: frameId };
-      return updated;
-    });
-    setCurrentStep('sticker');
+  // Handle frame selection
+  const handleFrameSelect = (frame: string) => {
+    setSelectedFrame(frame);
   };
 
-  // Sticker selection handler
-  const handleStickerSelect = (stickerId: string) => {
-    soundManager.playSFX('memoriesDate-sticker-select', false);
-    setPhotos(prev => {
-      const updated = [...prev];
-      const currentStickers = [...updated[activePhotoIndex].stickers];
-      // Only add sticker if we don't already have it
-      if (!currentStickers.includes(stickerId)) {
-        currentStickers.push(stickerId);
-      }
-      updated[activePhotoIndex] = { ...updated[activePhotoIndex], stickers: currentStickers };
-      return updated;
-    });
-  };
-
-  // Photo completion handler
-  const handlePhotoComplete = () => {
-    soundManager.playSFX('memoriesDate-effect-twinkle', false);
+  // Handle sticker placement
+  const handleStickerSelect = (sticker: string) => {
+    // Adding required false parameter for loop argument
+    soundManager.playSFX('memoriesDate-sticker-place', false);
+    setSelectedSticker(sticker);
     
-    // Mark photo as completed
-    setPhotos(prev => {
-      const updated = [...prev];
-      updated[activePhotoIndex] = { ...updated[activePhotoIndex], completed: true };
-      return updated;
-    });
-    
-    // Check if all photos are done
-    const nextIncompleteIndex = photos.findIndex((photo, index) => 
-      index !== activePhotoIndex && !photo.completed);
-      
-    if (nextIncompleteIndex === -1) {
-      // All photos completed
-      if (photos.every((photo, index) => 
-        index === activePhotoIndex || photo.completed)) {
-        
-        // Award affection points to current love interest if one is selected
-        if (gameState.currentLoveInterest) {
-          // Award 5 affection points to the current love interest for completing the memory book
-          modifyAffection(gameState.currentLoveInterest, 5);
-          setSuccessMessage(`Created a beautiful memory book with ${gameState.characters[gameState.currentLoveInterest].name}!`);
-        } else {
-          setSuccessMessage("You've created a beautiful memory book!");
-        }
-        
-        // Show gallery of completed photos
-        setCurrentStep('gallery');
-      }
-    } else {
-      // Move to next incomplete photo
-      setActivePhotoIndex(nextIncompleteIndex);
-      setCurrentStep('location');
+    if (selectedBackdrop && selectedFrame && sticker) {
+      setPhotoElements([selectedBackdrop, selectedFrame, sticker]);
+      setIsCompleted(true);
     }
   };
 
-  // Game completion handler
-  const handleFinish = () => {
-    soundManager.stopSFX();
-    onComplete(true);
-  };
-  
-  // Map internal photos format to the format expected by the PhotoGalleryStep
-  const getDisplayPhotos = () => {
-    return photos.map(photo => ({
-      location: memoriesDateState.locations.find(l => l.id === photo.location) || memoriesDateState.locations[0],
-      frame: memoriesDateState.frames.find(f => f.id === photo.frame) || memoriesDateState.frames[0],
-      sticker: memoriesDateState.stickers.find(s => photo.stickers[0] === s.id) || memoriesDateState.stickers[0],
-      framePosition: { x: 50, y: 50 },
-      stickerPosition: { x: 100, y: 100 },
-      frameSize: 200,
-      loveInterest: gameState.currentLoveInterest || 'maven'
-    }));
-  };
+  // Handle game completion
+  useEffect(() => {
+    if (isCompleted) {
+      onComplete(true);
+    }
+  }, [isCompleted, onComplete]);
 
   return {
-    currentStep,
-    activePhotoIndex,
-    successMessage,
-    selectedLocationIndex,
-    photos,
-    memoriesDateState,
-    handleLocationSelect,
+    backdrops,
+    frames,
+    stickers,
+    selectedBackdrop,
+    selectedFrame,
+    selectedSticker,
+    handleBackdropSelect,
     handleFrameSelect,
     handleStickerSelect,
-    handlePhotoComplete,
-    handleFinish,
-    getDisplayPhotos,
-    setCurrentStep,
+    photoElements,
+    isCompleted,
   };
-}
+};
+
+export default useMemoriesDateGame;
