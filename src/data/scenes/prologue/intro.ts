@@ -25,7 +25,7 @@ const introScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Welcome to Cybaton\'s City Administration Program! You represent the brightest minds, chosen to shape our future."',
+        text: "Dr. Voss: Welcome to Cybaton's City Administration Program! You represent the brightest minds, chosen to shape our future.",
       },
       {
         character: 'narrator',
@@ -33,7 +33,7 @@ const introScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "When I call your name, please join your assigned team coordinator."',
+        text: "Dr. Voss: When I call your name, please join your assigned team coordinator.",
       },
       {
         character: 'narrator',
@@ -41,11 +41,11 @@ const introScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "And finally, for Stonewich deployment: Xavier Chen, Navarre Ellis, Etta Montgomery, Senara Kapoor... and Maven Gray."',
+        text: "Dr. Voss: And finally, for Stonewich deployment: Xavier Chen, Navarre Ellis, Etta Montgomery, Senara Kapoor... and Maven Gray.",
       },
       {
         character: 'maven',
-        text: "Five? That's unusual. Teams are always four...",
+        text: "Five? That's unheard of. Teams are always four...",
         mood: 'shocked',
       },
     ],
