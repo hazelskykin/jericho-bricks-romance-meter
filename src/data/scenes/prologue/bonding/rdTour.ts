@@ -8,7 +8,7 @@ const rdTourScenes: Record<string, Scene> = {
     dialogue: [
       {
         character: 'narrator',
-        text: 'You suggest visiting Cybaton\'s R&D floor, and Xavier\'s eyes light up immediately.',
+        text: "You suggest visiting Cybaton's R&D floor, and Xavier's eyes light up immediately.",
       },
       {
         character: 'xavier',
@@ -22,12 +22,12 @@ const rdTourScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "As long as it's relevant to our assignment, I suppose it could be useful.",
+        text: "As long as it's relevant to our assignment, I have no objection.",
         mood: 'neutral',
       },
       {
         character: 'senara',
-        text: "I'm interested in the atmospheric particulate monitoring system they're developing.",
+        text: "The latest status reports on some of the projects should be more impactful with physical interaction and visual inspection.",
         mood: 'neutral',
       },
       {
@@ -36,7 +36,7 @@ const rdTourScenes: Record<string, Scene> = {
       },
       {
         character: 'xavier',
-        text: "And this is my favorite project - an AI system that helps predict infrastructure needs before problems arise.",
+        text: "And this is my favorite project - an AI system that helps predict infrastructure needs before problems arise. It started simply as drone surveillance but expanded to so much more.",
         mood: 'happy',
       },
       {
@@ -46,7 +46,7 @@ const rdTourScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'The evening flies by with fascinating technology demonstrations. You notice Xavier beaming at your interest, while Senara quietly takes detailed notes.',
+        text: 'The evening flies by with fascinating technology demonstrations. You notice Xavier beaming at your interest, while Senara makes quiet but insightful observations.',
       },
       {
         character: 'narrator',
