@@ -22,7 +22,7 @@ const coffeeShopScenes: Record<string, Scene> = {
       },
       {
         character: 'etta',
-        text: "I suppose some informal team building could be beneficial. I'll have an espresso.",
+        text: "I suppose some informal team building is to be expected. I'll have an espresso.",
         mood: 'neutral',
       },
       {
@@ -32,8 +32,26 @@ const coffeeShopScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "I'm just glad we can all relax a bit before the assignment starts.",
+        text: "I must admit that I am relieved to get an assignment and know who my team will be.",
         mood: 'happy',
+      },
+      {
+        character: 'navarre',
+        text: "Let's grab this center table.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "Your team no sooner sits down, than several patrons and the barista walk over to personally greet Navarre.",
+      },
+      {
+        character: 'navarre',
+        text: "It's good to see all of you too. Today I am here with my new Cybaton team. We'll be heading for Stonewich tomorrow.",
+        mood: 'happy',
+      },
+      {
+        character: 'narrator',
+        text: "The people congratulate the team and quietly dissipate, leaving you and the others free to get to know one another.",
       },
       {
         character: 'narrator',
