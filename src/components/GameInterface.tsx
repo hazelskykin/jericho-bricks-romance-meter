@@ -7,7 +7,7 @@ import SpecialSceneRouter from './interface/SpecialSceneRouter';
 import SceneTransition from './SceneTransition';
 
 interface GameInterfaceProps {
-  initialSceneId?: string;
+  initialSceneId?: string | null;
   gameStarted?: boolean;
 }
 
@@ -39,7 +39,7 @@ const GameInterface: React.FC<GameInterfaceProps> = ({ initialSceneId, gameStart
     }
     
     // Only perform this sync once when the component first loads with an initialSceneId
-    if (!initialized && initialSceneId && initialSceneId !== 'start' && gameStarted) {
+    if (!initialized && initialSceneId && initialSceneId !== gameState.currentScene && gameStarted) {
       console.log(`Initializing GameInterface with scene: ${initialSceneId}`);
       handleSceneTransition(initialSceneId);
       setInitialized(true);

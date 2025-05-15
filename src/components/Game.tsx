@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import GameInterface from './GameInterface';
 import MainMenu from './MainMenu';
-import { GameProvider } from '../context/GameContext';
+import { GameProvider } from '../context/GameProvider';
 import AssetPreloader from './AssetPreloader';
 import DevSceneJumper from './DevSceneJumper';
 import useGameScenes from '../hooks/useGameScenes';
@@ -16,6 +16,7 @@ const Game: React.FC = () => {
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [soundInitialized, setSoundInitialized] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [forcedSceneId, setForcedSceneId] = useState<string | null>(null);
   
   // Initialize game scenes
   const {
@@ -49,6 +50,7 @@ const Game: React.FC = () => {
   useEffect(() => {
     if (!soundInitialized) {
       try {
+        console.log('Initializing game sound system...');
         initializeGameSounds();
         exposeSoundManagerToWindow();
         setSoundInitialized(true);
@@ -72,6 +74,9 @@ const Game: React.FC = () => {
     // Immediately hide the main menu first to avoid flicker
     setShowMainMenu(false);
     
+    // Force scene transition to intro
+    setForcedSceneId('intro');
+    
     // Add a small delay to ensure UI updates before scene transition
     setTimeout(() => {
       // Transition to intro scene
@@ -88,6 +93,7 @@ const Game: React.FC = () => {
     
     setShowMainMenu(true);
     setGameStarted(false);
+    setForcedSceneId(null);
     transitionToScene('start');
   };
 
@@ -105,7 +111,7 @@ const Game: React.FC = () => {
       <AssetPreloader 
         onComplete={() => setPriorityAssetsLoaded(true)}
         priorityOnly={true}
-        skipMinigameAssets={true} // Always skip minigame assets
+        skipMinigameAssets={false} // Update to load minigame assets
       />
     );
   }
@@ -126,7 +132,10 @@ const Game: React.FC = () => {
           onAbout={handleAbout}
         />
       ) : (
-        <GameInterface initialSceneId={currentSceneId} gameStarted={gameStarted} />
+        <GameInterface 
+          initialSceneId={forcedSceneId || currentSceneId} 
+          gameStarted={gameStarted} 
+        />
       )}
       
       {/* Dev Scene Jumper - always available */}
@@ -143,7 +152,7 @@ const Game: React.FC = () => {
               setAssetsLoaded(true);
               setLoadingComplete(true);
             }}
-            skipMinigameAssets={true} // Always skip minigame assets
+            skipMinigameAssets={false} // Update to load minigame assets
           />
         </div>
       )}

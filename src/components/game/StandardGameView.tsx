@@ -16,7 +16,8 @@ const StandardGameView: React.FC = () => {
   const { 
     handleDialogueClick, 
     handleChoiceClick, 
-    replayCurrentScene 
+    replayCurrentScene,
+    isTransitioning
   } = useGame();
   
   const [showHistory, setShowHistory] = useState(false);
@@ -53,7 +54,7 @@ const StandardGameView: React.FC = () => {
   
   // Click handler for the background - advance dialogue
   const handleBackgroundClick = () => {
-    if (!showChoices && loaded && scene) {
+    if (!showChoices && loaded && scene && !isTransitioning) {
       handleDialogueClick();
     }
   };
