@@ -1,6 +1,7 @@
 
 import { useCallback, useEffect, useRef } from 'react';
-import { soundManager, pauseBackgroundMusic, resumeBackgroundMusic } from '@/utils/sound';
+import { soundManager } from '@/utils/sound';
+import { pauseBackgroundMusic, resumeBackgroundMusic } from '@/utils/sound/backgroundMusic';
 
 export const useCrafterAudio = () => {
   const backgroundMusicRef = useRef<HTMLAudioElement | null>(null);
@@ -49,7 +50,7 @@ export const useCrafterAudio = () => {
     
     const soundId = soundMap[soundType];
     if (soundId) {
-      soundManager.playSFX(soundId);
+      soundManager.playSFX(soundId, false);
     }
   }, []);
   

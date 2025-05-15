@@ -30,7 +30,7 @@ export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
 
   // Setup game music
   useEffect(() => {
-    // Fixed: Added false as second argument to playSFX
+    // Add true parameter to indicate looping
     soundManager.playSFX('memoriesDate-loop-gameplay', true);
     
     // Cleanup when component unmounts
@@ -41,6 +41,7 @@ export function useMemoriesDateGame(onComplete: (success: boolean) => void) {
 
   // Location selection handler
   const handleLocationSelect = (index: number) => {
+    // Add false parameter to indicate non-looping
     soundManager.playSFX('memoriesDate-camera-click', false);
     setSelectedLocationIndex(index);
     setPhotos(prev => {

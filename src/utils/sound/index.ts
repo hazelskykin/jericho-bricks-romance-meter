@@ -8,7 +8,12 @@ import { soundManager } from './soundInstance';
 
 // Re-export the sound manager
 export { soundManager };
-export { playBackgroundMusicForScene } from './backgroundMusic';
+export { 
+  playBackgroundMusicForScene,
+  stopBackgroundMusic,
+  pauseBackgroundMusic,
+  resumeBackgroundMusic
+} from './backgroundMusic';
 
 // Initialize game sounds
 export const initializeGameSounds = (): void => {
