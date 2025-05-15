@@ -47,6 +47,13 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   // Process text for glossary terms
   const processedDisplayedText = processGlossaryTerms ? processGlossaryTerms(displayedText) : displayedText;
   
+  // Debug logging
+  useEffect(() => {
+    if (dialogueLine) {
+      console.log(`DialogueBox rendering: ${dialogueLine.text?.substring(0, 30)}..., active: ${isActive}`);
+    }
+  }, [dialogueLine, isActive]);
+  
   // If no dialogue or not active, don't render
   if (!dialogueLine || !isActive) {
     return null;
@@ -55,7 +62,7 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   return (
     <div 
       ref={dialogueBoxRef}
-      className="dialog-box p-4 rounded-lg w-full max-w-4xl mx-auto relative"
+      className="dialog-box p-4 rounded-lg w-full max-w-4xl mx-auto relative bg-gray-800 bg-opacity-90"
       onClick={handleClick}
       style={{ cursor: isActive ? 'pointer' : 'default' }}
     >

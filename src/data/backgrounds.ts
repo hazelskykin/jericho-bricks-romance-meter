@@ -1,3 +1,4 @@
+
 interface BackgroundAsset {
   id: string;
   name: string;
@@ -11,7 +12,7 @@ const backgrounds: Record<string, BackgroundAsset> = {
   'wall-tiles': {
     id: 'wall-tiles',
     name: 'Wall Tiles',
-    image: '/assets/backgrounds/wall-tiles.png',
+    image: '/assets/backgrounds/wall-tiles.jpg', // Changed from .png to .jpg
     description: 'Decorative wall tiles with geometric patterns and a subtle steampunk influence.',
     gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.2), rgba(42, 30, 78, 0.3))',
     required:  true

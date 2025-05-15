@@ -23,6 +23,11 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
     }
   }, [backgroundId]);
   
+  // Debug logging
+  useEffect(() => {
+    console.log(`GameBackgroundScene rendering with backgroundId: ${backgroundId}`);
+  }, [backgroundId]);
+  
   return (
     <AnimatePresence mode="wait">
       <motion.div

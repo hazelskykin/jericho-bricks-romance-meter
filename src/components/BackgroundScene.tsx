@@ -36,7 +36,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       setCurrentSrc(src);
     } else {
       // Use default background if neither src nor backgroundId is provided
-      setCurrentSrc('/assets/backgrounds/default-background.jpg');
+      setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
     }
   }, [backgroundId, src]);
 
@@ -57,7 +57,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       img.onerror = (e) => {
         console.error(`Error loading background image: ${currentSrc}`, e);
         // Use default background on error
-        setCurrentSrc('/assets/backgrounds/default-background.jpg');
+        setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
       };
       img.src = currentSrc;
     }
@@ -82,6 +82,13 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       setPrevSrc(prevSrc || currentSrc);
     }
   }, [currentSrc, prevSrc]);
+
+  // For debugging
+  useEffect(() => {
+    if (backgroundId) {
+      console.log(`BackgroundScene rendering: ${backgroundId}, src: ${currentSrc}, loaded: ${isLoaded}`);
+    }
+  }, [backgroundId, currentSrc, isLoaded]);
 
   if (!currentSrc) return null;
 

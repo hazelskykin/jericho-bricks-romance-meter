@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import { Loader2 } from 'lucide-react';
 import GameBackgroundScene from './GameBackgroundScene';
@@ -9,7 +9,7 @@ import AffectionMeterSection from './AffectionMeterSection';
 import DialogHistorySection from './DialogHistorySection';
 import GameViewHeader from './GameViewHeader';
 import { useGameScene } from './useGameScene';
-import { CharacterId } from '@/types/game'; // Add missing import for CharacterId
+import { CharacterId } from '@/types/game';
 
 const StandardGameView: React.FC = () => {
   // Access game context with handlers
@@ -38,6 +38,11 @@ const StandardGameView: React.FC = () => {
     activeCharacter
   } = useGameScene();
   
+  // Debug the view rendering
+  useEffect(() => {
+    console.log(`StandardGameView rendering: scene: ${sceneId}, loaded: ${loaded}, background: ${scene?.background}`);
+  }, [sceneId, loaded, scene]);
+  
   // Handle game view toggles 
   const handleGameClick = () => {
     setActiveView('game');
@@ -54,6 +59,7 @@ const StandardGameView: React.FC = () => {
   
   // Click handler for the background - advance dialogue
   const handleBackgroundClick = () => {
+    console.log(`Background clicked: showChoices=${showChoices}, loaded=${loaded}, isTransitioning=${isTransitioning}`);
     if (!showChoices && loaded && scene && !isTransitioning) {
       handleDialogueClick();
     }
@@ -82,7 +88,7 @@ const StandardGameView: React.FC = () => {
   const characterMood = currentDialogue?.mood || 'neutral';
   
   // Get the character ID from current dialogue, ensuring it's a valid CharacterId
-  const characterId = currentDialogue?.character;
+  const characterId = currentDialogue?.character as CharacterId | undefined;
   
   return (
     <div ref={viewRef} className="relative h-screen w-full overflow-hidden">
@@ -120,7 +126,7 @@ const StandardGameView: React.FC = () => {
         loaded={loaded}
         onDialogueClick={handleDialogueClick}
         onChoiceClick={handleChoiceClick}
-        characterId={characterId as CharacterId | undefined}
+        characterId={characterId}
         characterMood={characterMood}
       />
     </div>

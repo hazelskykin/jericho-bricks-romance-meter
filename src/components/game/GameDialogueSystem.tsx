@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import DialogueBox from '../DialogueBox';
 import ChoiceMenu from '../ChoiceMenu';
 import { DialogueChoice, DialogueLine, CharacterId } from '@/types/game';
@@ -31,6 +31,11 @@ const GameDialogueSystem: React.FC<GameDialogueSystemProps> = ({
   const shouldShowPortrait = characterId && 
                              characterId !== 'narrator' as unknown as CharacterId && 
                              !showChoices;
+  
+  // Debug logging
+  useEffect(() => {
+    console.log(`GameDialogueSystem rendering: dialogue: ${currentDialogue?.text?.substring(0, 30) || 'none'}, loaded: ${loaded}, showChoices: ${showChoices}`);
+  }, [currentDialogue, loaded, showChoices]);
   
   return (
     <div className="absolute bottom-6 left-0 right-0 z-30 flex justify-center px-4 sm:px-6">
