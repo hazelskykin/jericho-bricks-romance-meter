@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { assetManager } from '@/utils/assetManager';
 import characterExpressions from '@/data/characterExpressions';
@@ -16,7 +15,7 @@ interface AssetPreloaderProps {
 const AssetPreloader: React.FC<AssetPreloaderProps> = ({ 
   onComplete, 
   priorityOnly = false,
-  skipMinigameAssets = true // Default to true so we DON'T load minigame assets at start
+  skipMinigameAssets = true // Default to true to avoid loading minigame assets at start
 }) => {
   const [loadingCharacters, setLoadingCharacters] = useState(true);
   const [loadingBackgrounds, setLoadingBackgrounds] = useState(true);

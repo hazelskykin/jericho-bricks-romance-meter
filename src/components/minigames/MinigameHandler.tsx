@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { MinigameType } from '@/types/minigames';
 import PlaceholderMinigame from './PlaceholderMinigame';
@@ -29,7 +28,58 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
   
   // Pre-load minigame assets when component mounts
   useEffect(() => {
-    if (activeMinigame === 'bloomWithAView') {
+    if (activeMinigame === 'memoriesDate') {
+      console.log('Preloading MemoriesDate assets');
+      
+      // Preload memoriesDate assets - use individual files
+      const assetPaths = [
+        '/assets/minigames/autumn/memoriesDate/market-backdrop.png',
+        '/assets/minigames/autumn/memoriesDate/overlook-backdrop.png',
+        '/assets/minigames/autumn/memoriesDate/boardwalk-backdrop.png',
+        '/assets/minigames/autumn/memoriesDate/frames-neon.png',
+        '/assets/minigames/autumn/memoriesDate/frames-gears.png',
+        '/assets/minigames/autumn/memoriesDate/frames-circle.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-bestday.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-kitten.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-sparklehearts.png',
+        '/assets/minigames/autumn/memoriesDate/stickers-sparklegears.png'
+      ];
+      
+      assetManager.preloadAssets(assetPaths, (loaded, total) => {
+        console.log(`Loaded ${loaded}/${total} MemoriesDate assets`);
+      }).then(() => {
+        console.log('All MemoriesDate assets preloaded');
+      }).catch(error => {
+        console.error('Failed to preload MemoriesDate assets:', error);
+        // Continue anyway, the game has fallbacks
+      });
+    }
+    else if (activeMinigame === 'crafter') {
+      console.log('Preloading Crafter assets');
+      
+      // Preload crafter assets - use individual files instead of sprite sheet
+      const assetPaths = [
+        '/assets/minigames/autumn/crafter/workshop-background.png',
+        '/assets/minigames/autumn/crafter/fabricBase.png',
+        '/assets/minigames/autumn/crafter/metalBase.png',
+        '/assets/minigames/autumn/crafter/woodBase.png',
+        '/assets/minigames/autumn/crafter/accents-button.png',
+        '/assets/minigames/autumn/crafter/accents-gearcharm.png',
+        '/assets/minigames/autumn/crafter/accents-glass.png',
+        '/assets/minigames/autumn/crafter/accents-leaf.png',
+        '/assets/minigames/autumn/crafter/accents-ribbon.png'
+      ];
+      
+      assetManager.preloadAssets(assetPaths, (loaded, total) => {
+        console.log(`Loaded ${loaded}/${total} Crafter assets`);
+      }).then(() => {
+        console.log('All Crafter assets preloaded');
+      }).catch(error => {
+        console.error('Failed to preload Crafter assets:', error);
+        // Continue anyway, the game has fallbacks
+      });
+    }
+    else if (activeMinigame === 'bloomWithAView') {
       console.log('Preloading BloomWithAView assets');
       
       // Use asset manager to preload assets with specific paths
@@ -48,27 +98,6 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         console.log('All BloomWithAView assets preloaded');
       }).catch(error => {
         console.error('Failed to preload assets:', error);
-        // Continue anyway, the game has fallbacks
-      });
-    }
-    else if (activeMinigame === 'crafter') {
-      console.log('Preloading Crafter assets');
-      
-      // Preload crafter assets - use the combined sprite sheet rather than individual files
-      const assetPaths = [
-        '/assets/minigames/autumn/crafter/workshop-background.png',
-        '/assets/minigames/autumn/crafter/fabricBase.png',
-        '/assets/minigames/autumn/crafter/metalBase.png',
-        '/assets/minigames/autumn/crafter/woodBase.png',
-        '/assets/minigames/autumn/crafter/accents.png' // Use combined sprite sheet instead of individual files
-      ];
-      
-      assetManager.preloadAssets(assetPaths, (loaded, total) => {
-        console.log(`Loaded ${loaded}/${total} Crafter assets`);
-      }).then(() => {
-        console.log('All Crafter assets preloaded');
-      }).catch(error => {
-        console.error('Failed to preload Crafter assets:', error);
         // Continue anyway, the game has fallbacks
       });
     }
@@ -106,32 +135,6 @@ const MinigameHandler: React.FC<MinigameHandlerProps> = ({
         console.log('All LookingSigns assets preloaded');
       }).catch(error => {
         console.error('Failed to preload LookingSigns assets:', error);
-        // Continue anyway, the game has fallbacks
-      });
-    }
-    else if (activeMinigame === 'memoriesDate') {
-      console.log('Preloading MemoriesDate assets');
-      
-      // Preload memoriesDate assets
-      const assetPaths = [
-        '/assets/minigames/autumn/memoriesDate/market-backdrop.png',
-        '/assets/minigames/autumn/memoriesDate/overlook-backdrop.png',
-        '/assets/minigames/autumn/memoriesDate/boardwalk-backdrop.png',
-        '/assets/minigames/autumn/memoriesDate/frames-neon.png',
-        '/assets/minigames/autumn/memoriesDate/frames-gears.png',
-        '/assets/minigames/autumn/memoriesDate/frames-circle.png',
-        '/assets/minigames/autumn/memoriesDate/stickers-bestday.png',
-        '/assets/minigames/autumn/memoriesDate/stickers-kitten.png',
-        '/assets/minigames/autumn/memoriesDate/stickers-sparklehearts.png',
-        '/assets/minigames/autumn/memoriesDate/stickers-sparklegears.png'
-      ];
-      
-      assetManager.preloadAssets(assetPaths, (loaded, total) => {
-        console.log(`Loaded ${loaded}/${total} MemoriesDate assets`);
-      }).then(() => {
-        console.log('All MemoriesDate assets preloaded');
-      }).catch(error => {
-        console.error('Failed to preload MemoriesDate assets:', error);
         // Continue anyway, the game has fallbacks
       });
     }
