@@ -29,7 +29,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Remember, you represent Cybaton now. Stonewich has some of our oldest infrastructure integrations, so expect both challenges and opportunities."',
+        text: "Dr. Voss: Remember, you represent Cybaton now. Stonewich has some of our oldest infrastructure integrations, so expect both challenges and opportunities.",
       },
       {
         character: 'xavier',
@@ -48,7 +48,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "I'm a little nervous, but excited to learn from everyone and contribute however I can.",
+        text: "I'm a little nervous. I will contribute however I can.",
         mood: 'embarrassed',
       },
       {
@@ -114,6 +114,16 @@ const departureScenes: Record<string, Scene> = {
         mood: 'happy',
       },
       {
+        character: 'navarre',
+        text: "Etta, you aren't here on behalf of your father or Watanabe Industries?",
+        mood: 'neutral',
+      },
+      {
+        character: 'etta',
+        text: "No, of course not, although I can understand why you'd think that. I'd rather not talk about it.",
+        mood: 'neutral',
+      },
+      {
         character: 'narrator',
         text: 'The conversation flows easily as the kilometers pass. Before you know it, the transport pod is announcing your arrival.',
       },
@@ -137,7 +147,7 @@ const departureScenes: Record<string, Scene> = {
       },
       {
         character: 'maven',
-        text: "It's a little overwhelming, but I'm ready to learn.",
+        text: "It's a little overwhelming.",
         mood: 'neutral',
       },
       {
