@@ -16,7 +16,7 @@ const briefingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Stonewich is one of our oldest partnerships. Thirty years into a ninety-nine-year contract. The technology is stable but aging."',
+        text: "Dr. Voss: Stonewich is one of our oldest partnerships. Thirty years into a ninety-nine-year contract. The technology is stable but aging.",
       },
       {
         character: 'narrator',
@@ -24,7 +24,7 @@ const briefingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Your team has been assigned there because each of you brings something unique to the table."',
+        text: "Dr. Voss: Your team has been assigned there because each of you brings something unique to the table.",
       },
       {
         character: 'narrator',
@@ -32,7 +32,7 @@ const briefingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "Especially you, Maven. Your assessment showed remarkable adaptability across multiple domains, though not mastery in any single one."',
+        text: "Dr. Voss: Especially you, Maven. Your assessment showed remarkable adaptability across multiple domains, though not mastery in any single one.",
       },
       {
         character: 'maven',
@@ -45,7 +45,7 @@ const briefingScenes: Record<string, Scene> = {
       },
       {
         character: 'narrator',
-        text: 'Dr. Voss: "You leave for Stonewich tomorrow morning. I suggest you all get to know each other better before then."',
+        text: "Dr. Voss: You leave for Stonewich tomorrow morning. I suggest you all get to know each other better before then.",
       },
       {
         character: 'narrator',
