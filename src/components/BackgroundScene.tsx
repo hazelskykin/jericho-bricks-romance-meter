@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getImageCache } from '../utils/imageCache';
 import backgrounds from '../data/backgrounds';
 import { getAssetSource } from '@/utils/assetManager';
@@ -25,6 +24,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   const [currentSrc, setCurrentSrc] = useState<string>('');
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
   const [isFading, setIsFading] = useState(false);
+  const loadAttempted = useRef(false);
   
   const imageCache = getImageCache();
   
@@ -41,24 +41,41 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   }, [backgroundId, src]);
 
   useEffect(() => {
-    if (!currentSrc) return;
+    if (!currentSrc || loadAttempted.current) return;
+    
+    // Mark this load attempt to prevent infinite loops
+    loadAttempted.current = true;
     
     // Check if image is in cache
     const isCached = imageCache.has(currentSrc);
     
     if (isCached) {
       // If image is cached, set loaded immediately
+      console.log(`Background image ${currentSrc} found in cache`);
       setIsLoaded(true);
     } else {
       // Otherwise, load the image
+      console.log(`Loading background image: ${currentSrc}`);
       setIsLoaded(false);
+      
       const img = new Image();
-      img.onload = () => setIsLoaded(true);
+      
+      img.onload = () => {
+        console.log(`Background image loaded: ${currentSrc}`);
+        setIsLoaded(true);
+        loadAttempted.current = true; // Mark as loaded successfully
+      };
+      
       img.onerror = (e) => {
         console.error(`Error loading background image: ${currentSrc}`, e);
         // Use default background on error
-        setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+        if (currentSrc !== '/assets/backgrounds/stonewich-cityscape.jpg') {
+          setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+        }
+        setIsLoaded(true); // Still mark as loaded to avoid black screen
+        loadAttempted.current = true; // Mark as attempted
       };
+      
       img.src = currentSrc;
     }
   }, [currentSrc, imageCache]);
@@ -80,15 +97,21 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   useEffect(() => {
     if (currentSrc && currentSrc !== prevSrc) {
       setPrevSrc(prevSrc || currentSrc);
+      // Reset load attempted flag when source changes
+      loadAttempted.current = false;
     }
   }, [currentSrc, prevSrc]);
 
-  // For debugging
+  // For debugging (limited to avoid console spam)
   useEffect(() => {
     if (backgroundId) {
-      console.log(`BackgroundScene rendering: ${backgroundId}, src: ${currentSrc}, loaded: ${isLoaded}`);
+      console.log(`BackgroundScene mounted: ${backgroundId}`);
+      
+      return () => {
+        console.log(`BackgroundScene unmounted: ${backgroundId}`);
+      };
     }
-  }, [backgroundId, currentSrc, isLoaded]);
+  }, [backgroundId]);
 
   if (!currentSrc) return null;
 
@@ -111,7 +134,10 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
           isFading ? 'opacity-0' : 'opacity-100'
         } ${isLoaded ? '' : 'opacity-0'} transition-opacity`}
         style={{ transitionDuration: `${transitionDuration}ms` }}
-        onLoad={() => setIsLoaded(true)}
+        onLoad={() => {
+          console.log(`Image onLoad fired for ${currentSrc}`);
+          setIsLoaded(true);
+        }}
       />
     </div>
   );

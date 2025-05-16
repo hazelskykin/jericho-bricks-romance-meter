@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BackgroundScene from '../BackgroundScene';
 import { playBackgroundMusicForScene } from '@/utils/sound';
@@ -15,6 +15,15 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   onBackgroundClick,
 }) => {
   const { isTransitioning, transitionDuration } = useGame();
+  const [currentBackgroundId, setCurrentBackgroundId] = useState(backgroundId);
+  const hasLoggedError = useRef(false);
+  
+  // Update current background ID when prop changes and not during transition
+  useEffect(() => {
+    if (!isTransitioning && backgroundId) {
+      setCurrentBackgroundId(backgroundId);
+    }
+  }, [backgroundId, isTransitioning]);
   
   // Play background music when background changes
   useEffect(() => {
@@ -23,11 +32,30 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
     }
   }, [backgroundId]);
   
-  // Debug logging
+  // Debug logging (just once on component mount/unmount to avoid spam)
   useEffect(() => {
-    console.log(`GameBackgroundScene rendering with backgroundId: ${backgroundId}`);
-  }, [backgroundId]);
+    console.log(`GameBackgroundScene mounted with backgroundId: ${backgroundId}`);
+    
+    return () => {
+      console.log(`GameBackgroundScene unmounted with backgroundId: ${backgroundId}`);
+    };
+  }, []);
   
+  // Log background ID changes (but not too frequently)
+  useEffect(() => {
+    if (currentBackgroundId !== backgroundId && !hasLoggedError.current) {
+      console.log(`GameBackgroundScene background changed from ${currentBackgroundId} to ${backgroundId}`);
+      hasLoggedError.current = true;
+      
+      // Reset after a delay to allow logging again
+      const timer = setTimeout(() => {
+        hasLoggedError.current = false;
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentBackgroundId, backgroundId]);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -49,4 +77,4 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   );
 };
 
-export default GameBackgroundScene;
+export default React.memo(GameBackgroundScene);

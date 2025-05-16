@@ -23,6 +23,7 @@ const StandardGameView: React.FC = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [showAffection, setShowAffection] = useState(false);
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
+  const [renderTrigger, setRenderTrigger] = useState(0);
   const viewRef = useRef<HTMLDivElement>(null);
   
   // Use the scene loading hook to handle scene data and errors
@@ -38,10 +39,20 @@ const StandardGameView: React.FC = () => {
     activeCharacter
   } = useGameScene();
   
-  // Debug the view rendering
+  // Force re-render if stuck
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log('Force re-render triggered to ensure proper display');
+      setRenderTrigger(prev => prev + 1);
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, [sceneId]);
+  
+  // Debug the view rendering (only on important state changes)
   useEffect(() => {
     console.log(`StandardGameView rendering: scene: ${sceneId}, loaded: ${loaded}, background: ${scene?.background}`);
-  }, [sceneId, loaded, scene]);
+  }, [sceneId, loaded, scene?.background]);
   
   // Handle game view toggles 
   const handleGameClick = () => {
@@ -59,7 +70,6 @@ const StandardGameView: React.FC = () => {
   
   // Click handler for the background - advance dialogue
   const handleBackgroundClick = () => {
-    console.log(`Background clicked: showChoices=${showChoices}, loaded=${loaded}, isTransitioning=${isTransitioning}`);
     if (!showChoices && loaded && scene && !isTransitioning) {
       handleDialogueClick();
     }
@@ -91,7 +101,7 @@ const StandardGameView: React.FC = () => {
   const characterId = currentDialogue?.character as CharacterId | undefined;
   
   return (
-    <div ref={viewRef} className="relative h-screen w-full overflow-hidden">
+    <div ref={viewRef} className="relative h-screen w-full overflow-hidden" key={`view-${sceneId}-${renderTrigger}`}>
       {/* Background - clickable to advance dialogue */}
       <GameBackgroundScene 
         backgroundId={scene.background} 

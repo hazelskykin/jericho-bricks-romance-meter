@@ -1,21 +1,22 @@
-
 interface BackgroundAsset {
   id: string;
   name: string;
   image: string;
   description: string;
   gradient: string;
-  required?:  boolean;
+  required?: boolean;
+  priority?: boolean;
 }
 
 const backgrounds: Record<string, BackgroundAsset> = {
   'wall-tiles': {
     id: 'wall-tiles',
     name: 'Wall Tiles',
-    image: '/assets/backgrounds/wall-tiles.jpg', // Changed from .png to .jpg
+    image: '/assets/backgrounds/wall-tiles.jpg',
     description: 'Decorative wall tiles with geometric patterns and a subtle steampunk influence.',
     gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.2), rgba(42, 30, 78, 0.3))',
-    required:  true
+    required: true,
+    priority: true
   },
   'cybaton-office': {
     id: 'cybaton-office',
@@ -23,7 +24,8 @@ const backgrounds: Record<string, BackgroundAsset> = {
     image: '/assets/backgrounds/cybaton-office.jpg',
     description: 'Modern tech infrastructure with retro-futuristic brass accents and amphitheater style seating.',
     gradient: 'linear-gradient(to bottom, rgba(26, 31, 44, 0.1), rgba(42, 30, 78, 0.2))',
-    required:  true
+    required: true,
+    priority: true
   },
   'cybaton-meeting-room': {
     id: 'cybaton-meeting-room',
@@ -51,14 +53,15 @@ const backgrounds: Record<string, BackgroundAsset> = {
     name: 'Cybaton Lobby',
     image: '/assets/backgrounds/cybaton-lobby.jpg',
     description: 'Grand entrance with a mix of modern architecture and traditional craftsmanship.',
-    gradient: 'linear-gradient(to bottom, rgba(31, 34, 53, 0.1), rgba(47, 34, 69, 0.2))'
+    gradient: 'linear-gradient(to bottom, rgba(31, 34, 53, 0.1), rgba(47, 34, 69, 0.2))',
+    priority: true
   },
   'cybaton-shuttle': {
-  id: 'cybaton-shuttle',
-  name: 'Shuttle Interior',
-  image: '/assets/backgrounds/cybaton-shuttle.jpg',
-  description: 'Comfortable interior of a low-flying commuter shuttle with inward-facing cushioned seats, steampunk details, and soft cyberpunk lighting designed for mid-journey conversation.',
-  gradient: 'linear-gradient(to bottom, rgba(50, 60, 110, 0.2), rgba(30, 40, 80, 0.35))'
+    id: 'cybaton-shuttle',
+    name: 'Shuttle Interior',
+    image: '/assets/backgrounds/cybaton-shuttle.jpg',
+    description: 'Comfortable interior of a low-flying commuter shuttle with inward-facing cushioned seats, steampunk details, and soft cyberpunk lighting designed for mid-journey conversation.',
+    gradient: 'linear-gradient(to bottom, rgba(50, 60, 110, 0.2), rgba(30, 40, 80, 0.35))'
   },
   'city-cafe': {
     id: 'city-cafe',
@@ -68,18 +71,19 @@ const backgrounds: Record<string, BackgroundAsset> = {
     gradient: 'linear-gradient(to bottom, rgba(37, 37, 37, 0.1), rgba(53, 41, 69, 0.2))'
   },
   'stonewich-shuttle': {
-  id: 'stonewich-shuttle',
-  name: 'Stonewich Shuttle Arrival',
-  image: '/assets/backgrounds/stonewich-shuttle.jpg',
-  description: 'View of Stonewich from a low-flying commuter shuttle as it descends into the city, capturing skyways and layered rooftops below.',
-  gradient: 'linear-gradient(to bottom, rgba(90, 120, 140, 0.15), rgba(60, 70, 100, 0.35))'
-},
+    id: 'stonewich-shuttle',
+    name: 'Stonewich Shuttle Arrival',
+    image: '/assets/backgrounds/stonewich-shuttle.jpg',
+    description: 'View of Stonewich from a low-flying commuter shuttle as it descends into the city, capturing skyways and layered rooftops below.',
+    gradient: 'linear-gradient(to bottom, rgba(90, 120, 140, 0.15), rgba(60, 70, 100, 0.35))'
+  },
   'stonewich-cityscape': {
     id: 'stonewich-cityscape',
     name: 'Stonewich Cityscape',
     image: '/assets/backgrounds/stonewich-cityscape.jpg',
     description: 'Mixture of futuristic buildings and preserved historical architecture with modern transportation systems.',
-    gradient: 'linear-gradient(to bottom, rgba(60, 80, 130, 0.15), rgba(100, 120, 160, 0.3))'
+    gradient: 'linear-gradient(to bottom, rgba(60, 80, 130, 0.15), rgba(100, 120, 160, 0.3))',
+    priority: true
   },
   'stonewich-office': {
     id: 'stonewich-office',
@@ -102,21 +106,21 @@ const backgrounds: Record<string, BackgroundAsset> = {
     description: 'A great spot to see the city in different seasons.',
     gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
   },
-    'summer-cityoverlook': {
+  'summer-cityoverlook': {
     id: 'summer-cityoverlook',
     name: 'Summer Cityoverlook',
     image: '/assets/backgrounds/summer-cityoverlook.jpg',
     description: 'A great spot to see the city in different seasons.',
     gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
   },
-    'autumn-cityoverlook': {
+  'autumn-cityoverlook': {
     id: 'autumn-cityoverlook',
     name: 'Autumn Cityoverlook',
     image: '/assets/backgrounds/autumn-cityoverlook.jpg',
     description: 'A great spot to see the city in different seasons.',
     gradient: 'linear-gradient(to bottom, rgba(32, 36, 52, 0.1), rgba(58, 42, 78, 0.2))'
   },
-    'winter-cityoverlook': {
+  'winter-cityoverlook': {
     id: 'winter-cityoverlook',
     name: 'winter Cityoverlook',
     image: '/assets/backgrounds/winter-cityoverlook.jpg',

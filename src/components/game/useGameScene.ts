@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useGame } from '@/context/GameContext';
 import { allScenes } from '@/data/scenes';
 import { CharacterId } from '@/types/game';
@@ -14,6 +14,7 @@ export const useGameScene = () => {
   const [error, setError] = useState<string | null>(null);
   const [fallbackTriggered, setFallbackTriggered] = useState(false);
   const [activeCharacter, setActiveCharacter] = useState<CharacterId | null>(null);
+  const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
   
@@ -69,7 +70,7 @@ export const useGameScene = () => {
     }
   }, [currentDialogue]);
   
-  // Debug logging
+  // Debug logging (only when scene changes, not on every render)
   useEffect(() => {
     console.log(`Scene loading: Current scene: ${sceneId}, dialogue index: ${dialogueIndex}, showing choices: ${showChoices}`);
     
@@ -79,18 +80,31 @@ export const useGameScene = () => {
     } else if (!currentDialogue && dialogueIndex < (scene.dialogue?.length || 0)) {
       console.error(`Dialogue line not found at index ${dialogueIndex} in scene ${sceneId}`);
     }
-  }, [sceneId, dialogueIndex, showChoices, scene, currentDialogue]);
+  }, [sceneId, scene]);
   
-  // Simplified loading mechanism
+  // Simplified loading mechanism with timeout protection
   useEffect(() => {
-    if (scene) {
-      // Short timeout to allow for transition effects
-      const timer = setTimeout(() => {
-        setLoaded(true);
-      }, 500);
-      
-      return () => clearTimeout(timer);
+    // Clear any existing timeout
+    if (loadingTimeoutRef.current) {
+      clearTimeout(loadingTimeoutRef.current);
     }
+    
+    if (scene) {
+      // Mark as not loaded when scene changes
+      setLoaded(false);
+      
+      // Short timeout to allow for transition effects
+      loadingTimeoutRef.current = setTimeout(() => {
+        setLoaded(true);
+        loadingTimeoutRef.current = null;
+      }, 300);
+    }
+    
+    return () => {
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
+      }
+    };
   }, [scene]);
 
   return {
