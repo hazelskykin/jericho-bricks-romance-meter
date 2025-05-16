@@ -10,32 +10,35 @@ import { CharacterExpression } from '@/types/expressions';
  * Safely extract the file path from any asset type
  */
 export function getAssetPath(asset: any): string {
-  if (!asset) return '';
+  if (!asset) {
+    console.warn('Empty asset provided to getAssetPath');
+    return '/assets/backgrounds/stonewich-cityscape.jpg'; // Default
+  }
   
   if (typeof asset === 'string') {
-    return asset;
+    return fixAssetPath(asset);
   }
   
   // Handle standard asset types
   if (typeof asset === 'object') {
     // MinigameAsset type
     if ('src' in asset && typeof asset.src === 'string') {
-      return asset.src;
+      return fixAssetPath(asset.src);
     }
     
     // BackgroundAsset type
     if ('image' in asset && typeof asset.image === 'string') {
-      return asset.image;
+      return fixAssetPath(asset.image);
     }
     
     // CharacterExpression type
     if ('characterId' in asset && 'mood' in asset && 'image' in asset) {
-      return asset.image;
+      return fixAssetPath(asset.image);
     }
   }
   
   console.warn('Unknown asset type:', asset);
-  return '';
+  return '/assets/backgrounds/stonewich-cityscape.jpg'; // Default fallback
 }
 
 /**
@@ -78,16 +81,41 @@ export function getFallbackAssetPath(originalPath: string): string {
  * Fix common path issues with assets
  */
 export function fixAssetPath(path: string): string {
-  if (!path) return '/assets/backgrounds/stonewich-cityscape.jpg';
+  if (!path) {
+    console.warn('Empty path provided to fixAssetPath');
+    return '/assets/backgrounds/stonewich-cityscape.jpg';
+  }
   
-  // Ensure jpg is used correctly
-  if (path.endsWith('.png') && path.includes('/backgrounds/')) {
-    return path.replace('.png', '.jpg');
+  // Ensure jpg is used correctly for backgrounds
+  if (path.includes('/backgrounds/') && !path.endsWith('.jpg')) {
+    if (path.endsWith('.png')) {
+      path = path.replace('.png', '.jpg');
+    } 
+    // If no extension, add .jpg
+    else if (!path.endsWith('.jpg') && !path.endsWith('.jpeg')) {
+      path = `${path}.jpg`;
+    }
+  }
+  
+  // Always use PNG for characters
+  if (path.includes('/characters/') && !path.endsWith('.png')) {
+    if (path.endsWith('.jpg') || path.endsWith('.jpeg')) {
+      path = path.replace(/\.jpe?g$/, '.png');
+    }
+    // If no extension, add .png
+    else if (!path.endsWith('.png')) {
+      path = `${path}.png`;
+    }
   }
   
   // If a path incorrectly includes minigrames, correct it to minigames
   if (path.includes('/minigrames/')) {
     return path.replace('/minigrames/', '/minigames/');
+  }
+  
+  // Correct issue with "wall-tiles" vs "wall-tiles.jpg"
+  if (path.includes('wall-tiles') && !path.endsWith('.jpg')) {
+    return path.replace('wall-tiles', 'wall-tiles.jpg');
   }
   
   return path;

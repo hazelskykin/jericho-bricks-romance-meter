@@ -25,6 +25,7 @@ const StandardGameView: React.FC = () => {
   const [showAffection, setShowAffection] = useState(false);
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
   const [renderTrigger, setRenderTrigger] = useState(0);
+  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   const viewRef = useRef<HTMLDivElement>(null);
   
   // Use the scene loading hook to handle scene data and errors
@@ -40,14 +41,24 @@ const StandardGameView: React.FC = () => {
     activeCharacter
   } = useGameScene();
 
-  // Force re-render if stuck - increased timeout to ensure images have time to load
+  // Force re-render if stuck, and a direct DOM update for a final fallback
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const initialTimer = setTimeout(() => {
       console.log('Force re-render triggered to ensure proper display');
       setRenderTrigger(prev => prev + 1);
+      
+      // Try to directly force the background to be visible
+      const bgElement = document.querySelector('.game-background img');
+      if (bgElement instanceof HTMLElement) {
+        bgElement.style.opacity = '1';
+        bgElement.style.visibility = 'visible';
+        bgElement.style.display = 'block';
+      }
+      
+      setIsFullyLoaded(true);
     }, 1000);
     
-    return () => clearTimeout(timer);
+    return () => clearTimeout(initialTimer);
   }, [sceneId]);
   
   // Debug the view rendering
@@ -110,10 +121,12 @@ const StandardGameView: React.FC = () => {
     >
       {/* Background - clickable to advance dialogue */}
       {scene.background && (
-        <GameBackgroundScene 
-          backgroundId={scene.background} 
-          onBackgroundClick={handleBackgroundClick} 
-        />
+        <div className="game-background absolute inset-0 z-0" style={{ zIndex: 10 }}>
+          <GameBackgroundScene 
+            backgroundId={scene.background} 
+            onBackgroundClick={handleBackgroundClick} 
+          />
+        </div>
       )}
       
       {/* Dialog History Section */}
@@ -147,6 +160,17 @@ const StandardGameView: React.FC = () => {
         characterId={characterId}
         characterMood={characterMood}
       />
+      
+      {/* Render a full-screen message if assets are taking too long to load */}
+      {!isFullyLoaded && (
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-gray-900 p-6 rounded-lg max-w-md text-center">
+            <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-[#9b87f5]" />
+            <p className="text-white text-xl">Loading scene assets...</p>
+            <p className="text-gray-400 text-sm mt-2">This may take a moment</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

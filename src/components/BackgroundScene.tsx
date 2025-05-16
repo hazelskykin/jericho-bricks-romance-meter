@@ -23,9 +23,17 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSrc, setCurrentSrc] = useState<string>('');
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
-  const [isFading, setIsFading] = useState(false);
   const loadAttempted = useRef(false);
   const imageCache = getImageCache();
+  const imgRef = useRef<HTMLImageElement>(null);
+  
+  // Clear state when props change
+  useEffect(() => {
+    if (backgroundId || src) {
+      loadAttempted.current = false;
+      setIsLoaded(false);
+    }
+  }, [backgroundId, src]);
 
   // Get actual source based on either direct src or backgroundId
   useEffect(() => {
@@ -50,7 +58,12 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   }, [backgroundId, src]);
 
   useEffect(() => {
-    if (!currentSrc || loadAttempted.current) return;
+    if (!currentSrc) {
+      console.error("No background source available");
+      return;
+    }
+    
+    if (loadAttempted.current) return;
     
     // Mark this load attempt to prevent infinite loops
     loadAttempted.current = true;
@@ -61,6 +74,19 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     if (isCached) {
       console.log(`Background image ${currentSrc} found in cache`);
       setIsLoaded(true);
+      
+      // Force REPAINT to ensure image shows - this is crucial
+      if (imgRef.current) {
+        const img = imgRef.current;
+        const parent = img.parentElement;
+        if (parent) {
+          // Trick to force a repaint
+          parent.style.display = 'none';
+          // This forces a reflow
+          void parent.offsetHeight;
+          parent.style.display = '';
+        }
+      }
     } else {
       console.log(`Loading background image: ${currentSrc}`);
       setIsLoaded(false);
@@ -68,9 +94,8 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       const img = new Image();
       
       img.onload = () => {
-        console.log(`Background image loaded: ${currentSrc}`);
+        console.log(`Image onLoad fired for ${currentSrc}`);
         setIsLoaded(true);
-        loadAttempted.current = true; // Mark as loaded successfully
       };
       
       img.onerror = (e) => {
@@ -80,7 +105,6 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
           setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
         }
         setIsLoaded(true); // Still mark as loaded to avoid black screen
-        loadAttempted.current = true; // Mark as attempted
       };
       
       img.src = currentSrc;
@@ -90,7 +114,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   // When src changes, reset load attempted flag
   useEffect(() => {
     if (currentSrc && currentSrc !== prevSrc) {
-      setPrevSrc(prevSrc || currentSrc);
+      setPrevSrc(currentSrc);
       loadAttempted.current = false;
     }
   }, [currentSrc, prevSrc]);
@@ -110,27 +134,19 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     console.error("No background source available");
     return (
       <div className="absolute inset-0 bg-gray-800 flex items-center justify-center text-white">
-        No background available
+        <p>No background available</p>
       </div>
     );
   }
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-gray-900">
-      {prevSrc && prevSrc !== currentSrc && (
-        <img
-          src={prevSrc}
-          alt={alt}
-          className={`absolute inset-0 w-full h-full object-cover ${className} ${
-            isFading ? 'opacity-100' : 'opacity-0'
-          } transition-opacity`}
-          style={{ transitionDuration: `${transitionDuration}ms` }}
-        />
-      )}
+      {/* Background image - using z-index to ensure it's visible */}
       <img
+        ref={imgRef}
         src={currentSrc}
         alt={alt}
-        className={`absolute inset-0 w-full h-full object-cover ${className} ${
+        className={`absolute inset-0 w-full h-full object-cover z-10 ${className} ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         } transition-opacity`}
         style={{ transitionDuration: `${transitionDuration}ms` }}
@@ -138,7 +154,21 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
           console.log(`Image onLoad fired for ${currentSrc}`);
           setIsLoaded(true);
         }}
+        // Add error handler directly on image
+        onError={() => {
+          console.error(`Error on image element: ${currentSrc}`);
+          if (currentSrc !== '/assets/backgrounds/stonewich-cityscape.jpg') {
+            setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+          }
+        }}
       />
+      
+      {/* Placeholder for when image is loading - using a lower z-index */}
+      {!isLoaded && (
+        <div className="absolute inset-0 z-0 bg-gray-800 flex items-center justify-center text-white">
+          <p>Loading background...</p>
+        </div>
+      )}
     </div>
   );
 };

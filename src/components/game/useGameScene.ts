@@ -4,6 +4,7 @@ import { useGame } from '@/context/GameContext';
 import { allScenes } from '@/data/scenes';
 import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
+import { assetManager } from '@/utils/assetManager';
 
 /**
  * Custom hook to manage game scene loading and error handling
@@ -85,6 +86,29 @@ export const useGameScene = () => {
     }
   }, [sceneId, scene, currentDialogue, dialogueIndex]);
   
+  // Preload the current scene's background image
+  useEffect(() => {
+    if (scene?.background) {
+      const backgroundId = scene.background;
+      // Preload the background image
+      try {
+        import('../data/backgrounds').then((backgroundsModule) => {
+          const backgrounds = backgroundsModule.default;
+          if (backgrounds && backgrounds[backgroundId]) {
+            const imagePath = backgrounds[backgroundId].image;
+            assetManager.preloadAssets([imagePath], (loaded, total) => {
+              if (loaded === total) {
+                console.log(`Successfully preloaded background: ${imagePath}`);
+              }
+            });
+          }
+        });
+      } catch (err) {
+        console.error(`Error preloading background: ${err}`);
+      }
+    }
+  }, [scene]);
+  
   // Simplified loading mechanism with timeout protection
   useEffect(() => {
     // Prevent repeated loading attempts for the same scene
@@ -104,6 +128,7 @@ export const useGameScene = () => {
       loadingTimeoutRef.current = setTimeout(() => {
         setLoaded(true);
         loadingTimeoutRef.current = null;
+        console.log(`Scene ${sceneId} marked as loaded`);
       }, 500);
     }
     
@@ -112,7 +137,7 @@ export const useGameScene = () => {
         clearTimeout(loadingTimeoutRef.current);
       }
     };
-  }, [scene]);
+  }, [scene, sceneId]);
 
   // Reset loading attempts when scene changes
   useEffect(() => {
