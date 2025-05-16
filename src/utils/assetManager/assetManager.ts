@@ -125,44 +125,57 @@ export class AssetManager {
       img.onload = () => {
         this.cache.images.set(src, img);
         this.cache.loaded.add(src);
+        console.log(`Successfully loaded image: ${src}`);
         resolve(img);
       };
       
-      img.onerror = () => {
-        console.warn(`Failed to load image: ${fixedPath}`);
+      img.onerror = (e) => {
+        console.error(`Failed to load image: ${fixedPath}`, e);
         this.cache.failed.add(src);
         this.useFallbackImage(src, resolve);
       };
       
+      // Set crossOrigin to anonymous to prevent CORS issues
+      img.crossOrigin = "anonymous";
+      
       // Use the potentially fixed path
       img.src = fixedPath;
       
-      // Add a timeout to prevent hanging
+      // Add a timeout to prevent hanging - increased from 10s to 15s
       setTimeout(() => {
         if (!this.cache.loaded.has(src) && !this.cache.failed.has(src)) {
           console.warn(`Image load timeout for: ${fixedPath}`);
           this.cache.failed.add(src);
           this.useFallbackImage(src, resolve);
         }
-      }, 10000); // 10 second timeout
+      }, 15000); // 15 second timeout
     });
   }
   
   // Helper method to provide fallback image
   private useFallbackImage(src: string, resolve: (img: HTMLImageElement) => void) {
-    // Try to provide appropriate fallback based on path
-    const placeholderImg = getPlaceholder();
-    
-    if (placeholderImg) {
-      // Use placeholder
-      console.info(`Using placeholder for: ${src}`);
-      this.cache.images.set(src, placeholderImg);
-      resolve(placeholderImg);
-    } else {
-      // If even the placeholder fails, create a simple canvas fallback
-      const fallbackImg = createCanvasFallback(src);
-      this.cache.images.set(src, fallbackImg);
-      resolve(fallbackImg);
+    try {
+      // Try to provide appropriate fallback based on path
+      const placeholderImg = getPlaceholder();
+      
+      if (placeholderImg) {
+        // Use placeholder
+        console.info(`Using placeholder for: ${src}`);
+        this.cache.images.set(src, placeholderImg);
+        resolve(placeholderImg);
+      } else {
+        // If even the placeholder fails, create a simple canvas fallback
+        const fallbackImg = createCanvasFallback(src);
+        this.cache.images.set(src, fallbackImg);
+        resolve(fallbackImg);
+      }
+    } catch (e) {
+      console.error('Error creating fallback image:', e);
+      // Last resort - create a minimal Image object
+      const lastResortImg = new Image();
+      lastResortImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+      this.cache.images.set(src, lastResortImg);
+      resolve(lastResortImg);
     }
   }
 
@@ -206,6 +219,14 @@ export class AssetManager {
       (window as any).gameImageCache = this.cache.images;
       (window as any).assetManager = this;
     }
+  }
+  
+  /**
+   * Clear any failed assets and allow them to be retried
+   */
+  public clearFailedAssets(): void {
+    this.cache.failed.clear();
+    console.log("Cleared failed asset cache to allow retrying");
   }
 }
 

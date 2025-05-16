@@ -10,6 +10,7 @@ import DialogHistorySection from './DialogHistorySection';
 import GameViewHeader from './GameViewHeader';
 import { useGameScene } from './useGameScene';
 import { CharacterId } from '@/types/game';
+import { toast } from 'sonner';
 
 const StandardGameView: React.FC = () => {
   // Access game context with handlers
@@ -38,18 +39,18 @@ const StandardGameView: React.FC = () => {
     showChoices,
     activeCharacter
   } = useGameScene();
-  
-  // Force re-render if stuck
+
+  // Force re-render if stuck - increased timeout to ensure images have time to load
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log('Force re-render triggered to ensure proper display');
       setRenderTrigger(prev => prev + 1);
-    }, 800);
+    }, 1000);
     
     return () => clearTimeout(timer);
   }, [sceneId]);
   
-  // Debug the view rendering (only on important state changes)
+  // Debug the view rendering
   useEffect(() => {
     console.log(`StandardGameView rendering: scene: ${sceneId}, loaded: ${loaded}, background: ${scene?.background}`);
   }, [sceneId, loaded, scene?.background]);
@@ -77,6 +78,7 @@ const StandardGameView: React.FC = () => {
   
   // Loading state or scene not found
   if (error || !scene) {
+    toast.error(`Failed to load scene: ${error || 'Unknown error'}`);
     return (
       <GameLoadingState 
         error={error} 
@@ -88,7 +90,7 @@ const StandardGameView: React.FC = () => {
   
   if (!loaded) {
     return (
-      <div className="flex items-center justify-center h-screen w-full bg-black">
+      <div className="flex items-center justify-center h-screen w-full bg-gray-900">
         <Loader2 className="h-16 w-16 animate-spin text-[#9b87f5]" />
       </div>
     );
@@ -101,12 +103,18 @@ const StandardGameView: React.FC = () => {
   const characterId = currentDialogue?.character as CharacterId | undefined;
   
   return (
-    <div ref={viewRef} className="relative h-screen w-full overflow-hidden" key={`view-${sceneId}-${renderTrigger}`}>
+    <div 
+      ref={viewRef} 
+      className="relative h-screen w-full overflow-hidden bg-gray-900" 
+      key={`view-${sceneId}-${renderTrigger}`}
+    >
       {/* Background - clickable to advance dialogue */}
-      <GameBackgroundScene 
-        backgroundId={scene.background} 
-        onBackgroundClick={handleBackgroundClick} 
-      />
+      {scene.background && (
+        <GameBackgroundScene 
+          backgroundId={scene.background} 
+          onBackgroundClick={handleBackgroundClick} 
+        />
+      )}
       
       {/* Dialog History Section */}
       <DialogHistorySection 

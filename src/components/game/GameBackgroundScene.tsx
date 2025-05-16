@@ -22,6 +22,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   useEffect(() => {
     if (!isTransitioning && backgroundId) {
       setCurrentBackgroundId(backgroundId);
+      console.log(`GameBackgroundScene updating backgroundId to: ${backgroundId}`);
     }
   }, [backgroundId, isTransitioning]);
   
@@ -32,7 +33,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
     }
   }, [backgroundId]);
   
-  // Debug logging (just once on component mount/unmount to avoid spam)
+  // Debug logging (just once on component mount/unmount)
   useEffect(() => {
     console.log(`GameBackgroundScene mounted with backgroundId: ${backgroundId}`);
     
@@ -40,27 +41,12 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
       console.log(`GameBackgroundScene unmounted with backgroundId: ${backgroundId}`);
     };
   }, []);
-  
-  // Log background ID changes (but not too frequently)
-  useEffect(() => {
-    if (currentBackgroundId !== backgroundId && !hasLoggedError.current) {
-      console.log(`GameBackgroundScene background changed from ${currentBackgroundId} to ${backgroundId}`);
-      hasLoggedError.current = true;
-      
-      // Reset after a delay to allow logging again
-      const timer = setTimeout(() => {
-        hasLoggedError.current = false;
-      }, 2000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [currentBackgroundId, backgroundId]);
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={backgroundId}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-gray-900"
         onClick={onBackgroundClick}
         data-testid="game-background"
         initial={{ opacity: isTransitioning ? 0 : 1 }}

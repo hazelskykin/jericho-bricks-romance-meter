@@ -1,7 +1,7 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { getImageCache } from '../utils/imageCache';
 import backgrounds from '../data/backgrounds';
-import { getAssetSource } from '@/utils/assetManager';
 
 interface BackgroundSceneProps {
   src?: string;
@@ -25,17 +25,26 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
   const [isFading, setIsFading] = useState(false);
   const loadAttempted = useRef(false);
-  
   const imageCache = getImageCache();
-  
+
   // Get actual source based on either direct src or backgroundId
   useEffect(() => {
-    if (backgroundId && backgrounds[backgroundId]) {
-      setCurrentSrc(backgrounds[backgroundId].image);
-    } else if (src) {
-      setCurrentSrc(src);
-    } else {
-      // Use default background if neither src nor backgroundId is provided
+    try {
+      if (backgroundId && backgrounds[backgroundId]) {
+        const imagePath = backgrounds[backgroundId].image;
+        console.log(`Setting background from backgroundId ${backgroundId}: ${imagePath}`);
+        setCurrentSrc(imagePath);
+      } else if (src) {
+        console.log(`Setting background from direct src: ${src}`);
+        setCurrentSrc(src);
+      } else {
+        // Use default background if neither src nor backgroundId is provided
+        console.log(`No background source provided, using default`);
+        setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+      }
+    } catch (error) {
+      console.error(`Error setting background source:`, error);
+      // Use default background on error
       setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
     }
   }, [backgroundId, src]);
@@ -50,11 +59,9 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     const isCached = imageCache.has(currentSrc);
     
     if (isCached) {
-      // If image is cached, set loaded immediately
       console.log(`Background image ${currentSrc} found in cache`);
       setIsLoaded(true);
     } else {
-      // Otherwise, load the image
       console.log(`Loading background image: ${currentSrc}`);
       setIsLoaded(false);
       
@@ -80,29 +87,15 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     }
   }, [currentSrc, imageCache]);
 
-  useEffect(() => {
-    if (prevSrc !== null && prevSrc !== currentSrc) {
-      setIsFading(true);
-      
-      const timer = setTimeout(() => {
-        setIsFading(false);
-        setPrevSrc(null);
-      }, transitionDuration);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [prevSrc, currentSrc, transitionDuration]);
-
-  // When src changes, set previous src for transition
+  // When src changes, reset load attempted flag
   useEffect(() => {
     if (currentSrc && currentSrc !== prevSrc) {
       setPrevSrc(prevSrc || currentSrc);
-      // Reset load attempted flag when source changes
       loadAttempted.current = false;
     }
   }, [currentSrc, prevSrc]);
 
-  // For debugging (limited to avoid console spam)
+  // For debugging
   useEffect(() => {
     if (backgroundId) {
       console.log(`BackgroundScene mounted: ${backgroundId}`);
@@ -113,10 +106,17 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     }
   }, [backgroundId]);
 
-  if (!currentSrc) return null;
+  if (!currentSrc) {
+    console.error("No background source available");
+    return (
+      <div className="absolute inset-0 bg-gray-800 flex items-center justify-center text-white">
+        No background available
+      </div>
+    );
+  }
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden bg-gray-900">
       {prevSrc && prevSrc !== currentSrc && (
         <img
           src={prevSrc}
@@ -131,8 +131,8 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         src={currentSrc}
         alt={alt}
         className={`absolute inset-0 w-full h-full object-cover ${className} ${
-          isFading ? 'opacity-0' : 'opacity-100'
-        } ${isLoaded ? '' : 'opacity-0'} transition-opacity`}
+          isLoaded ? 'opacity-100' : 'opacity-0'
+        } transition-opacity`}
         style={{ transitionDuration: `${transitionDuration}ms` }}
         onLoad={() => {
           console.log(`Image onLoad fired for ${currentSrc}`);

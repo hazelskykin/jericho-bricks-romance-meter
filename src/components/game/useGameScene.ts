@@ -15,6 +15,7 @@ export const useGameScene = () => {
   const [fallbackTriggered, setFallbackTriggered] = useState(false);
   const [activeCharacter, setActiveCharacter] = useState<CharacterId | null>(null);
   const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const loadAttemptedRef = useRef(false);
   
   const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
   
@@ -70,20 +71,25 @@ export const useGameScene = () => {
     }
   }, [currentDialogue]);
   
-  // Debug logging (only when scene changes, not on every render)
+  // Debug logging (only when scene changes)
   useEffect(() => {
     console.log(`Scene loading: Current scene: ${sceneId}, dialogue index: ${dialogueIndex}, showing choices: ${showChoices}`);
     
     if (!scene) {
       console.error(`Scene not found: ${sceneId}`);
       toast.error(`Scene "${sceneId}" not found. Please report this error.`);
+    } else if (!scene.background) {
+      console.warn(`Scene ${sceneId} has no background defined`);
     } else if (!currentDialogue && dialogueIndex < (scene.dialogue?.length || 0)) {
       console.error(`Dialogue line not found at index ${dialogueIndex} in scene ${sceneId}`);
     }
-  }, [sceneId, scene]);
+  }, [sceneId, scene, currentDialogue, dialogueIndex]);
   
   // Simplified loading mechanism with timeout protection
   useEffect(() => {
+    // Prevent repeated loading attempts for the same scene
+    if (loadAttemptedRef.current && loaded) return;
+    
     // Clear any existing timeout
     if (loadingTimeoutRef.current) {
       clearTimeout(loadingTimeoutRef.current);
@@ -92,12 +98,13 @@ export const useGameScene = () => {
     if (scene) {
       // Mark as not loaded when scene changes
       setLoaded(false);
+      loadAttemptedRef.current = true;
       
-      // Short timeout to allow for transition effects
+      // Timeout to allow for transition effects and asset loading
       loadingTimeoutRef.current = setTimeout(() => {
         setLoaded(true);
         loadingTimeoutRef.current = null;
-      }, 300);
+      }, 500);
     }
     
     return () => {
@@ -106,6 +113,11 @@ export const useGameScene = () => {
       }
     };
   }, [scene]);
+
+  // Reset loading attempts when scene changes
+  useEffect(() => {
+    loadAttemptedRef.current = false;
+  }, [sceneId]);
 
   return {
     scene,

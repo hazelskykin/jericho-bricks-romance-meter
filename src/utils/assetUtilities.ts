@@ -53,7 +53,7 @@ export function isHighPriorityAsset(asset: any): boolean {
 export function getFallbackAssetPath(originalPath: string): string {
   // If the path is empty or undefined, return a generic fallback
   if (!originalPath) {
-    return '/assets/backgrounds/wall-tiles.jpg';
+    return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
   // For minigame assets, always return a city background
@@ -68,10 +68,7 @@ export function getFallbackAssetPath(originalPath: string): string {
   
   // Fallbacks for character expressions
   if (originalPath.includes('/characters/')) {
-    const character = originalPath.match(/\/characters\/([^-]+)/)?.[1];
-    if (character) {
-      return `/assets/backgrounds/stonewich-cityscape.jpg`;
-    }
+    return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
   return '/assets/backgrounds/stonewich-cityscape.jpg';
@@ -83,10 +80,35 @@ export function getFallbackAssetPath(originalPath: string): string {
 export function fixAssetPath(path: string): string {
   if (!path) return '/assets/backgrounds/stonewich-cityscape.jpg';
   
+  // Ensure jpg is used correctly
+  if (path.endsWith('.png') && path.includes('/backgrounds/')) {
+    return path.replace('.png', '.jpg');
+  }
+  
   // If a path incorrectly includes minigrames, correct it to minigames
   if (path.includes('/minigrames/')) {
     return path.replace('/minigrames/', '/minigames/');
   }
   
   return path;
+}
+
+/**
+ * Verify the existence of an image by checking its actual response
+ */
+export function verifyImageExists(imagePath: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (!imagePath) {
+      resolve(false);
+      return;
+    }
+    
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = imagePath;
+    
+    // Add timeout to prevent hanging
+    setTimeout(() => resolve(false), 5000);
+  });
 }
