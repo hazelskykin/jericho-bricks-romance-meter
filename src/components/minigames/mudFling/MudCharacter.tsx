@@ -79,7 +79,7 @@ const MudCharacter: React.FC<MudCharacterProps> = ({
         
         {/* Show mud splatter effect when hit - Fixed path from minigrames to minigames */}
         {isMuddy && (
-          <div className="absolute inset-0 bg-[url('/assets/minigames/spring/mudFling/splashEffects_victoryEffect.png')] bg-cover opacity-70" />
+          <div className="absolute inset-0 bg-[url('/assets/minigames/spring/mudFling/mudball-splash-water.png')] bg-cover opacity-70" />
         )}
         
         {/* Highlight for player character */}

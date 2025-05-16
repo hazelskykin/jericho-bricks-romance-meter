@@ -5,6 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: "/jericho-bricks-romance-meter/", // ✅ GitHub Pages base path
   server: {
     host: "::",
     port: 8080,
@@ -20,3 +21,4 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
+

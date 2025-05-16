@@ -14,21 +14,6 @@ export function fixPath(src: string): string {
     return ''; // Return empty string instead of trying to work with undefined
   }
   
-  // Fix locaton-icons typo if it exists
-  if (src.includes('/locaton-icons.png')) {
-    return src.replace('/locaton-icons.png', '/location-icons.png');
-  }
-  
-  // Handle specific files that might have different names
-  if (src.includes('/splashEffects_victoryEffect.png')) {
-    return src.replace('/splashEffects_victoryEffect.png', '/splashVictory.png');
-  }
-  
-  // Handle cases where paths might be pointing to the wrong directory
-  if (src.startsWith('/assets/minigrames/')) {
-    console.warn('Detected reference to minigrames directory which will be deleted soon');
-  }
-  
   return src;
 }
 
