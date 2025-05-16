@@ -1,0 +1,8 @@
+
+# This folder contains sound effects for the minigames and UI
+
+# UI sounds should be placed here directly:
+# ui-click.mp3 - button click sound
+# ui-hover.mp3 - button hover sound
+# ui-error.mp3 - error sound
+# ui-success.mp3 - success sound
