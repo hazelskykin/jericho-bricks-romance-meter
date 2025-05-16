@@ -5,6 +5,7 @@ import { allScenes } from '@/data/scenes';
 import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
 import { assetManager } from '@/utils/assetManager';
+import backgrounds from '@/data/backgrounds'; // Direct import instead of dynamic import
 
 /**
  * Custom hook to manage game scene loading and error handling
@@ -90,24 +91,24 @@ export const useGameScene = () => {
   useEffect(() => {
     if (scene?.background) {
       const backgroundId = scene.background;
-      // Preload the background image
+      // Preload the background image directly from imported backgrounds
       try {
-        import('../data/backgrounds').then((backgroundsModule) => {
-          const backgrounds = backgroundsModule.default;
-          if (backgrounds && backgrounds[backgroundId]) {
-            const imagePath = backgrounds[backgroundId].image;
-            assetManager.preloadAssets([imagePath], (loaded, total) => {
-              if (loaded === total) {
-                console.log(`Successfully preloaded background: ${imagePath}`);
-              }
-            });
-          }
-        });
+        if (backgrounds && backgrounds[backgroundId]) {
+          const imagePath = backgrounds[backgroundId].image;
+          console.log(`Preloading background image: ${imagePath} for scene ${sceneId}`);
+          assetManager.preloadAssets([imagePath], (loaded, total) => {
+            if (loaded === total) {
+              console.log(`Successfully preloaded background: ${imagePath}`);
+            }
+          });
+        } else {
+          console.warn(`Background not found for ID: ${backgroundId}`);
+        }
       } catch (err) {
         console.error(`Error preloading background: ${err}`);
       }
     }
-  }, [scene]);
+  }, [scene, sceneId]);
   
   // Simplified loading mechanism with timeout protection
   useEffect(() => {

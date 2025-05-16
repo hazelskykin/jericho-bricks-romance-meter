@@ -60,7 +60,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   // Render a default placeholder if no backgroundId is provided
   if (!backgroundId) {
     return (
-      <div className="absolute inset-0 z-0 bg-gray-900 flex items-center justify-center text-white">
+      <div className="absolute inset-0 z-10 bg-gray-900 flex items-center justify-center text-white">
         <p>No background specified</p>
       </div>
     );
@@ -70,7 +70,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
     <AnimatePresence mode="wait">
       <motion.div
         key={backgroundId}
-        className="absolute inset-0 z-10 bg-gray-900"
+        className="absolute inset-0 bg-gray-900"
         onClick={onBackgroundClick}
         data-testid="game-background"
         initial={{ opacity: isTransitioning ? 0 : 1 }}
@@ -79,7 +79,6 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
         transition={{ duration: transitionDuration / 2000 }}
         style={{ zIndex: 10 }}
       >
-        {/* Use direct rendering instead of conditional rendering */}
         <BackgroundScene 
           backgroundId={backgroundId} 
           priority={true}

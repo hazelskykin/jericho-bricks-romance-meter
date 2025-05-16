@@ -26,6 +26,7 @@ const StandardGameView: React.FC = () => {
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
   const [renderTrigger, setRenderTrigger] = useState(0);
   const [isFullyLoaded, setIsFullyLoaded] = useState(false);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
   const viewRef = useRef<HTMLDivElement>(null);
   
   // Use the scene loading hook to handle scene data and errors
@@ -43,6 +44,7 @@ const StandardGameView: React.FC = () => {
 
   // Force re-render if stuck, and a direct DOM update for a final fallback
   useEffect(() => {
+    // Initial quick render to get things going
     const initialTimer = setTimeout(() => {
       console.log('Force re-render triggered to ensure proper display');
       setRenderTrigger(prev => prev + 1);
@@ -53,12 +55,21 @@ const StandardGameView: React.FC = () => {
         bgElement.style.opacity = '1';
         bgElement.style.visibility = 'visible';
         bgElement.style.display = 'block';
+        bgElement.style.zIndex = '10';
       }
       
       setIsFullyLoaded(true);
     }, 1000);
     
-    return () => clearTimeout(initialTimer);
+    // Set a long timeout as a last resort for loading very slow assets
+    const longTimer = setTimeout(() => {
+      setLoadingTimeout(true);
+    }, 10000);
+    
+    return () => {
+      clearTimeout(initialTimer);
+      clearTimeout(longTimer);
+    };
   }, [sceneId]);
   
   // Debug the view rendering
@@ -102,7 +113,10 @@ const StandardGameView: React.FC = () => {
   if (!loaded) {
     return (
       <div className="flex items-center justify-center h-screen w-full bg-gray-900">
-        <Loader2 className="h-16 w-16 animate-spin text-[#9b87f5]" />
+        <div className="text-center">
+          <Loader2 className="h-16 w-16 animate-spin text-[#9b87f5] mx-auto mb-4" />
+          <p className="text-white text-xl">Loading game scene...</p>
+        </div>
       </div>
     );
   }
@@ -118,10 +132,11 @@ const StandardGameView: React.FC = () => {
       ref={viewRef} 
       className="relative h-screen w-full overflow-hidden bg-gray-900" 
       key={`view-${sceneId}-${renderTrigger}`}
+      style={{ zIndex: 0 }}
     >
       {/* Background - clickable to advance dialogue */}
       {scene.background && (
-        <div className="game-background absolute inset-0 z-0" style={{ zIndex: 10 }}>
+        <div className="game-background absolute inset-0" style={{ zIndex: 10 }}>
           <GameBackgroundScene 
             backgroundId={scene.background} 
             onBackgroundClick={handleBackgroundClick} 
@@ -161,14 +176,21 @@ const StandardGameView: React.FC = () => {
         characterMood={characterMood}
       />
       
-      {/* Render a full-screen message if assets are taking too long to load */}
+      {/* Loading overlay - disappears after initial loading */}
       {!isFullyLoaded && (
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
           <div className="bg-gray-900 p-6 rounded-lg max-w-md text-center">
             <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-[#9b87f5]" />
             <p className="text-white text-xl">Loading scene assets...</p>
             <p className="text-gray-400 text-sm mt-2">This may take a moment</p>
           </div>
+        </div>
+      )}
+      
+      {/* Long timeout message */}
+      {loadingTimeout && (
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-red-900 bg-opacity-90 p-4 rounded-lg z-50 shadow-lg">
+          <p className="text-white">Loading is taking longer than expected. Please refresh if the scene doesn't appear.</p>
         </div>
       )}
     </div>

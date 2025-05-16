@@ -23,15 +23,19 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSrc, setCurrentSrc] = useState<string>('');
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
+  const [hasError, setHasError] = useState(false);
   const loadAttempted = useRef(false);
   const imageCache = getImageCache();
   const imgRef = useRef<HTMLImageElement>(null);
+  const retryCount = useRef(0);
   
   // Clear state when props change
   useEffect(() => {
     if (backgroundId || src) {
       loadAttempted.current = false;
       setIsLoaded(false);
+      setHasError(false);
+      retryCount.current = 0;
     }
   }, [backgroundId, src]);
 
@@ -54,6 +58,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       console.error(`Error setting background source:`, error);
       // Use default background on error
       setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+      setHasError(true);
     }
   }, [backgroundId, src]);
 
@@ -75,9 +80,12 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       console.log(`Background image ${currentSrc} found in cache`);
       setIsLoaded(true);
       
-      // Force REPAINT to ensure image shows - this is crucial
+      // Force REPAINT to ensure image shows
       if (imgRef.current) {
         const img = imgRef.current;
+        img.style.opacity = '1';
+        img.style.visibility = 'visible';
+        
         const parent = img.parentElement;
         if (parent) {
           // Trick to force a repaint
@@ -95,18 +103,33 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       img.onload = () => {
         console.log(`Image onLoad fired for ${currentSrc}`);
+        imageCache.set(currentSrc, img);
         setIsLoaded(true);
+        setHasError(false);
       };
       
       img.onerror = (e) => {
         console.error(`Error loading background image: ${currentSrc}`, e);
-        // Use default background on error
-        if (currentSrc !== '/assets/backgrounds/stonewich-cityscape.jpg') {
-          setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+        
+        if (retryCount.current < 2) {
+          // Retry loading with a short delay
+          retryCount.current += 1;
+          loadAttempted.current = false;
+          setTimeout(() => {
+            loadAttempted.current = false;
+          }, 300);
+        } else {
+          // Use default background after retries
+          if (currentSrc !== '/assets/backgrounds/stonewich-cityscape.jpg') {
+            setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+          }
+          setHasError(true);
+          setIsLoaded(true); // Still mark as loaded to avoid black screen
         }
-        setIsLoaded(true); // Still mark as loaded to avoid black screen
       };
       
+      // Set crossOrigin to anonymous
+      img.crossOrigin = "anonymous";
       img.src = currentSrc;
     }
   }, [currentSrc, imageCache]);
@@ -149,7 +172,10 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         className={`absolute inset-0 w-full h-full object-cover z-10 ${className} ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         } transition-opacity`}
-        style={{ transitionDuration: `${transitionDuration}ms` }}
+        style={{ 
+          transitionDuration: `${transitionDuration}ms`,
+          zIndex: 10 // Ensure the image has proper z-index
+        }}
         onLoad={() => {
           console.log(`Image onLoad fired for ${currentSrc}`);
           setIsLoaded(true);
@@ -167,6 +193,13 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       {!isLoaded && (
         <div className="absolute inset-0 z-0 bg-gray-800 flex items-center justify-center text-white">
           <p>Loading background...</p>
+        </div>
+      )}
+      
+      {/* Error state */}
+      {hasError && (
+        <div className="absolute inset-0 z-5 bg-gray-800 bg-opacity-70 flex items-center justify-center text-white">
+          <p>Failed to load background</p>
         </div>
       )}
     </div>
