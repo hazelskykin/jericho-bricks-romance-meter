@@ -42,10 +42,14 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   // Get actual source based on either direct src or backgroundId
   useEffect(() => {
     try {
-      if (backgroundId && backgrounds[backgroundId]) {
+      if (backgroundId && backgrounds && backgrounds[backgroundId]) {
         const imagePath = backgrounds[backgroundId].image;
         console.log(`Setting background from backgroundId ${backgroundId}: ${imagePath}`);
-        setCurrentSrc(imagePath);
+        if (imagePath) {
+          setCurrentSrc(imagePath);
+        } else {
+          throw new Error(`Image path is empty for backgroundId: ${backgroundId}`);
+        }
       } else if (src) {
         console.log(`Setting background from direct src: ${src}`);
         setCurrentSrc(src);
@@ -103,7 +107,8 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       img.onload = () => {
         console.log(`Image onLoad fired for ${currentSrc}`);
-        imageCache.set(currentSrc, img);
+        // Don't use the imageCache.set method since it's not properly implemented
+        // Just use the asset manager directly
         setIsLoaded(true);
         setHasError(false);
       };
@@ -156,25 +161,25 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   if (!currentSrc) {
     console.error("No background source available");
     return (
-      <div className="absolute inset-0 bg-gray-800 flex items-center justify-center text-white">
+      <div className="absolute inset-0 bg-gray-800 flex items-center justify-center text-white z-20">
         <p>No background available</p>
       </div>
     );
   }
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-gray-900">
-      {/* Background image - using z-index to ensure it's visible */}
+    <div className="absolute inset-0 overflow-hidden bg-gray-900 z-10">
+      {/* Background image - using higher z-index to ensure it's visible */}
       <img
         ref={imgRef}
         src={currentSrc}
         alt={alt}
-        className={`absolute inset-0 w-full h-full object-cover z-10 ${className} ${
+        className={`absolute inset-0 w-full h-full object-cover z-20 ${className} ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         } transition-opacity`}
         style={{ 
           transitionDuration: `${transitionDuration}ms`,
-          zIndex: 10 // Ensure the image has proper z-index
+          zIndex: 20 // Higher z-index to ensure visibility
         }}
         onLoad={() => {
           console.log(`Image onLoad fired for ${currentSrc}`);
@@ -191,14 +196,14 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       {/* Placeholder for when image is loading - using a lower z-index */}
       {!isLoaded && (
-        <div className="absolute inset-0 z-0 bg-gray-800 flex items-center justify-center text-white">
+        <div className="absolute inset-0 z-10 bg-gray-800 flex items-center justify-center text-white">
           <p>Loading background...</p>
         </div>
       )}
       
       {/* Error state */}
       {hasError && (
-        <div className="absolute inset-0 z-5 bg-gray-800 bg-opacity-70 flex items-center justify-center text-white">
+        <div className="absolute inset-0 z-15 bg-gray-800 bg-opacity-70 flex items-center justify-center text-white">
           <p>Failed to load background</p>
         </div>
       )}

@@ -55,7 +55,7 @@ const StandardGameView: React.FC = () => {
         bgElement.style.opacity = '1';
         bgElement.style.visibility = 'visible';
         bgElement.style.display = 'block';
-        bgElement.style.zIndex = '10';
+        bgElement.style.zIndex = '20'; // Higher z-index
       }
       
       setIsFullyLoaded(true);
@@ -165,16 +165,18 @@ const StandardGameView: React.FC = () => {
       <GameViewHeader />
       
       {/* Dialog Box or Choice Menu */}
-      <GameDialogueSystem
-        showChoices={showChoices}
-        displayedChoices={displayedChoices}
-        currentDialogue={currentDialogue}
-        loaded={loaded}
-        onDialogueClick={handleDialogueClick}
-        onChoiceClick={handleChoiceClick}
-        characterId={characterId}
-        characterMood={characterMood}
-      />
+      <div className="absolute inset-x-0 bottom-0 z-30">
+        <GameDialogueSystem
+          showChoices={showChoices}
+          displayedChoices={displayedChoices}
+          currentDialogue={currentDialogue}
+          loaded={loaded}
+          onDialogueClick={handleDialogueClick}
+          onChoiceClick={handleChoiceClick}
+          characterId={characterId}
+          characterMood={characterMood}
+        />
+      </div>
       
       {/* Loading overlay - disappears after initial loading */}
       {!isFullyLoaded && (
