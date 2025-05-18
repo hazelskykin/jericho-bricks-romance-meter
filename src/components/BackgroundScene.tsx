@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getImageCache } from '../utils/imageCache';
 import backgrounds from '../data/backgrounds';
+import { fixAssetPath } from '../utils/assetUtilities';
 
 interface BackgroundSceneProps {
   src?: string;
@@ -46,16 +47,16 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         const imagePath = backgrounds[backgroundId].image;
         console.log(`Setting background from backgroundId ${backgroundId}: ${imagePath}`);
         if (imagePath) {
-          setCurrentSrc(imagePath);
+          setCurrentSrc(fixAssetPath(imagePath));
         } else {
           throw new Error(`Image path is empty for backgroundId: ${backgroundId}`);
         }
       } else if (src) {
         console.log(`Setting background from direct src: ${src}`);
-        setCurrentSrc(src);
+        setCurrentSrc(fixAssetPath(src));
       } else {
         // Use default background if neither src nor backgroundId is provided
-        console.log(`No background source provided, using default`);
+        console.warn(`No background source provided, using default`);
         setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
       }
     } catch (error) {
@@ -89,14 +90,14 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         const img = imgRef.current;
         img.style.opacity = '1';
         img.style.visibility = 'visible';
+        img.style.display = 'block';
         
         const parent = img.parentElement;
         if (parent) {
           // Trick to force a repaint
           parent.style.display = 'none';
-          // This forces a reflow
           void parent.offsetHeight;
-          parent.style.display = '';
+          parent.style.display = 'block';
         }
       }
     } else {
@@ -107,8 +108,8 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       img.onload = () => {
         console.log(`Image onLoad fired for ${currentSrc}`);
-        // Don't use the imageCache.set method since it's not properly implemented
-        // Just use the asset manager directly
+        // Cache the loaded image
+        imageCache.set(currentSrc, img);
         setIsLoaded(true);
         setHasError(false);
       };
@@ -174,12 +175,14 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         ref={imgRef}
         src={currentSrc}
         alt={alt}
-        className={`absolute inset-0 w-full h-full object-cover z-20 ${className} ${
+        className={`absolute inset-0 w-full h-full object-cover z-30 ${className} ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         } transition-opacity`}
         style={{ 
           transitionDuration: `${transitionDuration}ms`,
-          zIndex: 20 // Higher z-index to ensure visibility
+          zIndex: 30, // Increased z-index
+          display: 'block',
+          visibility: 'visible'
         }}
         onLoad={() => {
           console.log(`Image onLoad fired for ${currentSrc}`);
@@ -196,14 +199,14 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       {/* Placeholder for when image is loading - using a lower z-index */}
       {!isLoaded && (
-        <div className="absolute inset-0 z-10 bg-gray-800 flex items-center justify-center text-white">
+        <div className="absolute inset-0 z-20 bg-gray-800 flex items-center justify-center text-white">
           <p>Loading background...</p>
         </div>
       )}
       
       {/* Error state */}
       {hasError && (
-        <div className="absolute inset-0 z-15 bg-gray-800 bg-opacity-70 flex items-center justify-center text-white">
+        <div className="absolute inset-0 z-25 bg-gray-800 bg-opacity-70 flex items-center justify-center text-white">
           <p>Failed to load background</p>
         </div>
       )}

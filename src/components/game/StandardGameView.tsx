@@ -55,7 +55,7 @@ const StandardGameView: React.FC = () => {
         bgElement.style.opacity = '1';
         bgElement.style.visibility = 'visible';
         bgElement.style.display = 'block';
-        bgElement.style.zIndex = '20'; // Higher z-index
+        bgElement.style.zIndex = '50'; // Higher z-index
       }
       
       setIsFullyLoaded(true);
@@ -132,11 +132,10 @@ const StandardGameView: React.FC = () => {
       ref={viewRef} 
       className="relative h-screen w-full overflow-hidden bg-gray-900" 
       key={`view-${sceneId}-${renderTrigger}`}
-      style={{ zIndex: 0 }}
     >
       {/* Background - clickable to advance dialogue */}
       {scene.background && (
-        <div className="game-background absolute inset-0" style={{ zIndex: 10 }}>
+        <div className="game-background absolute inset-0 z-30">
           <GameBackgroundScene 
             backgroundId={scene.background} 
             onBackgroundClick={handleBackgroundClick} 
@@ -165,7 +164,7 @@ const StandardGameView: React.FC = () => {
       <GameViewHeader />
       
       {/* Dialog Box or Choice Menu */}
-      <div className="absolute inset-x-0 bottom-0 z-30">
+      <div className="absolute inset-x-0 bottom-0 z-40">
         <GameDialogueSystem
           showChoices={showChoices}
           displayedChoices={displayedChoices}

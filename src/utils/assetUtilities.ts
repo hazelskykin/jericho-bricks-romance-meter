@@ -117,6 +117,11 @@ export function fixAssetPath(path: string): string {
   if (path.includes('wall-tiles') && !path.endsWith('.jpg')) {
     return path.replace('wall-tiles', 'wall-tiles.jpg');
   }
+
+  // Make sure path starts with /
+  if (!path.startsWith('/') && !path.startsWith('http') && !path.startsWith('data:')) {
+    path = `/${path}`;
+  }
   
   return path;
 }

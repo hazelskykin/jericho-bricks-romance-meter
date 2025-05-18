@@ -7,14 +7,15 @@ import { assetManager } from './assetManager';
 interface ImageCache {
   get: (src: string) => HTMLImageElement | undefined;
   has: (src: string) => boolean;
-  set?: (src: string, img: HTMLImageElement) => void;
+  set: (src: string, img: HTMLImageElement) => void;
 }
 
 export const getImageCache = (): ImageCache => {
   if (typeof window === 'undefined') {
     return {
       get: () => undefined,
-      has: () => false
+      has: () => false,
+      set: () => {}
     };
   }
   
@@ -23,9 +24,15 @@ export const getImageCache = (): ImageCache => {
     get: (src: string) => assetManager.getAsset(src),
     has: (src: string) => assetManager.hasAsset(src),
     set: (src: string, img: HTMLImageElement) => {
-      // This is just a pass-through to assetManager
-      // The actual implementation is in assetManager
-      console.log(`Cache set called for ${src}`);
+      // Cache the image in assetManager
+      if (img && src) {
+        console.log(`Explicitly setting image in cache: ${src}`);
+        const cache = assetManager['cache'];
+        if (cache && cache.images) {
+          cache.images.set(src, img);
+          cache.loaded.add(src);
+        }
+      }
     }
   };
 };
