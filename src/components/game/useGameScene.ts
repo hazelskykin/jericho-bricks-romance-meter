@@ -5,7 +5,7 @@ import { allScenes } from '@/data/scenes';
 import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
 import { assetManager } from '@/utils/assetManager';
-import backgrounds from '@/data/backgrounds'; // Direct import instead of dynamic import
+import backgrounds from '@/data/backgrounds'; // Direct import
 
 /**
  * Custom hook to manage game scene loading and error handling
@@ -73,34 +73,26 @@ export const useGameScene = () => {
     }
   }, [currentDialogue]);
   
-  // Debug logging (only when scene changes)
-  useEffect(() => {
-    console.log(`Scene loading: Current scene: ${sceneId}, dialogue index: ${dialogueIndex}, showing choices: ${showChoices}`);
-    
-    if (!scene) {
-      console.error(`Scene not found: ${sceneId}`);
-      toast.error(`Scene "${sceneId}" not found. Please report this error.`);
-    } else if (!scene.background) {
-      console.warn(`Scene ${sceneId} has no background defined`);
-    } else if (!currentDialogue && dialogueIndex < (scene.dialogue?.length || 0)) {
-      console.error(`Dialogue line not found at index ${dialogueIndex} in scene ${sceneId}`);
-    }
-  }, [sceneId, scene, currentDialogue, dialogueIndex]);
-  
   // Preload the current scene's background image
   useEffect(() => {
     if (scene?.background) {
       const backgroundId = scene.background;
-      // Preload the background image directly from imported backgrounds
+      // Preload the background image directly
       try {
         if (backgrounds && backgrounds[backgroundId]) {
-          const imagePath = backgrounds[backgroundId].image;
-          console.log(`Preloading background image: ${imagePath} for scene ${sceneId}`);
-          assetManager.preloadAssets([imagePath], (loaded, total) => {
-            if (loaded === total) {
-              console.log(`Successfully preloaded background: ${imagePath}`);
-            }
-          });
+          const bgData = backgrounds[backgroundId];
+          const imagePath = typeof bgData === 'string' ? bgData : bgData.image;
+          
+          if (imagePath) {
+            console.log(`Preloading background image: ${imagePath} for scene ${sceneId}`);
+            assetManager.preloadAssets([imagePath], (loaded, total) => {
+              if (loaded === total) {
+                console.log(`Successfully preloaded background: ${imagePath}`);
+              }
+            });
+          } else {
+            console.warn(`Image path is empty for background ${backgroundId}`);
+          }
         } else {
           console.warn(`Background not found for ID: ${backgroundId}`);
         }

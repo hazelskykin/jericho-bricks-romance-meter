@@ -86,6 +86,11 @@ export function fixAssetPath(path: string): string {
     return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
+  // Make absolute paths for all asset paths that don't start with http or data:
+  if (!path.startsWith('/') && !path.startsWith('http') && !path.startsWith('data:')) {
+    path = `/${path}`;
+  }
+  
   // Ensure jpg is used correctly for backgrounds
   if (path.includes('/backgrounds/') && !path.endsWith('.jpg')) {
     if (path.endsWith('.png')) {
@@ -116,11 +121,6 @@ export function fixAssetPath(path: string): string {
   // Correct issue with "wall-tiles" vs "wall-tiles.jpg"
   if (path.includes('wall-tiles') && !path.endsWith('.jpg')) {
     return path.replace('wall-tiles', 'wall-tiles.jpg');
-  }
-
-  // Make sure path starts with /
-  if (!path.startsWith('/') && !path.startsWith('http') && !path.startsWith('data:')) {
-    path = `/${path}`;
   }
   
   return path;

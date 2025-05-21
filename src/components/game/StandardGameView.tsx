@@ -64,32 +64,13 @@ const StandardGameView: React.FC = () => {
     // Set a long timeout as a last resort for loading very slow assets
     const longTimer = setTimeout(() => {
       setLoadingTimeout(true);
-    }, 10000);
+    }, 5000);
     
     return () => {
       clearTimeout(initialTimer);
       clearTimeout(longTimer);
     };
   }, [sceneId]);
-  
-  // Debug the view rendering
-  useEffect(() => {
-    console.log(`StandardGameView rendering: scene: ${sceneId}, loaded: ${loaded}, background: ${scene?.background}`);
-  }, [sceneId, loaded, scene?.background]);
-  
-  // Handle game view toggles 
-  const handleGameClick = () => {
-    setActiveView('game');
-  };
-
-  const handleTesterClick = () => {
-    setActiveView('tester');
-  };
-  
-  // Toggle affection meter visibility
-  const toggleAffectionMeter = () => {
-    setShowAffection(!showAffection);
-  };
   
   // Click handler for the background - advance dialogue
   const handleBackgroundClick = () => {
@@ -124,7 +105,7 @@ const StandardGameView: React.FC = () => {
   // Get the character's mood from current dialogue
   const characterMood = currentDialogue?.mood || 'neutral';
   
-  // Get the character ID from current dialogue, ensuring it's a valid CharacterId
+  // Get the character ID from current dialogue
   const characterId = currentDialogue?.character as CharacterId | undefined;
   
   return (
@@ -135,7 +116,7 @@ const StandardGameView: React.FC = () => {
     >
       {/* Background - clickable to advance dialogue */}
       {scene.background && (
-        <div className="game-background absolute inset-0 z-30">
+        <div className="game-background absolute inset-0" style={{ zIndex: 30 }}>
           <GameBackgroundScene 
             backgroundId={scene.background} 
             onBackgroundClick={handleBackgroundClick} 
@@ -149,22 +130,22 @@ const StandardGameView: React.FC = () => {
         setShowHistory={setShowHistory}
         dialogHistory={dialogHistory}
         activeView={activeView}
-        handleGameClick={handleGameClick}
-        handleTesterClick={handleTesterClick}
+        handleGameClick={() => setActiveView('game')}
+        handleTesterClick={() => setActiveView('tester')}
         replayCurrentScene={replayCurrentScene}
       />
       
       {/* Affection Meter Section */}
       <AffectionMeterSection 
         showAffection={showAffection}
-        toggleAffectionMeter={toggleAffectionMeter}
+        toggleAffectionMeter={() => setShowAffection(!showAffection)}
       />
       
       {/* Sound Toggle */}
       <GameViewHeader />
       
       {/* Dialog Box or Choice Menu */}
-      <div className="absolute inset-x-0 bottom-0 z-40">
+      <div className="absolute inset-x-0 bottom-0 z-50">
         <GameDialogueSystem
           showChoices={showChoices}
           displayedChoices={displayedChoices}

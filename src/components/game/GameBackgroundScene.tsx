@@ -15,18 +15,8 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   onBackgroundClick,
 }) => {
   const { isTransitioning, transitionDuration } = useGame();
-  const [currentBackgroundId, setCurrentBackgroundId] = useState(backgroundId);
   const [isVisible, setIsVisible] = useState(true);
-  const hasLoggedError = useRef(false);
   const mountedRef = useRef(true);
-  
-  // Update current background ID when prop changes and not during transition
-  useEffect(() => {
-    if (!isTransitioning && backgroundId) {
-      setCurrentBackgroundId(backgroundId);
-      console.log(`GameBackgroundScene updating backgroundId to: ${backgroundId}`);
-    }
-  }, [backgroundId, isTransitioning]);
   
   // Play background music when background changes
   useEffect(() => {
@@ -77,7 +67,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: transitionDuration / 2000 }}
-        style={{ zIndex: 30 }} // Higher z-index to ensure visibility
+        style={{ zIndex: 30 }}
       >
         <BackgroundScene 
           backgroundId={backgroundId} 
