@@ -23,7 +23,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSrc, setCurrentSrc] = useState<string>('');
-  const [hasError, setHasError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   
   // Get actual source based on either direct src or backgroundId
@@ -38,7 +38,8 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         if (imagePath) {
           setCurrentSrc(fixAssetPath(imagePath));
         } else {
-          throw new Error(`Image path is empty for backgroundId: ${backgroundId}`);
+          console.warn(`Image path is empty for backgroundId: ${backgroundId}`);
+          setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
         }
       } else if (src) {
         setCurrentSrc(fixAssetPath(src));
@@ -51,7 +52,6 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       console.error(`Error setting background source:`, error);
       // Use default background on error
       setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
-      setHasError(true);
     }
   }, [backgroundId, src]);
 
@@ -61,28 +61,21 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     
     const loadImage = async () => {
       try {
-        // Make sure asset manager has immediate mode on for background
-        assetManager.setLoadImmediateMode(true);
-        
-        // Try to preload the image
+        // Preload the image
         await assetManager.preloadAssets([currentSrc]);
-        
-        // Reset load mode
-        assetManager.setLoadImmediateMode(false);
         
         // Mark as loaded
         setIsLoaded(true);
-        setHasError(false);
         
-        // Force visibility
-        if (imgRef.current) {
-          imgRef.current.style.opacity = '1';
-        }
+        // Force visibility after a short delay
+        setTimeout(() => {
+          setIsVisible(true);
+        }, 50);
       } catch (error) {
         console.error(`Error loading background image: ${currentSrc}`, error);
-        setHasError(true);
         // Still mark as loaded to show something
         setIsLoaded(true);
+        setIsVisible(true);
       }
     };
     
@@ -95,17 +88,13 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         ref={imgRef}
         src={currentSrc || '/assets/backgrounds/stonewich-cityscape.jpg'}
         alt={alt}
-        className={`absolute inset-0 w-full h-full object-cover z-20 ${className} ${
-          isLoaded ? 'opacity-100' : 'opacity-0'
-        } transition-opacity`}
-        style={{ 
-          transitionDuration: `${transitionDuration}ms`,
-        }}
+        className={`absolute inset-0 w-full h-full object-cover z-20 ${className} transition-opacity duration-500
+          ${isVisible ? 'opacity-100' : 'opacity-0'}`}
         onLoad={() => {
           setIsLoaded(true);
-          setHasError(false);
+          setIsVisible(true);
         }}
-        onError={() => {
+        onError={(e) => {
           console.error(`Error on image element: ${currentSrc}`);
           if (currentSrc !== '/assets/backgrounds/stonewich-cityscape.jpg') {
             setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
@@ -115,7 +104,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       {/* Loading placeholder */}
       {!isLoaded && (
-        <div className="absolute inset-0 z-10 bg-gray-800 flex items-center justify-center text-white">
+        <div className="absolute inset-0 z-10 bg-gray-900 flex items-center justify-center text-white">
           <p>Loading background...</p>
         </div>
       )}

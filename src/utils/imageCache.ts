@@ -2,7 +2,7 @@
 import { assetManager } from './assetManager';
 
 /**
- * Simplified image cache utility
+ * Simplified image cache utility that leverages the asset manager
  */
 interface ImageCache {
   get: (src: string) => HTMLImageElement | undefined;
@@ -73,29 +73,37 @@ export const getImageCache = (): ImageCache => {
         }
         
         // Use asset manager to load it
-        assetManager.setLoadImmediateMode(true);
         assetManager.preloadAssets([src])
           .then(() => {
-            assetManager.setLoadImmediateMode(false);
             const img = assetManager.getAsset(src);
             if (img) {
               localCache.set(src, img);
               resolve(img);
             } else {
-              // Create a minimal fallback
-              const fallback = new Image();
-              fallback.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
-              localCache.set(src, fallback);
-              resolve(fallback);
+              // Create a new image
+              const newImg = new Image();
+              newImg.crossOrigin = "anonymous";
+              newImg.src = src;
+              
+              newImg.onload = () => {
+                localCache.set(src, newImg);
+                resolve(newImg);
+              };
+              
+              newImg.onerror = () => {
+                // Use the fallback from asset manager
+                const fallback = assetManager.getAsset(src) || new Image();
+                localCache.set(src, fallback);
+                resolve(fallback);
+              };
             }
           })
           .catch(() => {
-            assetManager.setLoadImmediateMode(false);
-            // Create a minimal fallback
-            const fallback = new Image();
-            fallback.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
-            localCache.set(src, fallback);
-            resolve(fallback);
+            // Create a new image as last resort
+            const fallbackImg = new Image();
+            fallbackImg.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
+            localCache.set(src, fallbackImg);
+            resolve(fallbackImg);
           });
       });
     }

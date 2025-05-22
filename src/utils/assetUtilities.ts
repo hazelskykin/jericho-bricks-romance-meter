@@ -91,6 +91,9 @@ export function fixAssetPath(path: string): string {
     path = `/${path}`;
   }
   
+  // Remove any duplicate slashes in the path
+  path = path.replace(/([^:])\/\/+/g, '$1/');
+  
   // Ensure jpg is used correctly for backgrounds
   if (path.includes('/backgrounds/') && !path.endsWith('.jpg')) {
     if (path.endsWith('.png')) {

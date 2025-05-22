@@ -1,17 +1,15 @@
 
 import { AssetCache, AssetStats, ProgressCallback } from './types';
-import { initPlaceholder, getPlaceholder, createCanvasFallback, getMinimalFallback } from './fallbackImage';
+import { getPlaceholder, createCanvasFallback } from './fallbackImage';
 
 /**
- * AssetManager - Handles loading and caching of game assets
+ * AssetManager - Simplified version that handles loading and caching of game assets
  */
 export class AssetManager {
   private static instance: AssetManager;
   private cache: AssetCache;
   private loading: boolean;
-  private loadingAttempts: Map<string, number>;
-  private loadImmediateMode: boolean;
-  private maxRetries: number = 1; // Reduced from previous value
+  private maxRetries: number = 2;
 
   private constructor() {
     this.cache = {
@@ -20,11 +18,6 @@ export class AssetManager {
       failed: new Set<string>()
     };
     this.loading = false;
-    this.loadingAttempts = new Map<string, number>();
-    this.loadImmediateMode = false;
-    
-    // Initialize placeholder image
-    initPlaceholder();
   }
 
   public static getInstance(): AssetManager {
@@ -33,16 +26,17 @@ export class AssetManager {
     }
     return AssetManager.instance;
   }
-  
+
   /**
    * Set immediate loading mode (useful for critical assets)
    */
   public setLoadImmediateMode(immediate: boolean): void {
-    this.loadImmediateMode = immediate;
+    // This is kept for API compatibility but doesn't do anything now
+    // We always load images immediately
   }
 
   /**
-   * Preload a batch of assets
+   * Preload a batch of assets with simplified approach
    */
   public preloadAssets(assets: string[], onProgress?: ProgressCallback): Promise<void> {
     return new Promise((resolve) => {
@@ -50,132 +44,92 @@ export class AssetManager {
       const validAssets = assets.filter(src => src);
       
       if (validAssets.length === 0) {
-        // No valid assets to load
-        resolve();
-        return;
-      }
-      
-      // Filter out already loaded or failed assets
-      const newAssets = validAssets.filter(src => 
-        !this.cache.loaded.has(src) && 
-        !this.cache.failed.has(src)
-      );
-
-      if (newAssets.length === 0) {
-        // All assets already loaded or failed
         resolve();
         return;
       }
 
-      // Load all assets at once in immediate mode
-      if (this.loadImmediateMode) {
-        Promise.all(
-          newAssets.map(src => this.loadSingleAsset(src))
-        ).then(() => {
-          if (onProgress) {
-            onProgress(newAssets.length, newAssets.length);
-          }
-          resolve();
-        });
-        return;
-      }
-
-      // Normal batch loading mode
-      const batchSize = 5;
       let loadedCount = 0;
-      
-      const loadNextBatch = (startIndex: number) => {
-        const endIndex = Math.min(startIndex + batchSize, newAssets.length);
-        const batch = newAssets.slice(startIndex, endIndex);
+      const totalCount = validAssets.length;
 
-        Promise.all(
-          batch.map(src => this.loadSingleAsset(src))
-        ).then(() => {
-          loadedCount += batch.length;
-          if (onProgress) {
-            onProgress(loadedCount, newAssets.length);
-          }
-
-          if (endIndex < newAssets.length) {
-            // Load next batch
-            loadNextBatch(endIndex);
-          } else {
-            // All assets processed
-            resolve();
-          }
-        });
-      };
-
-      // Start loading in batches
-      loadNextBatch(0);
+      // Load all assets in parallel for speed
+      validAssets.forEach(src => {
+        this.loadImage(src)
+          .then(() => {
+            loadedCount++;
+            if (onProgress) {
+              onProgress(loadedCount, totalCount);
+            }
+            if (loadedCount === totalCount) {
+              resolve();
+            }
+          })
+          .catch(() => {
+            // Count failed loads toward the total
+            loadedCount++;
+            if (onProgress) {
+              onProgress(loadedCount, totalCount);
+            }
+            if (loadedCount === totalCount) {
+              resolve();
+            }
+          });
+      });
     });
   }
 
   /**
-   * Load a single asset with simplified error handling
+   * Load a single image with proper error handling
    */
-  private loadSingleAsset(src: string): Promise<HTMLImageElement> {
-    return new Promise((resolve) => {
-      // Check if already loaded
+  private loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      // Return immediately if we already have this image
       if (this.cache.loaded.has(src)) {
         resolve(this.cache.images.get(src)!);
         return;
       }
-      
-      // Check if src is invalid
-      if (!src) {
-        this.cache.failed.add(src);
-        const fallback = getPlaceholder();
-        resolve(fallback);
-        return;
-      }
 
-      // Track loading attempts to avoid infinite retries
-      const attempts = this.loadingAttempts.get(src) || 0;
-      this.loadingAttempts.set(src, attempts + 1);
-      
-      // If too many attempts, use fallback immediately
-      if (attempts >= this.maxRetries) {
-        console.warn(`Too many attempts for ${src}, using fallback`);
-        this.cache.failed.add(src);
+      // If we've already tried and failed to load this image, use the fallback
+      if (this.cache.failed.has(src)) {
         const fallback = getPlaceholder();
         this.cache.images.set(src, fallback);
         resolve(fallback);
         return;
       }
 
-      // Load new image with reasonable timeout
+      // Create a new image
       const img = new Image();
       
+      // Set up a quick timeout to avoid hanging
+      const timeoutId = setTimeout(() => {
+        console.warn(`Image load timeout for: ${src}`);
+        this.cache.failed.add(src);
+        const fallback = createCanvasFallback(src);
+        this.cache.images.set(src, fallback);
+        resolve(fallback);
+      }, 5000);
+      
+      // Set up success handler
       img.onload = () => {
+        clearTimeout(timeoutId);
         this.cache.images.set(src, img);
         this.cache.loaded.add(src);
         console.log(`Successfully loaded image: ${src}`);
         resolve(img);
       };
       
+      // Set up error handler
       img.onerror = () => {
+        clearTimeout(timeoutId);
         console.error(`Failed to load image: ${src}`);
         this.cache.failed.add(src);
-        const fallback = getPlaceholder();
+        const fallback = createCanvasFallback(src);
         this.cache.images.set(src, fallback);
         resolve(fallback);
       };
       
-      // Set crossOrigin and src
+      // Actually start loading the image
       img.crossOrigin = "anonymous";
       img.src = src;
-      
-      // 3 second timeout reduced from previous 5s
-      setTimeout(() => {
-        if (!this.cache.loaded.has(src) && !this.cache.failed.has(src)) {
-          console.warn(`Image load timeout for: ${src}`);
-          this.cache.failed.add(src);
-          const fallback = getPlaceholder();
-          this.cache.images.set(src, fallback);
-          resolve(fallback);
-        }
-      }, 3000);
     });
   }
 
@@ -183,17 +137,7 @@ export class AssetManager {
    * Get an asset from the cache
    */
   public getAsset(src: string): HTMLImageElement | undefined {
-    const img = this.cache.images.get(src);
-    if (img) return img;
-    
-    // Return fallback if asset failed
-    if (this.didAssetFail(src)) {
-      const fallback = getPlaceholder();
-      this.cache.images.set(src, fallback);
-      return fallback;
-    }
-    
-    return undefined;
+    return this.cache.images.get(src);
   }
 
   /**
@@ -220,28 +164,17 @@ export class AssetManager {
       total: this.cache.loaded.size + this.cache.failed.size
     };
   }
-  
+
   /**
-   * Make the cache available globally for debugging
-   */
-  public exposeToWindow(): void {
-    if (typeof window !== 'undefined') {
-      (window as any).gameImageCache = this.cache.images;
-      (window as any).assetManager = this;
-    }
-  }
-  
-  /**
-   * Clear any failed assets and allow them to be retried
+   * Clear failed assets to allow retry
    */
   public clearFailedAssets(): void {
     this.cache.failed.clear();
-    this.loadingAttempts.clear();
     console.log("Cleared failed asset cache to allow retrying");
   }
-  
+
   /**
-   * Force success for an asset
+   * Force an asset to be considered successful
    */
   public forceAssetSuccess(src: string): void {
     if (!src) return;
@@ -253,7 +186,7 @@ export class AssetManager {
     
     // If not already loaded, add a placeholder
     if (!this.cache.loaded.has(src)) {
-      const placeholder = getPlaceholder();
+      const placeholder = createCanvasFallback(src);
       this.cache.images.set(src, placeholder);
       this.cache.loaded.add(src);
     }
