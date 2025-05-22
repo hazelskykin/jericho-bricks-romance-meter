@@ -11,6 +11,7 @@ import GameViewHeader from './GameViewHeader';
 import { useGameScene } from './useGameScene';
 import { CharacterId } from '@/types/game';
 import { toast } from 'sonner';
+import { assetManager } from '@/utils/assetManager';
 
 const StandardGameView: React.FC = () => {
   // Access game context with handlers
@@ -27,6 +28,7 @@ const StandardGameView: React.FC = () => {
   const [renderTrigger, setRenderTrigger] = useState(0);
   const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
+  const [backgroundReady, setBackgroundReady] = useState(false);
   const viewRef = useRef<HTMLDivElement>(null);
   
   // Use the scene loading hook to handle scene data and errors
@@ -44,33 +46,71 @@ const StandardGameView: React.FC = () => {
 
   // Force re-render if stuck, and a direct DOM update for a final fallback
   useEffect(() => {
+    // Reset state for new scene
+    setBackgroundReady(false);
+    setIsFullyLoaded(false);
+    setLoadingTimeout(false);
+    
     // Initial quick render to get things going
     const initialTimer = setTimeout(() => {
       console.log('Force re-render triggered to ensure proper display');
       setRenderTrigger(prev => prev + 1);
       
-      // Try to directly force the background to be visible
-      const bgElement = document.querySelector('.game-background img');
-      if (bgElement instanceof HTMLElement) {
-        bgElement.style.opacity = '1';
-        bgElement.style.visibility = 'visible';
-        bgElement.style.display = 'block';
-        bgElement.style.zIndex = '50'; // Higher z-index
-      }
+      // Try to force background display through direct DOM manipulation
+      const bgElements = document.querySelectorAll('.game-background img');
+      bgElements.forEach(el => {
+        if (el instanceof HTMLElement) {
+          el.style.opacity = '1';
+          el.style.visibility = 'visible';
+          el.style.display = 'block';
+          el.style.zIndex = '50'; // Higher z-index
+        }
+      });
       
       setIsFullyLoaded(true);
+      
+      // Force background ready after a short delay
+      setTimeout(() => {
+        setBackgroundReady(true);
+      }, 500);
+      
     }, 1000);
+    
+    // Set a medium timeout
+    const mediumTimer = setTimeout(() => {
+      setBackgroundReady(true); // Force background ready even if not truly ready
+      setIsFullyLoaded(true);   // Force fully loaded state
+    }, 3000);
     
     // Set a long timeout as a last resort for loading very slow assets
     const longTimer = setTimeout(() => {
       setLoadingTimeout(true);
+      
+      // Try to recover by forcing all background assets to be successful
+      if (scene?.background) {
+        assetManager.forceAssetSuccess(`/assets/backgrounds/${scene.background}.jpg`);
+      }
+      
     }, 5000);
     
     return () => {
       clearTimeout(initialTimer);
+      clearTimeout(mediumTimer);
       clearTimeout(longTimer);
     };
-  }, [sceneId]);
+  }, [sceneId, scene]);
+  
+  // Background loading effect
+  useEffect(() => {
+    if (scene?.background) {
+      // We'll consider background ready if the scene is loaded
+      const checkBgTimer = setTimeout(() => {
+        setBackgroundReady(true);
+      }, 1500);
+      
+      return () => clearTimeout(checkBgTimer);
+    }
+  }, [scene]);
   
   // Click handler for the background - advance dialogue
   const handleBackgroundClick = () => {
@@ -79,9 +119,24 @@ const StandardGameView: React.FC = () => {
     }
   };
   
+  // Handle retrying if background fails
+  const handleRetryBackground = () => {
+    // Clear asset manager's failed assets cache and try again
+    assetManager.clearFailedAssets();
+    setRenderTrigger(prev => prev + 1);
+    setLoadingTimeout(false);
+    setIsFullyLoaded(false);
+    setBackgroundReady(false);
+    
+    // Force a quick timeout to show loading again
+    setTimeout(() => {
+      setIsFullyLoaded(true);
+      setBackgroundReady(true);
+    }, 2000);
+  };
+  
   // Loading state or scene not found
   if (error || !scene) {
-    toast.error(`Failed to load scene: ${error || 'Unknown error'}`);
     return (
       <GameLoadingState 
         error={error} 
@@ -150,7 +205,7 @@ const StandardGameView: React.FC = () => {
           showChoices={showChoices}
           displayedChoices={displayedChoices}
           currentDialogue={currentDialogue}
-          loaded={loaded}
+          loaded={loaded && backgroundReady}
           onDialogueClick={handleDialogueClick}
           onChoiceClick={handleChoiceClick}
           characterId={characterId}
@@ -169,10 +224,16 @@ const StandardGameView: React.FC = () => {
         </div>
       )}
       
-      {/* Long timeout message */}
+      {/* Long timeout message with retry button */}
       {loadingTimeout && (
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-red-900 bg-opacity-90 p-4 rounded-lg z-50 shadow-lg">
-          <p className="text-white">Loading is taking longer than expected. Please refresh if the scene doesn't appear.</p>
+          <p className="text-white mb-2">Loading is taking longer than expected.</p>
+          <button 
+            onClick={handleRetryBackground}
+            className="bg-red-700 hover:bg-red-600 text-white px-4 py-1 rounded text-sm"
+          >
+            Try Again
+          </button>
         </div>
       )}
     </div>

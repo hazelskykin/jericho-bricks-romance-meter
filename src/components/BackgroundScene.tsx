@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { getImageCache } from '../utils/imageCache';
 import backgrounds from '../data/backgrounds';
 import { fixAssetPath } from '../utils/assetUtilities';
+import { assetManager } from '../utils/assetManager';
 
 interface BackgroundSceneProps {
   src?: string;
@@ -73,48 +74,78 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       console.log(`Background image ${currentSrc} found in cache`);
       setIsLoaded(true);
       
-      // Force REPAINT to ensure image shows
-      if (imgRef.current) {
-        const img = imgRef.current;
-        img.style.opacity = '1';
-        img.style.visibility = 'visible';
-        img.style.display = 'block';
-      }
+      // Force visibility
+      requestAnimationFrame(() => {
+        if (imgRef.current) {
+          const img = imgRef.current;
+          img.style.opacity = '1';
+          img.style.visibility = 'visible';
+          img.style.display = 'block';
+        }
+      });
     } else {
       console.log(`Loading background image: ${currentSrc}`);
       
-      const img = new Image();
-      
-      img.onload = () => {
-        console.log(`Image onLoad fired for ${currentSrc}`);
-        // Cache the loaded image
-        imageCache.set(currentSrc, img);
-        setIsLoaded(true);
-        setHasError(false);
-      };
-      
-      img.onerror = () => {
-        console.error(`Error loading background image: ${currentSrc}`);
+      // Try to preload it via assetManager first
+      assetManager.setLoadImmediateMode(true);
+      assetManager.preloadAssets([currentSrc]).then(() => {
+        assetManager.setLoadImmediateMode(false);
         
-        if (retryCount.current < 2) {
-          // Retry loading with a short delay
-          retryCount.current += 1;
-          loadAttempted.current = false;
-          setTimeout(() => {
-            loadAttempted.current = false;
-          }, 300);
-        } else {
-          // Use default background after retries
-          if (currentSrc !== '/assets/backgrounds/stonewich-cityscape.jpg') {
-            setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
-          }
-          setHasError(true);
-          setIsLoaded(true); // Still mark as loaded to avoid black screen
+        // Check if now in cache
+        if (assetManager.hasAsset(currentSrc)) {
+          setIsLoaded(true);
+          setHasError(false);
+          
+          // Force visibility
+          requestAnimationFrame(() => {
+            if (imgRef.current) {
+              const img = imgRef.current;
+              img.style.opacity = '1';
+              img.style.visibility = 'visible';
+              img.style.display = 'block';
+            }
+          });
+          
+          return;
         }
-      };
-      
-      img.crossOrigin = "anonymous";
-      img.src = currentSrc;
+        
+        // If not in assetManager cache, try regular image load
+        const img = new Image();
+        
+        img.onload = () => {
+          console.log(`Image onLoad fired for ${currentSrc}`);
+          // Cache the loaded image
+          imageCache.set(currentSrc, img);
+          setIsLoaded(true);
+          setHasError(false);
+        };
+        
+        img.onerror = () => {
+          console.error(`Error loading background image: ${currentSrc}`);
+          
+          if (retryCount.current < 2) {
+            // Retry loading with a short delay
+            retryCount.current += 1;
+            loadAttempted.current = false;
+            setTimeout(() => {
+              loadAttempted.current = false;
+            }, 300);
+          } else {
+            // Use default background after retries
+            if (currentSrc !== '/assets/backgrounds/stonewich-cityscape.jpg') {
+              setCurrentSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+            }
+            setHasError(true);
+            setIsLoaded(true); // Still mark as loaded to avoid black screen
+            
+            // Force asset success to avoid repeated failures
+            assetManager.forceAssetSuccess(currentSrc);
+          }
+        };
+        
+        img.crossOrigin = "anonymous";
+        img.src = currentSrc;
+      });
     }
   }, [currentSrc, imageCache]);
 
@@ -127,7 +158,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     }
   }, [currentSrc, prevSrc]);
 
-  // Render
+  // Render - improved with more visibility checks
   return (
     <div className="absolute inset-0 overflow-hidden bg-gray-900 z-10">
       {/* Background image */}
@@ -145,6 +176,16 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         }}
         onLoad={() => {
           setIsLoaded(true);
+          
+          // Force visibility on load
+          requestAnimationFrame(() => {
+            if (imgRef.current) {
+              const img = imgRef.current;
+              img.style.opacity = '1';
+              img.style.visibility = 'visible';
+              img.style.display = 'block';
+            }
+          });
         }}
         onError={() => {
           console.error(`Error on image element: ${currentSrc}`);
@@ -164,7 +205,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       {/* Error state */}
       {hasError && (
         <div className="absolute inset-0 z-15 bg-gray-800 bg-opacity-70 flex items-center justify-center text-white">
-          <p>Failed to load background</p>
+          <p>Using fallback background</p>
         </div>
       )}
     </div>

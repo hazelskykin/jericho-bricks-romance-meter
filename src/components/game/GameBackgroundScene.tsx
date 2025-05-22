@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import BackgroundScene from '../BackgroundScene';
 import { playBackgroundMusicForScene } from '@/utils/sound';
 import { useGame } from '@/context/GameContext';
+import { assetManager } from '@/utils/assetManager';
 
 interface GameBackgroundSceneProps {
   backgroundId: string;
@@ -16,14 +17,40 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
 }) => {
   const { isTransitioning, transitionDuration } = useGame();
   const [isVisible, setIsVisible] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const mountedRef = useRef(true);
   
   // Play background music when background changes
   useEffect(() => {
     if (backgroundId) {
       playBackgroundMusicForScene(backgroundId);
+      
+      // Preload the background image for this scene
+      const imagePath = `/assets/backgrounds/${backgroundId}.jpg`;
+      console.log(`Preloading background in GameBackgroundScene: ${imagePath}`);
+      
+      // Set immediate mode for priority backgrounds
+      assetManager.setLoadImmediateMode(true);
+      assetManager.preloadAssets([imagePath])
+        .then(() => {
+          assetManager.setLoadImmediateMode(false);
+          setImageLoaded(true);
+        })
+        .catch(() => {
+          assetManager.setLoadImmediateMode(false);
+          console.error(`Failed to preload background: ${imagePath}`);
+          
+          // After max retries, force success to show something
+          if (retryCount >= 2) {
+            assetManager.forceAssetSuccess(imagePath);
+            setImageLoaded(true);
+          } else {
+            setRetryCount(prev => prev + 1);
+          }
+        });
     }
-  }, [backgroundId]);
+  }, [backgroundId, retryCount]);
 
   // Force visibility after a delay to ensure rendering
   useEffect(() => {
@@ -46,11 +73,21 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
       mountedRef.current = false;
     };
   }, [backgroundId]);
+  
+  // Force visibility after some time regardless of load state
+  useEffect(() => {
+    const forceVisibilityTimer = setTimeout(() => {
+      setImageLoaded(true);
+      setIsVisible(true);
+    }, 1500);
+    
+    return () => clearTimeout(forceVisibilityTimer);
+  }, []);
 
   // Render a default placeholder if no backgroundId is provided
   if (!backgroundId) {
     return (
-      <div className="absolute inset-0 z-10 bg-gray-900 flex items-center justify-center text-white">
+      <div className="absolute inset-0 z-30 bg-gray-900 flex items-center justify-center text-white">
         <p>No background specified</p>
       </div>
     );
@@ -67,7 +104,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: transitionDuration / 2000 }}
-        style={{ zIndex: 10 }}
+        style={{ zIndex: 30 }}
       >
         <BackgroundScene 
           backgroundId={backgroundId} 

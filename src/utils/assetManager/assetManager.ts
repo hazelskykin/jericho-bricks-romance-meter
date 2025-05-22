@@ -12,6 +12,8 @@ export class AssetManager {
   private loadQueue: string[];
   private loading: boolean;
   private completionCallbacks: Array<() => void>;
+  private loadingAttempts: Map<string, number>;
+  private loadImmediateMode: boolean;
 
   private constructor() {
     this.cache = {
@@ -22,6 +24,9 @@ export class AssetManager {
     this.loadQueue = [];
     this.loading = false;
     this.completionCallbacks = [];
+    this.loadingAttempts = new Map<string, number>();
+    this.loadImmediateMode = false; // Default to batch loading
+    
     // Initialize placeholder image
     initPlaceholder();
   }
@@ -31,6 +36,13 @@ export class AssetManager {
       AssetManager.instance = new AssetManager();
     }
     return AssetManager.instance;
+  }
+  
+  /**
+   * Set immediate loading mode (useful for critical assets)
+   */
+  public setLoadImmediateMode(immediate: boolean): void {
+    this.loadImmediateMode = immediate;
   }
 
   /**
@@ -66,6 +78,22 @@ export class AssetManager {
       // Add new assets to the queue
       this.loadQueue.push(...newAssets);
 
+      // Immediate mode - load all at once for critical assets
+      if (this.loadImmediateMode) {
+        Promise.all(
+          this.loadQueue.map(src => this.loadSingleAsset(src))
+        ).then(() => {
+          if (onProgress) {
+            onProgress(this.loadQueue.length, this.loadQueue.length);
+          }
+          
+          this.loadQueue = [];
+          resolve();
+        });
+        return;
+      }
+
+      // Normal batch loading mode
       const loadNextBatch = (startIndex: number, batchSize: number) => {
         const endIndex = Math.min(startIndex + batchSize, this.loadQueue.length);
         const batch = this.loadQueue.slice(startIndex, endIndex);
@@ -116,8 +144,28 @@ export class AssetManager {
         return;
       }
 
+      // Track loading attempts for this asset
+      const attempts = this.loadingAttempts.get(src) || 0;
+      this.loadingAttempts.set(src, attempts + 1);
+      
+      // If too many attempts, go straight to fallback
+      if (attempts >= 2) {
+        console.warn(`Too many attempts for ${src}, using fallback`);
+        this.cache.failed.add(src);
+        this.useFallbackImage(src, resolve);
+        return;
+      }
+
       // Fix path with potential issues
       const fixedPath = fixPath(src);
+
+      // For lovable.dev preview, bypass real loading after first attempt
+      if (attempts > 0 && typeof window !== 'undefined' && 
+          window.location.hostname.includes('lovable.dev')) {
+        console.log(`Using quick fallback for lovable.dev preview: ${src}`);
+        this.useFallbackImage(src, resolve);
+        return;
+      }
 
       // Load new image
       const img = new Image();
@@ -141,26 +189,36 @@ export class AssetManager {
       // Use the potentially fixed path
       img.src = fixedPath;
       
-      // Add a timeout to prevent hanging - increased from 10s to 15s
+      // Add a timeout to prevent hanging - REDUCED from 15s to 5s to avoid long waits
       setTimeout(() => {
         if (!this.cache.loaded.has(src) && !this.cache.failed.has(src)) {
           console.warn(`Image load timeout for: ${fixedPath}`);
           this.cache.failed.add(src);
           this.useFallbackImage(src, resolve);
         }
-      }, 15000); // 15 second timeout
+      }, 5000); // 5 second timeout
     });
   }
   
   // Helper method to provide fallback image
   private useFallbackImage(src: string, resolve: (img: HTMLImageElement) => void) {
     try {
+      // First, check if we have a real image with the same name pattern
+      // This helps when the path is slightly wrong but the file exists
+      const similarImage = this.findSimilarImage(src);
+      if (similarImage) {
+        console.log(`Using similar image for: ${src}`);
+        this.cache.images.set(src, similarImage);
+        resolve(similarImage);
+        return;
+      }
+
       // Try to provide appropriate fallback based on path
       const placeholderImg = getPlaceholder();
       
       if (placeholderImg) {
         // Use placeholder
-        console.info(`Using placeholder for: ${src}`);
+        console.log(`Using placeholder for: ${src}`);
         this.cache.images.set(src, placeholderImg);
         resolve(placeholderImg);
       } else {
@@ -177,6 +235,27 @@ export class AssetManager {
       this.cache.images.set(src, lastResortImg);
       resolve(lastResortImg);
     }
+  }
+  
+  // Try to find a similar image in the cache
+  private findSimilarImage(src: string): HTMLImageElement | undefined {
+    // Don't try this if src is missing
+    if (!src) return undefined;
+    
+    // Extract filename without extension
+    const match = src.match(/\/([^\/]+)\.[^\.]+$/);
+    if (!match || !match[1]) return undefined;
+    
+    const baseFilename = match[1];
+    
+    // Look for any loaded image with a similar name
+    for (const [cachedSrc, img] of this.cache.images.entries()) {
+      if (cachedSrc.includes(baseFilename) && this.cache.loaded.has(cachedSrc)) {
+        return img;
+      }
+    }
+    
+    return undefined;
   }
 
   /**
@@ -226,7 +305,27 @@ export class AssetManager {
    */
   public clearFailedAssets(): void {
     this.cache.failed.clear();
+    this.loadingAttempts.clear();
     console.log("Cleared failed asset cache to allow retrying");
+  }
+  
+  /**
+   * Force success for an asset (useful for lovable.dev preview or when asset is optional)
+   */
+  public forceAssetSuccess(src: string): void {
+    if (!src) return;
+    
+    // If the asset already failed, remove from failed set
+    if (this.cache.failed.has(src)) {
+      this.cache.failed.delete(src);
+    }
+    
+    // If the asset isn't already marked as loaded, use a fallback image
+    if (!this.cache.loaded.has(src)) {
+      const placeholder = getPlaceholder() || createCanvasFallback(src);
+      this.cache.images.set(src, placeholder);
+      this.cache.loaded.add(src);
+    }
   }
 }
 

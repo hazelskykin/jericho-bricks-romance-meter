@@ -71,6 +71,26 @@ export function getFallbackAssetPath(originalPath: string): string {
   
   // Fallbacks for character expressions
   if (originalPath.includes('/characters/')) {
+    const character = originalPath.match(/\/characters\/([^-]+)/)?.[1];
+    if (character) {
+      // Character-specific fallbacks to handle neutral expressions
+      return `/assets/characters/${character}-neutral.png`;
+    }
+    
+    return '/assets/characters/maven-neutral.png';
+  }
+  
+  // Background fallbacks
+  if (originalPath.includes('/backgrounds/')) {
+    // For specific scene types
+    if (originalPath.includes('office')) {
+      return '/assets/backgrounds/stonewich-office.jpg';
+    }
+    if (originalPath.includes('city')) {
+      return '/assets/backgrounds/stonewich-cityscape.jpg';
+    }
+    
+    // Default background
     return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
@@ -84,6 +104,13 @@ export function fixAssetPath(path: string): string {
   if (!path) {
     console.warn('Empty path provided to fixAssetPath');
     return '/assets/backgrounds/stonewich-cityscape.jpg';
+  }
+  
+  // For lovable.dev preview, ensure we have absolute paths
+  if (typeof window !== 'undefined' && window.location.hostname.includes('lovable.dev')) {
+    if (!path.startsWith('/') && !path.startsWith('http') && !path.startsWith('data:')) {
+      path = `/${path}`;
+    }
   }
   
   // Make absolute paths for all asset paths that don't start with http or data:
@@ -150,6 +177,13 @@ export function verifyImageExists(imagePath: string): Promise<boolean> {
     img.src = imagePath;
     
     // Add timeout to prevent hanging
-    setTimeout(() => resolve(false), 5000);
+    setTimeout(() => resolve(false), 3000); // Reduced timeout from 5s to 3s
   });
+}
+
+/**
+ * Create a data URL for a colored rectangle to use as placeholder
+ */
+export function createColorPlaceholder(color: string = '#303050'): string {
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='${encodeURIComponent(color)}' /%3E%3C/svg%3E`;
 }
