@@ -8,6 +8,7 @@ interface ImageCache {
   get: (src: string) => HTMLImageElement | undefined;
   has: (src: string) => boolean;
   set: (src: string, img: HTMLImageElement) => void;
+  clear: () => void;
 }
 
 export const getImageCache = (): ImageCache => {
@@ -15,37 +16,56 @@ export const getImageCache = (): ImageCache => {
     return {
       get: () => undefined,
       has: () => false,
-      set: () => {}
+      set: () => {},
+      clear: () => {}
     };
   }
   
-  // Use assetManager internally
+  // Create a local cache that works reliably
+  const localCache = new Map<string, HTMLImageElement>();
+  
   return {
-    get: (src: string) => assetManager.getAsset(src),
-    has: (src: string) => assetManager.hasAsset(src),
+    get: (src: string) => {
+      // First try our local cache
+      if (localCache.has(src)) {
+        return localCache.get(src);
+      }
+      
+      // Then try the asset manager
+      const img = assetManager.getAsset(src);
+      if (img) {
+        localCache.set(src, img);
+      }
+      return img;
+    },
+    
+    has: (src: string) => {
+      return localCache.has(src) || assetManager.hasAsset(src);
+    },
+    
     set: (src: string, img: HTMLImageElement) => {
       if (img && src) {
-        // Direct access to asset manager's internal cache
-        assetManager.exposeToWindow();
+        // Add to our local cache first
+        localCache.set(src, img);
         
-        // Try both methods to ensure the image is cached
+        // Try to add to asset manager too
         try {
-          // Method 1: Directly add to asset manager's cache
-          const cache = (assetManager as any)['cache'];
-          if (cache) {
-            if (cache.images) cache.images.set(src, img);
-            if (cache.loaded) cache.loaded.add(src);
-          }
+          // Expose to window for debugging
+          assetManager.exposeToWindow();
           
-          // Method 2: Add via a fake preload
-          const tempArray = [src];
-          assetManager.preloadAssets(tempArray);
+          // Method 1: Add via the preload method
+          assetManager.preloadAssets([src]);
           
           console.log(`Image cached successfully: ${src}`);
         } catch (e) {
-          console.error(`Failed to cache image: ${src}`, e);
+          console.error(`Failed to cache image in asset manager: ${src}`, e);
+          // Our local cache still works even if asset manager fails
         }
       }
+    },
+    
+    clear: () => {
+      localCache.clear();
     }
   };
 };

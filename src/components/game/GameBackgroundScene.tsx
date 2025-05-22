@@ -50,7 +50,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   // Render a default placeholder if no backgroundId is provided
   if (!backgroundId) {
     return (
-      <div className="absolute inset-0 z-30 bg-gray-900 flex items-center justify-center text-white">
+      <div className="absolute inset-0 z-10 bg-gray-900 flex items-center justify-center text-white">
         <p>No background specified</p>
       </div>
     );
@@ -67,12 +67,12 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: transitionDuration / 2000 }}
-        style={{ zIndex: 30 }}
+        style={{ zIndex: 10 }}
       >
         <BackgroundScene 
           backgroundId={backgroundId} 
           priority={true}
-          className={isVisible ? 'opacity-100' : 'opacity-0'}
+          className={`w-full h-full ${isVisible ? 'opacity-100' : 'opacity-0'}`}
         />
       </motion.div>
     </AnimatePresence>
