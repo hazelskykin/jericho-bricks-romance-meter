@@ -10,7 +10,6 @@ import DialogHistorySection from './DialogHistorySection';
 import GameViewHeader from './GameViewHeader';
 import { useGameScene } from './useGameScene';
 import { CharacterId } from '@/types/game';
-import { toast } from 'sonner';
 import { assetManager } from '@/utils/assetManager';
 
 const StandardGameView: React.FC = () => {
@@ -25,7 +24,6 @@ const StandardGameView: React.FC = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [showAffection, setShowAffection] = useState(false);
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
-  const [renderTrigger, setRenderTrigger] = useState(0);
   const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   const [backgroundReady, setBackgroundReady] = useState(false);
@@ -44,73 +42,34 @@ const StandardGameView: React.FC = () => {
     activeCharacter
   } = useGameScene();
 
-  // Force re-render if stuck, and a direct DOM update for a final fallback
+  // Mark scene as loaded after initial render
   useEffect(() => {
     // Reset state for new scene
     setBackgroundReady(false);
     setIsFullyLoaded(false);
     setLoadingTimeout(false);
     
-    // Initial quick render to get things going
-    const initialTimer = setTimeout(() => {
-      console.log('Force re-render triggered to ensure proper display');
-      setRenderTrigger(prev => prev + 1);
-      
-      // Try to force background display through direct DOM manipulation
-      const bgElements = document.querySelectorAll('.game-background img');
-      bgElements.forEach(el => {
-        if (el instanceof HTMLElement) {
-          el.style.opacity = '1';
-          el.style.visibility = 'visible';
-          el.style.display = 'block';
-          el.style.zIndex = '50'; // Higher z-index
-        }
-      });
-      
+    // Mark as loaded after a short delay
+    const timer = setTimeout(() => {
+      setBackgroundReady(true);
       setIsFullyLoaded(true);
-      
-      // Force background ready after a short delay
-      setTimeout(() => {
-        setBackgroundReady(true);
-      }, 500);
-      
     }, 1000);
     
-    // Set a medium timeout
-    const mediumTimer = setTimeout(() => {
-      setBackgroundReady(true); // Force background ready even if not truly ready
-      setIsFullyLoaded(true);   // Force fully loaded state
-    }, 3000);
-    
-    // Set a long timeout as a last resort for loading very slow assets
+    // Set a longer timeout as a fallback
     const longTimer = setTimeout(() => {
       setLoadingTimeout(true);
       
-      // Try to recover by forcing all background assets to be successful
+      // Force all assets to be loaded
       if (scene?.background) {
         assetManager.forceAssetSuccess(`/assets/backgrounds/${scene.background}.jpg`);
       }
-      
     }, 5000);
     
     return () => {
-      clearTimeout(initialTimer);
-      clearTimeout(mediumTimer);
+      clearTimeout(timer);
       clearTimeout(longTimer);
     };
   }, [sceneId, scene]);
-  
-  // Background loading effect
-  useEffect(() => {
-    if (scene?.background) {
-      // We'll consider background ready if the scene is loaded
-      const checkBgTimer = setTimeout(() => {
-        setBackgroundReady(true);
-      }, 1500);
-      
-      return () => clearTimeout(checkBgTimer);
-    }
-  }, [scene]);
   
   // Click handler for the background - advance dialogue
   const handleBackgroundClick = () => {
@@ -123,7 +82,6 @@ const StandardGameView: React.FC = () => {
   const handleRetryBackground = () => {
     // Clear asset manager's failed assets cache and try again
     assetManager.clearFailedAssets();
-    setRenderTrigger(prev => prev + 1);
     setLoadingTimeout(false);
     setIsFullyLoaded(false);
     setBackgroundReady(false);
@@ -166,8 +124,7 @@ const StandardGameView: React.FC = () => {
   return (
     <div 
       ref={viewRef} 
-      className="relative h-screen w-full overflow-hidden bg-gray-900" 
-      key={`view-${sceneId}-${renderTrigger}`}
+      className="relative h-screen w-full overflow-hidden bg-gray-900"
     >
       {/* Background - clickable to advance dialogue */}
       {scene.background && (

@@ -59,38 +59,18 @@ export function getFallbackAssetPath(originalPath: string): string {
     return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
-  // For minigame assets, always return a city background
-  if (originalPath.includes('/minigame')) {
-    return '/assets/backgrounds/stonewich-cityscape.jpg';
-  }
-  
-  // General fallbacks for common assets
-  if (originalPath.includes('/audio/')) {
-    return 'data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAXAAAARW5jb2RlZCBieQBMYXZmNTguMjkuMTAwVFlFUgAAAAUAAAAyMDIzVFBFMQAAAAcAAABMYXZmNTgAVERSTQAAAAUAAAAyMDIzVENPTgAAAAsAAABTaWxlbnQgTVAzAFByaXYA0jAAAFRJVDIAAAANAAAAU2lsZW5jZSAwLjFzAENPTU0AAAAPAAAAZW5nAFNpbGVuY2UgMC4xAENPTU0AAAAdAAAATGF2ZjU4LjI5LjEwMCAoTGliYXYgNTguMTgpAENPTQAAAA8AAABlbmcAU2lsZW5jZSAwLjEAL/8=';
-  }
-  
-  // Fallbacks for character expressions
+  // For character expressions
   if (originalPath.includes('/characters/')) {
     const character = originalPath.match(/\/characters\/([^-]+)/)?.[1];
     if (character) {
-      // Character-specific fallbacks to handle neutral expressions
+      // Character-specific fallback to handle neutral expressions
       return `/assets/characters/${character}-neutral.png`;
     }
-    
     return '/assets/characters/maven-neutral.png';
   }
   
   // Background fallbacks
   if (originalPath.includes('/backgrounds/')) {
-    // For specific scene types
-    if (originalPath.includes('office')) {
-      return '/assets/backgrounds/stonewich-office.jpg';
-    }
-    if (originalPath.includes('city')) {
-      return '/assets/backgrounds/stonewich-cityscape.jpg';
-    }
-    
-    // Default background
     return '/assets/backgrounds/stonewich-cityscape.jpg';
   }
   
@@ -104,13 +84,6 @@ export function fixAssetPath(path: string): string {
   if (!path) {
     console.warn('Empty path provided to fixAssetPath');
     return '/assets/backgrounds/stonewich-cityscape.jpg';
-  }
-  
-  // For lovable.dev preview, ensure we have absolute paths
-  if (typeof window !== 'undefined' && window.location.hostname.includes('lovable.dev')) {
-    if (!path.startsWith('/') && !path.startsWith('http') && !path.startsWith('data:')) {
-      path = `/${path}`;
-    }
   }
   
   // Make absolute paths for all asset paths that don't start with http or data:
@@ -140,45 +113,7 @@ export function fixAssetPath(path: string): string {
     }
   }
   
-  // If a path incorrectly includes minigrames, correct it to minigames
-  if (path.includes('/minigrames/')) {
-    return path.replace('/minigrames/', '/minigames/');
-  }
-  
-  // Correct issue with "wall-tiles" vs "wall-tiles.jpg"
-  if (path.includes('wall-tiles') && !path.endsWith('.jpg')) {
-    return path.replace('wall-tiles', 'wall-tiles.jpg');
-  }
-  
   return path;
-}
-
-/**
- * Verify the existence of an image by checking its actual response
- */
-export function verifyImageExists(imagePath: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    if (!imagePath) {
-      resolve(false);
-      return;
-    }
-    
-    // For lovable.dev preview, we'll assume the image exists
-    // This prevents unnecessary network requests that might fail due to CORS
-    if (typeof window !== 'undefined' && window.location.hostname.includes('lovable.dev')) {
-      console.log('Assuming image exists in lovable.dev preview:', imagePath);
-      resolve(true);
-      return;
-    }
-    
-    const img = new Image();
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-    img.src = imagePath;
-    
-    // Add timeout to prevent hanging
-    setTimeout(() => resolve(false), 3000); // Reduced timeout from 5s to 3s
-  });
 }
 
 /**

@@ -1,10 +1,9 @@
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BackgroundScene from '../BackgroundScene';
 import { playBackgroundMusicForScene } from '@/utils/sound';
 import { useGame } from '@/context/GameContext';
-import { assetManager } from '@/utils/assetManager';
 
 interface GameBackgroundSceneProps {
   backgroundId: string;
@@ -16,73 +15,21 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   onBackgroundClick,
 }) => {
   const { isTransitioning, transitionDuration } = useGame();
-  const [isVisible, setIsVisible] = useState(true);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const mountedRef = useRef(true);
+  const [isVisible, setIsVisible] = useState(false);
   
   // Play background music when background changes
   useEffect(() => {
     if (backgroundId) {
       playBackgroundMusicForScene(backgroundId);
-      
-      // Preload the background image for this scene
-      const imagePath = `/assets/backgrounds/${backgroundId}.jpg`;
-      console.log(`Preloading background in GameBackgroundScene: ${imagePath}`);
-      
-      // Set immediate mode for priority backgrounds
-      assetManager.setLoadImmediateMode(true);
-      assetManager.preloadAssets([imagePath])
-        .then(() => {
-          assetManager.setLoadImmediateMode(false);
-          setImageLoaded(true);
-        })
-        .catch(() => {
-          assetManager.setLoadImmediateMode(false);
-          console.error(`Failed to preload background: ${imagePath}`);
-          
-          // After max retries, force success to show something
-          if (retryCount >= 2) {
-            assetManager.forceAssetSuccess(imagePath);
-            setImageLoaded(true);
-          } else {
-            setRetryCount(prev => prev + 1);
-          }
-        });
     }
-  }, [backgroundId, retryCount]);
-
-  // Force visibility after a delay to ensure rendering
-  useEffect(() => {
-    setIsVisible(false);
+    
+    // Force visibility after a short delay
     const timer = setTimeout(() => {
-      if (mountedRef.current) {
-        setIsVisible(true);
-      }
-    }, 50);
+      setIsVisible(true);
+    }, 100);
     
     return () => clearTimeout(timer);
   }, [backgroundId]);
-  
-  // Debug logging
-  useEffect(() => {
-    console.log(`GameBackgroundScene mounted with backgroundId: ${backgroundId}`);
-    
-    return () => {
-      console.log(`GameBackgroundScene unmounted with backgroundId: ${backgroundId}`);
-      mountedRef.current = false;
-    };
-  }, [backgroundId]);
-  
-  // Force visibility after some time regardless of load state
-  useEffect(() => {
-    const forceVisibilityTimer = setTimeout(() => {
-      setImageLoaded(true);
-      setIsVisible(true);
-    }, 1500);
-    
-    return () => clearTimeout(forceVisibilityTimer);
-  }, []);
 
   // Render a default placeholder if no backgroundId is provided
   if (!backgroundId) {
@@ -97,7 +44,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
     <AnimatePresence mode="wait">
       <motion.div
         key={backgroundId}
-        className="absolute inset-0 bg-gray-900"
+        className="absolute inset-0 bg-gray-900 game-background"
         onClick={onBackgroundClick}
         data-testid="game-background"
         initial={{ opacity: isTransitioning ? 0 : 1 }}

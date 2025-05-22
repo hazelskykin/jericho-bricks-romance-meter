@@ -5,13 +5,12 @@
 
 /**
  * Fix paths with capitalization issues
- * Enhanced to handle null/undefined values safely
  */
 export function fixPath(src: string): string {
   // Safety check for null or undefined
   if (!src) {
     console.warn('Empty or undefined asset path provided');
-    return ''; // Return empty string instead of trying to work with undefined
+    return ''; 
   }
   
   return src;

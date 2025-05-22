@@ -3,9 +3,8 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { useGame } from '@/context/GameContext';
 import { allScenes } from '@/data/scenes';
 import { CharacterId } from '@/types/game';
-import { toast } from 'sonner';
 import { assetManager } from '@/utils/assetManager';
-import backgrounds from '@/data/backgrounds'; // Direct import
+import backgrounds from '@/data/backgrounds';
 
 /**
  * Custom hook to manage game scene loading and error handling
@@ -17,7 +16,6 @@ export const useGameScene = () => {
   const [fallbackTriggered, setFallbackTriggered] = useState(false);
   const [activeCharacter, setActiveCharacter] = useState<CharacterId | null>(null);
   const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const loadAttemptedRef = useRef(false);
   
   const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
   
@@ -77,7 +75,10 @@ export const useGameScene = () => {
   useEffect(() => {
     if (scene?.background) {
       const backgroundId = scene.background;
-      // Preload the background image directly
+      
+      // Ensure immediate loading mode for background images
+      assetManager.setLoadImmediateMode(true);
+      
       try {
         if (backgrounds && backgrounds[backgroundId]) {
           const bgData = backgrounds[backgroundId];
@@ -85,39 +86,34 @@ export const useGameScene = () => {
           
           if (imagePath) {
             console.log(`Preloading background image: ${imagePath} for scene ${sceneId}`);
-            assetManager.preloadAssets([imagePath], (loaded, total) => {
-              if (loaded === total) {
-                console.log(`Successfully preloaded background: ${imagePath}`);
-              }
+            
+            // Preload the asset
+            assetManager.preloadAssets([imagePath]).then(() => {
+              console.log(`Successfully preloaded background: ${imagePath}`);
             });
-          } else {
-            console.warn(`Image path is empty for background ${backgroundId}`);
           }
-        } else {
-          console.warn(`Background not found for ID: ${backgroundId}`);
         }
       } catch (err) {
         console.error(`Error preloading background: ${err}`);
+      } finally {
+        // Reset loading mode
+        assetManager.setLoadImmediateMode(false);
       }
     }
   }, [scene, sceneId]);
   
-  // Simplified loading mechanism with timeout protection
+  // Simple loading mechanism
   useEffect(() => {
-    // Prevent repeated loading attempts for the same scene
-    if (loadAttemptedRef.current && loaded) return;
-    
     // Clear any existing timeout
     if (loadingTimeoutRef.current) {
       clearTimeout(loadingTimeoutRef.current);
     }
     
     if (scene) {
-      // Mark as not loaded when scene changes
+      // Mark as not loaded initially
       setLoaded(false);
-      loadAttemptedRef.current = true;
       
-      // Timeout to allow for transition effects and asset loading
+      // Allow a short time for resources to load
       loadingTimeoutRef.current = setTimeout(() => {
         setLoaded(true);
         loadingTimeoutRef.current = null;
@@ -131,11 +127,6 @@ export const useGameScene = () => {
       }
     };
   }, [scene, sceneId]);
-
-  // Reset loading attempts when scene changes
-  useEffect(() => {
-    loadAttemptedRef.current = false;
-  }, [sceneId]);
 
   return {
     scene,
