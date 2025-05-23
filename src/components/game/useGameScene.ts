@@ -81,6 +81,10 @@ export const useGameScene = () => {
       image.onload = () => {
         console.log(`Successfully preloaded background: /assets/backgrounds/${scene.background}.jpg`);
       };
+
+      image.onerror = () => {
+        console.error(`Failed to preload background: /assets/backgrounds/${scene.background}.jpg`);
+      };
     }
   }, [scene, sceneId]);
   

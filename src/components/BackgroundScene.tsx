@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import backgrounds from '../data/backgrounds';
 
 interface BackgroundSceneProps {
@@ -34,31 +34,34 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
   // Use default if no valid source is found
   const finalSrc = imageSrc || '/assets/backgrounds/stonewich-cityscape.jpg';
   
+  // Clear any error state when the source changes
+  useEffect(() => {
+    setLoadError(false);
+    setIsLoaded(false);
+  }, [finalSrc]);
+
   return (
-    <div className="absolute inset-0 overflow-hidden bg-gray-900 z-10">
-      {/* Loading indicator (shows while loading) */}
-      {!isLoaded && !loadError && (
-        <div className="absolute inset-0 z-10 bg-gray-900 flex items-center justify-center text-white">
-          <p>Loading background...</p>
-        </div>
-      )}
-      
-      {/* The actual background image */}
+    <div className="absolute inset-0 overflow-hidden bg-gray-900 z-0">
+      {/* Background image - Always render in DOM but control opacity */}
       <img
         src={finalSrc}
         alt={alt}
         loading={priority ? 'eager' : 'lazy'}
-        className={`absolute inset-0 w-full h-full object-cover z-20 transition-opacity duration-500 ${
-          isLoaded ? 'opacity-100' : 'opacity-0'
-        } ${className}`}
+        className={`absolute inset-0 w-full h-full object-cover z-10 ${className}`}
+        style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 500ms' }}
         onLoad={() => setIsLoaded(true)}
         onError={() => {
           console.error(`Error loading background: ${finalSrc}`);
           setLoadError(true);
-          // Still set loaded to true so we show something
-          setIsLoaded(true);
         }}
       />
+      
+      {/* Loading indicator (shows while loading) */}
+      {!isLoaded && !loadError && (
+        <div className="absolute inset-0 z-20 bg-gray-900 flex items-center justify-center text-white">
+          <p>Loading background...</p>
+        </div>
+      )}
       
       {/* Error message (only shows if there was an error and image is not loaded) */}
       {loadError && (

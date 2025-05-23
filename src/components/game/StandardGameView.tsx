@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import { Loader2 } from 'lucide-react';
@@ -124,15 +125,15 @@ const StandardGameView: React.FC = () => {
       ref={viewRef} 
       className="relative h-screen w-full overflow-hidden bg-gray-900"
     >
-      {/* Background - clickable to advance dialogue */}
-      {scene.background && (
-        <div className="game-background absolute inset-0" style={{ zIndex: 30 }}>
+      {/* Background layer - must have lower z-index */}
+      <div className="absolute inset-0 z-0">
+        {scene.background && (
           <GameBackgroundScene 
             backgroundId={scene.background} 
             onBackgroundClick={handleBackgroundClick} 
           />
-        </div>
-      )}
+        )}
+      </div>
       
       {/* Dialog History Section */}
       <DialogHistorySection 
@@ -154,7 +155,7 @@ const StandardGameView: React.FC = () => {
       {/* Sound Toggle */}
       <GameViewHeader />
       
-      {/* Dialog Box or Choice Menu */}
+      {/* Dialog Box or Choice Menu - must have higher z-index */}
       <div className="absolute inset-x-0 bottom-0 z-50">
         <GameDialogueSystem
           showChoices={showChoices}
@@ -170,7 +171,7 @@ const StandardGameView: React.FC = () => {
       
       {/* Loading overlay - disappears after initial loading */}
       {!isFullyLoaded && (
-        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center z-40">
           <div className="bg-gray-900 p-6 rounded-lg max-w-md text-center">
             <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-[#9b87f5]" />
             <p className="text-white text-xl">Loading scene assets...</p>

@@ -29,6 +29,9 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
       
       // Reset error state when background changes
       setLoadError(false);
+      setIsLoaded(false);
+      
+      console.log(`Loading background: ${backgroundId}`);
     }
   }, [backgroundId]);
 
@@ -57,7 +60,7 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   // Render a default placeholder if no backgroundId is provided
   if (!backgroundId) {
     return (
-      <div className="absolute inset-0 z-10 bg-gray-900 flex items-center justify-center text-white">
+      <div className="absolute inset-0 z-0 bg-gray-900 flex items-center justify-center text-white">
         <p>No background specified</p>
       </div>
     );
@@ -74,11 +77,21 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: transitionDuration / 2000 }}
-        style={{ zIndex: 10 }}
+        style={{ zIndex: 0 }}
       >
-        {/* Loading indicator */}
+        {/* Background image - Always render in DOM but control opacity */}
+        <img 
+          src={imagePath}
+          alt={`Background: ${backgroundId}`} 
+          className="w-full h-full object-cover transition-opacity duration-500"
+          style={{ opacity: isLoaded ? 1 : 0 }}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+        />
+
+        {/* Loading indicator - show only when loading */}
         {!isLoaded && !loadError && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-20">
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
             <div className="bg-gray-800 p-4 rounded-md text-white">
               <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
               <p>Loading background...</p>
@@ -86,18 +99,9 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
           </div>
         )}
 
-        {/* Background image */}
-        <img 
-          src={imagePath}
-          alt={`Background: ${backgroundId}`} 
-          className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-        />
-
         {/* Error overlay with retry button */}
         {loadError && (
-          <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-10">
             <p className="text-white mb-4">Loading is taking longer than expected.</p>
             <button
               onClick={handleRetry}
