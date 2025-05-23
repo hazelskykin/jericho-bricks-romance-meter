@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { useGame } from '@/context/GameContext';
 import { allScenes } from '@/data/scenes';
 import { CharacterId } from '@/types/game';
+import { assetManager } from '@/utils/assetManager';
 
 /**
  * Custom hook to manage game scene loading and error handling
@@ -13,7 +14,9 @@ export const useGameScene = () => {
   const [error, setError] = useState<string | null>(null);
   const [fallbackTriggered, setFallbackTriggered] = useState(false);
   const [activeCharacter, setActiveCharacter] = useState<CharacterId | null>(null);
+  const [backgroundReady, setBackgroundReady] = useState(false);
   const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const backgroundTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const { currentScene: sceneId, dialogueIndex, showChoices } = gameState;
   
@@ -69,23 +72,53 @@ export const useGameScene = () => {
     }
   }, [currentDialogue]);
   
-  // Preload the current scene's background image
+  // Preload the current scene's background image with enhanced error handling
   useEffect(() => {
     if (scene?.background) {
+      const backgroundPath = `/assets/backgrounds/${scene.background}.jpg`;
       console.log(`Preloading background image: ${scene.background} for scene ${sceneId}`);
+      setBackgroundReady(false);
+      
+      // Clear any existing background timeout
+      if (backgroundTimeoutRef.current) {
+        clearTimeout(backgroundTimeoutRef.current);
+      }
       
       // Preload the image
       const image = new Image();
-      image.src = `/assets/backgrounds/${scene.background}.jpg`;
+      image.crossOrigin = "anonymous";
+      image.src = backgroundPath;
       
       image.onload = () => {
-        console.log(`Successfully preloaded background: /assets/backgrounds/${scene.background}.jpg`);
+        console.log(`Successfully preloaded background: ${backgroundPath}`);
+        assetManager.forceAssetSuccess(backgroundPath);
+        setBackgroundReady(true);
       };
 
       image.onerror = () => {
-        console.error(`Failed to preload background: /assets/backgrounds/${scene.background}.jpg`);
+        console.error(`Failed to preload background: ${backgroundPath}`);
+        
+        // Force background to be ready after a timeout regardless of load status
+        backgroundTimeoutRef.current = setTimeout(() => {
+          console.log(`Forcing background ready state for: ${backgroundPath}`);
+          assetManager.forceAssetSuccess(backgroundPath);
+          setBackgroundReady(true);
+        }, 2000);
       };
+      
+      // Add a fallback timeout in case neither onload nor onerror fire
+      backgroundTimeoutRef.current = setTimeout(() => {
+        console.log(`Background load timeout reached for: ${backgroundPath}`);
+        assetManager.forceAssetSuccess(backgroundPath);
+        setBackgroundReady(true);
+      }, 4000);
     }
+    
+    return () => {
+      if (backgroundTimeoutRef.current) {
+        clearTimeout(backgroundTimeoutRef.current);
+      }
+    };
   }, [scene, sceneId]);
   
   // Simple loading mechanism
@@ -123,6 +156,7 @@ export const useGameScene = () => {
     dialogHistory,
     displayedChoices,
     showChoices,
-    activeCharacter
+    activeCharacter,
+    backgroundReady
   };
 };

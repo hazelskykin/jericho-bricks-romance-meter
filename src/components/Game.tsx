@@ -17,6 +17,7 @@ const Game: React.FC = () => {
   const [soundInitialized, setSoundInitialized] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [forcedSceneId, setForcedSceneId] = useState<string | null>(null);
+  const [menuTransitioning, setMenuTransitioning] = useState(false);
   
   // Initialize game scenes
   const {
@@ -61,7 +62,7 @@ const Game: React.FC = () => {
     }
   }, [soundInitialized]);
 
-  // Handle game start - make this a proper function that handles the entire flow
+  // Handle game start with better transition
   const handleStartGame = () => {
     console.log('Starting new game');
     
@@ -76,10 +77,13 @@ const Game: React.FC = () => {
       console.warn('Failed to play sound:', error);
     }
     
-    // First mark the game as started to trigger menu hiding
+    // Mark that we're transitioning from menu to game
+    setMenuTransitioning(true);
+    
+    // Mark the game as started to trigger state changes
     setGameStarted(true);
     
-    // Immediately hide the main menu first to avoid flicker
+    // First hide the main menu for a clean transition
     setShowMainMenu(false);
     
     // Force scene transition to intro
@@ -92,7 +96,12 @@ const Game: React.FC = () => {
       
       // Show toast indicating game started
       toast.success('Starting new game...');
-    }, 50);
+      
+      // Clear transition flag after a short delay
+      setTimeout(() => {
+        setMenuTransitioning(false);
+      }, 1000);
+    }, 100);
   };
 
   // Handle game reset
@@ -144,6 +153,10 @@ const Game: React.FC = () => {
         </div>
       )}
       
+      {menuTransitioning && (
+        <div className="fixed inset-0 bg-black z-50 transition-opacity duration-500 animate-fade-in" />
+      )}
+      
       {showMainMenu ? (
         <MainMenu 
           onNewGame={handleStartGame} 
@@ -151,10 +164,12 @@ const Game: React.FC = () => {
           onAbout={handleAbout}
         />
       ) : (
-        <GameInterface 
-          initialSceneId={forcedSceneId || currentSceneId} 
-          gameStarted={gameStarted} 
-        />
+        <div style={{ visibility: 'visible', display: 'block' }} className="w-full h-full">
+          <GameInterface 
+            initialSceneId={forcedSceneId || currentSceneId} 
+            gameStarted={gameStarted} 
+          />
+        </div>
       )}
       
       {/* Dev Scene Jumper - always available */}

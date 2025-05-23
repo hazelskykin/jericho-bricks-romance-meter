@@ -10,6 +10,7 @@ export class AssetManager {
   private cache: AssetCache;
   private loading: boolean;
   private maxRetries: number = 2;
+  private timeoutDuration: number = 8000; // Increased timeout
 
   private constructor() {
     this.cache = {
@@ -82,6 +83,14 @@ export class AssetManager {
    */
   private loadImage(src: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
+      if (!src) {
+        console.error("Attempted to load image with empty src");
+        const fallback = createCanvasFallback("empty-src");
+        this.cache.images.set("empty-src", fallback);
+        resolve(fallback);
+        return;
+      }
+      
       // Return immediately if we already have this image
       if (this.cache.loaded.has(src)) {
         resolve(this.cache.images.get(src)!);
@@ -90,7 +99,7 @@ export class AssetManager {
 
       // If we've already tried and failed to load this image, use the fallback
       if (this.cache.failed.has(src)) {
-        const fallback = getPlaceholder();
+        const fallback = createCanvasFallback(src);
         this.cache.images.set(src, fallback);
         resolve(fallback);
         return;
@@ -106,7 +115,7 @@ export class AssetManager {
         const fallback = createCanvasFallback(src);
         this.cache.images.set(src, fallback);
         resolve(fallback);
-      }, 5000);
+      }, this.timeoutDuration);
       
       // Set up success handler
       img.onload = () => {
@@ -137,6 +146,7 @@ export class AssetManager {
    * Get an asset from the cache
    */
   public getAsset(src: string): HTMLImageElement | undefined {
+    if (!src) return undefined;
     return this.cache.images.get(src);
   }
 
@@ -144,6 +154,7 @@ export class AssetManager {
    * Check if an asset is loaded
    */
   public hasAsset(src: string): boolean {
+    if (!src) return false;
     return this.cache.loaded.has(src);
   }
 
@@ -151,6 +162,7 @@ export class AssetManager {
    * Check if an asset failed to load
    */
   public didAssetFail(src: string): boolean {
+    if (!src) return false;
     return this.cache.failed.has(src);
   }
 
@@ -189,7 +201,19 @@ export class AssetManager {
       const placeholder = createCanvasFallback(src);
       this.cache.images.set(src, placeholder);
       this.cache.loaded.add(src);
+      console.log(`Forced success for asset: ${src}`);
     }
+  }
+  
+  /**
+   * Get debug information about an asset
+   */
+  public getAssetDebugInfo(src: string): {exists: boolean, loaded: boolean, failed: boolean} {
+    return {
+      exists: this.cache.images.has(src),
+      loaded: this.cache.loaded.has(src),
+      failed: this.cache.failed.has(src)
+    };
   }
 }
 

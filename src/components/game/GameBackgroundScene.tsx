@@ -1,8 +1,9 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { playBackgroundMusicForScene } from '@/utils/sound';
 import { useGame } from '@/context/GameContext';
+import BackgroundScene from '../BackgroundScene';
 
 interface GameBackgroundSceneProps {
   backgroundId: string;
@@ -14,48 +15,20 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   onBackgroundClick,
 }) => {
   const { isTransitioning, transitionDuration } = useGame();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [loadError, setLoadError] = useState(false);
-  const [imagePath, setImagePath] = useState('');
   
-  // Set up the image path and play background music when background changes
-  useEffect(() => {
+  // Set up background music when background changes
+  React.useEffect(() => {
     if (backgroundId) {
-      // Set the image path
-      setImagePath(`/assets/backgrounds/${backgroundId}.jpg`);
-      
       // Play background music for this scene
       playBackgroundMusicForScene(backgroundId);
       
-      // Reset error state when background changes
-      setLoadError(false);
-      setIsLoaded(false);
-      
-      console.log(`Loading background: ${backgroundId}`);
+      console.log(`GameBackgroundScene mounting with background: ${backgroundId}`);
     }
-  }, [backgroundId]);
-
-  // Handle image load success
-  const handleImageLoad = () => {
-    console.log(`Successfully loaded background: ${backgroundId}`);
-    setIsLoaded(true);
-    setLoadError(false);
-  };
-
-  // Handle image load error
-  const handleImageError = () => {
-    console.error(`Failed to load background: ${backgroundId}`);
-    setLoadError(true);
-  };
-
-  // Handle retry when loading fails
-  const handleRetry = () => {
-    setIsLoaded(false);
-    setLoadError(false);
     
-    // Force a reload by updating the key with a timestamp
-    setImagePath(`/assets/backgrounds/${backgroundId}.jpg?t=${Date.now()}`);
-  };
+    return () => {
+      console.log(`GameBackgroundScene unmounting: ${backgroundId}`);
+    };
+  }, [backgroundId]);
 
   // Render a default placeholder if no backgroundId is provided
   if (!backgroundId) {
@@ -79,38 +52,12 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
         transition={{ duration: transitionDuration / 2000 }}
         style={{ zIndex: 0 }}
       >
-        {/* Background image - Always render in DOM but control opacity */}
-        <img 
-          src={imagePath}
-          alt={`Background: ${backgroundId}`} 
-          className="w-full h-full object-cover transition-opacity duration-500"
-          style={{ opacity: isLoaded ? 1 : 0 }}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
+        <BackgroundScene 
+          backgroundId={backgroundId} 
+          priority={true}
+          onLoad={() => console.log(`Background loaded in GameBackgroundScene: ${backgroundId}`)}
+          onError={() => console.error(`Background failed in GameBackgroundScene: ${backgroundId}`)}
         />
-
-        {/* Loading indicator - show only when loading */}
-        {!isLoaded && !loadError && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
-            <div className="bg-gray-800 p-4 rounded-md text-white">
-              <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
-              <p>Loading background...</p>
-            </div>
-          </div>
-        )}
-
-        {/* Error overlay with retry button */}
-        {loadError && (
-          <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-10">
-            <p className="text-white mb-4">Loading is taking longer than expected.</p>
-            <button
-              onClick={handleRetry}
-              className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded"
-            >
-              Try Again
-            </button>
-          </div>
-        )}
       </motion.div>
     </AnimatePresence>
   );

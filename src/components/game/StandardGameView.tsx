@@ -26,7 +26,6 @@ const StandardGameView: React.FC = () => {
   const [activeView, setActiveView] = useState<'game' | 'tester'>('game');
   const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
-  const [backgroundReady, setBackgroundReady] = useState(false);
   const viewRef = useRef<HTMLDivElement>(null);
   
   // Use the scene loading hook to handle scene data and errors
@@ -39,29 +38,31 @@ const StandardGameView: React.FC = () => {
     dialogHistory,
     displayedChoices,
     showChoices,
-    activeCharacter
+    activeCharacter,
+    backgroundReady
   } = useGameScene();
 
   // Mark scene as loaded after initial render
   useEffect(() => {
     // Reset state for new scene
-    setBackgroundReady(false);
     setIsFullyLoaded(false);
     setLoadingTimeout(false);
     
-    // Mark as loaded after a short delay
+    // Shorter initial loading delay
     const timer = setTimeout(() => {
-      setBackgroundReady(true);
       setIsFullyLoaded(true);
-    }, 1000);
+    }, 800);
     
     // Set a longer timeout as a fallback
     const longTimer = setTimeout(() => {
+      console.log("Loading timeout reached, forcing scene to display");
       setLoadingTimeout(true);
+      setIsFullyLoaded(true);
       
       // Force all assets to be loaded
       if (scene?.background) {
         assetManager.forceAssetSuccess(`/assets/backgrounds/${scene.background}.jpg`);
+        console.log(`Forced asset success for background: ${scene.background}`);
       }
     }, 5000);
     
@@ -83,12 +84,10 @@ const StandardGameView: React.FC = () => {
     // Reset loading states
     setLoadingTimeout(false);
     setIsFullyLoaded(false);
-    setBackgroundReady(false);
     
     // Force a quick timeout to show loading again
     setTimeout(() => {
       setIsFullyLoaded(true);
-      setBackgroundReady(true);
     }, 2000);
   };
   
@@ -124,9 +123,10 @@ const StandardGameView: React.FC = () => {
     <div 
       ref={viewRef} 
       className="relative h-screen w-full overflow-hidden bg-gray-900"
+      data-testid="standard-game-view"
     >
       {/* Background layer - must have lower z-index */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-gray-900" style={{ visibility: 'visible', display: 'block' }}>
         {scene.background && (
           <GameBackgroundScene 
             backgroundId={scene.background} 
