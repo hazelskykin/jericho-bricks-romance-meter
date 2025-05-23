@@ -3,8 +3,6 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { useGame } from '@/context/GameContext';
 import { allScenes } from '@/data/scenes';
 import { CharacterId } from '@/types/game';
-import { assetManager } from '@/utils/assetManager';
-import backgrounds from '@/data/backgrounds';
 
 /**
  * Custom hook to manage game scene loading and error handling
@@ -74,31 +72,15 @@ export const useGameScene = () => {
   // Preload the current scene's background image
   useEffect(() => {
     if (scene?.background) {
-      const backgroundId = scene.background;
+      console.log(`Preloading background image: ${scene.background} for scene ${sceneId}`);
       
-      // Ensure immediate loading mode for background images
-      assetManager.setLoadImmediateMode(true);
+      // Preload the image
+      const image = new Image();
+      image.src = `/assets/backgrounds/${scene.background}.jpg`;
       
-      try {
-        if (backgrounds && backgrounds[backgroundId]) {
-          const bgData = backgrounds[backgroundId];
-          const imagePath = typeof bgData === 'string' ? bgData : bgData.image;
-          
-          if (imagePath) {
-            console.log(`Preloading background image: ${imagePath} for scene ${sceneId}`);
-            
-            // Preload the asset
-            assetManager.preloadAssets([imagePath]).then(() => {
-              console.log(`Successfully preloaded background: ${imagePath}`);
-            });
-          }
-        }
-      } catch (err) {
-        console.error(`Error preloading background: ${err}`);
-      } finally {
-        // Reset loading mode
-        assetManager.setLoadImmediateMode(false);
-      }
+      image.onload = () => {
+        console.log(`Successfully preloaded background: /assets/backgrounds/${scene.background}.jpg`);
+      };
     }
   }, [scene, sceneId]);
   

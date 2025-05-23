@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import { Loader2 } from 'lucide-react';
@@ -80,8 +79,7 @@ const StandardGameView: React.FC = () => {
   
   // Handle retrying if background fails
   const handleRetryBackground = () => {
-    // Clear asset manager's failed assets cache and try again
-    assetManager.clearFailedAssets();
+    // Reset loading states
     setLoadingTimeout(false);
     setIsFullyLoaded(false);
     setBackgroundReady(false);
@@ -162,7 +160,7 @@ const StandardGameView: React.FC = () => {
           showChoices={showChoices}
           displayedChoices={displayedChoices}
           currentDialogue={currentDialogue}
-          loaded={loaded && backgroundReady}
+          loaded={loaded && isFullyLoaded}
           onDialogueClick={handleDialogueClick}
           onChoiceClick={handleChoiceClick}
           characterId={characterId}

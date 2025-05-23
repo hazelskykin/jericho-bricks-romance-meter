@@ -1,10 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import BackgroundScene from '../BackgroundScene';
 import { playBackgroundMusicForScene } from '@/utils/sound';
 import { useGame } from '@/context/GameContext';
-import { assetManager } from '@/utils/assetManager';
 
 interface GameBackgroundSceneProps {
   backgroundId: string;
@@ -16,28 +14,45 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
   onBackgroundClick,
 }) => {
   const { isTransitioning, transitionDuration } = useGame();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
+  const [imagePath, setImagePath] = useState('');
   
-  // Play background music when background changes
+  // Set up the image path and play background music when background changes
   useEffect(() => {
     if (backgroundId) {
+      // Set the image path
+      setImagePath(`/assets/backgrounds/${backgroundId}.jpg`);
+      
+      // Play background music for this scene
       playBackgroundMusicForScene(backgroundId);
+      
+      // Reset error state when background changes
+      setLoadError(false);
     }
-    
-    // Force visibility after a short delay
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
-    
-    // Pre-emptively mark background as loaded to ensure game can progress
-    if (backgroundId) {
-      const imagePath = `/assets/backgrounds/${backgroundId}.jpg`;
-      assetManager.forceAssetSuccess(imagePath);
-    }
-    
-    return () => clearTimeout(timer);
   }, [backgroundId]);
+
+  // Handle image load success
+  const handleImageLoad = () => {
+    console.log(`Successfully loaded background: ${backgroundId}`);
+    setIsLoaded(true);
+    setLoadError(false);
+  };
+
+  // Handle image load error
+  const handleImageError = () => {
+    console.error(`Failed to load background: ${backgroundId}`);
+    setLoadError(true);
+  };
+
+  // Handle retry when loading fails
+  const handleRetry = () => {
+    setIsLoaded(false);
+    setLoadError(false);
+    
+    // Force a reload by updating the key with a timestamp
+    setImagePath(`/assets/backgrounds/${backgroundId}.jpg?t=${Date.now()}`);
+  };
 
   // Render a default placeholder if no backgroundId is provided
   if (!backgroundId) {
@@ -47,16 +62,6 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
       </div>
     );
   }
-
-  const handleRetry = () => {
-    setLoadError(false);
-    assetManager.clearFailedAssets();
-    setIsVisible(false);
-    // Force visibility after a short delay
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 300);
-  };
 
   return (
     <AnimatePresence mode="wait">
@@ -71,21 +76,34 @@ const GameBackgroundScene: React.FC<GameBackgroundSceneProps> = ({
         transition={{ duration: transitionDuration / 2000 }}
         style={{ zIndex: 10 }}
       >
-        <BackgroundScene 
-          backgroundId={backgroundId} 
-          priority={true}
-          className={`w-full h-full ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        {/* Loading indicator */}
+        {!isLoaded && !loadError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-20">
+            <div className="bg-gray-800 p-4 rounded-md text-white">
+              <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+              <p>Loading background...</p>
+            </div>
+          </div>
+        )}
+
+        {/* Background image */}
+        <img 
+          src={imagePath}
+          alt={`Background: ${backgroundId}`} 
+          className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
         />
 
         {/* Error overlay with retry button */}
         {loadError && (
           <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50">
-            <p className="text-white mb-4">Error loading background</p>
+            <p className="text-white mb-4">Loading is taking longer than expected.</p>
             <button
               onClick={handleRetry}
               className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded"
             >
-              Retry
+              Try Again
             </button>
           </div>
         )}
