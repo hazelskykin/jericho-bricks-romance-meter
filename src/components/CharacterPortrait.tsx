@@ -5,7 +5,7 @@ import { MoodType } from '../data/characterExpressions';
 import { useLazyCharacterExpression } from '../hooks/useLazyCharacterExpression';
 
 interface CharacterPortraitProps {
-  characterId: CharacterId;
+  characterId: CharacterId | 'narrator';
   mood?: MoodType;
   className?: string;
   animate?: boolean;

@@ -12,7 +12,7 @@ interface UseLazyCharacterExpressionResult {
 }
 
 export const useLazyCharacterExpression = (
-  characterId: CharacterId | undefined,
+  characterId: CharacterId | 'narrator' | undefined,
   mood: MoodType
 ): UseLazyCharacterExpressionResult => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
