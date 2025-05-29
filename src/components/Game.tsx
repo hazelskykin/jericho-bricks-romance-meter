@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import GameInterface from './GameInterface';
 import MainMenu from './MainMenu';
@@ -66,16 +65,8 @@ const Game: React.FC = () => {
   const handleStartGame = () => {
     console.log('Starting new game');
     
-    try {
-      // Play sound effect if sound system is ready
-      if (soundInitialized) {
-        soundManager.playSFX('ui-click', false);
-      } else {
-        console.log('[SOUND] ui-click');
-      }
-    } catch (error) {
-      console.warn('Failed to play sound:', error);
-    }
+    // Remove ui-click sound since the file doesn't exist
+    // Keep background music system which works fine
     
     // Mark that we're transitioning from menu to game
     setMenuTransitioning(true);
@@ -106,12 +97,7 @@ const Game: React.FC = () => {
 
   // Handle game reset
   const handleResetGame = () => {
-    try {
-      soundManager.playSFX('ui-click', false);
-    } catch (error) {
-      console.log('[SOUND] ui-click');
-      console.warn('Failed to play sound:', error);
-    }
+    // Remove ui-click sound since the file doesn't exist
     
     setShowMainMenu(true);
     setGameStarted(false);
@@ -123,12 +109,7 @@ const Game: React.FC = () => {
   const handleAbout = () => {
     console.log('Showing about screen');
     
-    try {
-      soundManager.playSFX('ui-click', false);
-    } catch (error) {
-      console.log('[SOUND] ui-click');
-      console.warn('Failed to play sound:', error);
-    }
+    // Remove ui-click sound since the file doesn't exist
     
     transitionToScene('about');
   };

@@ -11,6 +11,9 @@ interface UseLazyCharacterExpressionResult {
   hasError: boolean;
 }
 
+// Simple cache to avoid re-checking the same expression multiple times
+const expressionCache = new Map<string, string>();
+
 export const useLazyCharacterExpression = (
   characterId: CharacterId | 'narrator' | undefined,
   mood: MoodType
@@ -22,6 +25,19 @@ export const useLazyCharacterExpression = (
   useEffect(() => {
     if (!characterId || characterId === 'narrator') {
       setImageSrc(null);
+      setIsLoading(false);
+      setHasError(false);
+      return;
+    }
+
+    // Create cache key
+    const cacheKey = `${characterId}-${mood}`;
+    
+    // Check our expression cache first
+    if (expressionCache.has(cacheKey)) {
+      const cachedPath = expressionCache.get(cacheKey)!;
+      console.log(`Using cached expression: ${cacheKey}`);
+      setImageSrc(cachedPath);
       setIsLoading(false);
       setHasError(false);
       return;
@@ -39,9 +55,10 @@ export const useLazyCharacterExpression = (
 
     const expressionPath = expression.image;
 
-    // Check if already loaded in cache
+    // Check if already loaded in asset manager
     if (assetManager.hasAsset(expressionPath)) {
-      console.log(`Character expression already cached: ${characterId}-${mood}`);
+      console.log(`Character expression already in asset manager: ${cacheKey}`);
+      expressionCache.set(cacheKey, expressionPath);
       setImageSrc(expressionPath);
       setIsLoading(false);
       setHasError(false);
@@ -49,7 +66,7 @@ export const useLazyCharacterExpression = (
     }
 
     // Load the expression on-demand
-    console.log(`Lazy loading character expression: ${characterId}-${mood}`);
+    console.log(`Lazy loading character expression: ${cacheKey}`);
     setIsLoading(true);
     setHasError(false);
 
@@ -58,14 +75,15 @@ export const useLazyCharacterExpression = (
     img.crossOrigin = "anonymous";
     
     img.onload = () => {
-      console.log(`Successfully lazy loaded: ${characterId}-${mood}`);
+      console.log(`Successfully lazy loaded: ${cacheKey}`);
+      expressionCache.set(cacheKey, expressionPath);
       setImageSrc(expressionPath);
       setIsLoading(false);
       setHasError(false);
     };
 
     img.onerror = () => {
-      console.error(`Failed to lazy load: ${characterId}-${mood}`);
+      console.error(`Failed to lazy load: ${cacheKey}`);
       setImageSrc(null);
       setIsLoading(false);
       setHasError(true);

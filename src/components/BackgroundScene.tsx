@@ -52,7 +52,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     
     setFinalSrc(resolvedSrc);
     
-    // Pre-check asset manager
+    // Check if already cached in asset manager
     if (assetManager.hasAsset(resolvedSrc)) {
       console.log(`Using cached background: ${resolvedSrc}`);
       setIsLoaded(true);
@@ -102,14 +102,14 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-gray-900 z-0" data-testid="background-scene">
-      {/* Background image - Always render in DOM but control opacity */}
+      {/* Background image - Always render and always visible */}
       <img
         src={finalSrc}
         alt={alt}
         loading={priority ? 'eager' : 'lazy'}
         className={`absolute inset-0 w-full h-full object-cover z-10 ${className}`}
         style={{ 
-          opacity: isLoaded ? 1 : 0, 
+          opacity: 1, // Always visible since we check cache first
           transition: 'opacity 500ms',
           visibility: 'visible',
           display: 'block'
@@ -118,8 +118,8 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         onError={handleImageError}
       />
       
-      {/* Loading indicator (shows while loading) */}
-      {!isLoaded && !loadError && (
+      {/* Loading indicator (only shows if not cached and not loaded) */}
+      {!isLoaded && !assetManager.hasAsset(finalSrc) && !loadError && (
         <div className="absolute inset-0 z-20 bg-gray-900 flex items-center justify-center text-white">
           <div className="flex flex-col items-center">
             <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full mb-2"></div>
