@@ -84,6 +84,13 @@ export const useGameScene = () => {
         clearTimeout(backgroundTimeoutRef.current);
       }
       
+      // Check if already cached first
+      if (assetManager.hasAsset(backgroundPath)) {
+        console.log(`Background already cached: ${backgroundPath}`);
+        setBackgroundReady(true);
+        return;
+      }
+      
       // Preload the image
       const image = new Image();
       image.crossOrigin = "anonymous";
@@ -137,7 +144,7 @@ export const useGameScene = () => {
         setLoaded(true);
         loadingTimeoutRef.current = null;
         console.log(`Scene ${sceneId} marked as loaded`);
-      }, 500);
+      }, 300); // Reduced from 500ms since we're not preloading characters
     }
     
     return () => {

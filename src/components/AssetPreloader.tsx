@@ -1,11 +1,9 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { assetManager } from '@/utils/assetManager';
-import characterExpressions from '@/data/characterExpressions';
 import backgrounds from '@/data/backgrounds';
 import minigameAssets from '@/data/minigameAssets';
 import { BackgroundAsset } from '@/types/assets';
-import { CharacterExpression } from '@/types/expressions';
 
 interface AssetPreloaderProps {
   onComplete: () => void;
@@ -24,14 +22,10 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    console.log(`AssetPreloader: Loading assets (${priorityOnly ? 'priority only' : 'all'}, ${skipMinigameAssets ? 'skipping minigames' : 'with minigames'})`);
+    console.log(`AssetPreloader: Loading assets (${priorityOnly ? 'priority only' : 'all'}, ${skipMinigameAssets ? 'skipping minigames' : 'with minigames'}) - Character expressions will be loaded on-demand`);
     
-    // Extract image paths
-    const characterPaths = Object.values(characterExpressions)
-      .flat()
-      .filter(expr => !priorityOnly || (expr as CharacterExpression).priority === true)
-      .map(expr => (expr as CharacterExpression).image)
-      .filter(Boolean);
+    // Skip character expressions entirely - they will be loaded lazily
+    const characterPaths: string[] = [];
     
     // Background paths
     const backgroundPaths = Object.values(backgrounds)
@@ -47,8 +41,8 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
           .filter(Boolean)
       : [];
     
-    // Calculate total assets
-    const totalAssets = characterPaths.length + backgroundPaths.length + minigameAssetPaths.length;
+    // Calculate total assets (no character expressions)
+    const totalAssets = backgroundPaths.length + minigameAssetPaths.length;
     
     // Move to next step if no assets to load
     if (totalAssets === 0) {
@@ -63,7 +57,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
       console.log('Asset loading timeout reached, continuing anyway');
       setLoading(false);
       onComplete();
-    }, 10000); // 10 second timeout
+    }, 8000); // Reduced timeout since we're loading fewer assets
     
     // We'll load assets in priority order
     let loadedCount = 0;
@@ -80,13 +74,9 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
     assetManager.preloadAssets(backgroundPaths, (loaded, total) => {
       updateProgress(1, backgroundPaths.length);
     }).then(() => {
-      // Then load character expressions
-      setStatusMessage('Loading character expressions...');
-      return assetManager.preloadAssets(characterPaths, (loaded, total) => {
-        updateProgress(1, characterPaths.length);
-      });
-    }).then(() => {
-      // Finally load minigame assets if needed
+      // Skip character expressions - they will be loaded on-demand
+      
+      // Load minigame assets if needed
       if (!skipMinigameAssets && minigameAssetPaths.length > 0) {
         setStatusMessage('Loading minigame assets...');
         return assetManager.preloadAssets(minigameAssetPaths, (loaded, total) => {
@@ -104,7 +94,7 @@ const AssetPreloader: React.FC<AssetPreloaderProps> = ({
       
       // Report stats
       const stats = assetManager.getStats();
-      console.log(`Loaded ${stats.loaded} assets, ${stats.failed} failed`);
+      console.log(`Loaded ${stats.loaded} assets, ${stats.failed} failed (character expressions will load on-demand)`);
       
       // Mark as complete with a small delay to show 100%
       setTimeout(() => {

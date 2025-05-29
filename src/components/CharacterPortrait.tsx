@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { CharacterId } from '../types/game';
-import { getCharacterExpressionByMood, MoodType } from '../data/characterExpressions';
-import { getImageCache } from '../utils/imageCache';
-import { CharacterExpression } from '@/types/expressions';
+import { MoodType } from '../data/characterExpressions';
+import { useLazyCharacterExpression } from '../hooks/useLazyCharacterExpression';
 
 interface CharacterPortraitProps {
   characterId: CharacterId;
@@ -11,7 +10,7 @@ interface CharacterPortraitProps {
   className?: string;
   animate?: boolean;
   onLoad?: () => void;
-  isInDialog?: boolean; // Flag to determine if portrait is in dialog
+  isInDialog?: boolean;
 }
 
 const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
@@ -22,85 +21,45 @@ const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
   onLoad,
   isInDialog = false
 }) => {
-  const [characterExpression, setCharacterExpression] = useState<CharacterExpression | undefined>(undefined);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const imageCache = getImageCache();
-  const imgRef = useRef<HTMLImageElement>(null);
-  
-  // Animation states
-  const [isAnimating, setIsAnimating] = useState(false);
+  const { imageSrc, isLoading, hasError } = useLazyCharacterExpression(characterId, mood);
 
-  // Set up character expression and image
-  useEffect(() => {
-    if (characterId && mood) {
-      try {
-        // Get character expression data
-        const expressionData = getCharacterExpressionByMood(characterId, mood as MoodType);
-        setCharacterExpression(expressionData);
-        
-        // Check if image is in cache
-        const imagePath = expressionData?.image || '';
-        if (imagePath && typeof imagePath === 'string' && imageCache.has(imagePath)) {
-          setImageLoaded(true);
-          onLoad?.();
-        } else {
-          setImageLoaded(false);
-        }
-      } catch (error) {
-        console.error(`Error setting character portrait: ${error}`);
-        setImageLoaded(false);
-      }
-    }
-  }, [characterId, mood, onLoad]);
-
-  // Handle image loading
-  useEffect(() => {
-    const handleImageLoad = () => {
-      setImageLoaded(true);
+  // Call onLoad when image is successfully loaded
+  React.useEffect(() => {
+    if (imageSrc && !isLoading && !hasError) {
       onLoad?.();
-    };
-
-    if (imgRef.current && imgRef.current.complete) {
-      handleImageLoad();
     }
-
-    if (imgRef.current) {
-      imgRef.current.addEventListener('load', handleImageLoad);
-    }
-
-    return () => {
-      if (imgRef.current) {
-        imgRef.current.removeEventListener('load', handleImageLoad);
-      }
-    };
-  }, [onLoad]);
-
-  // Trigger animation only when explicitly requested
-  useEffect(() => {
-    if (animate && imageLoaded) {
-      setIsAnimating(true);
-      const timer = setTimeout(() => {
-        setIsAnimating(false);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [animate, imageLoaded]);
-  
-  const portraitSrc = characterExpression && characterExpression.image ? characterExpression.image : '';
+  }, [imageSrc, isLoading, hasError, onLoad]);
 
   // Apply different styles based on whether this is in the dialog or not
   const portraitClasses = isInDialog
     ? "w-full h-full object-cover object-top rounded-full" // For avatar in dialog
     : "h-auto w-auto object-contain"; // For any other use
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className={`${className} ${portraitClasses} bg-gray-800 flex items-center justify-center`}>
+        <div className="animate-spin h-4 w-4 border-2 border-purple-500 border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  // Show error state or fallback
+  if (hasError || !imageSrc) {
+    return (
+      <div className={`${className} ${portraitClasses} bg-gray-800 flex items-center justify-center text-gray-400 text-xs`}>
+        {characterId}
+      </div>
+    );
+  }
+
   return (
     <img
-      ref={imgRef}
-      src={portraitSrc}
+      src={imageSrc}
       alt={`${characterId} - ${mood}`}
       className={`
         ${className}
-        ${isAnimating ? 'animate-fade-in' : ''}
+        ${animate ? 'animate-fade-in' : ''}
         ${portraitClasses}
       `}
     />

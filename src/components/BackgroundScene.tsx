@@ -40,6 +40,16 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
 
     // Use default if no valid source is found
     const resolvedSrc = imageSrc || '/assets/backgrounds/stonewich-cityscape.jpg';
+    
+    // Fix: Don't set empty string as finalSrc
+    if (!resolvedSrc || resolvedSrc.trim() === '') {
+      console.error(`BackgroundScene: Invalid background source - backgroundId: ${backgroundId}, src: ${src}`);
+      setFinalSrc('/assets/backgrounds/stonewich-cityscape.jpg');
+      setLoadError(true);
+      onError?.();
+      return;
+    }
+    
     setFinalSrc(resolvedSrc);
     
     // Pre-check asset manager
@@ -53,7 +63,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       setIsLoaded(false);
       setLoadError(false);
     }
-  }, [src, backgroundId, onLoad]);
+  }, [src, backgroundId, onLoad, onError]);
 
   // Handle image loading success
   const handleImageLoad = () => {
@@ -76,6 +86,20 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     }, 1000);
   };
 
+  // Don't render if finalSrc is empty
+  if (!finalSrc || finalSrc.trim() === '') {
+    return (
+      <div className="absolute inset-0 overflow-hidden bg-gray-900 z-0" data-testid="background-scene">
+        <div className="absolute inset-0 flex items-center justify-center z-30 bg-gray-900">
+          <div className="text-red-400 text-center">
+            <p>Background configuration error</p>
+            <p className="text-xs">backgroundId: {backgroundId}, src: {src}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="absolute inset-0 overflow-hidden bg-gray-900 z-0" data-testid="background-scene">
       {/* Background image - Always render in DOM but control opacity */}
@@ -87,8 +111,8 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
         style={{ 
           opacity: isLoaded ? 1 : 0, 
           transition: 'opacity 500ms',
-          visibility: 'visible', // Force visibility
-          display: 'block' // Ensure display is block
+          visibility: 'visible',
+          display: 'block'
         }}
         onLoad={handleImageLoad}
         onError={handleImageError}
