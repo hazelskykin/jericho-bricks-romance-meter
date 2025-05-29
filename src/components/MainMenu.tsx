@@ -49,18 +49,21 @@ const MainMenu: React.FC<MainMenuProps> = ({ onNewGame, loadingComplete, onAbout
   }, [onAbout]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden bg-[#1A1F2C]">
+      {/* Notification system - highest z-index */}
       <Toaster position="top-right" />
       
-      {/* Background */}
+      {/* Background - lowest z-index */}
       <MenuBackground />
       
-      {/* Main Content */}
-      <MainContent 
-        onNewGame={handleNewGameClick} 
-        loadingComplete={loadingComplete} 
-        onAbout={onAbout ? handleAboutClick : undefined} 
-      />
+      {/* Main Content - medium z-index */}
+      <div className="relative" style={{ zIndex: 10 }}>
+        <MainContent 
+          onNewGame={handleNewGameClick} 
+          loadingComplete={loadingComplete} 
+          onAbout={onAbout ? handleAboutClick : undefined} 
+        />
+      </div>
     </div>
   );
 };

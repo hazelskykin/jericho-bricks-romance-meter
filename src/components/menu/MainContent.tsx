@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import GameTitle from './GameTitle';
 import MenuButtons from './MenuButtons';
 import { Toaster } from 'sonner';
@@ -12,8 +12,12 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, onAbout }) => {
+  useEffect(() => {
+    console.log('MainContent: Component mounted, loadingComplete:', loadingComplete);
+  }, [loadingComplete]);
+
   return (
-    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+    <div className="relative w-full h-full flex flex-col items-center justify-center min-h-screen">
       {/* Notification system */}
       <Toaster position="top-right" richColors />
       
