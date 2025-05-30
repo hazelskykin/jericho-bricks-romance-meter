@@ -3,86 +3,65 @@ import React, { useState, useEffect } from 'react';
 import { assetManager } from '@/utils/assetManager';
 
 const MenuBackground: React.FC = () => {
-  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
-  const [backgroundError, setBackgroundError] = useState(false);
-  
-  const backgroundPath = '/assets/backgrounds/wall-tiles.jpg';
-  
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const backgroundSrc = '/assets/backgrounds/wall-tiles.jpg';
+
   useEffect(() => {
-    // Check if background is already loaded
-    if (assetManager.hasAsset(backgroundPath)) {
+    // Check if already cached
+    if (assetManager.hasAsset(backgroundSrc)) {
       console.log('MenuBackground: wall-tiles.jpg already loaded');
-      setBackgroundLoaded(true);
-      return;
+      setImageLoaded(true);
+      setImageError(false);
+    } else {
+      console.log('MenuBackground: Loading wall-tiles.jpg');
+      setImageLoaded(false);
+      setImageError(false);
     }
-    
-    // Load the background image
-    console.log('MenuBackground: Loading wall-tiles.jpg');
-    const img = new Image();
-    img.onload = () => {
-      console.log('MenuBackground: Successfully loaded wall-tiles.jpg');
-      setBackgroundLoaded(true);
-      setBackgroundError(false);
-    };
-    img.onerror = () => {
-      console.error('MenuBackground: Failed to load wall-tiles.jpg');
-      setBackgroundError(true);
-      // Still show something even if image fails
-      setTimeout(() => setBackgroundLoaded(true), 1000);
-    };
-    img.src = backgroundPath;
   }, []);
 
+  const handleImageLoad = () => {
+    console.log('MenuBackground: wall-tiles.jpg loaded successfully');
+    setImageLoaded(true);
+    setImageError(false);
+  };
+
+  const handleImageError = () => {
+    console.error('MenuBackground: Failed to load wall-tiles.jpg');
+    setImageError(true);
+    setImageLoaded(false);
+  };
+
   return (
-    <div className="absolute inset-0 overflow-hidden" style={{ zIndex: -10 }}>
-      {/* Background image layer */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center transition-opacity duration-500"
+    <div className="absolute inset-0 z-0">
+      {/* Background image - always render */}
+      <img
+        src={backgroundSrc}
+        alt="Menu background"
+        loading="eager"
+        className="absolute inset-0 w-full h-full object-cover"
         style={{ 
-          backgroundImage: backgroundLoaded ? `url(${backgroundPath})` : 'none',
-          filter: 'brightness(0.8)',
-          opacity: backgroundLoaded ? 1 : 0,
-          zIndex: 1
+          opacity: 1, // Always visible
+          visibility: 'visible',
+          display: 'block'
         }}
+        onLoad={handleImageLoad}
+        onError={handleImageError}
       />
       
-      {/* Fallback background while loading */}
-      {!backgroundLoaded && (
-        <div 
-          className="absolute inset-0 bg-gradient-to-br from-[#1A1F2C] to-[#2D1B69]"
-          style={{ zIndex: 1 }}
-        />
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-30 z-10" />
+      
+      {/* Loading indicator only if not cached and not loaded */}
+      {!imageLoaded && !assetManager.hasAsset(backgroundSrc) && !imageError && (
+        <div className="absolute inset-0 z-20 bg-gray-900 flex items-center justify-center">
+          <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full"></div>
+        </div>
       )}
       
-      {/* Dark gradient overlay on the right side only */}
-      <div 
-        className="absolute top-0 right-0 bottom-0 w-1/3 bg-gradient-to-l from-[#1A1F2C]/90 to-transparent" 
-        style={{ zIndex: 2 }}
-      />
-      
-      {/* Animated particles/stars effect */}
-      <div 
-        className="absolute inset-0 opacity-40"
-        style={{ zIndex: 3 }}
-      >
-        <div className="stars-bg"></div>
-      </div>
-      
-      {/* Purple glow effects */}
-      <div 
-        className="absolute bottom-[-50%] right-[-25%] w-[80%] h-[150%] rounded-full bg-[#9b87f5]/10 blur-[100px]" 
-        style={{ zIndex: 4 }}
-      />
-      <div 
-        className="absolute top-[-50%] right-[-25%] w-[80%] h-[150%] rounded-full bg-[#7E69AB]/10 blur-[100px]" 
-        style={{ zIndex: 4 }}
-      />
-      
-      {/* Debug info */}
-      {backgroundError && (
-        <div className="absolute top-4 left-4 text-red-400 text-xs bg-black/50 p-2 rounded" style={{ zIndex: 50 }}>
-          Background image failed to load
-        </div>
+      {/* Error fallback */}
+      {imageError && (
+        <div className="absolute inset-0 z-20 bg-gradient-to-br from-[#1A1F2C] via-[#2A2F3C] to-[#1A1F2C]" />
       )}
     </div>
   );

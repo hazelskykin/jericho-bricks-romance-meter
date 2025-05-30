@@ -41,7 +41,6 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     // Use default if no valid source is found
     const resolvedSrc = imageSrc || '/assets/backgrounds/stonewich-cityscape.jpg';
     
-    // Fix: Don't set empty string as finalSrc
     if (!resolvedSrc || resolvedSrc.trim() === '') {
       console.error(`BackgroundScene: Invalid background source - backgroundId: ${backgroundId}, src: ${src}`);
       setFinalSrc('/assets/backgrounds/stonewich-cityscape.jpg');
@@ -59,7 +58,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       setLoadError(false);
       onLoad?.();
     } else {
-      console.log(`Loading background: ${resolvedSrc}`);
+      console.log(`Background not cached, loading: ${resolvedSrc}`);
       setIsLoaded(false);
       setLoadError(false);
     }
@@ -78,12 +77,6 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
     console.error(`Failed to load background: ${finalSrc}`);
     setLoadError(true);
     onError?.();
-    
-    // Force display eventually even on error
-    setTimeout(() => {
-      console.log("Forcing background display despite error");
-      setIsLoaded(true);
-    }, 1000);
   };
 
   // Don't render if finalSrc is empty
@@ -102,15 +95,15 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-gray-900 z-0" data-testid="background-scene">
-      {/* Background image - Always render and always visible */}
+      {/* Background image - Always render and display immediately if cached */}
       <img
         src={finalSrc}
         alt={alt}
         loading={priority ? 'eager' : 'lazy'}
         className={`absolute inset-0 w-full h-full object-cover z-10 ${className}`}
         style={{ 
-          opacity: 1, // Always visible since we check cache first
-          transition: 'opacity 500ms',
+          opacity: 1, // Always show the image
+          transition: 'opacity 300ms ease-in-out',
           visibility: 'visible',
           display: 'block'
         }}
@@ -120,7 +113,7 @@ const BackgroundScene: React.FC<BackgroundSceneProps> = ({
       
       {/* Loading indicator (only shows if not cached and not loaded) */}
       {!isLoaded && !assetManager.hasAsset(finalSrc) && !loadError && (
-        <div className="absolute inset-0 z-20 bg-gray-900 flex items-center justify-center text-white">
+        <div className="absolute inset-0 z-20 bg-gray-900 bg-opacity-50 flex items-center justify-center text-white">
           <div className="flex flex-col items-center">
             <div className="animate-spin h-8 w-8 border-4 border-purple-500 border-t-transparent rounded-full mb-2"></div>
             <p>Loading background...</p>

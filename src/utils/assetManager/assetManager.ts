@@ -10,7 +10,7 @@ export class AssetManager {
   private cache: AssetCache;
   private loading: boolean;
   private maxRetries: number = 2;
-  private timeoutDuration: number = 8000; // Increased timeout
+  private timeoutDuration: number = 5000; // Reduced timeout for better performance
 
   private constructor() {
     this.cache = {
@@ -29,11 +29,10 @@ export class AssetManager {
   }
 
   /**
-   * Set immediate loading mode (useful for critical assets)
+   * Set immediate loading mode (kept for API compatibility)
    */
   public setLoadImmediateMode(immediate: boolean): void {
     // This is kept for API compatibility but doesn't do anything now
-    // We always load images immediately
   }
 
   /**
@@ -87,6 +86,7 @@ export class AssetManager {
         console.error("Attempted to load image with empty src");
         const fallback = createCanvasFallback("empty-src");
         this.cache.images.set("empty-src", fallback);
+        this.cache.failed.add("empty-src");
         resolve(fallback);
         return;
       }
@@ -108,7 +108,7 @@ export class AssetManager {
       // Create a new image
       const img = new Image();
       
-      // Set up a quick timeout to avoid hanging
+      // Set up a timeout to avoid hanging
       const timeoutId = setTimeout(() => {
         console.warn(`Image load timeout for: ${src}`);
         this.cache.failed.add(src);
@@ -151,7 +151,7 @@ export class AssetManager {
   }
 
   /**
-   * Check if an asset is loaded
+   * Check if an asset is loaded successfully
    */
   public hasAsset(src: string): boolean {
     if (!src) return false;
@@ -196,11 +196,11 @@ export class AssetManager {
       this.cache.failed.delete(src);
     }
     
-    // If not already loaded, add a placeholder
+    // If not already loaded, add a placeholder and mark as loaded
     if (!this.cache.loaded.has(src)) {
       const placeholder = createCanvasFallback(src);
       this.cache.images.set(src, placeholder);
-      this.cache.loaded.add(src);
+      this.cache.loaded.add(src); // Mark as loaded
       console.log(`Forced success for asset: ${src}`);
     }
   }
