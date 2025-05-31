@@ -31,7 +31,11 @@ const MainContent: React.FC<MainContentProps> = ({ onNewGame, loadingComplete, o
           
           {/* Menu Buttons */}
           <div className="w-full max-w-xs flex flex-col items-end justify-center mt-6">
-            <MenuButtons onNewGame={onNewGame} onAbout={onAbout} />
+            <MenuButtons 
+              onNewGame={onNewGame} 
+              onAbout={onAbout} 
+              loadingComplete={loadingComplete}
+            />
             
             {/* Sound Controls */}
             <div className="mt-6 self-end">
